@@ -10,7 +10,7 @@
 #' @importFrom R.matlab readMat
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ## Read a TreeQSM MATLAB file
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)

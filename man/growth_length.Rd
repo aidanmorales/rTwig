@@ -18,7 +18,7 @@ Returns a data.frame
 Calculates the growth length of each cylinder.
 }
 \examples{
-\donttest{
+\dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 df <- import_qsm(file)

@@ -17,19 +17,19 @@ export_mat(df, filename, method = "TreeQSM")
 Returns a .mat file
 }
 \description{
-Export MAT
+Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
-df <- import_qsm(foo.mat)
+df <- import_qsm("foo.mat")
 df <- update_cylinders(df)
 df <- growth_length(df)
 df <- correct_radii(df, twigRad = 0.003)
 export_mat(df, "foo_corrected.mat")
 
 ## SimpleForest Processing Chain
-df <- read.csv(foo.csv)
+df <- read.csv("foo.csv")
 df <- update_cylinders(df, method = "SimpleForest")
 df <- growth_length(df, method = "SimpleForest")
 df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")

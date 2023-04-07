@@ -16,7 +16,7 @@ Returns a data.frame
 Imports a QSM stored as a MATLAB file created by TreeQSM.
 }
 \examples{
-\donttest{
+\dontrun{
 ## Read a TreeQSM MATLAB file
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 df <- import_qsm(file)

@@ -1,5 +1,8 @@
 #' Export MAT
 #'
+#' @description
+#' Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
+#'
 #' @param df QSM cylinder data frame
 #' @param filename Desired name of file
 #' @param method QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.
