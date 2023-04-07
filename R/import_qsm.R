@@ -10,10 +10,12 @@
 #' @importFrom R.matlab readMat
 #'
 #' @examples
+#' \donttest{
 #' ## Read a TreeQSM MATLAB file
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
 #' str(df)
+#' }
 import_qsm <- function(file) {
   list <- R.matlab::readMat(file)[[1]]
 

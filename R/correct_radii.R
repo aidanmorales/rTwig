@@ -22,6 +22,7 @@
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
 #'
 #' @examples
+#' \donttest{
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
@@ -37,6 +38,7 @@
 #' df <- growth_length(df, method = "SimpleForest")
 #' df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
 #' str(df)
+#' }
 correct_radii <- function(df, twigRad, method = "TreeQSM") {
   message("Correcting Cylinder Radii")
 
@@ -156,7 +158,8 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       select(-.data$radius) %>%
       left_join(cyl_radii, by = "id") %>%
       group_by(.data$branch) %>%
-      mutate(radius = zoo::na.approx(.data$radius, rule = 2))
+      mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
+      ungroup()
   } else if (method == "SimpleForest") {
     # Creates path network
     g <- data.frame(parent = df$parentID, id = df$ID)
@@ -278,8 +281,8 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       relocate(.data$modVolume, .after = .data$volume) %>%
       relocate(.data$radius, .after = .data$radius) %>%
       group_by(.data$segmentID) %>%
-      mutate(radius = zoo::na.approx(.data$radius, rule = 2))
-
+      mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
+      ungroup()
   } else {
     message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
   }

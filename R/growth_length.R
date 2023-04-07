@@ -14,6 +14,7 @@
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
 #'
 #' @examples
+#' \donttest{
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
@@ -27,6 +28,7 @@
 #' df <- update_cylinders(df, method = "SimpleForest")
 #' df <- growth_length(df, method = "SimpleForest")
 #' str(df)
+#' }
 growth_length <- function(df, method = "TreeQSM") {
   message("Calculating Growth Length")
 

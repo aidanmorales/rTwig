@@ -18,6 +18,7 @@ Returns a data.frame
 Updates the QSM cylinder data in preparation for growth length and path analysis calculations.
 }
 \examples{
+\donttest{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 df <- import_qsm(file)
@@ -29,4 +30,5 @@ file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
 df <- update_cylinders(df, method = "SimpleForest")
 str(df)
+}
 }

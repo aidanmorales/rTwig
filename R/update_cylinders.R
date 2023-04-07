@@ -11,6 +11,7 @@
 #' @import dplyr
 #'
 #' @examples
+#' \donttest{
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
@@ -22,6 +23,7 @@
 #' df <- read.csv(file)
 #' df <- update_cylinders(df, method = "SimpleForest")
 #' str(df)
+#' }
 update_cylinders <- function(df, method = "TreeQSM") {
   message("Updating Cylinders")
 
