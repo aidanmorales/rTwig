@@ -19,9 +19,10 @@ plot_qsm(df, radius = "modified", color = "BranchOrder", method = "TreeQSM")
 A rgl QSM plot
 }
 \description{
-Plot QSM
+Plots QSM cylinders using the rgl library.
 }
 \examples{
+\dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 df <- import_qsm(file)
@@ -33,6 +34,6 @@ plot_qsm(df)
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
 df <- update_cylinders(df, method = "SimpleForest")
-df <- growth_length(df, method = "SimpleForest")
 plot_qsm(df, radius = "unmodified", color = "GrowthLength", method = "SimpleForest")
+}
 }

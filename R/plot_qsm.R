@@ -1,5 +1,8 @@
 #' Plot QSM
 #'
+#' @description
+#' Plots QSM cylinders using the rgl library.
+#'
 #' @param df QSM cylinder data frame
 #' @param radius Radius type, as either "modified" or "unmodified". Defaults to modified.
 #' @param color Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.
@@ -24,7 +27,6 @@
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' df <- read.csv(file)
 #' df <- update_cylinders(df, method = "SimpleForest")
-#' df <- growth_length(df, method = "SimpleForest")
 #' plot_qsm(df, radius = "unmodified", color = "GrowthLength", method = "SimpleForest")
 #' }
 plot_qsm <- function(df, radius = "modified", color = "BranchOrder", method = "TreeQSM") {
