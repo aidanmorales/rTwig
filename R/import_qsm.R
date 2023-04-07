@@ -5,7 +5,6 @@
 #' @param file a .mat file
 #'
 #' @return Returns a data.frame
-#'
 #' @export
 #'
 #' @importFrom R.matlab readMat
@@ -15,7 +14,6 @@
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
 #' str(df)
-
 import_qsm <- function(file) {
   list <- R.matlab::readMat(file)[[1]]
 

@@ -10,7 +10,6 @@
 #' @export
 #'
 #' @import dplyr
-#' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
 #' @import cobs
 #' @import parallel
 #' @import doParallel
@@ -20,6 +19,7 @@
 #' @importFrom data.table rbindlist
 #' @importFrom stats IQR predict quantile
 #' @importFrom utils setTxtProgressBar txtProgressBar
+#' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
 #'
 #' @examples
 #' ## TreeQSM Processing Chain
@@ -171,7 +171,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       # Use 2 cores to pass checks
       n_cores <- 2L
     } else {
-      # Use all cores for enduser
+      # Use all cores for end-user
       n_cores <- parallel::detectCores(logical = FALSE)
     }
 
@@ -247,7 +247,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
     # Ends parallel cluster
     stopCluster(cl)
 
-    # Calculates single cylider radii from all paths
+    # Calculates single cylinder radii from all paths
     cyl_radii <- data.table::rbindlist(results) %>%
       group_by(ID) %>%
       mutate(
