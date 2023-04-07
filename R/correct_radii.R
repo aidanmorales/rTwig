@@ -37,19 +37,18 @@
 #' df <- growth_length(df, method = "SimpleForest")
 #' df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
 #' str(df)
-
 correct_radii <- function(df, twigRad, method = "TreeQSM") {
   message("Correcting Cylinder Radii")
 
   if (method == "TreeQSM") {
     # Creates path network
-    g <- data.frame(parent = df$parent, id = df$id) %>%
-      graph_from_data_frame()
+    g <- data.frame(parent = df$parent, id = df$id)
+    g <- igraph::graph_from_data_frame(g)
 
-    starts <- V(g)[degree(g, mode = "in") == 0]
-    finals <- V(g)[degree(g, mode = "out") == 0]
+    starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
+    finals <- igraph::V(g)[igraph::degree(g, mode = "out") == 0]
 
-    paths <- all_simple_paths(g, from = starts[[1]], to = finals)
+    paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
 
     # Initialize parallel workers
     chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -58,7 +57,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       # Use 2 cores to pass checks
       n_cores <- 2L
     } else {
-      # Use all cores for enduser
+      # Use all cores for end-users
       n_cores <- parallel::detectCores(logical = FALSE)
     }
 
@@ -89,12 +88,11 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
           IQR = IQR(index),
           upper = quantile(index, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
           lower = quantile(index, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1)
+          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1),
+          bad_fit2 = NA
         )
 
-      # Identifies bad cylinder fits
-      path_cyl$bad_fit2 <- NA
-
+      # Identifies bad cylinder fits by tapering
       for (k in 1:nrow(path_cyl)) {
         z <- length(which((as.vector(path_cyl$radius[k] - path_cyl$radius[1:k]) / path_cyl$radius[k]) > 1 / k))
 
@@ -132,8 +130,10 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       return(path_cyl)
     }
 
+    # Ends parallel cluster
     stopCluster(cl)
 
+    # Calculates single cylinder radii from all paths
     cyl_radii <- data.table::rbindlist(results) %>%
       group_by(id) %>%
       mutate(
@@ -148,7 +148,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       ) %>%
       mutate(radius = case_when(radius < twigRad ~ twigRad, TRUE ~ radius))
 
-    # Binds corrected radii back to the cylinder data and corrects underestimated radii
+    # Updates the QSM with new radii
     df <- df %>%
       select(-radius) %>%
       left_join(cyl_radii, by = "id") %>%
@@ -156,13 +156,13 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       mutate(radius = zoo::na.approx(radius, rule = 2))
   } else if (method == "SimpleForest") {
     # Creates path network
-    g <- data.frame(parent = df$parentID, id = df$ID) %>%
-      graph_from_data_frame()
+    g <- data.frame(parent = df$parentID, id = df$ID)
+    g <- igraph::graph_from_data_frame(g)
 
-    starts <- V(g)[degree(g, mode = "in") == 0]
-    finals <- V(g)[degree(g, mode = "out") == 0]
+    starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
+    finals <- igraph::V(g)[igraph::degree(g, mode = "out") == 0]
 
-    paths <- all_simple_paths(g, from = starts[[1]], to = finals)
+    paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
 
     # Initialize parallel workers
     chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -189,7 +189,6 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       .inorder = FALSE,
       .packages = c("dplyr", "cobs")
     ) %dopar% {
-
       cyl_id <- sort(as.numeric(names(paths[[i]])))
       path_cyl <- filter(df, ID %in% cyl_id)
 
@@ -203,12 +202,11 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
           IQR = IQR(index),
           upper = quantile(index, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
           lower = quantile(index, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1)
+          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1),
+          bad_fit2 = NA
         )
 
-      # Identifies bad cylinder fits
-      path_cyl$bad_fit2 <- NA
-
+      # Identifies bad cylinder fits by tapering
       for (k in 1:nrow(path_cyl)) {
         z <- length(which((as.vector(path_cyl$radius[k] - path_cyl$radius[1:k]) / path_cyl$radius[k]) > 1 / k))
 
@@ -246,8 +244,10 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       return(path_cyl)
     }
 
+    # Ends parallel cluster
     stopCluster(cl)
 
+    # Calculates single cylider radii from all paths
     cyl_radii <- data.table::rbindlist(results) %>%
       group_by(ID) %>%
       mutate(
@@ -264,7 +264,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       select(-bad_fit) %>%
       mutate(radius = case_when(radius < twigRad ~ twigRad, TRUE ~ radius))
 
-    # Binds corrected radii back to the cylinder data
+    # Updates the QSM with new radii
     df <- df %>%
       select(-radius) %>%
       left_join(cyl_radii, by = "ID") %>%
