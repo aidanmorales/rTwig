@@ -68,6 +68,9 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
     progress <- function(n) setTxtProgressBar(txtProgressBar(max = max(length(paths)), style = 3), n)
     opts <- list(progress = progress)
 
+    # Fix for foreach package failing devtools::check()
+    i <- NULL
+
     # Loops through the paths
     results <- foreach(
       i = 1:length(paths),
@@ -76,19 +79,19 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       .packages = c("dplyr", "cobs")
     ) %dopar% {
       cyl_id <- sort(as.numeric(names(paths[[i]])))
-      path_cyl <- filter(df, id %in% cyl_id)
+      path_cyl <- filter(df, .data$id %in% cyl_id)
 
       path_cyl <- path_cyl %>%
         mutate(
           row_num = n() - row_number() + 1,
-          GrowthLength2 = sqrt(GrowthLength) * row_num,
-          index = radius / GrowthLength
+          GrowthLength2 = sqrt(.data$GrowthLength) * .data$row_num,
+          index = .data$radius / .data$GrowthLength
         ) %>%
         mutate(
-          IQR = IQR(index),
-          upper = quantile(index, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
-          lower = quantile(index, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1),
+          IQR = IQR(.data$index),
+          upper = quantile(.data$index, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+          lower = quantile(.data$index, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
+          bad_fit1 = case_when(.data$lower <= .data$index & .data$index <= .data$upper ~ 0, TRUE ~ 1),
           bad_fit2 = NA
         )
 
@@ -104,13 +107,13 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       }
 
       path_cyl <- path_cyl %>%
-        mutate(bad_fit = case_when(bad_fit1 == 1 & bad_fit2 == 0 ~ 1, TRUE ~ bad_fit2))
+        mutate(bad_fit = case_when(.data$bad_fit1 == 1 & .data$bad_fit2 == 0 ~ 1, TRUE ~ .data$bad_fit2))
 
       # Extracts good cylinder fits to model paths
       path_temp <- path_cyl %>%
         mutate(weight = 100000) %>%
-        filter(bad_fit == 0) %>%
-        select(x = GrowthLength2, y = radius, weight)
+        filter(.data$bad_fit == 0) %>%
+        select(x = .data$GrowthLength2, y = .data$radius, .data$weight)
 
       x <- path_temp$x
       x[length(x) + 1] <- 0
@@ -137,23 +140,23 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
     cyl_radii <- data.table::rbindlist(results) %>%
       group_by(id) %>%
       mutate(
-        IQR = IQR(radius),
-        upper = quantile(radius, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
-        lower = quantile(radius, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-        bad_fit = case_when(lower <= radius & radius <= upper ~ 0, TRUE ~ 1)
+        IQR = IQR(.data$radius),
+        upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+        lower = quantile(.data$radius, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
+        bad_fit = case_when(.data$lower <= .data$radius & .data$radius <= .data$upper ~ 0, TRUE ~ 1)
       ) %>%
-      filter(bad_fit == 0) %>%
+      filter(.data$bad_fit == 0) %>%
       summarize(
-        radius = max(radius, na.rm = TRUE)
+        radius = max(.data$radius, na.rm = TRUE)
       ) %>%
-      mutate(radius = case_when(radius < twigRad ~ twigRad, TRUE ~ radius))
+      mutate(radius = case_when(.data$radius < twigRad ~ twigRad, TRUE ~ .data$radius))
 
     # Updates the QSM with new radii
     df <- df %>%
-      select(-radius) %>%
+      select(-.data$radius) %>%
       left_join(cyl_radii, by = "id") %>%
-      group_by(branch) %>%
-      mutate(radius = zoo::na.approx(radius, rule = 2))
+      group_by(.data$branch) %>%
+      mutate(radius = zoo::na.approx(.data$radius, rule = 2))
   } else if (method == "SimpleForest") {
     # Creates path network
     g <- data.frame(parent = df$parentID, id = df$ID)
@@ -182,6 +185,9 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
     progress <- function(n) setTxtProgressBar(txtProgressBar(max = max(length(paths)), style = 3), n)
     opts <- list(progress = progress)
 
+    # Fix for foreach package failing devtools::check()
+    i <- NULL
+
     # Loops through the paths
     results <- foreach(
       i = 1:length(paths),
@@ -190,19 +196,19 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       .packages = c("dplyr", "cobs")
     ) %dopar% {
       cyl_id <- sort(as.numeric(names(paths[[i]])))
-      path_cyl <- filter(df, ID %in% cyl_id)
+      path_cyl <- filter(df, .data$ID %in% cyl_id)
 
       path_cyl <- path_cyl %>%
         mutate(
           row_num = n() - row_number() + 1,
-          GrowthLength2 = sqrt(growthLength) * row_num,
-          index = radius / growthLength
+          GrowthLength2 = sqrt(.data$growthLength) * .data$row_num,
+          index = .data$radius / .data$growthLength
         ) %>%
         mutate(
-          IQR = IQR(index),
-          upper = quantile(index, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
-          lower = quantile(index, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-          bad_fit1 = case_when(lower <= index & index <= upper ~ 0, TRUE ~ 1),
+          IQR = IQR(.data$index),
+          upper = quantile(.data$index, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+          lower = quantile(.data$index, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
+          bad_fit1 = case_when(.data$lower <= .data$index & .data$index <= .data$upper ~ 0, TRUE ~ 1),
           bad_fit2 = NA
         )
 
@@ -218,13 +224,13 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       }
 
       path_cyl <- path_cyl %>%
-        mutate(bad_fit = case_when(bad_fit1 == 1 & bad_fit2 == 0 ~ 1, TRUE ~ bad_fit2))
+        mutate(bad_fit = case_when(.data$bad_fit1 == 1 & .data$bad_fit2 == 0 ~ 1, TRUE ~ .data$bad_fit2))
 
       # Extracts good cylinder fits to model paths
       path_temp <- path_cyl %>%
         mutate(weight = 100000) %>%
-        filter(bad_fit == 0) %>%
-        select(x = GrowthLength2, y = radius, weight)
+        filter(.data$bad_fit == 0) %>%
+        select(x = .data$GrowthLength2, y = .data$radius, .data$weight)
 
       x <- path_temp$x
       x[length(x) + 1] <- 0
@@ -249,28 +255,31 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
 
     # Calculates single cylinder radii from all paths
     cyl_radii <- data.table::rbindlist(results) %>%
-      group_by(ID) %>%
+      group_by(.data$ID) %>%
       mutate(
-        IQR = IQR(radius),
-        upper = quantile(radius, probs = c(.75), na.rm = FALSE) + 1.5 * IQR,
-        lower = quantile(radius, probs = c(.25), na.rm = FALSE) - 1.5 * IQR,
-        bad_fit = case_when(lower <= radius & radius <= upper ~ 0, TRUE ~ 1)
+        IQR = IQR(.data$radius),
+        upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+        lower = quantile(.data$radius, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
+        bad_fit = case_when(.data$lower <= .data$radius & .data$radius <= .data$upper ~ 0, TRUE ~ 1)
       ) %>%
-      filter(bad_fit == 0) %>%
+      filter(.data$bad_fit == 0) %>%
       summarize(
-        radius = max(radius, na.rm = TRUE),
-        bad_fit = mean(bad_fit, na.rm = TRUE)
+        radius = max(.data$radius, na.rm = TRUE),
+        bad_fit = mean(.data$bad_fit, na.rm = TRUE)
       ) %>%
-      select(-bad_fit) %>%
-      mutate(radius = case_when(radius < twigRad ~ twigRad, TRUE ~ radius))
+      select(-.data$bad_fit) %>%
+      mutate(radius = case_when(.data$radius < twigRad ~ twigRad, TRUE ~ .data$radius))
 
     # Updates the QSM with new radii
     df <- df %>%
-      select(-radius) %>%
+      select(-.data$radius) %>%
       left_join(cyl_radii, by = "ID") %>%
-      mutate(modVolume = pi * radius^2 * length) %>%
-      relocate(modVolume, .after = volume) %>%
-      relocate(radius, .after = radius)
+      mutate(modVolume = pi * .data$radius^2 * .data$length) %>%
+      relocate(.data$modVolume, .after = .data$volume) %>%
+      relocate(.data$radius, .after = .data$radius) %>%
+      group_by(.data$segmentID) %>%
+      mutate(radius = zoo::na.approx(.data$radius, rule = 2))
+
   } else {
     message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
   }

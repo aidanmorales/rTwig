@@ -39,21 +39,21 @@ growth_length <- function(df, method = "TreeQSM") {
 
     GrowthLength <- paths %>%
       enframe() %>%
-      unnest(cols = c(value)) %>%
-      rename("index" = name, id = "value") %>%
+      unnest(cols = c(.data$value)) %>%
+      rename(index = .data$name, id = .data$value) %>%
       mutate_all(as.double) %>%
       left_join(df %>%
-        select(id, length), by = "id") %>%
-      select(id = index, length) %>%
-      group_by(id) %>%
-      summarize(GrowthLength = sum(length, na.rm = TRUE))
+        select(.data$id, .data$length), by = "id") %>%
+      select(id = .data$index, .data$length) %>%
+      group_by(.data$id) %>%
+      summarize(GrowthLength = sum(.data$length, na.rm = TRUE))
 
     df <- left_join(df, GrowthLength, by = "id")
   } else if (method == "SimpleForest") {
     df <- df %>%
       mutate(
-        ID = ID + 1,
-        parentID = parentID + 1
+        ID = .data$ID + 1,
+        parentID = .data$parentID + 1
       )
 
     g <- data.frame(parent = df$parentID, id = df$ID)
@@ -64,21 +64,21 @@ growth_length <- function(df, method = "TreeQSM") {
 
     GrowthLength <- paths %>%
       enframe() %>%
-      unnest(cols = c(value)) %>%
-      rename("index" = name, ID = "value") %>%
+      unnest(cols = c(.data$value)) %>%
+      rename(index = .data$name, ID = .data$value) %>%
       mutate_all(as.double) %>%
       left_join(df %>%
-        select(ID, length), by = "ID") %>%
-      select(ID = index, length) %>%
-      group_by(ID) %>%
-      summarize(growthLength2 = sum(length, na.rm = TRUE))
+        select(.data$ID, .data$length), by = "ID") %>%
+      select(ID = .data$index, .data$length) %>%
+      group_by(.data$ID) %>%
+      summarize(growthLength2 = sum(.data$length, na.rm = TRUE))
 
     df <- left_join(df, GrowthLength, by = "ID") %>%
       mutate(
-        ID = ID - 1,
-        parentID = parentID - 1
+        ID = .data$ID - 1,
+        parentID = .data$parentID - 1
       ) %>%
-      relocate(growthLength2, .after = growthLength)
+      relocate(.data$growthLength2, .after = .data$growthLength)
   } else {
     message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
   }
