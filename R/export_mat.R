@@ -90,8 +90,8 @@ export_mat <- function(df, filename, method = "TreeQSM") {
     BranchOrder <- as.matrix(df$branchOrder)
     PositionInBranch <- as.matrix(df %>% group_by(.data$branchID) %>%
       summarize(PositionInBranch = 1:n()) %>%
-      select(.data$PositionInBranch) %>%
       ungroup() %>%
+      select(.data$PositionInBranch) %>%
       pull())
 
     writeMat(filename,

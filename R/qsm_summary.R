@@ -16,14 +16,12 @@
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' df <- import_qsm(file)
-#' summary <- qsm_summary(df)
-#' str(summary)
+#' qsm_summary(df)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' df <- read.csv(file)
-#' summary <- qsm_summary(df, method = "SimpleForest")
-#' str(summary)
+#' qsm_summary(df, method = "SimpleForest")
 #' }
 qsm_summary <- function(df, method = "TreeQSM") {
   message("Creating QSM Summary")

@@ -22,13 +22,11 @@ Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by to
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 df <- import_qsm(file)
-summary <- qsm_summary(df)
-str(summary)
+qsm_summary(df)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-summary <- qsm_summary(df, method = "SimpleForest")
-str(summary)
+qsm_summary(df, method = "SimpleForest")
 }
 }

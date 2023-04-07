@@ -19,5 +19,7 @@ Imports:
     parallel,
     doParallel,
     doSNOW,
-    foreach
+    foreach,
+    rgl,
+    colourvalues
 License: MIT + file LICENSE
