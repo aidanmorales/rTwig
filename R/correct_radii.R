@@ -18,11 +18,8 @@
 #' @import foreach
 #' @importFrom zoo na.approx
 #' @importFrom data.table rbindlist
-#' @importFrom stats IQR
-#' @importFrom stats predict
-#' @importFrom stats quantile
-#' @importFrom utils setTxtProgressBar
-#' @importFrom utils txtProgressBar
+#' @importFrom stats IQR predict quantile
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 #' @examples
 #' ## TreeQSM Processing Chain
@@ -54,8 +51,17 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
 
     paths <- all_simple_paths(g, from = starts[[1]], to = finals)
 
-    # Initializes parallel workers
-    n_cores <- detectCores(logical = FALSE)
+    # Initialize parallel workers
+    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+    if (nzchar(chk) && chk == "TRUE") {
+      # Use 2 cores to pass checks
+      n_cores <- 2L
+    } else {
+      # Use all cores for enduser
+      n_cores <- parallel::detectCores(logical = FALSE)
+    }
+
     cl <- makeCluster(n_cores)
     registerDoSNOW(cl)
 
@@ -158,8 +164,17 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
 
     paths <- all_simple_paths(g, from = starts[[1]], to = finals)
 
-    # Initializes parallel workers
-    n_cores <- detectCores(logical = FALSE)
+    # Initialize parallel workers
+    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+    if (nzchar(chk) && chk == "TRUE") {
+      # Use 2 cores to pass checks
+      n_cores <- 2L
+    } else {
+      # Use all cores for enduser
+      n_cores <- parallel::detectCores(logical = FALSE)
+    }
+
     cl <- makeCluster(n_cores)
     registerDoSNOW(cl)
 
