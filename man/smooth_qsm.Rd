@@ -4,12 +4,10 @@
 \alias{smooth_qsm}
 \title{Smooth QSM}
 \usage{
-smooth_qsm(df, method = "TreeQSM")
+smooth_qsm(df)
 }
 \arguments{
 \item{df}{QSM cylinder data frame}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Only TreeQSM is currently implemented and is the default.}
 }
 \value{
 Returns a data.frame

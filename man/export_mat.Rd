@@ -4,14 +4,12 @@
 \alias{export_mat}
 \title{Export MAT}
 \usage{
-export_mat(df, filename, method = "TreeQSM")
+export_mat(df, filename)
 }
 \arguments{
 \item{df}{QSM cylinder data frame}
 
 \item{filename}{Desired name of file}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 Returns a .mat file
@@ -30,9 +28,9 @@ export_mat(df, "foo_corrected.mat")
 
 ## SimpleForest Processing Chain
 df <- read.csv("foo.csv")
-df <- update_cylinders(df, method = "SimpleForest")
-df <- growth_length(df, method = "SimpleForest")
-df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
-export_mat(df, "foo_corrected.mat", method = "SimpleForest")
+df <- update_cylinders(df)
+df <- growth_length(df)
+df <- correct_radii(df, twigRad = 0.003)
+export_mat(df, "foo_corrected.mat")
 }
 }

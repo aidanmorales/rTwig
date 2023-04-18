@@ -17,6 +17,8 @@
 #' str(df)
 #' }
 import_qsm <- function(file) {
+  message("Importing TreeQSM .mat")
+
   list <- R.matlab::readMat(file)[[1]]
 
   # Extracts the variable names

@@ -3,7 +3,6 @@
 #' @description Updates the QSM cylinder data in preparation for growth length and path analysis calculations.
 #'
 #' @param df QSM cylinder data.frame
-#' @param method QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.
 #'
 #' @return Returns a data.frame
 #' @export
@@ -21,13 +20,13 @@
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' df <- read.csv(file)
-#' df <- update_cylinders(df, method = "SimpleForest")
+#' df <- update_cylinders(df)
 #' str(df)
 #' }
-update_cylinders <- function(df, method = "TreeQSM") {
+update_cylinders <- function(df) {
   message("Updating Cylinders")
 
-  if (method == "TreeQSM") {
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
     # Updates branch numbers
     df <- df %>%
       mutate(
@@ -85,17 +84,10 @@ update_cylinders <- function(df, method = "TreeQSM") {
       ) %>%
       relocate(.data$end.x, .after = .data$axis.z) %>%
       relocate(.data$end.y, .after = .data$end.x) %>%
-      relocate(.data$end.z, .after = .data$end.y)
-
-    temp <- df %>%
-      group_by(.data$parent) %>%
-      summarize(totChildren = n())
-
-    # Joins total children and
-    df <- df %>%
-      left_join(temp, by = "parent") %>%
-      mutate(radius = .data$UnmodRadius)
-  } else if (method == "SimpleForest") {
+      relocate(.data$end.z, .after = .data$end.y) %>%
+      mutate(radius = .data$UnmodRadius) %>%
+      rename(extension = id)
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     # Adds cylinder info for plotting
     df <- df %>%
       mutate(
@@ -109,8 +101,7 @@ update_cylinders <- function(df, method = "TreeQSM") {
       relocate(.data$axisZ, .after = .data$axisY) %>%
       relocate(.data$radius, .before = .data$radius)
   } else {
-    message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
+    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
-
   return(df)
 }

@@ -4,7 +4,7 @@
 \alias{plot_qsm}
 \title{Plot QSM}
 \usage{
-plot_qsm(df, radius = "modified", color = "BranchOrder", method = "TreeQSM")
+plot_qsm(df, radius = "modified", color = "BranchOrder")
 }
 \arguments{
 \item{df}{QSM cylinder data frame}
@@ -12,8 +12,6 @@ plot_qsm(df, radius = "modified", color = "BranchOrder", method = "TreeQSM")
 \item{radius}{Radius type, as either "modified" or "unmodified". Defaults to modified.}
 
 \item{color}{Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 A rgl QSM plot
@@ -33,7 +31,7 @@ plot_qsm(df)
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-df <- update_cylinders(df, method = "SimpleForest")
-plot_qsm(df, radius = "unmodified", color = "GrowthLength", method = "SimpleForest")
+df <- update_cylinders(df)
+plot_qsm(df, radius = "unmodified", color = "GrowthLength")
 }
 }

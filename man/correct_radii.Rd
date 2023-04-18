@@ -4,14 +4,12 @@
 \alias{correct_radii}
 \title{Correct Radii}
 \usage{
-correct_radii(df, twigRad, method = "TreeQSM")
+correct_radii(df, twigRad)
 }
 \arguments{
 \item{df}{QSM cylinder data frame}
 
 \item{twigRad}{Twig radius in meters.}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 Returns a data.frame
@@ -32,9 +30,9 @@ str(df)
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-df <- update_cylinders(df, method = "SimpleForest")
-df <- growth_length(df, method = "SimpleForest")
-df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
+df <- update_cylinders(df)
+df <- growth_length(df)
+df <- correct_radii(df, twigRad = 0.003)
 str(df)
 }
 }

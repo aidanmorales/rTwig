@@ -1,11 +1,9 @@
 #' Export MAT
 #'
-#' @description
-#' Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
+#' @description Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
 #'
 #' @param df QSM cylinder data frame
 #' @param filename Desired name of file
-#' @param method QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.
 #'
 #' @return Returns a .mat file
 #' @export
@@ -24,14 +22,15 @@
 #'
 #' ## SimpleForest Processing Chain
 #' df <- read.csv("foo.csv")
-#' df <- update_cylinders(df, method = "SimpleForest")
-#' df <- growth_length(df, method = "SimpleForest")
-#' df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
-#' export_mat(df, "foo_corrected.mat", method = "SimpleForest")
+#' df <- update_cylinders(df)
+#' df <- growth_length(df)
+#' df <- correct_radii(df, twigRad = 0.003)
+#' export_mat(df, "foo_corrected.mat")
 #' }
-export_mat <- function(df, filename, method = "TreeQSM") {
+export_mat <- function(df, filename) {
   message("Exporting to .mat")
-  if (method == "TreeQSM") {
+
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
     radius <- as.matrix(df$radius)
     length <- as.matrix(df$length)
 
@@ -44,7 +43,7 @@ export_mat <- function(df, filename, method = "TreeQSM") {
       as.matrix()
 
     parent <- as.matrix(df$parent)
-    extension <- as.matrix(df$id)
+    extension <- as.matrix(df$extension)
     added <- as.matrix(df$added)
     UnmodRadius <- as.matrix(df$UnmodRadius)
     branch <- as.matrix(df$branch)
@@ -53,7 +52,7 @@ export_mat <- function(df, filename, method = "TreeQSM") {
     BranchOrder <- as.matrix(df$BranchOrder)
     PositionInBranch <- as.matrix(df$PositionInBranch)
 
-    writeMat(filename,
+    R.matlab::writeMat(filename,
       radius = radius,
       length = length,
       start = start,
@@ -68,7 +67,7 @@ export_mat <- function(df, filename, method = "TreeQSM") {
       BranchOrder = BranchOrder,
       PositionInBranch = PositionInBranch
     )
-  } else if (method == "SimpleForest") {
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     radius <- as.matrix(df$radius)
     length <- as.matrix(df$length)
 
@@ -89,12 +88,12 @@ export_mat <- function(df, filename, method = "TreeQSM") {
     mad <- as.matrix(df$averagePointDistance)
     BranchOrder <- as.matrix(df$branchOrder)
     PositionInBranch <- as.matrix(df %>% group_by(.data$branchID) %>%
-      summarize(PositionInBranch = 1:n()) %>%
+      reframe(PositionInBranch = 1:n()) %>%
       ungroup() %>%
       select(.data$PositionInBranch) %>%
       pull())
 
-    writeMat(filename,
+    R.matlab::writeMat(filename,
       radius = radius,
       length = length,
       start = start,
@@ -110,6 +109,6 @@ export_mat <- function(df, filename, method = "TreeQSM") {
       PositionInBranch = PositionInBranch
     )
   } else {
-    message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
+    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
 }

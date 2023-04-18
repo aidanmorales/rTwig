@@ -1,10 +1,8 @@
 #' Smooth QSM
 #'
-#' @description
-#' Visual smoothing of a QSM by ensuring the midpoints of all branch cylinders are connected.
+#' @description Visual smoothing of a QSM by ensuring the midpoints of all branch cylinders are connected.
 #'
 #' @param df QSM cylinder data frame
-#' @param method QSM type, as either "TreeQSM" or "SimpleForest". Only TreeQSM is currently implemented and is the default.
 #'
 #' @return Returns a data.frame
 #' @export
@@ -27,8 +25,10 @@
 #' df <- smooth_qsm(df)
 #' plot_qsm(df)
 #' }
-smooth_qsm <- function(df, method = "TreeQSM") {
-  if (method == "TreeQSM") {
+smooth_qsm <- function(df) {
+  message("Smoothing QSM")
+
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
     df <- df %>%
       group_by(.data$branch) %>%
       mutate(
@@ -42,23 +42,9 @@ smooth_qsm <- function(df, method = "TreeQSM") {
         axis.y = (.data$end.y - .data$start.y) / .data$length,
         axis.z = (.data$end.z - .data$start.z) / .data$length
       ) %>%
-      # mutate(
-      #   start.x = case_when(PositionInBranch > 1 & totChildren == 1 ~ lag(end.x, 1), TRUE ~ start.x),
-      #   start.y = case_when(PositionInBranch > 1 & totChildren == 1 ~ lag(end.y, 1), TRUE ~ start.y),
-      #   start.z = case_when(PositionInBranch > 1 & totChildren == 1 ~ lag(end.z, 1), TRUE ~ start.z),
-      #   end.x = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) & totChildren == 1 ~ lead(start.x, 1), TRUE ~ end.x),
-      #   end.y = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) & totChildren == 1 ~ lead(start.y, 1), TRUE ~ end.y),
-      #   end.z = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) & totChildren == 1 ~ lead(start.z, 1), TRUE ~ end.z)
-      # ) %>%
-      # mutate(
-      #   start.x = case_when(PositionInBranch > 1 ~ lag(end.x, 1), TRUE ~ start.x),
-      #   start.y = case_when(PositionInBranch > 1 ~ lag(end.y, 1), TRUE ~ start.y),
-      #   start.z = case_when(PositionInBranch > 1 ~ lag(end.z, 1), TRUE ~ start.z) # ,
-      #   # end.x = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) ~ lead(start.x, 1), TRUE ~ end.x),
-      #   # end.y = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) ~ lead(start.y, 1), TRUE ~ end.y),
-      #   # end.z = case_when(PositionInBranch > 1 & PositionInBranch < max(PositionInBranch) ~ lead(start.z, 1), TRUE ~ end.z)
-      # ) %>%
       ungroup()
+  } else {
+    message("Invalid QSM Supplied!!!\nOnly TreeQSM is supported for smoothing.")
   }
   return(df)
 }

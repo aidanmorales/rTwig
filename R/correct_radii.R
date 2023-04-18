@@ -4,7 +4,6 @@
 #'
 #' @param df QSM cylinder data frame
 #' @param twigRad Twig radius in meters.
-#' @param method QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.
 #'
 #' @return Returns a data.frame
 #' @export
@@ -34,17 +33,17 @@
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' df <- read.csv(file)
-#' df <- update_cylinders(df, method = "SimpleForest")
-#' df <- growth_length(df, method = "SimpleForest")
-#' df <- correct_radii(df, twigRad = 0.003, method = "SimpleForest")
+#' df <- update_cylinders(df)
+#' df <- growth_length(df)
+#' df <- correct_radii(df, twigRad = 0.003)
 #' str(df)
 #' }
-correct_radii <- function(df, twigRad, method = "TreeQSM") {
+correct_radii <- function(df, twigRad) {
   message("Correcting Cylinder Radii")
 
-  if (method == "TreeQSM") {
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
     # Creates path network
-    g <- data.frame(parent = df$parent, id = df$id)
+    g <- data.frame(parent = df$parent, extension = df$extension)
     g <- igraph::graph_from_data_frame(g)
 
     starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
@@ -81,7 +80,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       .packages = c("dplyr", "cobs")
     ) %dopar% {
       cyl_id <- sort(as.numeric(names(paths[[i]])))
-      path_cyl <- filter(df, .data$id %in% cyl_id)
+      path_cyl <- filter(df, .data$extension %in% cyl_id)
 
       path_cyl <- path_cyl %>%
         mutate(
@@ -140,7 +139,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
 
     # Calculates single cylinder radii from all paths
     cyl_radii <- data.table::rbindlist(results) %>%
-      group_by(id) %>%
+      group_by(.data$extension) %>%
       mutate(
         IQR = IQR(.data$radius),
         upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
@@ -156,11 +155,11 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
     # Updates the QSM with new radii
     df <- df %>%
       select(-.data$radius) %>%
-      left_join(cyl_radii, by = "id") %>%
+      left_join(cyl_radii, by = "extension") %>%
       group_by(.data$branch) %>%
       mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
       ungroup()
-  } else if (method == "SimpleForest") {
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     # Creates path network
     g <- data.frame(parent = df$parentID, id = df$ID)
     g <- igraph::graph_from_data_frame(g)
@@ -284,8 +283,7 @@ correct_radii <- function(df, twigRad, method = "TreeQSM") {
       mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
       ungroup()
   } else {
-    message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
+    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
-
   return(df)
 }

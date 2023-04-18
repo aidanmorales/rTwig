@@ -1,10 +1,8 @@
 #' QSM Summary
 #'
-#' @description
-#' Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order.
+#' @description Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order.
 #'
 #' @param df QSM cylinder data frame
-#' @param method QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.
 #'
 #' @return Returns a list
 #' @export
@@ -21,11 +19,12 @@
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' df <- read.csv(file)
-#' qsm_summary(df, method = "SimpleForest")
+#' qsm_summary(df)
 #' }
-qsm_summary <- function(df, method = "TreeQSM") {
+qsm_summary <- function(df) {
   message("Creating QSM Summary")
-  if (method == "TreeQSM") {
+
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
     dbh <- df %>%
       filter(.data$BranchOrder == 0) %>%
       arrange(.data$PositionInBranch) %>%
@@ -88,7 +87,7 @@ qsm_summary <- function(df, method = "TreeQSM") {
       Branch.sa.m2,
       Tot.sa.m2
     )
-  } else if (method == "SimpleForest") {
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     dbh <- df %>%
       filter(.data$branchOrder == 0) %>%
       arrange(.data$ID) %>%
@@ -153,7 +152,7 @@ qsm_summary <- function(df, method = "TreeQSM") {
       Tot.sa.m2
     )
   } else {
-    message("Invalid Method Entered!!!\nValid Methods = TreeQSM or SimpleForest")
+    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
   return(list(summary, summary2))
 }

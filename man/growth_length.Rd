@@ -4,12 +4,10 @@
 \alias{growth_length}
 \title{Growth Length}
 \usage{
-growth_length(df, method = "TreeQSM")
+growth_length(df)
 }
 \arguments{
 \item{df}{QSM cylinder data.frame}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 Returns a data.frame
@@ -29,8 +27,8 @@ str(df)
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-df <- update_cylinders(df, method = "SimpleForest")
-df <- growth_length(df, method = "SimpleForest")
+df <- update_cylinders(df)
+df <- growth_length(df)
 str(df)
 }
 }

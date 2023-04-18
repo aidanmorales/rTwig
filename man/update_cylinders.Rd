@@ -4,12 +4,10 @@
 \alias{update_cylinders}
 \title{Update Cylinders}
 \usage{
-update_cylinders(df, method = "TreeQSM")
+update_cylinders(df)
 }
 \arguments{
 \item{df}{QSM cylinder data.frame}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 Returns a data.frame
@@ -28,7 +26,7 @@ str(df)
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-df <- update_cylinders(df, method = "SimpleForest")
+df <- update_cylinders(df)
 str(df)
 }
 }

@@ -4,12 +4,10 @@
 \alias{qsm_summary}
 \title{QSM Summary}
 \usage{
-qsm_summary(df, method = "TreeQSM")
+qsm_summary(df)
 }
 \arguments{
 \item{df}{QSM cylinder data frame}
-
-\item{method}{QSM type, as either "TreeQSM" or "SimpleForest". Defaults to TreeQSM.}
 }
 \value{
 Returns a list
@@ -27,6 +25,6 @@ qsm_summary(df)
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 df <- read.csv(file)
-qsm_summary(df, method = "SimpleForest")
+qsm_summary(df)
 }
 }
