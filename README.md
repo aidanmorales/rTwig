@@ -4,7 +4,7 @@ Repository for the rTwig package. The Real Twig method corrects overestimated tw
 
 ## Installation
 
-You can install the released version of XPolaris from
+You can install the released version of rTwig from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
