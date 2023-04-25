@@ -14,3 +14,6 @@ Imports:
     igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs, zoo, parallel, doParallel, 
     doSNOW, foreach, rgl, colourvalues, Rdpack, DescTools, kit, purrr
 License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+LazyData: true
