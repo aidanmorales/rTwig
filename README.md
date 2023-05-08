@@ -1,5 +1,7 @@
 # rTwig
 
+<img src="man/figures/rTwig.png" align="right" width="173"/>
+
 ## Description
 
 Official repository for the rTwig package. The Real Twig method corrects overestimated twig cylinder radii in QSMs using real twig measurements from corresponding tree species and network analysis of paths in the QSM. Also included are tools for QSM visualization and point cloud fractal analysis.
@@ -21,12 +23,12 @@ devtools::install_github("aidanmorales/rTwig")
 
 ## QSM Radii Correction
 
-Real twig is run as a chain of function that build on one another. The general processing chain is as follows:\
-\
-1. Import a QSM: TreeQSM and SimpleForest are currently supported.\
-2. Update the cylinder data to allow for network analysis and growth length calculations.\
-3. Correct the twig radii.\
-4. Summarize, visualize (optional QSM smoothing), and export the results.
+Real twig is run as a chain of function that build on one another. The general processing chain is as follows:
+
+1.  Import a QSM: TreeQSM and SimpleForest are currently supported.
+2.  Update the cylinder data to allow for network analysis and growth length calculations.
+3.  Correct the twig radii.
+4.  Summarize, visualize (optional QSM smoothing), and export the results.
 
 #### TreeQSM
 
