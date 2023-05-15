@@ -128,8 +128,12 @@ correct_radii <- function(df, twigRad) {
       matrix[1, ] <- c(0, 0, twigRad)
 
       # Updates cylinder radii
-      model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
-      path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
+      if (length(x) >= 3) {
+        model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
+        path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
+      } else {
+        path_cyl$radius <- twigRad
+      }
 
       return(path_cyl)
     }
@@ -246,8 +250,12 @@ correct_radii <- function(df, twigRad) {
       matrix[1, ] <- c(0, 0, twigRad)
 
       # Updates cylinder radii
-      model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
-      path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
+      if (length(x) >= 3) {
+        model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
+        path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
+      } else {
+        path_cyl$radius <- twigRad
+      }l
 
       return(path_cyl)
     }
