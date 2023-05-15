@@ -255,7 +255,7 @@ correct_radii <- function(df, twigRad) {
         path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
       } else {
         path_cyl$radius <- twigRad
-      }l
+      }
 
       return(path_cyl)
     }
