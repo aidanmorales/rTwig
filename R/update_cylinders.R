@@ -33,7 +33,6 @@ update_cylinders <- function(df) {
         extension = row_number() + 1,
         id = .data$extension - 1
       ) %>%
-      filter(!(.data$BranchOrder == 0 & .data$branch != 1)) %>%
       distinct(.keep_all = TRUE)
 
     # Relabels branches consecutively
