@@ -132,7 +132,7 @@ correct_radii <- function(df, twigRad) {
         model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
         path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
       } else {
-        path_cyl$radius <- twigRad
+        path_cyl$radius <- path_cyl$radius
       }
 
       return(path_cyl)
@@ -161,7 +161,7 @@ correct_radii <- function(df, twigRad) {
       select(-.data$radius) %>%
       left_join(cyl_radii, by = "extension") %>%
       group_by(.data$branch) %>%
-      mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
+      mutate(radius = case_when(n() > 1 ~ zoo::na.approx(.data$radius, rule = 2), TRUE ~ radius)) %>%
       ungroup()
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     # Creates path network
@@ -254,7 +254,7 @@ correct_radii <- function(df, twigRad) {
         model <- cobs(x, y, lambda = 1, degree = 2, constraint = "increase", pointwise = matrix, ic = "SIC", print.mesg = FALSE, repeat.delete.add = FALSE, w = weights)
         path_cyl$radius <- predict(model, path_cyl$GrowthLength2)[, 2]
       } else {
-        path_cyl$radius <- twigRad
+        path_cyl$radius <- path_cyl$radius
       }
 
       return(path_cyl)
@@ -288,7 +288,7 @@ correct_radii <- function(df, twigRad) {
       relocate(.data$modVolume, .after = .data$volume) %>%
       relocate(.data$radius, .after = .data$radius) %>%
       group_by(.data$segmentID) %>%
-      mutate(radius = zoo::na.approx(.data$radius, rule = 2)) %>%
+      mutate(radius = case_when(n() > 1 ~ zoo::na.approx(.data$radius, rule = 2), TRUE ~ radius)) %>%
       ungroup()
   } else {
     message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
