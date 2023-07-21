@@ -99,6 +99,16 @@ update_cylinders <- function(df) {
       relocate(.data$axisY, .after = .data$axisX) %>%
       relocate(.data$axisZ, .after = .data$axisY) %>%
       relocate(.data$radius, .before = .data$radius)
+
+    # Add position in branch segment
+    df <- df %>%
+      group_by(.data$branchOrder, .data$branchID, .data$segmentID) %>%
+      mutate(branchNew = cur_group_id()) %>%
+      group_by(.data$branchNew) %>%
+      mutate(positionInBranch = 1:n()) %>%
+      ungroup() %>%
+      relocate(.data$branchNew, .after = .data$branchID) %>%
+      relocate(.data$positionInBranch, .after = .data$branchNew)
   } else {
     message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
