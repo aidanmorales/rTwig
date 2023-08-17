@@ -73,6 +73,15 @@ update_cylinders <- function(df) {
       relocate(.data$parent, .after = .data$branch) %>%
       relocate(.data$id, .after = .data$parent)
 
+    # Adds supported children for each cylinder
+    tot_children <- df %>%
+      group_by(.data$parent) %>%
+      summarize(totChildren = n())
+
+    # Joins total children
+    df <- df %>%
+      left_join(tot_children, by = "parent")
+
     # Adds cylinder info for plotting and converts to local coordinate system
     df <- df %>%
       mutate(
@@ -99,6 +108,15 @@ update_cylinders <- function(df) {
       relocate(.data$axisY, .after = .data$axisX) %>%
       relocate(.data$axisZ, .after = .data$axisY) %>%
       relocate(.data$radius, .before = .data$radius)
+
+    # Adds supported children for each cylinder
+    tot_children <- df %>%
+      group_by(.data$parentID) %>%
+      summarize(totChildren = n())
+
+    # Joins total children
+    df <- df %>%
+      left_join(tot_children, by = "parentID")
 
     # Add position in branch segment
     df <- df %>%
