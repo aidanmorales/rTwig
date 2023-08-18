@@ -206,7 +206,7 @@ correct_radii <- function(df, twigRad) {
       matrix[1, ] <- c(0, min(path_cyl$GrowthLength), twigRad)
 
       # Models new cylinder radii
-      if (length(x) >= 3) {
+      if (length(x) > 3) {
         # Fits monotonic GAM using the cobs package
         model <- cobs::cobs(x, y,
           lambda = 0.01,
@@ -219,7 +219,7 @@ correct_radii <- function(df, twigRad) {
         )
         path_cyl$radius <- predict(model, path_cyl$GrowthLength)[, 2]
       } else { # Ignores paths that are too short to be modeled
-        path_cyl$radius <- path_cyl$radius
+        path_cyl$radius <- twigRad
       }
 
       #  Removes tapering on main stem, broken, and dead branches
@@ -232,7 +232,6 @@ correct_radii <- function(df, twigRad) {
           .data$radius < !!min_rad & !(!!max_rad_ord == 0) ~ !!min_rad,
           TRUE ~ .data$radius
         ))
-
 
       # Diagnostic Graph -------------------------------------------------------
 
@@ -298,8 +297,9 @@ correct_radii <- function(df, twigRad) {
       mutate(radius = case_when(n() > 1 ~ zoo::na.approx(.data$radius, rule = 2), TRUE ~ .data$radius)) %>%
       ungroup() %>%
       distinct(.data$extension, .keep_all = TRUE)
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
+
     # Simple Forest  -------------------------------------------------------------
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(df, .data$branchID == 0)
     stem <- min(which(stem$totChildren > 1))
@@ -382,8 +382,10 @@ correct_radii <- function(df, twigRad) {
         ungroup()
 
       # Identifies bad cylinder fits by tapering
+      # This taper is more aggressive than the TreeQSM taper as SimpleForest
+      # uses a sphere following system which tends to overestimate cylinder size
       for (k in 1:nrow(path_temp)) {
-        z <- length(which((as.vector(path_temp$radius[k] - path_temp$radius[1:k]) / path_temp$radius[k]) > 1 / sqrt(k)))
+        z <- length(which((as.vector(path_temp$radius[k] - path_temp$radius[1:k]) / path_temp$radius[k]) > 1 / k))
 
         if (z > 0) {
           path_temp$bad_fit3[k] <- 1
@@ -395,10 +397,7 @@ correct_radii <- function(df, twigRad) {
       # Joins bad fits and accounts for buttress flare
       path_cyl <- path_cyl %>%
         left_join(select(path_temp, .data$ID, bad_fit = .data$bad_fit3), by = "ID") %>%
-        mutate(
-          bad_fit = tidyr::replace_na(.data$bad_fit, 1),
-          bad_fit = case_when(.data$branchID == 1 & .data$positionInBranch <= !!stem ~ 0, TRUE ~ .data$bad_fit)
-        )
+        mutate(bad_fit = tidyr::replace_na(.data$bad_fit, 1))
 
       # Uses good cylinder fits to model paths
       # We rename growth length and radius to x a y for shorter labels
@@ -430,7 +429,7 @@ correct_radii <- function(df, twigRad) {
           filter(.data$branchID == c(
             pull(slice_tail(path_cyl, n = 1), .data$branchID),
             pull(path_cyl %>%
-              filter(!.data$branchID == 1) %>%
+              filter(!.data$branchID == 0) %>%
               slice_head(n = 1), .data$branchID)
           )) %>%
           filter(.data$totChildren >= 2) %>%
@@ -463,7 +462,7 @@ correct_radii <- function(df, twigRad) {
       matrix[1, ] <- c(0, min(path_cyl$growthLength), twigRad)
 
       # Models new cylinder radii
-      if (length(x) >= 3) {
+      if (length(x) > 3) {
         # Fits monotonic GAM using the cobs package
         model <- cobs::cobs(x, y,
           lambda = 0.01,
@@ -476,7 +475,7 @@ correct_radii <- function(df, twigRad) {
         )
         path_cyl$radius <- predict(model, path_cyl$growthLength)[, 2]
       } else { # Ignores paths that are too short to be modeled
-        path_cyl$radius <- path_cyl$radius
+        path_cyl$radius <- twigRad
       }
 
       #  Removes tapering on main stem, broken, and dead branches
@@ -489,7 +488,6 @@ correct_radii <- function(df, twigRad) {
           .data$radius < !!min_rad & !(!!max_rad_ord == 0) ~ !!min_rad,
           TRUE ~ .data$radius
         ))
-
 
       # Diagnostic Graph -------------------------------------------------------
 
@@ -531,12 +529,24 @@ correct_radii <- function(df, twigRad) {
       arrange(.data$branchID) %>%
       group_by(.data$branchID) %>%
       slice_head(n = 1) %>%
-      filter(.data$branchID == 1) %>%
+      filter(.data$branchID == 0) %>%
       pull(.data$pathIndex)
 
     # Gets main stem cylinder ids
     main_stem_cyl <- all_cyl %>%
       filter(.data$pathIndex == !!main_stem_path) %>%
+      select(.data$ID, .data$radius, .data$UnmodRadius)
+
+    # Updates poorly modeled main stem cylinders
+    main_stem_cyl <- main_stem_cyl %>%
+      mutate(
+        IQR = IQR(.data$radius),
+        upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+        radius = case_when(
+          .data$radius >= .data$upper ~ .data$UnmodRadius,
+          TRUE ~ .data$radius
+        )
+      ) %>%
       select(.data$ID, .data$radius)
 
     # Calculates weighted mean for each cylinder
