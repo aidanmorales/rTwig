@@ -47,26 +47,47 @@ export_mat <- function(df, filename) {
     added <- as.matrix(df$added)
     UnmodRadius <- as.matrix(df$UnmodRadius)
     branch <- as.matrix(df$branch)
-    SurfCov <- as.matrix(df$SurfCov)
-    mad <- as.matrix(df$mad)
     BranchOrder <- as.matrix(df$BranchOrder)
     PositionInBranch <- as.matrix(df$PositionInBranch)
 
-    R.matlab::writeMat(filename,
-      radius = radius,
-      length = length,
-      start = start,
-      axis = axis,
-      parent = parent,
-      extension = extension,
-      added = added,
-      UnmodRadius = UnmodRadius,
-      branch = branch,
-      SurfCov = SurfCov,
-      mad = mad,
-      BranchOrder = BranchOrder,
-      PositionInBranch = PositionInBranch
-    )
+    # Checks for columns only in TreeQSM v2.4.0 and up
+    if (all(c("SurfCov", "mad") %in% colnames(df))) {
+      SurfCov <- as.matrix(df$SurfCov)
+      mad <- as.matrix(df$mad)
+
+      R.matlab::writeMat(filename,
+        radius = radius,
+        length = length,
+        start = start,
+        axis = axis,
+        parent = parent,
+        extension = extension,
+        added = added,
+        UnmodRadius = UnmodRadius,
+        branch = branch,
+        SurfCov = SurfCov,
+        mad = mad,
+        BranchOrder = BranchOrder,
+        PositionInBranch = PositionInBranch
+      )
+    } else {
+      SurfCov <- NA
+      mad <- NA
+
+      R.matlab::writeMat(filename,
+        radius = radius,
+        length = length,
+        start = start,
+        axis = axis,
+        parent = parent,
+        extension = extension,
+        added = added,
+        UnmodRadius = UnmodRadius,
+        branch = branch,
+        BranchOrder = BranchOrder,
+        PositionInBranch = PositionInBranch
+      )
+    }
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
     radius <- as.matrix(df$radius)
     length <- as.matrix(df$length)
