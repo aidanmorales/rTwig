@@ -85,7 +85,7 @@ update_cylinders <- function(df) {
     # Adds cylinder info for plotting and converts to local coordinate system
     df <- df %>%
       mutate(
-        start.z = .data$start.z - min(.data$start.z),
+        #start.z = .data$start.z - min(.data$start.z),
         end.x = .data$start.x + (.data$axis.x * .data$length),
         end.y = .data$start.y + (.data$axis.y * .data$length),
         end.z = .data$start.z + (.data$axis.z * .data$length)
