@@ -23,7 +23,7 @@ import_qsm <- function(file) {
   list <- R.matlab::readMat(file)
 
   # TreeQSM with "new" data structure ------------------------------------------
-  if (length(list) == 1) {
+  if (length(list) <= 3) {
     list <- list[[1]]
 
     # Extracts the variable names
