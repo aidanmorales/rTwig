@@ -4,13 +4,15 @@
 \alias{import_qsm}
 \title{Import QSM}
 \usage{
-import_qsm(file)
+import_qsm(file, version = "2.x.x")
 }
 \arguments{
 \item{file}{a .mat file}
+
+\item{version}{TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.}
 }
 \value{
-Returns a data.frame
+Returns a list
 }
 \description{
 Imports a QSM stored as a MATLAB file created by TreeQSM.
@@ -19,7 +21,7 @@ Imports a QSM stored as a MATLAB file created by TreeQSM.
 \dontrun{
 ## Read a TreeQSM MATLAB file
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-str(df)
+qsm <- import_qsm(file)
+names(qsm)
 }
 }

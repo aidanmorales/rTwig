@@ -12,7 +12,7 @@ RoxygenNote: 7.2.3
 RdMacros: Rdpack
 Imports: 
     igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs, zoo, parallel, doParallel, 
-    doSNOW, foreach, rgl, colourvalues, Rdpack, DescTools, kit, purrr
+    doSNOW, foreach, rgl, colourvalues, Rdpack, DescTools, kit, purrr, rmatio
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
