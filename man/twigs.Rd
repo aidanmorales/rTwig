@@ -3,15 +3,19 @@
 \docType{data}
 \name{twigs}
 \alias{twigs}
-\title{Tree Twig Radii Data}
+\title{Twig Database}
 \format{
 \subsection{\code{twigs}}{
 
-A data frame with 34 rows and 3 columns:
+A data frame with 53 rows and 7 columns:
 \describe{
 \item{scientific.name}{The tree's genus and species}
-\item{SpCode}{The two letter FIA Species Code}
-\item{radius.m}{The average twig radius in meters}
+\item{radius.mm}{The average twig radius in millimeters}
+\item{n}{The twig measurement sample size}
+\item{min}{The minimum twig radii from the samples}
+\item{max}{The maximum twig radii from the samples}
+\item{std}{The standard deviation of twig radii}
+\item{cv}{The coefficient of variation of twig radii}
 }
 }
 }
@@ -19,6 +23,6 @@ A data frame with 34 rows and 3 columns:
 twigs
 }
 \description{
-Average twig radii for common North American tree species
+Database of twig radii for common North American tree species
 }
 \keyword{datasets}
