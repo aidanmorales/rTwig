@@ -1,8 +1,8 @@
 #' Import QSM
 #'
-#' @description Imports a QSM stored as a MATLAB file created by TreeQSM.
+#' @description Imports a QSM created by TreeQSM
 #'
-#' @param file a .mat file
+#' @param file a .mat MATLAB file
 #' @param version TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.
 #'
 #' @return Returns a list
@@ -13,9 +13,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Read a TreeQSM MATLAB file
+#' ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
+#' names(qsm)
+#'
+#' ## Read a TreeQSM MATLAB file in the 2.0 format
+#' file <- system.file("extdata/QSM_2.mat", package = "rTwig")
+#' qsm <- import_qsm(file, version = "2.0")
 #' names(qsm)
 #' }
 import_qsm <- function(file, version = "2.x.x") {
@@ -246,8 +251,8 @@ import_qsm <- function(file, version = "2.x.x") {
     }
 
     # QSM Final Output ---------------------------------------------------------
-    output <- list(cylinder, branch, treedata, rundata, pmdistance, triangulation)
-    names(output) <- c("cylinder", "branch", "treedata", "rundata", "pmdistance", "triangulation")
+    qsm <- list(cylinder, branch, treedata, rundata, pmdistance, triangulation)
+    names(qsm) <- c("cylinder", "branch", "treedata", "rundata", "pmdistance", "triangulation")
 
     ############################################################################
     ###### TreeQSM 2.0 Structure ###############################################
@@ -347,11 +352,11 @@ import_qsm <- function(file, version = "2.x.x") {
     }
 
     # QSM Final Output ---------------------------------------------------------
-    output <- list(cylinder, treedata)
-    names(output) <- c("cylinder", "treedata")
+    qsm <- list(cylinder, treedata)
+    names(qsm) <- c("cylinder", "treedata")
   } else {
     message("Invalid TreeQSM Version or .mat file supplied!")
   }
 
-  return(output)
+  return(qsm)
 }

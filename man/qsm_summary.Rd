@@ -4,27 +4,28 @@
 \alias{qsm_summary}
 \title{QSM Summary}
 \usage{
-qsm_summary(df)
+qsm_summary(cylinder)
 }
 \arguments{
-\item{df}{QSM cylinder data frame}
+\item{cylinder}{QSM cylinder data frame}
 }
 \value{
 Returns a list
 }
 \description{
-Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order.
+Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-qsm_summary(df)
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+qsm_summary(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-df <- read.csv(file)
-qsm_summary(df)
+cylinder <- read.csv(file)
+qsm_summary(cylinder)
 }
 }

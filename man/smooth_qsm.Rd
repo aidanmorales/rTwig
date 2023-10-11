@@ -4,31 +4,32 @@
 \alias{smooth_qsm}
 \title{Smooth QSM}
 \usage{
-smooth_qsm(df)
+smooth_qsm(cylinder)
 }
 \arguments{
-\item{df}{QSM cylinder data frame}
+\item{cylinder}{QSM cylinder data frame}
 }
 \value{
-Returns a data.frame
+Returns a data frame
 }
 \description{
-Visual smoothing of a QSM by ensuring the midpoints of all branch cylinders are connected.
+Visual smoothing of a QSM by ensuring the midpoints of all cylinders are connected
 }
 \examples{
 \dontrun{
 ## TreeQSM Smoothing
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-df <- update_cylinders(df)
-df <- growth_length(df)
-df <- correct_radii(df, twigRad = 0.003)
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+cylinder <- correct_radii(cylinder, twigRad = 1.5)
 
 ## Before Smoothing
-plot_qsm(df)
+plot_qsm(cylinder)
 
 ## After Smoothing
-df <- smooth_qsm(df)
-plot_qsm(df)
+cylinder <- smooth_qsm(cylinder)
+plot_qsm(cylinder)
 }
 }

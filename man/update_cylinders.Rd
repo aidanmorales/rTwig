@@ -2,31 +2,32 @@
 % Please edit documentation in R/update_cylinders.R
 \name{update_cylinders}
 \alias{update_cylinders}
-\title{Update Cylinders}
+\title{Update cylinder}
 \usage{
-update_cylinders(df)
+update_cylinders(cylinder)
 }
 \arguments{
-\item{df}{QSM cylinder data.frame}
+\item{cylinder}{QSM cylinder data frame}
 }
 \value{
-Returns a data.frame
+Returns a data frame
 }
 \description{
-Updates the QSM cylinder data in preparation for growth length and path analysis calculations.
+Updates the QSM cylinder data in preparation for growth length and path analysis calculations
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-df <- update_cylinders(df)
-str(df)
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
+str(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-df <- read.csv(file)
-df <- update_cylinders(df)
-str(df)
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+str(cylinder)
 }
 }

@@ -1,8 +1,8 @@
 #' Export MAT
 #'
-#' @description Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
+#' @description Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function
 #'
-#' @param df QSM cylinder data frame
+#' @param cylinder QSM cylinder data frame
 #' @param filename Desired name of file
 #'
 #' @return Returns a .mat file
@@ -14,46 +14,48 @@
 #' @examples
 #' \dontrun{
 #' ## TreeQSM Processing Chain
-#' df <- import_qsm("foo.mat")
-#' df <- update_cylinders(df)
-#' df <- growth_length(df)
-#' df <- correct_radii(df, twigRad = 0.003)
-#' export_mat(df, "foo_corrected.mat")
+#' qsm <- import_qsm("foo.mat")
+#' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- growth_length(cylinder)
+#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' export_mat(cylinder, "foo_corrected.mat")
 #'
 #' ## SimpleForest Processing Chain
-#' df <- read.csv("foo.csv")
-#' df <- update_cylinders(df)
-#' df <- growth_length(df)
-#' df <- correct_radii(df, twigRad = 0.003)
-#' export_mat(df, "foo_corrected.mat")
+#' cylinder <- read.csv("foo.csv")
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- growth_length(cylinder)
+#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' export_mat(cylinder, "foo_corrected.mat")
 #' }
-export_mat <- function(df, filename) {
+export_mat <- function(cylinder, filename) {
   message("Exporting to .mat")
 
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
-    radius <- as.matrix(df$radius)
-    length <- as.matrix(df$length)
+  # TreeQSM --------------------------------------------------------------------
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+    radius <- as.matrix(cylinder$radius)
+    length <- as.matrix(cylinder$length)
 
-    start <- df %>%
+    start <- cylinder %>%
       select(.data$start.x, .data$start.y, .data$start.z) %>%
       as.matrix()
 
-    axis <- df %>%
+    axis <- cylinder %>%
       select(.data$axis.x, .data$axis.y, .data$axis.z) %>%
       as.matrix()
 
-    parent <- as.matrix(df$parent)
-    extension <- as.matrix(df$extension)
-    added <- as.matrix(df$added)
-    UnmodRadius <- as.matrix(df$UnmodRadius)
-    branch <- as.matrix(df$branch)
-    BranchOrder <- as.matrix(df$BranchOrder)
-    PositionInBranch <- as.matrix(df$PositionInBranch)
+    parent <- as.matrix(cylinder$parent)
+    extension <- as.matrix(cylinder$extension)
+    added <- as.matrix(cylinder$added)
+    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
+    branch <- as.matrix(cylinder$branch)
+    BranchOrder <- as.matrix(cylinder$BranchOrder)
+    PositionInBranch <- as.matrix(cylinder$PositionInBranch)
 
     # Checks for columns only in TreeQSM v2.4.0 and up
-    if (all(c("SurfCov", "mad") %in% colnames(df))) {
-      SurfCov <- as.matrix(df$SurfCov)
-      mad <- as.matrix(df$mad)
+    if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
+      SurfCov <- as.matrix(cylinder$SurfCov)
+      mad <- as.matrix(cylinder$mad)
 
       R.matlab::writeMat(filename,
         radius = radius,
@@ -88,27 +90,29 @@ export_mat <- function(df, filename) {
         PositionInBranch = PositionInBranch
       )
     }
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
-    radius <- as.matrix(df$radius)
-    length <- as.matrix(df$length)
 
-    start <- df %>%
+  # SimpleForest ---------------------------------------------------------------
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+    radius <- as.matrix(cylinder$radius)
+    length <- as.matrix(cylinder$length)
+
+    start <- cylinder %>%
       select(start.x = .data$startX, start.y = .data$startY, start.z = .data$startZ) %>%
       as.matrix()
 
-    axis <- df %>%
+    axis <- cylinder %>%
       select(axis.x = .data$axisX, axis.y = .data$axisY, axis.z = .data$axisZ) %>%
       as.matrix()
 
-    parent <- as.matrix(df$parentID)
-    extension <- as.matrix(df$ID)
+    parent <- as.matrix(cylinder$parentID)
+    extension <- as.matrix(cylinder$ID)
     added <- NA
-    UnmodRadius <- as.matrix(df$UnmodRadius)
-    branch <- as.matrix(df$branchID)
+    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
+    branch <- as.matrix(cylinder$branchID)
     SurfCov <- NA
-    mad <- as.matrix(df$averagePointDistance)
-    BranchOrder <- as.matrix(df$branchOrder)
-    PositionInBranch <- as.matrix(df %>% group_by(.data$branchID) %>%
+    mad <- as.matrix(cylinder$averagePointDistance)
+    BranchOrder <- as.matrix(cylinder$branchOrder)
+    PositionInBranch <- as.matrix(cylinder %>% group_by(.data$branchID) %>%
       reframe(PositionInBranch = 1:n()) %>%
       ungroup() %>%
       select(.data$PositionInBranch) %>%

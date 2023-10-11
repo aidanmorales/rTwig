@@ -1,11 +1,11 @@
 #' Correct Radii
 #'
-#' @description Corrects cylinder radii.
+#' @description Corrects cylinder radii
 #'
-#' @param df QSM cylinder data frame
-#' @param twigRad Twig radius in meters.
+#' @param cylinder QSM cylinder data frame
+#' @param twigRad Twig radius in millimeters
 #'
-#' @return Returns a data.frame
+#' @return Returns a data frame
 #' @export
 #'
 #' @import dplyr
@@ -24,31 +24,35 @@
 #' \dontrun{
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' df <- import_qsm(file)
-#' df <- update_cylinders(df)
-#' df <- growth_length(df)
-#' df <- correct_radii(df, twigRad = 0.003)
-#' str(df)
+#' qsm <- import_qsm(file)
+#' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- growth_length(cylinder)
+#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' str(cylinder)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' df <- read.csv(file)
-#' df <- update_cylinders(df)
-#' df <- growth_length(df)
-#' df <- correct_radii(df, twigRad = 0.003)
-#' str(df)
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- growth_length(cylinder)
+#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' str(cylinder)
 #' }
-correct_radii <- function(df, twigRad) {
+correct_radii <- function(cylinder, twigRad) {
   message("Calculating Branch Paths")
 
+  # Converts twig radius to meters
+  twigRad <- twigRad / 1000
+
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     # Finds end of buttress at first branch for better main stem modeling
-    stem <- filter(df, .data$branch == 1)
+    stem <- filter(cylinder, .data$branch == 1)
     stem <- min(which(stem$totChildren > 1))
 
     # Creates path network
-    g <- data.frame(parent = df$parent, extension = df$extension)
+    g <- data.frame(parent = cylinder$parent, extension = cylinder$extension)
     g <- igraph::graph_from_data_frame(g)
 
     starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
@@ -86,18 +90,18 @@ correct_radii <- function(df, twigRad) {
     ) %dopar% {
       # Identify Good Cylinder Fits --------------------------------------------
 
-      # Extracts cylinders for each unique path
+      # Extracts cylinder for each unique path
       cyl_id <- sort(as.numeric(names(paths[[i]])))
 
-      # Creates indexes to identify poorly fit cylinders
-      path_cyl <- filter(df, .data$extension %in% cyl_id) %>%
+      # Creates indexes to identify poorly fit cylinder
+      path_cyl <- filter(cylinder, .data$extension %in% cyl_id) %>%
         mutate(
           index0 = .data$radius / .data$GrowthLength / (.data$BranchOrder + 1),
           index1 = log(.data$GrowthLength) / .data$radius^2,
           index2 = .data$radius^2 / log(.data$GrowthLength)
         )
 
-      # Identifies poorly modeled cylinders
+      # Identifies poorly modeled cylinder
       path_temp <- path_cyl %>%
         mutate( # general cylinder pass
           IQR = IQR(.data$index0),
@@ -107,14 +111,14 @@ correct_radii <- function(df, twigRad) {
         ) %>%
         filter(.data$bad_fit0 == 0) %>%
         group_by(.data$BranchOrder) %>%
-        mutate( # removes small cylinders
+        mutate( # removes small cylinder
           IQR = IQR(.data$index1),
           upper = quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index1, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
           bad_fit1 = case_when(.data$lower <= .data$index1 & .data$index1 >= .data$upper ~ 1, TRUE ~ 0)
         ) %>%
         filter(.data$bad_fit1 == 0) %>%
-        mutate( # removes large cylinders
+        mutate( # removes large cylinder
           IQR = IQR(.data$index2),
           upper = quantile(.data$index2, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index2, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
@@ -167,9 +171,9 @@ correct_radii <- function(df, twigRad) {
           distinct() %>%
           pull()
 
-        # Dead branch radii are 25% less in each new order if there are no good cylinders
+        # Dead branch radii are 25% less in each new order if there are no good cylinder
         min_rad <- (y[length(y)] - (0.25 * y[length(y)])) / max_order
-        max_children <- df %>%
+        max_children <- cylinder %>%
           filter(.data$branch == c(
             pull(slice_tail(path_cyl, n = 1), .data$branch),
             pull(path_cyl %>%
@@ -290,7 +294,7 @@ correct_radii <- function(df, twigRad) {
     cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "extension")
 
     # Updates the QSM with new radii and interpolates any missing radii
-    df <- df %>%
+    cylinder <- cylinder %>%
       select(-.data$radius) %>%
       left_join(cyl_radii, by = c("extension")) %>%
       group_by(.data$branch) %>%
@@ -298,14 +302,14 @@ correct_radii <- function(df, twigRad) {
       ungroup() %>%
       distinct(.data$extension, .keep_all = TRUE)
 
-    # Simple Forest  -------------------------------------------------------------
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
+  # SimpleForest  --------------------------------------------------------------
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Finds end of buttress at first branch for better main stem modeling
-    stem <- filter(df, .data$branchID == 0)
+    stem <- filter(cylinder, .data$branchID == 0)
     stem <- min(which(stem$totChildren > 1))
 
     # Creates path network
-    g <- data.frame(parent = df$parentID, extension = df$ID)
+    g <- data.frame(parent = cylinder$parentID, extension = cylinder$ID)
     g <- igraph::graph_from_data_frame(g)
 
     starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
@@ -343,18 +347,18 @@ correct_radii <- function(df, twigRad) {
     ) %dopar% {
       # Identify Good Cylinder Fits --------------------------------------------
 
-      # Extracts cylinders for each unique path
+      # Extracts cylinder for each unique path
       cyl_id <- sort(as.numeric(names(paths[[i]])))
 
-      # Creates indexes to identify poorly fit cylinders
-      path_cyl <- filter(df, .data$ID %in% cyl_id) %>%
+      # Creates indexes to identify poorly fit cylinder
+      path_cyl <- filter(cylinder, .data$ID %in% cyl_id) %>%
         mutate(
           index0 = .data$radius / .data$growthLength / (.data$branchOrder + 1),
           index1 = log(.data$growthLength) / .data$radius^2,
           index2 = .data$radius^2 / log(.data$growthLength)
         )
 
-      # Identifies poorly modeled cylinders
+      # Identifies poorly modeled cylinder
       path_temp <- path_cyl %>%
         mutate( # general cylinder pass
           IQR = IQR(.data$index0),
@@ -364,14 +368,14 @@ correct_radii <- function(df, twigRad) {
         ) %>%
         filter(.data$bad_fit0 == 0) %>%
         group_by(.data$branchOrder) %>%
-        mutate( # removes small cylinders
+        mutate( # removes small cylinder
           IQR = IQR(.data$index1),
           upper = quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index1, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
           bad_fit1 = case_when(.data$lower <= .data$index1 & .data$index1 >= .data$upper ~ 1, TRUE ~ 0)
         ) %>%
         filter(.data$bad_fit1 == 0) %>%
-        mutate( # removes large cylinders
+        mutate( # removes large cylinder
           IQR = IQR(.data$index2),
           upper = quantile(.data$index2, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index2, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
@@ -423,9 +427,9 @@ correct_radii <- function(df, twigRad) {
           distinct() %>%
           pull()
 
-        # Dead branch radii are 25% less in each new order if there are no good cylinders
+        # Dead branch radii are 25% less in each new order if there are no good cylinder
         min_rad <- (y[length(y)] - (0.25 * y[length(y)])) / max_order
-        max_children <- df %>%
+        max_children <- cylinder %>%
           filter(.data$branchID == c(
             pull(slice_tail(path_cyl, n = 1), .data$branchID),
             pull(path_cyl %>%
@@ -537,7 +541,7 @@ correct_radii <- function(df, twigRad) {
       filter(.data$pathIndex == !!main_stem_path) %>%
       select(.data$ID, .data$radius, .data$UnmodRadius)
 
-    # Updates poorly modeled main stem cylinders
+    # Updates poorly modeled main stem cylinder
     main_stem_cyl <- main_stem_cyl %>%
       mutate(
         IQR = IQR(.data$radius),
@@ -558,7 +562,7 @@ correct_radii <- function(df, twigRad) {
     cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "ID")
 
     # Updates the QSM with new radii and interpolates any missing radii
-    df <- df %>%
+    cylinder <- cylinder %>%
       select(-.data$radius) %>%
       left_join(cyl_radii, by = c("ID")) %>%
       group_by(.data$branchID) %>%
@@ -568,5 +572,5 @@ correct_radii <- function(df, twigRad) {
   } else {
     message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
-  return(df)
+  return(cylinder)
 }

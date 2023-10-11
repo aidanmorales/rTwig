@@ -1,10 +1,10 @@
 #' Smooth QSM
 #'
-#' @description Visual smoothing of a QSM by ensuring the midpoints of all branch cylinders are connected.
+#' @description Visual smoothing of a QSM by ensuring the midpoints of all cylinders are connected
 #'
-#' @param df QSM cylinder data frame
+#' @param cylinder QSM cylinder data frame
 #'
-#' @return Returns a data.frame
+#' @return Returns a data frame
 #' @export
 #'
 #' @import dplyr
@@ -13,23 +13,24 @@
 #' \dontrun{
 #' ## TreeQSM Smoothing
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' df <- import_qsm(file)
-#' df <- update_cylinders(df)
-#' df <- growth_length(df)
-#' df <- correct_radii(df, twigRad = 0.003)
+#' qsm <- import_qsm(file)
+#' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- growth_length(cylinder)
+#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
 #'
 #' ## Before Smoothing
-#' plot_qsm(df)
+#' plot_qsm(cylinder)
 #'
 #' ## After Smoothing
-#' df <- smooth_qsm(df)
-#' plot_qsm(df)
+#' cylinder <- smooth_qsm(cylinder)
+#' plot_qsm(cylinder)
 #' }
-smooth_qsm <- function(df) {
+smooth_qsm <- function(cylinder) {
   message("Smoothing QSM")
 
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
-    df <- df %>%
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+    cylinder <- cylinder %>%
       group_by(.data$branch) %>%
       mutate(
         start.x = case_when(.data$PositionInBranch > 1 ~ lag(.data$end.x, 1), TRUE ~ .data$start.x),
@@ -46,5 +47,5 @@ smooth_qsm <- function(df) {
   } else {
     message("Invalid QSM Supplied!!!\nOnly TreeQSM is supported for smoothing.")
   }
-  return(df)
+  return(cylinder)
 }

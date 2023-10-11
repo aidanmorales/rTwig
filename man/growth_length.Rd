@@ -4,31 +4,32 @@
 \alias{growth_length}
 \title{Growth Length}
 \usage{
-growth_length(df)
+growth_length(cylinder)
 }
 \arguments{
-\item{df}{QSM cylinder data.frame}
+\item{cylinder}{QSM cylinder data frame}
 }
 \value{
-Returns a data.frame
+Returns a data frame
 }
 \description{
-Calculates the growth length of each cylinder.
+Calculates the growth length of each cylinder
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-df <- update_cylinders(df)
-df <- growth_length(df)
-str(df)
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+str(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-df <- read.csv(file)
-df <- update_cylinders(df)
-df <- growth_length(df)
-str(df)
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+str(cylinder)
 }
 }

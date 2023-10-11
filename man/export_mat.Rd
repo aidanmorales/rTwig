@@ -4,10 +4,10 @@
 \alias{export_mat}
 \title{Export MAT}
 \usage{
-export_mat(df, filename)
+export_mat(cylinder, filename)
 }
 \arguments{
-\item{df}{QSM cylinder data frame}
+\item{cylinder}{QSM cylinder data frame}
 
 \item{filename}{Desired name of file}
 }
@@ -15,22 +15,23 @@ export_mat(df, filename)
 Returns a .mat file
 }
 \description{
-Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function.
+Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
-df <- import_qsm("foo.mat")
-df <- update_cylinders(df)
-df <- growth_length(df)
-df <- correct_radii(df, twigRad = 0.003)
-export_mat(df, "foo_corrected.mat")
+qsm <- import_qsm("foo.mat")
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+cylinder <- correct_radii(cylinder, twigRad = 1.5)
+export_mat(cylinder, "foo_corrected.mat")
 
 ## SimpleForest Processing Chain
-df <- read.csv("foo.csv")
-df <- update_cylinders(df)
-df <- growth_length(df)
-df <- correct_radii(df, twigRad = 0.003)
-export_mat(df, "foo_corrected.mat")
+cylinder <- read.csv("foo.csv")
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+cylinder <- correct_radii(cylinder, twigRad = 1.5)
+export_mat(cylinder, "foo_corrected.mat")
 }
 }

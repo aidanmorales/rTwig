@@ -1,8 +1,8 @@
 #' QSM Summary
 #'
-#' @description Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order.
+#' @description Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
 #'
-#' @param df QSM cylinder data frame
+#' @param cylinder QSM cylinder data frame
 #'
 #' @return Returns a list
 #' @export
@@ -13,19 +13,21 @@
 #' \dontrun{
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' df <- import_qsm(file)
-#' qsm_summary(df)
+#' qsm <- import_qsm(file)
+#' cylinder <- qsm$cylinder
+#' qsm_summary(cylinder)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' df <- read.csv(file)
-#' qsm_summary(df)
+#' cylinder <- read.csv(file)
+#' qsm_summary(cylinder)
 #' }
-qsm_summary <- function(df) {
+qsm_summary <- function(cylinder) {
   message("Creating QSM Summary")
 
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(df))) {
-    dbh <- df %>%
+  # TreeQSM --------------------------------------------------------------------
+  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+    dbh <- cylinder %>%
       filter(.data$BranchOrder == 0) %>%
       arrange(.data$PositionInBranch) %>%
       select(.data$length, .data$radius)
@@ -42,9 +44,9 @@ qsm_summary <- function(df) {
 
     QSM.dbh.cm <- dbh$radius[DBHCyl] * 200
 
-    QSM.ht.m <- max(df$start.z) - min(df$start.z)
+    QSM.ht.m <- max(cylinder$start.z) - min(cylinder$start.z)
 
-    summary <- df %>%
+    summary <- cylinder %>%
       mutate(
         Volume = pi * .data$radius^2 * .data$length,
         SurfaceArea = 2 * pi * .data$radius * .data$length
@@ -87,8 +89,10 @@ qsm_summary <- function(df) {
       Branch.sa.m2,
       Tot.sa.m2
     )
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(df))) {
-    dbh <- df %>%
+
+  # SimpleForest ---------------------------------------------------------------
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+    dbh <- cylinder %>%
       filter(.data$branchOrder == 0) %>%
       arrange(.data$ID) %>%
       select(.data$length, .data$radius)
@@ -105,9 +109,9 @@ qsm_summary <- function(df) {
 
     QSM.dbh.cm <- dbh$radius[DBHCyl] * 200
 
-    QSM.ht.m <- max(df$startZ) - min(df$startZ)
+    QSM.ht.m <- max(cylinder$startZ) - min(cylinder$startZ)
 
-    summary <- df %>%
+    summary <- cylinder %>%
       mutate(
         Volume = pi * .data$radius^2 * .data$length,
         SurfaceArea = 2 * pi * .data$radius * .data$length

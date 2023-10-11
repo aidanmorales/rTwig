@@ -4,35 +4,36 @@
 \alias{correct_radii}
 \title{Correct Radii}
 \usage{
-correct_radii(df, twigRad)
+correct_radii(cylinder, twigRad)
 }
 \arguments{
-\item{df}{QSM cylinder data frame}
+\item{cylinder}{QSM cylinder data frame}
 
-\item{twigRad}{Twig radius in meters.}
+\item{twigRad}{Twig radius in millimeters}
 }
 \value{
-Returns a data.frame
+Returns a data frame
 }
 \description{
-Corrects cylinder radii.
+Corrects cylinder radii
 }
 \examples{
 \dontrun{
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-df <- import_qsm(file)
-df <- update_cylinders(df)
-df <- growth_length(df)
-df <- correct_radii(df, twigRad = 0.003)
-str(df)
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+cylinder <- correct_radii(cylinder, twigRad = 1.5)
+str(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-df <- read.csv(file)
-df <- update_cylinders(df)
-df <- growth_length(df)
-df <- correct_radii(df, twigRad = 0.003)
-str(df)
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+cylinder <- growth_length(cylinder)
+cylinder <- correct_radii(cylinder, twigRad = 1.5)
+str(cylinder)
 }
 }
