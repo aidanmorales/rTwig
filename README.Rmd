@@ -13,15 +13,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml) <!-- badges: end -->
+
 # rTwig
-
-```         
-<!-- badges: start -->   
-
-[![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)   
-
-<!-- badges: end -->
-```
 
 ![](man/figures/README/rTwig.png){align="right" width="172"}
 
