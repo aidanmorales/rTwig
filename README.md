@@ -7,10 +7,10 @@
 
 # rTwig
 
+## Description
+
 <img src="man/figures/README/rTwig.png" data-align="right"
 width="172" />
-
-## Description
 
 Official repository for the rTwig package. The Real Twig method corrects
 overestimated cylinder radii in QSMs. Real Twig is different than
