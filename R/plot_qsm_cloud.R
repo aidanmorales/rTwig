@@ -22,20 +22,21 @@
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- growth_length(cylinder)
-#' plot_qsm_cloud(
-#'   cylinder = cylinder,
-#'   cloud = cloud,
-#'   radius = "unmodified",
-#'   cyl_color = "GrowthLength",
-#'   pt_color = "blue",
-#'   pt_size = 0.2
+#'
+#' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
+#' cloud <- read.table(file2, header = FALSE, sep = ",")
+#'
+#' plot_qsm_cloud(cylinder, cloud)
 #' )
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
+#'
+#' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
+#' cloud <- read.table(file2, header = FALSE, sep = ",")
+#'
 #' plot_qsm_cloud(
 #'   cylinder = cylinder,
 #'   cloud = cloud,

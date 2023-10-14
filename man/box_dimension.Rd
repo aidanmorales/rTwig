@@ -36,7 +36,7 @@ R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 \dontrun{
 ## Calculate Box Dimension
 file <- system.file("extdata/cloud.txt", package = "rTwig")
-cloud <- read.table(file)
+cloud <- read.table(file, header = FALSE, sep = ",")
 output <- box_dimension(cloud)
 output
 
