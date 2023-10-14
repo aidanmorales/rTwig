@@ -57,7 +57,7 @@ export_mat <- function(cylinder, filename) {
       SurfCov <- as.matrix(cylinder$SurfCov)
       mad <- as.matrix(cylinder$mad)
 
-      R.matlab::writeMat(filename,
+      output <- list(
         radius = radius,
         length = length,
         start = start,
@@ -72,11 +72,13 @@ export_mat <- function(cylinder, filename) {
         BranchOrder = BranchOrder,
         PositionInBranch = PositionInBranch
       )
+
+      R.matlab::writeMat(filename, cylinder = output)
     } else {
       SurfCov <- NA
       mad <- NA
 
-      R.matlab::writeMat(filename,
+      output <- list(
         radius = radius,
         length = length,
         start = start,
@@ -86,9 +88,13 @@ export_mat <- function(cylinder, filename) {
         added = added,
         UnmodRadius = UnmodRadius,
         branch = branch,
+        SurfCov = SurfCov,
+        mad = mad,
         BranchOrder = BranchOrder,
         PositionInBranch = PositionInBranch
       )
+
+      R.matlab::writeMat(filename, cylinder = output)
     }
 
   # SimpleForest ---------------------------------------------------------------
@@ -118,7 +124,7 @@ export_mat <- function(cylinder, filename) {
       select(.data$PositionInBranch) %>%
       pull())
 
-    R.matlab::writeMat(filename,
+    output <- list(
       radius = radius,
       length = length,
       start = start,
@@ -133,6 +139,8 @@ export_mat <- function(cylinder, filename) {
       BranchOrder = BranchOrder,
       PositionInBranch = PositionInBranch
     )
+
+    R.matlab::writeMat(filename, cylinder = output)
   } else {
     message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
   }
