@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{twigs}}{
 
-A data frame with 53 rows and 7 columns:
+A data frame containing twig radii measurements
 \describe{
 \item{scientific.name}{The tree's genus and species}
 \item{radius.mm}{The average twig radius in millimeters}

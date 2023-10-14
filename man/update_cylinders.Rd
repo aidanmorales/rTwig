@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_cylinders.R
 \name{update_cylinders}
 \alias{update_cylinders}
-\title{Update cylinder}
+\title{Update Cylinders}
 \usage{
 update_cylinders(cylinder)
 }
