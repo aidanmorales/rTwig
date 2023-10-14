@@ -2,6 +2,11 @@
 #'
 #' @description Calculates the growth length of each cylinder
 #'
+#' @details Growth length is the length of a parent cylinder, plus the lengths
+#' of all of its child cylinders. It is a cumulative metric that was created by
+#' Dr. Jan Hackenberg for use in the SimpleForest QSM software.
+#'
+#'
 #' @param cylinder QSM cylinder data frame
 #'
 #' @return Returns a data frame
@@ -11,6 +16,10 @@
 #' @import tidyr
 #' @import tibble
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
+#'
+#' @references {
+#'   \insertRef{growth_parameter1}{rTwig}
+#' }
 #'
 #' @examples
 #' \dontrun{

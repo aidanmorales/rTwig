@@ -90,10 +90,10 @@ correct_radii <- function(cylinder, twigRad) {
     ) %dopar% {
       # Identify Good Cylinder Fits --------------------------------------------
 
-      # Extracts cylinder for each unique path
+      # Extracts cylinders for each unique path
       cyl_id <- sort(as.numeric(names(paths[[i]])))
 
-      # Creates indexes to identify poorly fit cylinder
+      # Creates indexes to identify poorly fit cylinders
       path_cyl <- filter(cylinder, .data$extension %in% cyl_id) %>%
         mutate(
           index0 = .data$radius / .data$GrowthLength / (.data$BranchOrder + 1),
@@ -101,7 +101,7 @@ correct_radii <- function(cylinder, twigRad) {
           index2 = .data$radius^2 / log(.data$GrowthLength)
         )
 
-      # Identifies poorly modeled cylinder
+      # Identifies poorly modeled cylinders
       path_temp <- path_cyl %>%
         mutate( # general cylinder pass
           IQR = IQR(.data$index0),
@@ -111,14 +111,14 @@ correct_radii <- function(cylinder, twigRad) {
         ) %>%
         filter(.data$bad_fit0 == 0) %>%
         group_by(.data$BranchOrder) %>%
-        mutate( # removes small cylinder
+        mutate( # removes small cylinders
           IQR = IQR(.data$index1),
           upper = quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index1, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
           bad_fit1 = case_when(.data$lower <= .data$index1 & .data$index1 >= .data$upper ~ 1, TRUE ~ 0)
         ) %>%
         filter(.data$bad_fit1 == 0) %>%
-        mutate( # removes large cylinder
+        mutate( # removes large cylinders
           IQR = IQR(.data$index2),
           upper = quantile(.data$index2, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index2, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
@@ -171,7 +171,7 @@ correct_radii <- function(cylinder, twigRad) {
           distinct() %>%
           pull()
 
-        # Dead branch radii are 25% less in each new order if there are no good cylinder
+        # Dead branch radii are 25% less in each new order if there are no good cylinders
         min_rad <- (y[length(y)] - (0.25 * y[length(y)])) / max_order
         max_children <- cylinder %>%
           filter(.data$branch == c(
@@ -347,7 +347,7 @@ correct_radii <- function(cylinder, twigRad) {
     ) %dopar% {
       # Identify Good Cylinder Fits --------------------------------------------
 
-      # Extracts cylinder for each unique path
+      # Extracts cylinders for each unique path
       cyl_id <- sort(as.numeric(names(paths[[i]])))
 
       # Creates indexes to identify poorly fit cylinder
@@ -358,7 +358,7 @@ correct_radii <- function(cylinder, twigRad) {
           index2 = .data$radius^2 / log(.data$growthLength)
         )
 
-      # Identifies poorly modeled cylinder
+      # Identifies poorly modeled cylinders
       path_temp <- path_cyl %>%
         mutate( # general cylinder pass
           IQR = IQR(.data$index0),
@@ -368,14 +368,14 @@ correct_radii <- function(cylinder, twigRad) {
         ) %>%
         filter(.data$bad_fit0 == 0) %>%
         group_by(.data$branchOrder) %>%
-        mutate( # removes small cylinder
+        mutate( # removes small cylinders
           IQR = IQR(.data$index1),
           upper = quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index1, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
           bad_fit1 = case_when(.data$lower <= .data$index1 & .data$index1 >= .data$upper ~ 1, TRUE ~ 0)
         ) %>%
         filter(.data$bad_fit1 == 0) %>%
-        mutate( # removes large cylinder
+        mutate( # removes large cylinders
           IQR = IQR(.data$index2),
           upper = quantile(.data$index2, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
           lower = quantile(.data$index2, probs = c(.25), na.rm = FALSE) - 1.5 * .data$IQR,
@@ -427,7 +427,7 @@ correct_radii <- function(cylinder, twigRad) {
           distinct() %>%
           pull()
 
-        # Dead branch radii are 25% less in each new order if there are no good cylinder
+        # Dead branch radii are 25% less in each new order if there are no good cylinders
         min_rad <- (y[length(y)] - (0.25 * y[length(y)])) / max_order
         max_children <- cylinder %>%
           filter(.data$branchID == c(
@@ -541,7 +541,7 @@ correct_radii <- function(cylinder, twigRad) {
       filter(.data$pathIndex == !!main_stem_path) %>%
       select(.data$ID, .data$radius, .data$UnmodRadius)
 
-    # Updates poorly modeled main stem cylinder
+    # Updates poorly modeled main stem cylinders
     main_stem_cyl <- main_stem_cyl %>%
       mutate(
         IQR = IQR(.data$radius),

@@ -1,4 +1,4 @@
-#' Update cylinder
+#' Update Cylinders
 #'
 #' @description Updates the QSM cylinder data in preparation for growth length and path analysis calculations
 #'
