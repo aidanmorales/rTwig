@@ -1,0 +1,57 @@
+---
+title: "TreeQSM"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TreeQSM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rTwig)
+```
+
+rTwig currently supports all versions of TreeQSM. However, older versions of TreeQSM store the data in a different format. The user can specify which version of TreeQSM they are using with the `version` parameter in the `import_qsm` function. rTwig uses the new TreeQSM format by default, but the older format can be imported with `version = "2.0"`. `import_qsm` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data.
+
+#### TreeQSM v2.3.0 - 2.4.1
+
+```{r, results='hide'}
+ # Import a QSM MATLAB file
+ file <- system.file("extdata/QSM.mat", package = "rTwig")
+ qsm <- import_qsm(file)
+ 
+ # Correct the QSM cylinders
+ cylinder <- qsm$cylinder
+ cylinder <- update_cylinders(cylinder)
+ cylinder <- growth_length(cylinder)
+ cylinder <- correct_radii(cylinder, twigRad = 1.5)
+ cylinder <- smooth_qsm(cylinder)
+ 
+ # Plot the result
+ plot_qsm(cylinder)
+```
+
+#### TreeQSM v2.0
+
+```{r, results='hide'}
+ # Import a QSM MATLAB file
+ file <- system.file("extdata/QSM_2.mat", package = "rTwig")
+ qsm <- import_qsm(file, version = "2.0")
+ 
+ # Correct the QSM cylinders
+ cylinder <- qsm$cylinder
+ cylinder <- update_cylinders(cylinder)
+ cylinder <- growth_length(cylinder)
+ cylinder <- correct_radii(cylinder, twigRad = 1.5)
+ cylinder <- smooth_qsm(cylinder)
+ 
+ # Plot the result
+ plot_qsm(cylinder)
+```

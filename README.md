@@ -88,7 +88,7 @@ triangulation data.
  library(rTwig)
  
  # Import a QSM MATLAB file
- file <- system.file("extdata/QSM2.mat", package = "rTwig")
+ file <- system.file("extdata/QSM_2.mat", package = "rTwig")
  qsm <- import_qsm(file, version = "2.0")
  
  # Correct the QSM cylinders
