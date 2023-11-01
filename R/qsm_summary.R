@@ -3,6 +3,7 @@
 #' @description Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
 #'
 #' @param cylinder QSM cylinder data frame
+#' @param triangulation QSM triangulation list. Defaults to FALSE.
 #'
 #' @return Returns a list
 #' @export
@@ -17,12 +18,19 @@
 #' cylinder <- qsm$cylinder
 #' qsm_summary(cylinder)
 #'
+#' # TreeQSM Triangulation
+#' #' file <- system.file("extdata/QSM.mat", package = "rTwig")
+#' qsm <- import_qsm(file)
+#' cylinder <- qsm$cylinder
+#' triangulation <- qsm$triangulation
+#' qsm_summary(cylinder, triangulation)
+#'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' qsm_summary(cylinder)
 #' }
-qsm_summary <- function(cylinder) {
+qsm_summary <- function(cylinder, triangulation = FALSE) {
   message("Creating QSM Summary")
 
   # TreeQSM --------------------------------------------------------------------
@@ -31,6 +39,30 @@ qsm_summary <- function(cylinder) {
       filter(.data$BranchOrder == 0) %>%
       arrange(.data$PositionInBranch) %>%
       select(.data$length, .data$radius)
+
+    # Gets the triangulation and QSM volumes and surface areas to be swapped
+    if(!is.logical(triangulation)){
+
+      # Finds the triangulation end cylinder
+      cyl_end <- pull(triangulation$cylind - 1)
+
+      # Gets the QSM volumes
+      QSM_vol_sa <- cylinder %>%
+        filter(.data$extension %in% c(1:cyl_end)) %>%
+        mutate(
+          Volume = pi * .data$radius^2 * .data$length * 1e3,
+          SurfaceArea = 2 * pi * .data$radius * .data$length
+          ) %>%
+        summarize(
+          CylVol = sum(.data$Volume),
+          CylSA = sum(.data$SurfaceArea)
+          )
+
+      # Triangulation Volume and Surface Area
+      TriVol <- pull(triangulation$volume)
+      TriSA <- pull(triangulation$SideArea)
+
+    }
 
     # Finds the DBH cylinder
     for (i in 1:nrow(dbh)) {
@@ -46,6 +78,7 @@ qsm_summary <- function(cylinder) {
 
     QSM.ht.m <- max(cylinder$start.z) - min(cylinder$start.z)
 
+    # Branch Order Summary
     summary <- cylinder %>%
       mutate(
         Volume = pi * .data$radius^2 * .data$length,
@@ -57,6 +90,13 @@ qsm_summary <- function(cylinder) {
         Tot.sa.m2 = sum(.data$SurfaceArea, na.rm = TRUE)
       )
 
+    # Update with triangulation volumes
+    if(!is.logical(triangulation)){
+      summary$Tot.vol.L[1] <- summary$Tot.vol.L[1] - QSM_vol_sa$CylVol + TriVol
+      summary$Tot.sa.m2[1] <- summary$Tot.sa.m2[1] - QSM_vol_sa$CylSA + TriSA
+    }
+
+    # Total Summary
     Tot.vol.L <- summary %>%
       summarize(Tot.vol.L = sum(.data$Tot.vol.L))
 
@@ -92,6 +132,11 @@ qsm_summary <- function(cylinder) {
 
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+
+    if(!triangulation == FALSE){
+      stop("SimpleForest does not support triangulation of the main stem!")
+    }
+
     dbh <- cylinder %>%
       filter(.data$branchOrder == 0) %>%
       arrange(.data$ID) %>%

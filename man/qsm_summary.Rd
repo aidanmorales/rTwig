@@ -4,10 +4,12 @@
 \alias{qsm_summary}
 \title{QSM Summary}
 \usage{
-qsm_summary(cylinder)
+qsm_summary(cylinder, triangulation = FALSE)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
+
+\item{triangulation}{QSM triangulation list. Defaults to FALSE.}
 }
 \value{
 Returns a list
@@ -22,6 +24,13 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 qsm_summary(cylinder)
+
+# TreeQSM Triangulation
+#' file <- system.file("extdata/QSM.mat", package = "rTwig")
+qsm <- import_qsm(file)
+cylinder <- qsm$cylinder
+triangulation <- qsm$triangulation
+qsm_summary(cylinder, triangulation)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
