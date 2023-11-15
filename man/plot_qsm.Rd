@@ -4,7 +4,7 @@
 \alias{plot_qsm}
 \title{Plot QSM}
 \usage{
-plot_qsm(cylinder, radius = "modified", color = "BranchOrder")
+plot_qsm(cylinder, radius = "modified", color = "BranchOrder", hover = FALSE)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
@@ -12,6 +12,8 @@ plot_qsm(cylinder, radius = "modified", color = "BranchOrder")
 \item{radius}{Radius type, as either "modified" or "unmodified". Defaults to modified.}
 
 \item{color}{Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.}
+
+\item{hover}{Show cylinder ID and branch on mouse hover. FALSE by default, but can be set to TRUE.}
 }
 \value{
 A rgl QSM plot

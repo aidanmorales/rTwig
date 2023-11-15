@@ -44,7 +44,7 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
     if(!is.logical(triangulation)){
 
       # Finds the triangulation end cylinder
-      cyl_end <- pull(triangulation$cylind - 1)
+      cyl_end <- pull(triangulation$cylind - 2)
 
       # Gets the QSM volumes
       QSM_vol_sa <- cylinder %>%

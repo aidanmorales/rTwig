@@ -5,6 +5,7 @@
 #' @param cylinder QSM cylinder data frame
 #' @param radius Radius type, as either "modified" or "unmodified". Defaults to modified.
 #' @param color Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.
+#' @param hover Show cylinder ID and branch on mouse hover. FALSE by default, but can be set to TRUE.
 #'
 #' @return A rgl QSM plot
 #' @export
@@ -30,7 +31,7 @@
 #' cylinder <- correct_radii(cylinder, twigRad = 1.5)
 #' plot_qsm(cylinder, radius = "unmodified", color = "GrowthLength")
 #' }
-plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder") {
+plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover = FALSE) {
   message("Plotting QSM")
 
   # TreeQSM --------------------------------------------------------------------
@@ -68,6 +69,15 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder") {
     shade3d(shapelist3d(plot_data, plot = FALSE))
     axes3d(edges = c("x", "y", "z"))
 
+    if (hover == TRUE){
+      hover3d(
+        cylinder$start.x,
+        cylinder$start.y,
+        cylinder$start.z,
+        labels = paste(sprintf("ID:%.i", cylinder$extension), sprintf("Branch:%.1i", cylinder$branch), sep = " - ")
+      )
+    }
+
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     if (color == "GrowthLength") {
@@ -100,6 +110,16 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder") {
     open3d()
     shade3d(shapelist3d(plot_data, plot = FALSE))
     axes3d(edges = c("x", "y", "z"))
+
+    if (hover == TRUE){
+      hover3d(
+        cylinder$startX,
+        cylinder$startY,
+        cylinder$startZ,
+        labels = paste(sprintf("ID:%.i", cylinder$ID), sprintf("Branch:%.1i", cylinder$branchID), sep = " - ")
+      )
+    }
+
   } else {
     message("Invalid QSM Supplied!!!")
   }
