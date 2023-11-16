@@ -9,6 +9,7 @@
 #' @export
 #'
 #' @import dplyr
+#' @importFrom Matrix as.matrix
 #' @importFrom R.matlab writeMat
 #'
 #' @examples

@@ -74,7 +74,7 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover
         cylinder$start.x,
         cylinder$start.y,
         cylinder$start.z,
-        labels = paste(sprintf("ID:%.i", cylinder$extension), sprintf("Branch:%.1i", cylinder$branch), sep = " - ")
+        labels = paste0("ID:", cylinder$extension, " - Branch:", cylinder$branch)
       )
     }
 
@@ -116,7 +116,7 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover
         cylinder$startX,
         cylinder$startY,
         cylinder$startZ,
-        labels = paste(sprintf("ID:%.i", cylinder$ID), sprintf("Branch:%.1i", cylinder$branchID), sep = " - ")
+        labels = paste0("ID:", cylinder$ID, " - Branch:", cylinder$branchID)
       )
     }
 

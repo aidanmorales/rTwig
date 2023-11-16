@@ -31,7 +31,8 @@ Imports:
     DescTools,
     kit,
     purrr,
-    rmatio
+    rmatio,
+    Matrix (>= 1.6-3)
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
