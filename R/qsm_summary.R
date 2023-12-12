@@ -36,7 +36,7 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     dbh <- cylinder %>%
-      filter(.data$BranchOrder == 0) %>%
+      filter(.data$BranchOrder == 0 & branch == 1) %>%
       arrange(.data$PositionInBranch) %>%
       select(.data$length, .data$radius)
 
@@ -138,7 +138,7 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
     }
 
     dbh <- cylinder %>%
-      filter(.data$branchOrder == 0) %>%
+      filter(.data$branchOrder == 0 & branchID == 1) %>%
       arrange(.data$ID) %>%
       select(.data$length, .data$radius)
 
