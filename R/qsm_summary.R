@@ -35,8 +35,12 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+    # Error message if cylinders have not been updated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
     dbh <- cylinder %>%
-      filter(.data$BranchOrder == 0 & branch == 1) %>%
+      filter(.data$BranchOrder == 0 & .data$branch == 1) %>%
       arrange(.data$PositionInBranch) %>%
       select(.data$length, .data$radius)
 
@@ -138,7 +142,7 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
     }
 
     dbh <- cylinder %>%
-      filter(.data$branchOrder == 0 & branchID == 1) %>%
+      filter(.data$branchOrder == 0 & .data$branchID == 1) %>%
       arrange(.data$ID) %>%
       select(.data$length, .data$radius)
 
@@ -201,7 +205,11 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
       Tot.sa.m2
     )
   } else {
-    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
   return(list(summary, summary2))
 }

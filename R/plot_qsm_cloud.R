@@ -5,7 +5,7 @@
 #' @param cylinder QSM cylinder data frame
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM.
 #' @param radius Radius type, as either "modified" or "unmodified". Defaults to modified.
-#' @param cyl_color Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.
+#' @param cyl_color Color QSM by "BranchOrder", "GrowthLength", or a user supplied color. Defaults to BranchOrder. The user supplied color must be a vector or column with the same length as the cylinder data frame.
 #' @param pt_color Color of the point cloud. Defaults to black.
 #' @param pt_size Size of the points. Defaults to 0.1.
 #'
@@ -24,7 +24,7 @@
 #' cylinder <- update_cylinders(cylinder)
 #'
 #' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-#' cloud <- read.table(file2, header = FALSE, sep = ",")
+#' cloud <- read.table(file2, header = FALSE)
 #'
 #' plot_qsm_cloud(cylinder, cloud)
 #'
@@ -34,18 +34,24 @@
 #' cylinder <- update_cylinders(cylinder)
 #'
 #' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-#' cloud <- read.table(file2, header = FALSE, sep = ",")
+#' cloud <- read.table(file2, header = FALSE)
 #'
-#' plot_qsm_cloud(cylinder, cloud, "unmodified", "GrowthLength", "blue", 0.2)
+#' plot_qsm_cloud(cylinder, cloud, "modified", "GrowthLength", "blue", 0.2)
 #' }
 plot_qsm_cloud <- function(cylinder, cloud, radius = "modified", cyl_color = "BranchOrder", pt_color = "black", pt_size = 0.1) {
   message("Plotting QSM")
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+    # Error message if cylinders have not been updated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
     if (cyl_color == "GrowthLength") {
       colors <- colour_values(cylinder$GrowthLength, palette = "viridis")
-    } else {
+    } else if (cyl_color == "custom") {
+      colors <- as.vector(cylinder$colors)
+    }else {
       colors <- color_values(cylinder$BranchOrder, palette = "rainbow")
     }
 
@@ -75,12 +81,14 @@ plot_qsm_cloud <- function(cylinder, cloud, radius = "modified", cyl_color = "Br
     axes3d(edges = c("x", "y", "z"))
 
     cloud <- rename(cloud, x = 1, y = 2, z = 3)
-    plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE)
+    plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
 
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     if (cyl_color == "GrowthLength") {
       colors <- colour_values(cylinder$growthLength, palette = "viridis")
+    } else if (cyl_color == "custom") {
+      colors <- as.vector(cylinder$colors)
     } else {
       colors <- color_values(cylinder$branchOrder, palette = "rainbow")
     }
@@ -111,8 +119,12 @@ plot_qsm_cloud <- function(cylinder, cloud, radius = "modified", cyl_color = "Br
     axes3d(edges = c("x", "y", "z"))
 
     cloud <- rename(cloud, x = 1, y = 2, z = 3)
-    plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE)
+    plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
   } else {
-    message("Invalid QSM or Cloud Supplied!!!")
+    message(
+      "Invalid QSM or Cloud Supplied!!!
+      \nMake sure the cylinder data frame and not the QSM list is supplied.
+      \nMake sure the point cloud is a data frame with the first three columns as the x, y, and z coordinates."
+    )
   }
 }

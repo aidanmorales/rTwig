@@ -3,9 +3,9 @@
 #' @description Plots QSM cylinders using the rgl library
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param radius Radius type, as either "modified" or "unmodified". Defaults to modified.
-#' @param color Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.
-#' @param hover Show cylinder ID and branch on mouse hover. FALSE by default, but can be set to TRUE.
+#' @param radius Radius type, as either "modified" or "unmodified". Defaults to "modified".
+#' @param color Color QSM by "BranchOrder", "GrowthLength", or a user supplied color. Defaults to BranchOrder. The user supplied color must be a vector or column with the same length as the cylinder data frame.
+#' @param hover Show cylinder ID and branch on mouse hover. Defaults to FALSE.
 #'
 #' @return A rgl QSM plot
 #' @export
@@ -21,24 +21,28 @@
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- growth_length(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' plot_qsm(cylinder)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
-#' plot_qsm(cylinder, radius = "unmodified", color = "GrowthLength")
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
+#' plot_qsm(cylinder, radius = "modified", color = "GrowthLength")
 #' }
 plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover = FALSE) {
   message("Plotting QSM")
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+    # Error message if cylinders have not been updated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
     if (color == "GrowthLength") {
       colors <- colour_values(cylinder$GrowthLength, palette = "viridis")
-    } else if (color == "path") {
+    } else if (color == "custom") {
       colors <- as.vector(cylinder$colors)
     } else {
       colors <- color_values(cylinder$BranchOrder, palette = "rainbow")
@@ -82,6 +86,8 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     if (color == "GrowthLength") {
       colors <- colour_values(cylinder$growthLength, palette = "viridis")
+    } else if (color == "custom") {
+      colors <- as.vector(cylinder$colors)
     } else {
       colors <- color_values(cylinder$branchOrder, palette = "rainbow")
     }
@@ -121,6 +127,9 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover
     }
 
   } else {
-    message("Invalid QSM Supplied!!!")
+    message(
+      "Invalid QSM!!!
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
 }

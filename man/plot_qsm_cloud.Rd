@@ -20,7 +20,7 @@ plot_qsm_cloud(
 
 \item{radius}{Radius type, as either "modified" or "unmodified". Defaults to modified.}
 
-\item{cyl_color}{Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.}
+\item{cyl_color}{Color QSM by "BranchOrder", "GrowthLength", or a user supplied color. Defaults to BranchOrder. The user supplied color must be a vector or column with the same length as the cylinder data frame.}
 
 \item{pt_color}{Color of the point cloud. Defaults to black.}
 
@@ -41,7 +41,7 @@ cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 
 file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-cloud <- read.table(file2, header = FALSE, sep = ",")
+cloud <- read.table(file2, header = FALSE)
 
 plot_qsm_cloud(cylinder, cloud)
 
@@ -51,8 +51,8 @@ cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 
 file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-cloud <- read.table(file2, header = FALSE, sep = ",")
+cloud <- read.table(file2, header = FALSE)
 
-plot_qsm_cloud(cylinder, cloud, "unmodified", "GrowthLength", "blue", 0.2)
+plot_qsm_cloud(cylinder, cloud, "modified", "GrowthLength", "blue", 0.2)
 }
 }

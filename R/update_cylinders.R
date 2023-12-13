@@ -29,6 +29,7 @@ update_cylinders <- function(cylinder) {
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
     # Updates branch numbers
     cylinder <- cylinder %>%
       mutate(
@@ -132,7 +133,11 @@ update_cylinders <- function(cylinder) {
       relocate(.data$branchNew, .after = .data$branchID) %>%
       relocate(.data$positionInBranch, .after = .data$branchNew)
   } else {
-    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
   return(cylinder)
 }

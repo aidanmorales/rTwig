@@ -27,6 +27,12 @@ ABSTRACT = {Trees have a fractal-like branching architecture that determines the
 DOI = {10.3390/rs13142773}
 }
 
+@Book{box_dimension3,
+title={The fractal geometry of nature},
+publisher={Freeman},
+author={Mandelbrot, Benoit B.},
+year={1983}
+}
 
 @Article{growth_parameter1,
 AUTHOR = {Hackenberg, Jan and Spiecker, Heinrich and Calders, Kim and Disney, Mathias and Raumonen, Pasi},
@@ -40,4 +46,29 @@ URL = {https://www.mdpi.com/1999-4907/6/11/4245},
 ISSN = {1999-4907},
 ABSTRACT = {An open source tool named SimpleTree, capable of modelling highly accurate cylindrical tree models from terrestrial laser scan point clouds, is presented and evaluated. All important functionalities, accessible in the software via buttons and dialogues, are described including the explanation of all necessary input parameters. The method is validated utilizing 101 point clouds of six different tree species, in the main evergreen and coniferous trees. All scanned trees have been destructively harvested to get accurate estimates of above ground biomass with which we assess the accuracy of the SimpleTree-reconstructed cylinder models. The trees were grouped into four data sets and for each one a Concordance Correlation Coefficient of at least 0.92 (0.92, 0.97, 0.92, 0.94) and an total relative error at most ~8 % (2.42%, 3.59%, –4.59%, 8.27%) was achieved in the comparison of the model results to the ground truth data. A global statistical improvement of derived cylinder radii is presented as well as an efficient optimization approach to automatically improve user given input parameters. An additional check of the SimpleTree results is presented via comparison to the results of trees reconstructed using an alternative, published method.},
 DOI = {10.3390/f6114245}
+}
+
+@Article{growth_parameter2,
+author = {Hackenberg, Jan and Bontemps, Jean-Daniel},
+year = {2023},
+month = {11},
+pages = {},
+title = {Improving quantitative structure models with filters based on allometric scaling theory},
+volume = {15},
+journal = {Applied Geomatics},
+doi = {10.1007/s12518-023-00537-4}
+}
+
+@Article{TreeQSM,
+AUTHOR = {Raumonen, Pasi and Kaasalainen, Mikko and Åkerblom, Markku and Kaasalainen, Sanna and Kaartinen, Harri and Vastaranta, Mikko and Holopainen, Markus and Disney, Mathias and Lewis, Philip},
+TITLE = {Fast Automatic Precision Tree Models from Terrestrial Laser Scanner Data},
+JOURNAL = {Remote Sensing},
+VOLUME = {5},
+YEAR = {2013},
+NUMBER = {2},
+PAGES = {491--520},
+URL = {https://www.mdpi.com/2072-4292/5/2/491},
+ISSN = {2072-4292},
+ABSTRACT = {This paper presents a new method for constructing quickly and automatically precision tree models from point clouds of the trunk and branches obtained by terrestrial laser scanning. The input of the method is a point cloud of a single tree scanned from multiple positions. The surface of the visible parts of the tree is robustly reconstructed by making a flexible cylinder model of the tree. The thorough quantitative model records also the topological branching structure. In this paper, every major step of the whole model reconstruction process, from the input to the finished model, is presented in detail. The model is constructed by a local approach in which the point cloud is covered with small sets corresponding to connected surface patches in the tree surface. The neighbor-relations and geometrical properties of these cover sets are used to reconstruct the details of the tree and, step by step, the whole tree. The point cloud and the sets are segmented into branches, after which the branches are modeled as collections of cylinders. From the model, the branching structure and size properties, such as volume and branch size distributions, for the whole tree or some of its parts, can be approximated. The approach is validated using both measured and modeled terrestrial laser scanner data from real trees and detailed 3D models. The results show that the method allows an easy extraction of various tree attributes from terrestrial or mobile laser scanning point clouds.},
+DOI = {10.3390/rs5020491}
 }

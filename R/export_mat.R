@@ -143,6 +143,10 @@ export_mat <- function(cylinder, filename) {
 
     R.matlab::writeMat(filename, cylinder = output)
   } else {
-    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
 }

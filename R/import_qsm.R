@@ -11,6 +11,10 @@
 #' @importFrom R.matlab readMat
 #' @importFrom rmatio read.mat
 #'
+#' @references {
+#'   \insertRef{TreeQSM}{rTwig}
+#' }
+#'
 #' @examples
 #' \dontrun{
 #' ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format

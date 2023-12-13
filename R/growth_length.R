@@ -4,7 +4,7 @@
 #'
 #' @details Growth length is the length of a parent cylinder, plus the lengths
 #' of all of its child cylinders. It is a cumulative metric that was created by
-#' Dr. Jan Hackenberg for use in the SimpleForest QSM software.
+#' Jan Hackenberg for use in the SimpleForest QSM software.
 #'
 #'
 #' @param cylinder QSM cylinder data frame
@@ -19,6 +19,8 @@
 #'
 #' @references {
 #'   \insertRef{growth_parameter1}{rTwig}
+#'
+#'   \insertRef{growth_parameter2}{rTwig}
 #' }
 #'
 #' @examples
@@ -43,6 +45,10 @@ growth_length <- function(cylinder) {
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+    # Error message if cylinders have not been updated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
     g <- data.frame(parent = cylinder$parent, extension = cylinder$extension)
     g <- igraph::graph_from_data_frame(g) - 1
     g <- igraph::permute(g, match(igraph::V(g)$name, cylinder$extension))
@@ -94,7 +100,11 @@ growth_length <- function(cylinder) {
       ) %>%
       relocate(.data$growthLength2, .after = .data$growthLength)
   } else {
-    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
   return(cylinder)
 }

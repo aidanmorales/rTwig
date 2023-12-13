@@ -9,11 +9,11 @@ plot_qsm(cylinder, radius = "modified", color = "BranchOrder", hover = FALSE)
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
-\item{radius}{Radius type, as either "modified" or "unmodified". Defaults to modified.}
+\item{radius}{Radius type, as either "modified" or "unmodified". Defaults to "modified".}
 
-\item{color}{Color QSM by either "BranchOrder" or "GrowthLength". Defaults to BranchOrder.}
+\item{color}{Color QSM by "BranchOrder", "GrowthLength", or a user supplied color. Defaults to BranchOrder. The user supplied color must be a vector or column with the same length as the cylinder data frame.}
 
-\item{hover}{Show cylinder ID and branch on mouse hover. FALSE by default, but can be set to TRUE.}
+\item{hover}{Show cylinder ID and branch on mouse hover. Defaults to FALSE.}
 }
 \value{
 A rgl QSM plot
@@ -29,14 +29,14 @@ qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 cylinder <- growth_length(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 1.5)
+cylinder <- correct_radii(cylinder, twigRad = 4.23)
 plot_qsm(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 1.5)
-plot_qsm(cylinder, radius = "unmodified", color = "GrowthLength")
+cylinder <- correct_radii(cylinder, twigRad = 4.23)
+plot_qsm(cylinder, radius = "modified", color = "GrowthLength")
 }
 }

@@ -28,7 +28,7 @@
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- growth_length(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' str(cylinder)
 #'
 #' ## SimpleForest Processing Chain
@@ -36,7 +36,7 @@
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- growth_length(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' str(cylinder)
 #' }
 correct_radii <- function(cylinder, twigRad) {
@@ -47,6 +47,11 @@ correct_radii <- function(cylinder, twigRad) {
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+    # Error message if cylinders have not been updated or growth length has not been calculated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    stopifnot("Growth length missing! Please run growth_length() before proceeding." = "GrowthLength" %in% colnames(cylinder))
+
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(cylinder, .data$branch == 1)
     stem <- min(which(stem$totChildren > 1))
@@ -570,7 +575,11 @@ correct_radii <- function(cylinder, twigRad) {
       ungroup() %>%
       distinct(.data$ID, .keep_all = TRUE)
   } else {
-    message("Invalid Dataframe Supplied!!!\nOnly TreeQSM or SimpleForest QSMs are supported.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
   return(cylinder)
 }

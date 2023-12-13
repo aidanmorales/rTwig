@@ -30,3 +30,8 @@ qsm <- import_qsm(file, version = "2.0")
 names(qsm)
 }
 }
+\references{
+{
+\insertRef{TreeQSM}{rTwig}
+}
+}

@@ -18,7 +18,7 @@ Calculates the growth length of each cylinder
 \details{
 Growth length is the length of a parent cylinder, plus the lengths
 of all of its child cylinders. It is a cumulative metric that was created by
-Dr. Jan Hackenberg for use in the SimpleForest QSM software.
+Jan Hackenberg for use in the SimpleForest QSM software.
 }
 \examples{
 \dontrun{
@@ -41,5 +41,7 @@ str(cylinder)
 \references{
 {
 \insertRef{growth_parameter1}{rTwig}
+
+\insertRef{growth_parameter2}{rTwig}
 }
 }

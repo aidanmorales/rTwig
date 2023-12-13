@@ -29,6 +29,9 @@
 smooth_qsm <- function(cylinder) {
   message("Smoothing QSM")
 
+  # Error message if cylinders have not been updated
+  stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     cylinder <- cylinder %>%
       group_by(.data$branch) %>%
@@ -45,7 +48,11 @@ smooth_qsm <- function(cylinder) {
       ) %>%
       ungroup()
   } else {
-    message("Invalid QSM Supplied!!!\nOnly TreeQSM is supported for smoothing.")
+    message(
+      "Invalid Dataframe Supplied!!!
+      \nOnly TreeQSM is supported for smoothing.
+      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    )
   }
   return(cylinder)
 }
