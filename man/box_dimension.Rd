@@ -10,7 +10,8 @@ box_dimension(
   y = 2,
   z = 3,
   lowercutoff = 0.01,
-  rm_int_box = FALSE
+  rm_int_box = FALSE,
+  plot = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ box_dimension(
 \item{lowercutoff}{The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.}
 
 \item{rm_int_box}{Remove the initial box as TRUE or FALSE. Defaults to FALSE.}
+
+\item{plot}{Plot the results. The user can specify "2D", "3D", or "ALL" plots. FALSE disables plotting. Defaults to FALSE.}
 }
 \value{
 Returns a list
@@ -36,19 +39,9 @@ R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 \dontrun{
 ## Calculate Box Dimension
 file <- system.file("extdata/cloud.txt", package = "rTwig")
-cloud <- read.table(file, header = FALSE, sep = ",")
-output <- box_dimension(cloud)
+cloud <- read.table(file, header = FALSE)
+output <- box_dimension(cloud, plot = "ALL")
 output
-
-## Plot Results
-data <- output[[1]]
-plot(data$log.box.size,
-  data$log.voxels,
-  pch = 19,
-  xlab = "Log(Inverse Box Size)",
-  ylab = "log(Box Count)"
-)
-abline(lm(data$log.voxels ~ data$log.box.size))
 }
 }
 \references{
@@ -56,5 +49,7 @@ abline(lm(data$log.voxels ~ data$log.box.size))
 \insertRef{box_dimension1}{rTwig}
 
 \insertRef{box_dimension2}{rTwig}
+
+\insertRef{box_dimension3}{rTwig}
 }
 }

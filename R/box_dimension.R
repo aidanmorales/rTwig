@@ -9,42 +9,39 @@
 #' @param z The column name or position of the x coordinates. Defaults to the third column.
 #' @param lowercutoff The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.
 #' @param rm_int_box Remove the initial box as TRUE or FALSE. Defaults to FALSE.
+#' @param plot Plot the results. The user can specify "2D", "3D", or "ALL" plots. FALSE disables plotting. Defaults to FALSE.
 #'
 #' @return Returns a list
 #' @export
 #'
 #' @import dplyr
+#' @import rgl
 #' @importFrom stats lm
 #' @importFrom Rdpack reprompt
 #' @importFrom kit uniqLen
 #' @importFrom purrr map_dfr
 #' @importFrom DescTools RoundTo
+#' @importFrom graphics abline text
 #'
 #' @references {
 #'   \insertRef{box_dimension1}{rTwig}
 #'
 #'   \insertRef{box_dimension2}{rTwig}
+#'
+#'   \insertRef{box_dimension3}{rTwig}
 #' }
 #'
 #' @examples
 #' \dontrun{
 #' ## Calculate Box Dimension
 #' file <- system.file("extdata/cloud.txt", package = "rTwig")
-#' cloud <- read.table(file, header = FALSE, sep = ",")
-#' output <- box_dimension(cloud)
+#' cloud <- read.table(file, header = FALSE)
+#' output <- box_dimension(cloud, plot = "ALL")
 #' output
-#'
-#' ## Plot Results
-#' data <- output[[1]]
-#' plot(data$log.box.size,
-#'   data$log.voxels,
-#'   pch = 19,
-#'   xlab = "Log(Inverse Box Size)",
-#'   ylab = "log(Box Count)"
-#' )
-#' abline(lm(data$log.voxels ~ data$log.box.size))
 #' }
-box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int_box = FALSE) {
+box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE) {
+  # Calculates Box Dimension ---------------------------------------------------
+
   # Selects only the x, y, z columns from the point cloud
   cloud <- select(cloud, x = any_of(x), y = any_of(y), z = any_of(z))
 
@@ -119,6 +116,58 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
       r.squared = summary(results)$r.squared,
       adj.r.squared = summary(results)$adj.r.squared
     )
+
+  # 2D Plot --------------------------------------------------------------------
+  if (plot == "ALL" | plot == "2D") {
+
+    plot(data$log.box.size,
+      data$log.voxels,
+      pch = 19,
+      xlab = "Log(Inverse Box Size)",
+      ylab = "log(Box Count)"
+    )
+
+    # Model Line
+    abline(lm(data$log.voxels ~ data$log.box.size))
+
+    # Statistics Labels
+    label_step <- (max(data$log.voxels) * 0.25) / 3
+
+    x <- max(data$log.box.size) / 2
+    y1 <- max(data$log.voxels)
+    y2 <- max(data$log.voxels) - label_step
+    y3 <- max(data$log.voxels) - label_step * 2
+
+    text(x, y1, paste0("y = ", round(summary$slope, 3), "x + ", round(summary$intercept, 4)))
+    text(x, y2, (bquote("R"^2 ~ .(paste0(" = ", round(summary$adj.r.squared, 4))))))
+    text(x, y3, (bquote("D"[b] ~ .(paste0(" = ", round(summary$slope, 2))))))
+  }
+
+  # 3D Plot --------------------------------------------------------------------
+  if (plot == "ALL" | plot == "3D") {
+
+    # Convert point cloud to a local coordinate system
+    cloud$x <- cloud$x - min(cloud$x)
+    cloud$y <- cloud$y - min(cloud$y)
+    cloud$z <- cloud$z - min(cloud$z)
+
+    # Plots Point Cloud
+    open3d()
+    plot3d(cloud$x, cloud$y, cloud$z, aspect = FALSE, decorate = FALSE)
+
+    # Plot Voxels
+    for (i in 1:length(size)) {
+      cube <- cube3d()
+      cube$vb[cube$vb == -1] <- 0
+      cube$vb[cube$vb == 1] <- size[i]
+      cube[["vb"]][4, ] <- 1
+      wire3d(cube)
+    }
+
+    # Plot Labels & Tick Marks
+    title3d(xlab = "X", ylab = "Y", zlab = "Z")
+    axes3d(labels = FALSE, tick = TRUE, box = FALSE)
+  }
 
   return(list(data, summary))
 }
