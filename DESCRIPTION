@@ -1,43 +1,37 @@
 Package: rTwig
 Title: Real Twig
 Version: 1.0.0
-Authors@R: c(
-    person("Aidan", "Morales", email = "moral169@msu.edu", role = c("aut", "cre")),
-    person("David", "MacFarlane", email = "macfar24@msu.edu", role = "aut")
-    )
-Description: Tools for branch overestimation correction in quantitative structure models (QSMs), QSM visualization, and fractal analysis of point clouds. 
-    Overstimated cylider radii of twigs in QSMs are corrected using measured twig diameters of corresponding tree species and network analysis. 
+Authors@R: 
+  c(
+    person(
+      given = "Aidan", 
+      family = "Morales", 
+      email = "moral169@msu.edu", 
+      role = c("aut", "cre")),
+    person(
+      given = "David", 
+      family = "MacFarlane", 
+      email = "macfar24@msu.edu", 
+      role = "aut")
+  )
+Description: Tools for correcting branch overestimation in quantitative structure models (QSMs), fractal analysis of point clouds, and a database of twig diameters. 
+    Overstimated cylinder radii of twigs in QSMs are corrected using measured twig diameters of corresponding tree species and network analysis. 
     Supported QSM software includes TreeQSM and SimpleForest. 
+    Fractal analysis uses the box counting method. 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 RdMacros: Rdpack
-Imports: 
-    igraph,
-    dplyr,
-    R.matlab,
-    tibble,
-    tidyr,
-    data.table,
-    cobs,
-    zoo,
-    parallel,
-    doParallel,
-    doSNOW,
-    foreach,
-    rgl,
-    colourvalues,
-    Rdpack,
-    DescTools,
-    kit,
-    purrr,
-    rmatio,
-    Matrix (>= 1.6-3)
+Imports: igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs, zoo,
+        parallel, doParallel, doSNOW, foreach, rgl, colourvalues,
+        Rdpack, DescTools, kit, purrr, rmatio, Matrix (>= 1.6-3)
 License: MIT + file LICENSE
-Depends: 
-    R (>= 2.10)
+Depends: R (>= 2.10)
 LazyData: true
-Suggests: 
-    knitr,
-    rmarkdown
+Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2023-12-14 23:03:09 UTC; moral169
+Author: Aidan Morales [aut, cre],
+  David MacFarlane [aut]
+Maintainer: Aidan Morales <moral169@msu.edu>

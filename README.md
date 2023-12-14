@@ -12,26 +12,36 @@
 
 ## Description
 
-Official repository for the rTwig package. The Real Twig method corrects
-overestimated cylinder radii in QSMs. Real Twig is different than
-traditional allometric corrections because it uses real twig
-measurements from real trees to inform branch tapering, and it
-dynamically identifies unique allometry and corrects incorrect allometry
-within a QSM using network analysis and general additive models. Also
-included are tools for QSM visualization, point cloud fractal analysis,
-and a database of twig diameter measurements for many common tree
-species.
+The official repository for the rTwig package. The Real Twig method
+corrects poorly modeled cylinders in QSMs, especially overestimated
+small branch and twig cylinders. Real Twig is different than traditional
+allometric or statistical corrections. Real Twig uses real twig diameter
+measurements from corresponding tree species to inform individual branch
+taper models. Real Twig dynamically identifies correct cylinders in a
+QSM, using network analysis, general additive models, and real twig
+measurements, to model and correct poorly fit cylinders with a high
+degree of precision and accuracy when vetted against ground truth
+reference data.
+
+Real Twig does much more than correct QSM cylinder radii. Real Twig
+includes tools for QSM visualization and analysis that are seamlessly
+compatible with popular R packages, such as base R or the Tidyverse.
+Real Twig also includes fast, vectorized functions for point cloud
+fractal analysis and visualization using the box-dimension metric. Also
+included is a novel database of twig diameter measurements for many
+common North American and European trees, on both the species and genus
+level.
 
 ## Installation
 
-You can install the released version of rTwig from
+You can install the released version of `rTwig` from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("rTwig") # placeholder for potential CRAN release. 
+install.packages("rTwig") # placeholder for CRAN release. 
 ```
 
-You can install the development version from
+You can install the development version of `rTwig` from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -39,108 +49,70 @@ You can install the development version from
 devtools::install_github("aidanmorales/rTwig")
 ```
 
-## QSM Radii Correction
+### Quick Start: QSM Radii Correction
 
-Real twig is run as a chain of function that build on one another. The
-general processing chain is as follows:
+QSM radii corrections are run as a chain of function that build on one
+another. The general processing chain is as follows:
 
 1.  Import a QSM: TreeQSM and SimpleForest are currently supported.
 2.  Update the cylinder data to allow for network analysis and growth
     length calculations.
-3.  Correct the small branch and twig cylinders using real twig radii
-    measured in millimeters.
-4.  Summarize, visualize and export the results.
+3.  Correct the small branch and twig cylinders using real twig diameter
+    measurements.
+4.  Summarize and visualize the results.
 
-### TreeQSM
+Below are examples of how to quickly run Real Twig on TreeQSM and
+SimpleForest QSMs, using example data from the package. See the
+vignettes for more details on a general workflow and best practices.
 
-rTwig currently supports all versions of TreeQSM. However, older
-versions of TreeQSM store the data in a different format. The user can
-specify which version of TreeQSM they are using with the `version`
-parameter in the `import_qsm` function. rTwig uses the new TreeQSM
-format by default, but the older format can be imported with
-`version = "2.0"`. `import_qsm` also imports all QSM information,
-including cylinder, branch, treedata, rundata, pmdistance, and
-triangulation data.
-
-#### TreeQSM v2.3.0 - 2.4.1
+#### TreeQSM
 
 ``` r
+ # Load the Real Twig library
  library(rTwig)
  
- # Import a QSM MATLAB file
+ # Import a TreeQSM
  file <- system.file("extdata/QSM.mat", package = "rTwig")
  qsm <- import_qsm(file)
  
- # Correct the QSM cylinders
- cylinder <- qsm$cylinder
- cylinder <- update_cylinders(cylinder)
- cylinder <- growth_length(cylinder)
- cylinder <- correct_radii(cylinder, twigRad = 1.5)
- cylinder <- smooth_qsm(cylinder)
+ # Correct the cylinders
+ qsm$cylinder <- update_cylinders(qsm$cylinder)
+ qsm$cylinder <- growth_length(qsm$cylinder)
+ qsm$cylinder <- correct_radii(qsm$cylinder, twigRad = 4.23)
  
  # Plot the result
- plot_qsm(cylinder)
+ plot_qsm(qsm$cylinder)
 ```
 
-#### TreeQSM v2.0
+#### SimpleForest
 
 ``` r
  library(rTwig)
  
- # Import a QSM MATLAB file
- file <- system.file("extdata/QSM_2.mat", package = "rTwig")
- qsm <- import_qsm(file, version = "2.0")
- 
- # Correct the QSM cylinders
- cylinder <- qsm$cylinder
- cylinder <- update_cylinders(cylinder)
- cylinder <- growth_length(cylinder)
- cylinder <- correct_radii(cylinder, twigRad = 1.5)
- cylinder <- smooth_qsm(cylinder)
- 
- # Plot the result
- plot_qsm(cylinder)
-```
-
-### SimpleForest
-
-``` r
- library(rTwig)
- 
- # Import a SimpleForest QSM csv file
+ # Import a SimpleForest QSM 
  file <- system.file("extdata/QSM.csv", package = "rTwig")
- cylinder <- read.csv(file)
+ qsm <- read.csv(file)
  
- # Correct the QSM cylinders
- cylinder <- update_cylinders(cylinder)
- cylinder <- correct_radii(cylinder, twigRad = 1.5)
+ # Correct the cylinders
+ qsm <- update_qsms(qsm)
+ qsm <- correct_radii(qsm, twigRad = 4.23)
  
  # Plot the result
- plot_qsm(cylinder)
+ plot_qsm(qsm)
 ```
 
-## Box Dimension
+### Quick Start: Box Dimension
 
-rTwig can also calculate box dimenstion on point clouds. The box
-dimension is the measure of the structural complexity of an object. The
-box dimension of point clouds can be easily calculated as follows:
+Below is an example of how to quickly calculate box-dimension on a point
+cloud using example data from the package. See the vignette for more
+details and explanation.
 
 ``` r
-# Calculate Box Dimension
+# Load a point cloud
 file <- system.file("extdata/cloud.txt", package = "rTwig")
-
 cloud <- read.table(file)
 
+# Calculate box-dimension
 output <- box_dimension(cloud)
-output
-
-# Plot Results
-data <- output[[1]]
-plot(data$log.box.size,
-  data$log.voxels,
-  pch = 19,
-  xlab = "Log(Inverse Box Size)",
-  ylab = "log(Box Count)"
-)
-abline(lm(data$log.voxels ~ data$log.box.size))
+output[[2]]$slope
 ```

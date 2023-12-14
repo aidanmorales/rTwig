@@ -142,7 +142,7 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
     }
 
     dbh <- cylinder %>%
-      filter(.data$branchOrder == 0 & .data$branchID == 1) %>%
+      filter(.data$branchOrder == 0 & .data$branchID == 0) %>%
       arrange(.data$ID) %>%
       select(.data$length, .data$radius)
 

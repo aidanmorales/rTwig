@@ -29,10 +29,10 @@
 smooth_qsm <- function(cylinder) {
   message("Smoothing QSM")
 
-  # Error message if cylinders have not been updated
-  stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
-
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+    # Error message if cylinders have not been updated
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+
     cylinder <- cylinder %>%
       group_by(.data$branch) %>%
       mutate(

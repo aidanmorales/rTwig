@@ -29,6 +29,10 @@
 #'   \insertRef{box_dimension2}{rTwig}
 #'
 #'   \insertRef{box_dimension3}{rTwig}
+#'
+#'   \insertRef{box_dimension4}{rTwig}
+#'
+#'   \insertRef{box_dimension5}{rTwig}
 #' }
 #'
 #' @examples

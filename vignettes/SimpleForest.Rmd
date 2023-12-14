@@ -1,8 +1,8 @@
 ---
-title: "TreeQSM"
+title: "SimpleForest"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TreeQSM}
+  %\VignetteIndexEntry{SimpleForest}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Real Twig was designed and tested using QSMs created with the TreeQSM modeling software. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get very good estimates of tree volume within ± 10% of the real tree volume.
+Real Twig was designed and tested using QSMs created with the TreeQSM modeling software. However, if a QSM provides parent-child cylinder relationships, Real Twig will work, as is the case of the SimpleForest software. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get good estimates of tree volume.
 
 While Real Twig can provide excellent tree volume estimates, it can not transform poor quality data into good data. As a general rule of thumb, the closer the QSM resembles the actual tree before correction, the better the results will be after correction. Real Twig performs best when the topology of the tree is mostly correct, and only the cylinder sizes are the main sources of QSM error. Errors in QSM topology become readily apparent after correction, so Real Twig can also be used to visually validate QSM topology without reference data.
 
@@ -58,69 +58,34 @@ library(gt)
 
 ## Import QSM
 
-rTwig supports all available versions of TreeQSM, from *v2.0* to *v2.4.1* at the time of writing. It is important to note that legacy versions of TreeQSM (*v2.0*) store data in a much different format than modern versions (*v2.3.0-2.4.1*). It is strongly advised to use the latest version of TreeQSM with rTwig for the best QSM topology and volume estimates. Older versions can be used, but the QSM topology is poor, and volume underestimation is almost guaranteed.
+SimpleForest exports its QSMs as .csv files, so they are easy to load into R, using the built in `read.csv` function. If the QSM contains thousands of cylinders, it is much faster to use the `fread` function from the `data.table` package to take advantage of multi-threaded support. 
 
-Regardless of the version of TreeQSM or MATLAB used, the `import_qsm` function will import a QSM .mat file and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_qsm` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
-
-#### TreeQSM v2.3.0 - 2.4.1
-
-We can import a QSM by supplying the `import_qsm` function the directory to our QSM.
 
 ```{r, message=FALSE}
 # QSM directory
-file <- system.file("extdata/QSM.mat", package = "rTwig")
+file <- system.file("extdata/QSM.csv", package = "rTwig")
 
-# Import and save QSM
-qsm <- import_qsm(file)
+# Import and save QSM cylinder data
+cylinder <- read.csv(file)
 ```
 
-The QSM should be a list with a length of six. We can check it as follows:
+Let's take a look at the SimpleForest cylinder data.
 
 ```{r, message=FALSE}
-summary(qsm)
-```
-
-Let's check what version of TreeQSM was used, the date the QSM was made, and take a look at the cylinder data.
-
-```{r, message=FALSE}
-# QSM info
-qsm$rundata$version
-qsm$rundata$start.date
-
-# Number of cylinders
-str(qsm$cylinder)
-```
-
-#### TreeQSM v2.0
-
-Let's try importing an old QSM and check its structure.
-
-```{r, message=FALSE}
-# QSM Directory
-file <- system.file("extdata/QSM_2.mat", package = "rTwig")
-
-# Import and save QSM
-qsm2 <- import_qsm(file, version = "2.0")
-
-# QSM Info
-summary(qsm2)
-str(qsm2$cylinder)
+str(cylinder)
 ```
 
 ## Cylinder Data
 
-Next, we have to update the parent-child ordering in the cylinder data to allow for calculating growth length and path analysis. Let's save the cylinders to a new variable to make it easier to work with, and check to make sure the parent-child ordering is sequential without any gaps.
+Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis. We need the first cylinder ID to have an index of 0. Let's update the cylinders using the `update_cylinders` function and check to make sure the parent-child ordering is sequential without any gaps.
 
 ```{r, message=FALSE}
-# Save cylinders to new object
-cylinder <- qsm$cylinder
-
 # Update cylinder data
 cylinder <- update_cylinders(cylinder)
 
 # Check ordering
 cylinder %>%
-  select(branch, parent, extension, PositionInBranch) %>%
+  select(branchID, parentID, ID) %>%
   head()
 ```
 
@@ -139,7 +104,7 @@ plot_qsm_cloud(cylinder, cloud, radius = "unmodified")
 
 ## Growth Length
 
-Next we want to calculate the growth length of each cylinder using the `growth_length` function. Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. Let's calculate the growth length for our QSM and check the number of twigs/paths.
+Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. SimpleForest calculates growth length by default, so we don't need to calculate it. However, let's calculate the growth length for our QSM to make sure our function works, and also check the number of twigs/paths in the QSM.
 
 ```{r, message=FALSE}
 # Calculate growth length
@@ -147,8 +112,12 @@ cylinder <- growth_length(cylinder)
 
 # Count the number of twigs/paths
 cylinder %>%
-  filter(length == GrowthLength) %>%
+  filter(length == growthLength) %>%
   nrow()
+
+# Growth length comparison
+cylinder %>%
+  select(ID, growthLength, growthLength2)
 ```
 
 ## Twig Diameters
@@ -176,7 +145,7 @@ summary1
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 1
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = GrowthLength)) +
+  ggplot(aes(x = growthLength, y = radius, color = growthLength)) +
   geom_point() +
   labs(
     title = "Radius vs Growth Length",
@@ -194,9 +163,9 @@ cylinder %>%
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 2
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = branch)) +
+  ggplot(aes(x = growthLength, y = radius, color = branchID)) +
   geom_point() +
-  facet_wrap(~BranchOrder) +
+  facet_wrap(~branchOrder) +
   labs(
     title = "Radius vs Growth Length by Branch Order",
     x = "Growth Length (m)",
@@ -209,7 +178,7 @@ cylinder %>%
   geom_hline(yintercept = .00423)
 ```
 
-Looking at the diagnostic plot on a log log scale, with the measured twig radius as the horizontal line, we can see that nearly all of the twig radii are overestimated, with increasing radii variation as the growth length approaches zero. Except for the main stem, there is not a very clear pattern in the individual branch tapering. 
+Looking at the diagnostic plot on a log log scale, with the measured twig radius as the horizontal line, we can see that all of the twig radii are overestimated, with increasing radii variation as the growth length approaches zero. There is not a very clear pattern in any of the individual branch tapers. 
 
 ## Correct Radii
 
@@ -229,7 +198,7 @@ summary2
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 1
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = GrowthLength)) +
+  ggplot(aes(x = growthLength, y = radius, color = growthLength)) +
   geom_point() +
   labs(
     title = "Radius vs Growth Length",
@@ -247,9 +216,9 @@ cylinder %>%
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 2
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = branch)) +
+  ggplot(aes(x = growthLength, y = radius, color = branchID)) +
   geom_point() +
-  facet_wrap(~BranchOrder) +
+  facet_wrap(~branchOrder) +
   labs(
     title = "Radius vs Growth Length by Branch Order",
     x = "Growth Length (m)",
@@ -262,7 +231,7 @@ cylinder %>%
   geom_hline(yintercept = .00423)
 ```
 
-Here we can see that we reduced the volume of the QSM by around 3 liters, which is around a 15% overestimation in volume before correction. Kentucky coffee tree has relatively large twigs, so the overestimation is not as severe as a tree with much smaller twigs, that can have upwards of \>200% overestimation in some cases.
+Here we can see that we reduced the volume of the QSM by around 8 liters, which is around a 36% overestimation in volume before correction. Kentucky coffee tree has relatively large twigs, so the overestimation is not as severe as a tree with much smaller twigs, that can have upwards of \>200% overestimation in some cases.
 
 Looking at the diagnostic plot, we can see that individual branches can clearly be identified by their unique allometry. Notice how nearly all of the volume reduction occurred in the higher order branches, with the main stem remaining nearly unchanged. The branches now taper towards the measured twig radius for Kentucky coffee tree. Getting the real twig diameter is critical, as too high a value will overestimate volume, and too low a value will underestimate total volume, with the over or underestimate being proportional to the number of twigs and small branches in the tree. If your species is not available in the database, we have found that the genus level twig radius average is a good substitute. 
 
@@ -280,30 +249,28 @@ plot_qsm(cylinder)
 
 ## Workflow & Best Practices
 
-Below is an overview of the typical rTwig processing chain. When dealing with multiple trees, we advise creating a master data frame in a tidy format, where each unique tree is a row, and the columns are the tree id, the directory to the QSM .mat file, and the species twig diameter, all of which can be tailored to your workflow needs. Then it is a simple matter of looping over the master data frame, correcting each tree, and saving the results to a master list. Make sure to read each function's documentation for more examples and unique features.
+Below is an overview of the typical rTwig processing chain. When dealing with multiple trees, we advise creating a master data frame in a tidy format, where each unique tree is a row, and the columns are the tree id, the directory to the QSM .csv file, and the species twig diameter, all of which can be tailored to your workflow needs. Then it is a simple matter of looping over the master data frame, correcting each tree, and saving the results to a master list. Make sure to read each function's documentation for more examples and unique features.
 
 ```{r, eval=FALSE}
 # Import QSM
-file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_qsm(file)
+file <- system.file("extdata/QSM.csv", package = "rTwig")
+cylinder <- read.csv(file)
 
 # Real Twig Main Steps
-cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 
 # Plot Results
-cylinder %>%
-  smooth_qsm() %>%
-  plot_qsm()
+plot_qsm(cylinder, color = "GrowthLength")
 ```
 
 ## Validation
-How do we know if Real Twig returns accurate volume estimates? We rigorously tested our method against a high quality reference data set that were both laser scanner and destructively sampled. The laser scanning was done in leaf-off conditions with a Riegl VZ-400. The destructive sampling contains total branch and main stem dry mass, and also basic density for both the main stem and the branches. We used different versions of TreeQSM with the same input parameters per tree to test our model. 
+How do we know if Real Twig returns accurate volume estimates? We can validate our method against a high quality reference data set that was both laser scanner and destructively sampled. The laser scanning was done in leaf-off conditions with a Riegl VZ-400. The destructive sampling contains total branch and main stem dry mass, and also basic density for both the main stem and the branches. 
 
-#### TreeQSM v2.4.1
-Below are the mass estimates and statistics using TreeQSM v2.4.1 with its built in tapering and Real Twig applied to the same QSMs. 
+It is important to note that Real Twig was not tested with SimpleForest during its development. While Real Twig does improve volume estimates for SimpleForest versus its built in allometric corrections, there are still improvements to be made, as SimpleForest QSM cylinders are generally much more overestimated than TreeQSM cylinders, making the identification of "good" cylinders difficult. 
+
+Below are the mass estimates and statistics using SimpleForest v5.3.2 with its built in vessel volume correction, and Real Twig applied to the same QSMs. 
 
 ```{r, echo=FALSE, results='hide', message=FALSE}
 # Import Data
@@ -321,7 +288,7 @@ factors <- bind_cols(factors, cbPalette) %>%
 # Filter Data
 all_biomass <- all_biomass %>%
   left_join(factors, by = join_by(Version)) %>%
-  filter(Version %in% c("TreeQSM v2.4.1", "Real Twig (TreeQSM v2.4.1)")) %>%
+  filter(Version %in% c("SimpleForest", "Real Twig (SimpleForest)")) %>%
   mutate(id = paste0(SpCode, Tree))
 
 # Total Biomass
@@ -515,7 +482,7 @@ tables <- vector(mode = "list", length(data))
 
 data[[2]] %>%
   gt() %>%
-  tab_header(title = "TreeQSM v2.4.1") %>%
+  tab_header(title = "SimpleForest") %>%
   cols_hide(Version) %>%
   cols_label(
     metric = "Metric",
@@ -539,266 +506,7 @@ data[[2]] %>%
 
 data[[1]] %>%
   gt() %>%
-  tab_header(title = "Real Twig (TreeQSM v2.4.1)") %>%
-  cols_hide(Version) %>%
-  cols_label(
-    metric = "Metric",
-    total = "Total Woody AGB",
-    stem = "Main Stem Biomass",
-    branch = "Branch Biomass"
-  ) %>%
-  cols_align(
-    align = "center",
-    columns = everything()
-  ) %>%
-  tab_options(
-    table.border.top.style = "hidden",
-    table.border.bottom.style = "hidden",
-    table_body.hlines.color = "white",
-    table.font.color = "black",
-    heading.border.bottom.color = "black",
-    column_labels.border.bottom.color = "black",
-    table_body.border.bottom.color = "black"
-  )
-```
-#### TreeQSM v2.3.0
-Below are the mass estimates and statistics using TreeQSM v2.3.0 with its built in tapering and Real Twig applied to the same QSMs. 
-
-```{r, echo=FALSE, results='hide', message=FALSE}
-# Import Data
-file <- system.file("extdata/validation.csv", package = "rTwig")
-all_biomass <- read.csv(file) %>%
-  rename(Version = version)
-
-# Distinct colors
-factors <- distinct(all_biomass, Version)
-cbPalette <- c("#009E73", "#CC79A7", "#56B4E9", "#999999", "#E69F00", "#009E73", "#F0E442", "#0072B2", "#D55E00")
-cbPalette <- cbPalette[1:nrow(factors)]
-factors <- bind_cols(factors, cbPalette) %>%
-  rename(colors = 2)
-
-# Filter Data
-all_biomass <- all_biomass %>%
-  left_join(factors, by = join_by(Version)) %>%
-  filter(Version %in% c("TreeQSM v2.3.0", "Real Twig (TreeQSM v2.3.0)")) %>%
-  mutate(id = paste0(SpCode, Tree))
-
-# Total Biomass
-p1 <- ggplot(data = all_biomass, aes(x = Mt.DS, y = Mt.TLS, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name), ) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_abline() +
-  stat_poly_eq(aes(
-    label = paste(after_stat(eq.label), after_stat(rr.label), sep = "~~~")
-  )) +
-  labs(
-    x = "", # "Reference Biomass (kg)",
-    y = "TLS Biomass (kg)",
-    title = "Total",
-    shape = "Species",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-
-# Main Stem Biomass
-p2 <- ggplot(data = all_biomass, aes(x = Md.DS, y = Md.TLS, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_abline() +
-  stat_poly_eq(aes(
-    label = paste(after_stat(eq.label), after_stat(rr.label), sep = "~~~")
-  )) +
-  labs(
-    x = "", # "Reference Biomass (kg)",
-    y = "", # "TLS Biomass (kg)",
-    title = "Main Stem",
-    shape = "Species",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-
-# Branch Biomass
-p3 <- ggplot(data = all_biomass, aes(x = Mb.DS, y = Mb.TLS, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_abline() +
-  stat_poly_eq(aes(
-    label = paste(after_stat(eq.label), after_stat(rr.label), sep = "~~~")
-  )) +
-  labs(
-    x = "", # "Reference Biomass (kg)",
-    y = "", # "TLS Biomass (kg)",
-    title = "Branch",
-    shape = "Species",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-
-# Total Biomass % Error
-p4 <- ggplot(data = all_biomass, aes(x = Mt.DS, y = tperr, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_hline(yintercept = 0) +
-  labs(
-    x = "", # "Reference Biomass (kg)",
-    y = "% TLS Biomass Error",
-    title = "Total % Error",
-    shape = "Speces",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-
-# Main Stem Biomass % Error
-p5 <- ggplot(data = all_biomass, aes(x = Md.DS, y = sperr, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_hline(yintercept = 0) +
-  labs(
-    x = "Reference Biomass (kg)",
-    y = "", # "% TLS Biomass Error",
-    title = "Main Stem % Error",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-
-# Branch Biomass % Error
-p6 <- ggplot(data = all_biomass, aes(x = Mb.DS, y = tperr, color = Version, fill = Version)) +
-  geom_point(aes(shape = scientific.name)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_hline(yintercept = 0) +
-  labs(
-    x = "", # "Reference Biomass (kg)",
-    y = "", # "% TLS Biomass Error",
-    title = "Branch % Error",
-    shape = "Species",
-    color = "Method",
-    fill = "Method"
-  ) +
-  theme_classic() +
-  scale_color_manual(values = unique(all_biomass$colors)) +
-  scale_fill_manual(values = unique(all_biomass$colors))
-```
-
-```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center',}
-ggarrange(p1, p4, common.legend = TRUE, legend = "bottom")
-ggarrange(p2, p5, common.legend = TRUE, legend = "bottom")
-ggarrange(p3, p6, common.legend = TRUE, legend = "bottom")
-```
-
-```{r, echo=FALSE}
-### TOTALS #####################################################################
-total_stats <- all_biomass %>%
-  group_by(Version) %>%
-  summarize(
-    MRE.pct = mean(tperr),
-    RMSE.kg = sqrt(mean(tdiff^2, na.rm = TRUE)),
-    RRMSE.pct = RMSE.kg / mean(Mt.DS) * 100
-  )
-
-CCC_total <- all_biomass %>%
-  group_by(Version) %>%
-  ccc(Mt.TLS, Mt.DS) %>%
-  select(Version, .estimate) %>%
-  rename(CCC = 2)
-
-total_stats <- left_join(total_stats, CCC_total, by = "Version") %>%
-  mutate(type = "total")
-
-### MAIN STEM ##################################################################
-stem_stats <- all_biomass %>%
-  group_by(Version) %>%
-  summarize(
-    MRE.pct = mean(sperr),
-    RMSE.kg = sqrt(mean(sdif^2, na.rm = TRUE)),
-    RRMSE.pct = RMSE.kg / mean(Md.DS) * 100
-  )
-
-CCC_stem <- all_biomass %>%
-  group_by(Version) %>%
-  ccc(Md.TLS, Md.DS) %>%
-  select(Version, .estimate) %>%
-  rename(CCC = 2)
-
-stem_stats <- left_join(stem_stats, CCC_stem, by = "Version") %>%
-  mutate(type = "stem")
-
-### BRANCHES ###################################################################
-branch_stats <- all_biomass %>%
-  group_by(Version) %>%
-  summarize(
-    MRE.pct = mean(bperr),
-    RMSE.kg = sqrt(mean(bdiff^2, na.rm = TRUE)),
-    RRMSE.pct = RMSE.kg / mean(Mb.DS) * 100
-  )
-
-CCC_branch <- all_biomass %>%
-  group_by(Version) %>%
-  ccc(Mb.TLS, Mb.DS) %>%
-  select(Version, .estimate) %>%
-  rename(CCC = 2)
-
-branch_stats <- left_join(branch_stats, CCC_branch, by = "Version") %>%
-  mutate(type = "branch")
-
-all_stats <- bind_rows(total_stats, stem_stats, branch_stats)
-
-### TABLES ###################################################################
-data <- all_stats %>%
-  mutate_if(is.numeric, round, 3) %>%
-  rename(
-    "Mean Relative Error (%)" = MRE.pct,
-    "RMSE (kg)" = RMSE.kg,
-    "Relative RMSE (%)" = RRMSE.pct
-  ) %>%
-  pivot_longer(cols = 2:5, names_to = "metric", values_to = "value") %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  group_by(Version) %>%
-  group_split()
-
-tables <- vector(mode = "list", length(data))
-
-data[[2]] %>%
-  gt() %>%
-  tab_header(title = "TreeQSM v2.3.0") %>%
-  cols_hide(Version) %>%
-  cols_label(
-    metric = "Metric",
-    total = "Total Woody AGB",
-    stem = "Main Stem Biomass",
-    branch = "Branch Biomass"
-  ) %>%
-  cols_align(
-    align = "center",
-    columns = everything()
-  ) %>%
-  tab_options(
-    table.border.top.style = "hidden",
-    table.border.bottom.style = "hidden",
-    table_body.hlines.color = "white",
-    table.font.color = "black",
-    heading.border.bottom.color = "black",
-    column_labels.border.bottom.color = "black",
-    table_body.border.bottom.color = "black"
-  )
-
-data[[1]] %>%
-  gt() %>%
-  tab_header(title = "Real Twig (TreeQSM v2.3.0)") %>%
+  tab_header(title = "Real Twig (SimpleForest)") %>%
   cols_hide(Version) %>%
   cols_label(
     metric = "Metric",
