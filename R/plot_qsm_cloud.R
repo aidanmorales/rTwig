@@ -45,7 +45,9 @@ plot_qsm_cloud <- function(cylinder, cloud, radius = "modified", cyl_color = "Br
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
 
     # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    if(any(cylinder$extension == 1)) {
+      stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    }
 
     if (cyl_color == "GrowthLength") {
       colors <- colour_values(cylinder$GrowthLength, palette = "viridis")

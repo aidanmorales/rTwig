@@ -38,7 +38,9 @@ plot_qsm <- function(cylinder, radius = "modified", color = "BranchOrder", hover
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
 
     # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    if(any(cylinder$extension == 1)) {
+      stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    }
 
     if (color == "GrowthLength") {
       colors <- colour_values(cylinder$GrowthLength, palette = "viridis")
