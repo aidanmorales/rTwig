@@ -91,7 +91,7 @@ cylinder %>%
 
 ## Topology
 
-Before we correct the QSM, it is often worthwhile to check the quality of the QSM by plotting it against its input point cloud. To do this, we load the point cloud and save it as a data frame, with the first three columns as the x, y, and z columns. We then use the `plot_qsm_cloud` function. We want to check the raw cylinder fits before TreeQSM modified them with its taper filter, so we will set `radius = "unmodified"` as one of our input parameters.
+Before we correct the QSM, it is often worthwhile to check the quality of the QSM by plotting it against its input point cloud. To do this, we load the point cloud and save it as a data frame, with the first three columns as the x, y, and z columns. We do this with the `plot_qsm` function.
 
 ```{r, eval = FALSE}
 # Load the input point cloud
@@ -99,7 +99,7 @@ file <- system.file("extdata/cloud.txt", package = "rTwig")
 cloud <- read.table(file, header = FALSE)
 
 # Plot the qsm and point cloud
-plot_qsm_cloud(cylinder, cloud, radius = "unmodified")
+plot_qsm(cylinder = cylinder, cloud = cloud, radius = cylinder$radius)
 ```
 
 ## Growth Length

@@ -4,14 +4,34 @@
 \alias{plot_qsm}
 \title{Plot QSM}
 \usage{
-plot_qsm(cylinder, radius = "modified", color = "BranchOrder", hover = FALSE)
+plot_qsm(
+  cylinder,
+  radius = NULL,
+  cyl_color = NULL,
+  cyl_palette = NULL,
+  cloud = NULL,
+  pt_color = NULL,
+  pt_size = NULL,
+  axes = TRUE,
+  hover = FALSE
+)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
-\item{radius}{Radius type, as either "modified" or "unmodified". Defaults to "modified".}
+\item{radius}{Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.}
 
-\item{color}{Color QSM by "BranchOrder", "GrowthLength", or a user supplied color. Defaults to BranchOrder. The user supplied color must be a vector or column with the same length as the cylinder data frame.}
+\item{cyl_color}{Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.}
+
+\item{cyl_palette}{Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.}
+
+\item{cloud}{Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM.}
+
+\item{pt_color}{Color of the point cloud. Defaults to black.}
+
+\item{pt_size}{Size of the points as a number. Defaults to 0.1.}
+
+\item{axes}{Show plot axes. Defaults to TRUE.}
 
 \item{hover}{Show cylinder ID and branch on mouse hover. Defaults to FALSE.}
 }
@@ -34,9 +54,25 @@ plot_qsm(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 4.23)
-plot_qsm(cylinder, radius = "modified", color = "GrowthLength")
+cylinder2 <- read.csv(file)
+cylinder2 <- update_cylinders(cylinder2)
+cylinder2 <- correct_radii(cylinder2, twigRad = 4.23)
+plot_qsm(cylinder2)
+
+## All Parameters
+file2 <- system.file("extdata/cloud.txt", package = "rTwig")
+cloud <- read.table(file2, header = FALSE)
+
+plot_qsm(
+  cylinder,
+  radius = cylinder$UnmodRadius,
+  cyl_color = cylinder$GrowthLength,
+  cyl_palette = "viridis",
+  cloud = cloud,
+  pt_color = "white",
+  pt_size = 1,
+  axes = FALSE
+  hover = TRUE
+)
 }
 }
