@@ -22,8 +22,8 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 RdMacros: Rdpack
-Imports: igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs, zoo,
-        parallel, doParallel, doSNOW, foreach, rgl, colourvalues,
+Imports: igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs,
+        foreach, future, doFuture, progressr, rgl, colourvalues,
         Rdpack, DescTools, kit, purrr, rmatio, Matrix (>= 1.6-3), randomcoloR
 License: MIT + file LICENSE
 Depends: R (>= 2.10)

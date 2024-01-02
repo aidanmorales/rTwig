@@ -15,7 +15,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @import tibble
-#' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing))
+#' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
 #' @references {
 #'   \insertRef{growth_parameter1}{rTwig}
