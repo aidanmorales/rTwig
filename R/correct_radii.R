@@ -4,6 +4,7 @@
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param twigRad Twig radius in millimeters
+#' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #'
 #' @return Returns a data frame
 #' @export
@@ -25,7 +26,6 @@
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- growth_length(cylinder)
 #' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' str(cylinder)
 #'
@@ -33,11 +33,10 @@
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- growth_length(cylinder)
 #' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' str(cylinder)
 #' }
-correct_radii <- function(cylinder, twigRad) {
+correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
   # Converts twig radius to meters
   twigRad <- twigRad / 1000
@@ -53,7 +52,7 @@ correct_radii <- function(cylinder, twigRad) {
 
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(cylinder, .data$branch == 1)
-    stem <- min(which(stem$totChildren > 1))
+    stem <- min(which(stem$totalChildren > 1))
 
     # Creates path network
     g <- data.frame(parent = cylinder$parent, extension = cylinder$extension)
@@ -71,10 +70,14 @@ correct_radii <- function(cylinder, twigRad) {
 
     if (nzchar(chk) && chk == "TRUE") {
       # Use 2 cores to pass checks
-      future::plan(multisession, workers = 2)
+      oplan <- future::plan(sequential)
     } else {
       # Use all cores for end-users
-      future::plan(multisession, workers = availableCores())
+      if(backend == "sequential"){
+        oplan <- future::plan(backend)
+      } else{
+        oplan <- future::plan(backend, workers = availableCores())
+      }
     }
 
     # Set dynamic progress bar
@@ -100,7 +103,7 @@ correct_radii <- function(cylinder, twigRad) {
     bad_fit1 <- NULL
     bad_fit2 <- NULL
     bad_fit3 <- NULL
-    totChildren <- NULL
+    totalChildren <- NULL
 
     message("Correcting Branch Paths")
 
@@ -109,7 +112,7 @@ correct_radii <- function(cylinder, twigRad) {
       # Progress Bar
       p <- progressor(along = 1:length(paths))
 
-      results <- foreach(i = 1:length(paths), .inorder = FALSE) %dofuture% {
+      results <- foreach(i = 1:length(paths), .inorder = FALSE, .options.future = list(packages = c("dplyr", "cobs"))) %dofuture% {
         # Identify Good Cylinder Fits --------------------------------------------
 
         # Extracts cylinders for each unique path
@@ -202,7 +205,7 @@ correct_radii <- function(cylinder, twigRad) {
                 filter(!branch == 1) %>%
                 slice_head(n = 1), branch)
             )) %>%
-            filter(totChildren >= 2) %>%
+            filter(totalChildren >= 2) %>%
             nrow()
 
           # Bypasses dead branch filter if branch is alive in 1st order
@@ -262,7 +265,7 @@ correct_radii <- function(cylinder, twigRad) {
             TRUE ~ radius
           ))
 
-        # Diagnostic Graph -------------------------------------------------------
+        # Diagnostic Graph -----------------------------------------------------
 
         # path_cyl %>%
         #   mutate(fit = predict(model, path_cyl$GrowthLength)[, 2]) %>%
@@ -333,7 +336,7 @@ correct_radii <- function(cylinder, twigRad) {
 
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(cylinder, .data$branchID == 0)
-    stem <- min(which(stem$totChildren > 1))
+    stem <- min(which(stem$totalChildren > 1))
 
     # Creates path network
     g <- data.frame(parent = cylinder$parentID, extension = cylinder$ID)
@@ -351,10 +354,14 @@ correct_radii <- function(cylinder, twigRad) {
 
     if (nzchar(chk) && chk == "TRUE") {
       # Use 2 cores to pass checks
-      future::plan(multisession, workers = 2)
+      oplan <- future::plan(sequential)
     } else {
       # Use all cores for end-users
-      future::plan(multisession, workers = availableCores())
+      if(backend == "sequential"){
+        oplan <- future::plan(backend)
+      } else{
+        oplan <- future::plan(backend, workers = availableCores())
+      }
     }
 
     # Set dynamic progress bar
@@ -380,7 +387,7 @@ correct_radii <- function(cylinder, twigRad) {
     bad_fit1 <- NULL
     bad_fit2 <- NULL
     bad_fit3 <- NULL
-    totChildren <- NULL
+    totalChildren <- NULL
 
     message("Correcting Branch Paths")
 
@@ -390,7 +397,7 @@ correct_radii <- function(cylinder, twigRad) {
       p <- progressor(along = 1:length(paths))
 
       results <- foreach(i = 1:length(paths), .inorder = FALSE) %dofuture% {
-        # Identify Good Cylinder Fits --------------------------------------------
+        # Identify Good Cylinder Fits ------------------------------------------
 
         # Extracts cylinders for each unique path
         cyl_id <- sort(as.numeric(names(paths[[i]])))
@@ -454,7 +461,7 @@ correct_radii <- function(cylinder, twigRad) {
           filter(bad_fit == 0) %>%
           select(x = growthLength, y = radius)
 
-        # Dead Branch Filter -----------------------------------------------------
+        # Dead Branch Filter ---------------------------------------------------
 
         # Identifies dead or broken branches and removes any real twig tapering
         # Dead branches have <= 1 child branch in the 1st order branches
@@ -481,7 +488,7 @@ correct_radii <- function(cylinder, twigRad) {
                 filter(!branchID == 0) %>%
                 slice_head(n = 1), branchID)
             )) %>%
-            filter(totChildren >= 2) %>%
+            filter(totalChildren >= 2) %>%
             nrow()
 
           # Bypasses dead branch filter if branch is alive in 1st order
@@ -504,7 +511,7 @@ correct_radii <- function(cylinder, twigRad) {
           max_rad_ord <- 0
         }
 
-        # Fit Monotonic GAM ------------------------------------------------------
+        # Fit Monotonic GAM ----------------------------------------------------
 
         # Forces model intercept through the minimum twig diameter (twigRad)
         matrix <- matrix(ncol = 3, nrow = 1, byrow = TRUE)
@@ -540,7 +547,7 @@ correct_radii <- function(cylinder, twigRad) {
             TRUE ~ radius
           ))
 
-        # Diagnostic Graph -------------------------------------------------------
+        # Diagnostic Graph -----------------------------------------------------
 
         # path_cyl %>%
         #   mutate(fit = predict(model, path_cyl$growthLength)[, 2]) %>%
@@ -624,4 +631,7 @@ correct_radii <- function(cylinder, twigRad) {
     )
   }
   return(cylinder)
+
+  # Future Package Cleanup
+  on.exit(plan(oplan), add = TRUE)
 }

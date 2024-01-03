@@ -77,7 +77,7 @@ str(cylinder)
 
 ## Cylinder Data
 
-Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis. We need the first cylinder ID to have an index of 0. Let's update the cylinders using the `update_cylinders` function and check to make sure the parent-child ordering is sequential without any gaps.
+Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis. We need the first cylinder ID to have an index of 0. Let's update the cylinders using the `update_cylinders` function and check to make sure the parent-child ordering is sequential without any gaps. Many of the extra QSM variables are all ready included with SimpleForest QSMs, so they are only calculated in this step if they are missing. 
 
 ```{r, message=FALSE}
 # Update cylinder data
@@ -100,24 +100,6 @@ cloud <- read.table(file, header = FALSE)
 
 # Plot the qsm and point cloud
 plot_qsm(cylinder = cylinder, cloud = cloud, radius = cylinder$radius)
-```
-
-## Growth Length
-
-Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. SimpleForest calculates growth length by default, so we don't need to calculate it. However, let's calculate the growth length for our QSM to make sure our function works, and also check the number of twigs/paths in the QSM.
-
-```{r, message=FALSE}
-# Calculate growth length
-cylinder <- growth_length(cylinder)
-
-# Count the number of twigs/paths
-cylinder %>%
-  filter(length == growthLength) %>%
-  nrow()
-
-# Growth length comparison
-cylinder %>%
-  select(ID, growthLength, growthLength2)
 ```
 
 ## Twig Diameters
@@ -237,14 +219,19 @@ Looking at the diagnostic plot, we can see that individual branches can clearly 
 
 ## Smoothing & Visualization
 
-Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm` function, and plot the results with the `plot_qsm` function.
+Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm` function, and plot the results with the `plot_qsm` function. The different colors are the different branch orders. We can also color our QSM by many different variables and palettes. See the `plot_qsm` documentation for more details. 
 
 ```{r, eval=FALSE}
-# Smooth QSM
-cylinder <- smooth_qsm(cylinder)
-
 # Plot QSM
 plot_qsm(cylinder)
+
+# QSM Custom Colors & Piping
+cylinder %>% 
+  plot_qsm(
+  radius = .$radius,
+  cyl_color = .$reverseBranchOrder,
+  cyl_palette = "magma"
+)
 ```
 
 ## Workflow & Best Practices
@@ -258,7 +245,6 @@ cylinder <- read.csv(file)
 
 # Real Twig Main Steps
 cylinder <- update_cylinders(cylinder)
-cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 
 # Plot Results

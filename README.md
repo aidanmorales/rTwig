@@ -77,7 +77,6 @@ vignettes for more details on a general workflow and best practices.
  
  # Correct the cylinders
  qsm$cylinder <- update_cylinders(qsm$cylinder)
- qsm$cylinder <- growth_length(qsm$cylinder)
  qsm$cylinder <- correct_radii(qsm$cylinder, twigRad = 4.23)
  
  # Plot the result
@@ -94,7 +93,7 @@ vignettes for more details on a general workflow and best practices.
  qsm <- read.csv(file)
  
  # Correct the cylinders
- qsm <- update_qsms(qsm)
+ qsm <- update_cylinders(qsm)
  qsm <- correct_radii(qsm, twigRad = 4.23)
  
  # Plot the result

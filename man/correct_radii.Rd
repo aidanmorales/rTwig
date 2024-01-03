@@ -4,12 +4,14 @@
 \alias{correct_radii}
 \title{Correct Radii}
 \usage{
-correct_radii(cylinder, twigRad)
+correct_radii(cylinder, twigRad, backend = "multisession")
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
 \item{twigRad}{Twig radius in millimeters}
+
+\item{backend}{Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.}
 }
 \value{
 Returns a data frame
@@ -24,7 +26,6 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 str(cylinder)
 
@@ -32,7 +33,6 @@ str(cylinder)
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
-cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 str(cylinder)
 }

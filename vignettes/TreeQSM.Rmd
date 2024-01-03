@@ -109,7 +109,7 @@ str(qsm2$cylinder)
 
 ## Cylinder Data
 
-Next, we have to update the parent-child ordering in the cylinder data to allow for calculating growth length and path analysis. Let's save the cylinders to a new variable to make it easier to work with, and check to make sure the parent-child ordering is sequential without any gaps.
+Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis and add some new QSM variables. The most important QSM variable is growth length. Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. The reverse branch order (RBO) is another important variable. The RBO assigns an order of 1 to the twigs, and works backwards to the base of the main stem, which has the highest RBO. This makes problematic twig cylinders easy to identify. Let's save the cylinders to a new variable to make it easier to work with, check to make sure the parent-child ordering is sequential without any gaps, and look at the new variables.
 
 ```{r, message=FALSE}
 # Save cylinders to new object
@@ -121,6 +121,11 @@ cylinder <- update_cylinders(cylinder)
 # Check ordering
 cylinder %>%
   select(branch, parent, extension, PositionInBranch) %>%
+  head()
+
+# Check New Variables 
+cylinder %>% 
+  select(reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment) %>% 
   head()
 ```
 
@@ -137,20 +142,6 @@ cloud <- read.table(file, header = FALSE)
 plot_qsm(cylinder = cylinder, cloud = cloud, radius = cylinder$UnmodRadius)
 ```
 
-## Growth Length
-
-Next we want to calculate the growth length of each cylinder using the `growth_length` function. Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. Let's calculate the growth length for our QSM and check the number of twigs/paths.
-
-```{r, message=FALSE}
-# Calculate growth length
-cylinder <- growth_length(cylinder)
-
-# Count the number of twigs/paths
-cylinder %>%
-  filter(length == GrowthLength) %>%
-  nrow()
-```
-
 ## Twig Diameters
 
 Before we can correct the QSM radii, we need to know what our real twig diameter is. For this example tree, the species is a Kentucky coffee tree (*Gymnocladus dioicus*), which has nice, stout twigs. rTwig comes with a data base of twigs that can be called by typing in the `twigs` data set. The data set includes the average twig radius, the min and max radius, the standard deviation, and the coefficient of variation. Let's look at the twig data set and find the twig diameter for Kentucky coffee tree.
@@ -165,12 +156,16 @@ filter(twigs, scientific.name == "Gymnocladus dioicus")
 
 ## Summary Metrics
 
-Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary` function. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
+Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large butress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
 
 ```{r, message = FALSE}
 # QSM summary
 summary1 <- qsm_summary(cylinder)
 summary1
+
+# QSM summary with Triangulation
+summary2 <- qsm_summary(cylinder = cylinder, triangulation = qsm$triangulation)
+summary2
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
@@ -268,7 +263,7 @@ Looking at the diagnostic plot, we can see that individual branches can clearly 
 
 ## Smoothing & Visualization
 
-Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm` function, and plot the results with the `plot_qsm` function. The different colors are the different branch orders.
+Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm` function, and plot the results with the `plot_qsm` function. The different colors are the different branch orders. We can also color our QSM by many different variables and palettes. See the `plot_qsm` documentation for more details. 
 
 ```{r, eval=FALSE}
 # Smooth QSM
@@ -276,6 +271,14 @@ cylinder <- smooth_qsm(cylinder)
 
 # Plot QSM
 plot_qsm(cylinder)
+
+# QSM Custom Colors & Piping
+cylinder %>% 
+  plot_qsm(
+  radius = .$radius,
+  cyl_color = .$reverseBranchOrder,
+  cyl_palette = "magma"
+)
 ```
 
 ## Workflow & Best Practices
@@ -290,13 +293,10 @@ qsm <- import_qsm(file)
 # Real Twig Main Steps
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 
 # Plot Results
-cylinder %>%
-  smooth_qsm() %>%
-  plot_qsm()
+plot_qsm(cylinder)
 ```
 
 ## Validation

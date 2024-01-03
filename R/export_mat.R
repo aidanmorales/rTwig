@@ -18,15 +18,13 @@
 #' qsm <- import_qsm("foo.mat")
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- growth_length(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' export_mat(cylinder, "foo_corrected.mat")
 #'
 #' ## SimpleForest Processing Chain
 #' cylinder <- read.csv("foo.csv")
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- growth_length(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
+#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' export_mat(cylinder, "foo_corrected.mat")
 #' }
 export_mat <- function(cylinder, filename) {

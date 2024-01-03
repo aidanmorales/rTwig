@@ -1,13 +1,34 @@
 #' Update Cylinders
 #'
-#' @description Updates the QSM cylinder data in preparation for growth length and path analysis calculations
+#' @description Updates the QSM cylinder data in preparation for radii correction
+#'
+#' @details Updates parent-child branch and cylinder relationships to fill in any gaps.
+#' Three additional useful QSM metrics developed by Jan Hackenberg are also calculated.
+#' Growth length is the length of a parent cylinder, plus the lengths of all of
+#' its child cylinders. The segment is a portion of a branch between two branching nodes.
+#' The reverse branch order assigns twigs as order 1 and works backwards at each
+#' branching junction to the base of the stem, which has the largest reverse branch order.
 #'
 #' @param cylinder QSM cylinder data frame
+#' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #'
 #' @return Returns a data frame
 #' @export
 #'
 #' @import dplyr
+#' @import tidyr
+#' @import tibble
+#' @import future
+#' @import foreach
+#' @import doFuture
+#' @import progressr
+#' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
+#'
+#' @references {
+#'   \insertRef{growth_parameter1}{rTwig}
+#'
+#'   \insertRef{growth_parameter2}{rTwig}
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -24,11 +45,12 @@
 #' cylinder <- update_cylinders(cylinder)
 #' str(cylinder)
 #' }
-update_cylinders <- function(cylinder) {
-  message("Updating cylinder")
-
+update_cylinders <- function(cylinder, backend = "multisession") {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+    message("Updating Cylinder Ordering")
+
+    # Branch Ordering ----------------------------------------------------------
 
     # Updates branch numbers
     cylinder <- cylinder %>%
@@ -55,6 +77,8 @@ update_cylinders <- function(cylinder) {
       rename("branch" = .data$branch_new) %>%
       arrange(.data$id)
 
+    # Parent Child Ordering ----------------------------------------------------
+
     # Updates parent child ordering
     temp <- cylinder %>%
       select(.data$parent, .data$id) %>%
@@ -74,31 +98,192 @@ update_cylinders <- function(cylinder) {
       select(-.data$parent, -.data$id) %>%
       bind_cols(newID) %>%
       relocate(.data$parent, .after = .data$branch) %>%
-      relocate(.data$id, .after = .data$parent)
+      relocate(.data$id, .after = .data$parent) %>%
+      rename(extension = .data$id)
+
+    # Total Children -----------------------------------------------------------
 
     # Adds supported children for each cylinder
     tot_children <- cylinder %>%
       group_by(.data$parent) %>%
-      summarize(totChildren = n())
+      summarize(totalChildren = n())
 
     # Joins total children
     cylinder <- cylinder %>%
       left_join(tot_children, by = "parent")
 
-    # Adds cylinder info for plotting and converts to local coordinate system
+    # Growth Length ------------------------------------------------------------
+
+    message("Calculating Growth Length")
+
+    # Find cylinder relationships and paths
+    g <- data.frame(parent = cylinder$parent, extension = cylinder$extension)
+    g <- igraph::graph_from_data_frame(g) - 1
+    g <- igraph::permute(g, match(igraph::V(g)$name, cylinder$extension))
+
+    paths <- igraph::ego(g, order = igraph::vcount(g), mode = "out")
+
+    # Calculate growth length
+    GrowthLength <- paths %>%
+      enframe() %>%
+      unnest(cols = c(.data$value)) %>%
+      rename(index = .data$name, extension = .data$value) %>%
+      mutate_all(as.double) %>%
+      left_join(cylinder %>%
+        select(.data$extension, .data$length), by = "extension") %>%
+      select(extension = .data$index, .data$length) %>%
+      group_by(.data$extension) %>%
+      summarize(GrowthLength = sum(.data$length, na.rm = TRUE))
+
+    # Joins growth length
+    cylinder <- left_join(cylinder, GrowthLength, by = "extension")
+
+    # Reverse Branch Order -----------------------------------------------------
+
+    message("Calculating Reverse Branch Order")
+
+    # Creates path network
+    g <- data.frame(parent = cylinder$parent, extension = cylinder$extension)
+    g <- igraph::graph_from_data_frame(g)
+
+    starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
+    finals <- igraph::V(g)[igraph::degree(g, mode = "out") == 0]
+
+    paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
+
+    # Initialize parallel workers
+    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+    if (nzchar(chk) && chk == "TRUE") {
+      # Use 2 cores to pass checks
+      oplan <- future::plan(sequential)
+    } else {
+      # Use all cores for end-users
+      if(backend == "sequential"){
+        oplan <- future::plan(backend)
+      } else{
+        oplan <- future::plan(backend, workers = availableCores())
+      }
+    }
+
+    # Set dynamic progress bar
+    if ((Sys.getenv("RSTUDIO") == "1") &&
+      !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
+      progressr::handlers("rstudio", append = TRUE)
+    }
+
+    # Define global variables to pass devtools::check()
+    i <- NULL
+    new <- NULL
+    temp <- NULL
+    extension <- NULL
+    totalChildren <- NULL
+
+    # Calculates Reverse Branch Order
+    with_progress({
+      p <- progressor(along = 1:length(paths))
+
+      results <- foreach(i = 1:length(paths), .inorder = FALSE, .options.future = list(packages = "dplyr")) %dofuture% {
+        # Extracts cylinders for each unique path
+        cyl_id <- sort(as.numeric(names(paths[[i]])))
+
+        # Calculates Reverse Branch Order
+        path_cyl <- filter(cylinder, extension %in% cyl_id)
+        path_cyl$temp <- cumsum(c(0, as.numeric(diff(path_cyl$totalChildren, 1)) != 0))
+
+        path_cyl <- path_cyl %>%
+          mutate(temp = case_when(
+            !extension == 1 & lag(totalChildren) == 1 ~ lag(as.double(temp), 1),
+            TRUE ~ temp
+          ))
+
+        order <- path_cyl %>%
+          distinct(temp) %>%
+          mutate(
+            new = 1:n(),
+            reverseBranchOrder = abs(new - max(new)) + 1
+          )
+
+        path_cyl <- left_join(path_cyl, order, by = join_by(temp))
+
+        p(sprintf("i=%g", i))
+
+        return(path_cyl)
+      }
+    })
+
+    # Joins reverse branch order
+    reverse_order <- data.table::rbindlist(results) %>%
+      group_by(.data$extension) %>%
+      summarize(reverseBranchOrder = max(.data$reverseBranchOrder))
+
+    cylinder <- left_join(cylinder, reverse_order, by = "extension")
+
+    # Branch Segments ----------------------------------------------------------
+
+    # Calculates Branch Segments
+    segments <- cylinder %>%
+      distinct(.data$branch, .data$reverseBranchOrder) %>%
+      mutate(segment = 1:n())
+
+    # Joins branch segments
+    cylinder <- left_join(cylinder, segments, by = join_by("branch", "reverseBranchOrder"))
+
+    # Calculates Parent Segments
+    parents <- cylinder %>%
+      select(.data$extension, .data$segment)
+
+    children <- cylinder %>%
+      select(extension = .data$parent, childSegment = .data$segment) %>%
+      distinct(.data$childSegment, .keep_all = TRUE)
+
+    segments2 <- left_join(parents, children) %>%
+      drop_na() %>%
+      select(segment = .data$childSegment, parentSegment = .data$segment)
+
+    # Joins parent segments
+    cylinder <- left_join(cylinder, segments2, by = join_by("segment"))
+    cylinder <- mutate(cylinder, parentSegment = replace_na(.data$parentSegment, 0))
+
+    # Plotting Info ------------------------------------------------------------
+
+    # Adds cylinder endpoints for plotting
     cylinder <- cylinder %>%
       mutate(
-        # start.z = .data$start.z - min(.data$start.z),
         end.x = .data$start.x + (.data$axis.x * .data$length),
         end.y = .data$start.y + (.data$axis.y * .data$length),
         end.z = .data$start.z + (.data$axis.z * .data$length)
       ) %>%
       relocate(.data$end.x, .after = .data$axis.z) %>%
       relocate(.data$end.y, .after = .data$end.x) %>%
-      relocate(.data$end.z, .after = .data$end.y) %>%
-      mutate(radius = .data$UnmodRadius) %>%
-      rename(extension = id)
+      relocate(.data$end.z, .after = .data$end.y)
 
+    # Save All Radii -----------------------------------------------------------
+    cylinder <- cylinder %>%
+      mutate(OldRadius = .data$radius, radius = .data$UnmodRadius)
+
+    # Organize Cylinders  ------------------------------------------------------
+
+    if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
+        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
+        relocate(.data$reverseBranchOrder, .after = .data$BranchOrder) %>%
+        relocate(.data$segment, .after = .data$PositionInBranch) %>%
+        relocate(.data$parentSegment, .after = .data$segment) %>%
+        relocate(.data$UnmodRadius:.data$mad, .after = .data$end.z) %>%
+        relocate(.data$GrowthLength, .after = .data$mad) %>%
+        relocate(.data$mad, .after = .data$end.z) %>%
+        relocate(.data$SurfCov, .after = .data$mad)
+    } else {
+      cylinder <- cylinder %>%
+        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
+        relocate(.data$reverseBranchOrder, .after = .data$BranchOrder) %>%
+        relocate(.data$segment, .after = .data$PositionInBranch) %>%
+        relocate(.data$parentSegment, .after = .data$segment) %>%
+        relocate(.data$UnmodRadius, .after = .data$end.z) %>%
+        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
+        relocate(.data$GrowthLength, .after = .data$OldRadius)
+    }
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Adds cylinder info for plotting
@@ -117,7 +302,7 @@ update_cylinders <- function(cylinder) {
     # Adds supported children for each cylinder
     tot_children <- cylinder %>%
       group_by(.data$parentID) %>%
-      summarize(totChildren = n())
+      summarize(totalChildren = n())
 
     # Joins total children
     cylinder <- cylinder %>%
@@ -132,6 +317,41 @@ update_cylinders <- function(cylinder) {
       ungroup() %>%
       relocate(.data$branchNew, .after = .data$branchID) %>%
       relocate(.data$positionInBranch, .after = .data$branchNew)
+
+    # Calculates Growth Length if Missing
+    if (!"growthLength" %in% colnames(cylinder)) {
+      message("Calculating Growth Length")
+
+      cylinder <- cylinder %>%
+        mutate(
+          ID = .data$ID + 1,
+          parentID = .data$parentID + 1
+        )
+
+      g <- data.frame(parent = cylinder$parentID, id = cylinder$ID)
+      g <- igraph::graph_from_data_frame(g) - 1
+      g <- igraph::permute(g, match(V(g)$name, cylinder$ID))
+
+      paths <- igraph::ego(g, order = vcount(g), mode = "out")
+
+      GrowthLength <- paths %>%
+        enframe() %>%
+        unnest(cols = c(.data$value)) %>%
+        rename(index = .data$name, ID = .data$value) %>%
+        mutate_all(as.double) %>%
+        left_join(cylinder %>%
+          select(.data$ID, .data$length), by = "ID") %>%
+        select(ID = .data$index, .data$length) %>%
+        group_by(.data$ID) %>%
+        summarize(growthLength2 = sum(.data$length, na.rm = TRUE))
+
+      cylinder <- left_join(cylinder, GrowthLength, by = "ID") %>%
+        mutate(
+          ID = .data$ID - 1,
+          parentID = .data$parentID - 1
+        ) %>%
+        relocate(.data$growthLength2, .after = .data$growthLength)
+    }
   } else {
     message(
       "Invalid Dataframe Supplied!!!
@@ -140,4 +360,7 @@ update_cylinders <- function(cylinder) {
     )
   }
   return(cylinder)
+
+  # Future Package Cleanup
+  on.exit(plan(oplan), add = TRUE)
 }

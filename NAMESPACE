@@ -3,7 +3,6 @@
 export(box_dimension)
 export(correct_radii)
 export(export_mat)
-export(growth_length)
 export(import_qsm)
 export(plot_qsm)
 export(plot_stand)

@@ -48,7 +48,6 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- growth_length(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 plot_qsm(cylinder)
 

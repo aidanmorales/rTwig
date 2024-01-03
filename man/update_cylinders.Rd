@@ -4,16 +4,26 @@
 \alias{update_cylinders}
 \title{Update Cylinders}
 \usage{
-update_cylinders(cylinder)
+update_cylinders(cylinder, backend = "multisession")
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
+
+\item{backend}{Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.}
 }
 \value{
 Returns a data frame
 }
 \description{
-Updates the QSM cylinder data in preparation for growth length and path analysis calculations
+Updates the QSM cylinder data in preparation for radii correction
+}
+\details{
+Updates parent-child branch and cylinder relationships to fill in any gaps.
+Three additional useful QSM metrics developed by Jan Hackenberg are also calculated.
+Growth length is the length of a parent cylinder, plus the lengths of all of
+its child cylinders. The segment is a portion of a branch between two branching nodes.
+The reverse branch order assigns twigs as order 1 and works backwards at each
+branching junction to the base of the stem, which has the largest reverse branch order.
 }
 \examples{
 \dontrun{
@@ -29,5 +39,12 @@ file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 str(cylinder)
+}
+}
+\references{
+{
+\insertRef{growth_parameter1}{rTwig}
+
+\insertRef{growth_parameter2}{rTwig}
 }
 }

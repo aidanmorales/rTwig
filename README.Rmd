@@ -67,7 +67,6 @@ Below are examples of how to quickly run Real Twig on TreeQSM and SimpleForest Q
  
  # Correct the cylinders
  qsm$cylinder <- update_cylinders(qsm$cylinder)
- qsm$cylinder <- growth_length(qsm$cylinder)
  qsm$cylinder <- correct_radii(qsm$cylinder, twigRad = 4.23)
  
  # Plot the result
@@ -84,7 +83,7 @@ Below are examples of how to quickly run Real Twig on TreeQSM and SimpleForest Q
  qsm <- read.csv(file)
  
  # Correct the cylinders
- qsm <- update_qsms(qsm)
+ qsm <- update_cylinders(qsm)
  qsm <- correct_radii(qsm, twigRad = 4.23)
  
  # Plot the result
