@@ -47,7 +47,7 @@
 #'   cloud = cloud,
 #'   pt_color = "white",
 #'   pt_size = 1,
-#'   axes = FALSE
+#'   axes = FALSE,
 #'   hover = TRUE
 #' )
 #' }

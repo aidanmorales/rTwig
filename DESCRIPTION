@@ -14,9 +14,9 @@ Authors@R:
       email = "macfar24@msu.edu", 
       role = "aut")
   )
-Description: Tools for correcting branch overestimation in quantitative structure models (QSMs), fractal analysis of point clouds, and a database of twig diameters. 
-    Overstimated cylinder radii of twigs in QSMs are corrected using measured twig diameters of corresponding tree species and network analysis. 
-    Supported QSM software includes TreeQSM and SimpleForest. 
+Description: Tools for correcting branch overestimation in quantitative structure models ('QSM'), fractal analysis of point clouds, and a database of twig diameters. 
+    Overestimated cylinder radii of twigs are corrected using measured twig diameters of corresponding tree species and network analysis. 
+    Supported software includes 'TreeQSM' and 'SimpleForest'. 
     Fractal analysis uses the box counting method. 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -26,7 +26,7 @@ Imports: igraph, dplyr, R.matlab, tibble, tidyr, data.table, cobs,
         foreach, future, doFuture, progressr, rgl, colourvalues,
         Rdpack, DescTools, kit, purrr, rmatio, Matrix (>= 1.6-3), randomcoloR
 License: MIT + file LICENSE
-Depends: R (>= 2.10)
+Depends: R (>= 3.5.0)
 LazyData: true
 Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick
 VignetteBuilder: knitr

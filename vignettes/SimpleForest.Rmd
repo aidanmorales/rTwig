@@ -514,3 +514,8 @@ data[[1]] %>%
     table_body.border.bottom.color = "black"
   )
 ```
+
+```{r, echo=FALSE, message=FALSE}
+# Future Package Cleanup
+future::plan("sequential")
+```

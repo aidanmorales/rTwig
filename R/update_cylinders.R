@@ -156,7 +156,7 @@ update_cylinders <- function(cylinder, backend = "multisession") {
 
     if (nzchar(chk) && chk == "TRUE") {
       # Use 2 cores to pass checks
-      oplan <- future::plan(sequential)
+      oplan <- future::plan(multisession, workers = 2)
     } else {
       # Use all cores for end-users
       if(backend == "sequential"){
@@ -362,5 +362,11 @@ update_cylinders <- function(cylinder, backend = "multisession") {
   return(cylinder)
 
   # Future Package Cleanup
-  on.exit(plan(oplan), add = TRUE)
+  chk <- Sys.getenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_", "")
+
+  if (nzchar(chk) && chk == "TRUE") {
+    future::plan("sequential")
+  } else{
+    on.exit(plan(oplan), add = TRUE)
+  }
 }
