@@ -4,12 +4,10 @@
 \alias{update_cylinders}
 \title{Update Cylinders}
 \usage{
-update_cylinders(cylinder, backend = "multisession")
+update_cylinders(cylinder)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
-
-\item{backend}{Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.}
 }
 \value{
 Returns a data frame

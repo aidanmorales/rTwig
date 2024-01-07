@@ -10,7 +10,6 @@
 #' branching junction to the base of the stem, which has the largest reverse branch order.
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #'
 #' @return Returns a data frame
 #' @export
@@ -18,10 +17,6 @@
 #' @import dplyr
 #' @import tidyr
 #' @import tibble
-#' @import future
-#' @import foreach
-#' @import doFuture
-#' @import progressr
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
 #' @references {
@@ -45,9 +40,10 @@
 #' cylinder <- update_cylinders(cylinder)
 #' str(cylinder)
 #' }
-update_cylinders <- function(cylinder, backend = "multisession") {
+update_cylinders <- function(cylinder) {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
     message("Updating Cylinder Ordering")
 
     # Branch Ordering ----------------------------------------------------------
@@ -151,73 +147,25 @@ update_cylinders <- function(cylinder, backend = "multisession") {
 
     paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
 
-    # Initialize parallel workers
-    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-
-    if (nzchar(chk) && chk == "TRUE") {
-      # Use 2 cores to pass checks
-      oplan <- future::plan(multisession, workers = 2)
-    } else {
-      # Use all cores for end-users
-      if(backend == "sequential"){
-        oplan <- future::plan(backend)
-      } else{
-        oplan <- future::plan(backend, workers = availableCores())
-      }
-    }
-
-    # Set dynamic progress bar
-    if ((Sys.getenv("RSTUDIO") == "1") &&
-      !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
-      progressr::handlers("rstudio", append = TRUE)
-    }
-
-    # Define global variables to pass devtools::check()
-    i <- NULL
-    new <- NULL
-    temp <- NULL
-    extension <- NULL
-    totalChildren <- NULL
-
-    # Calculates Reverse Branch Order
-    with_progress({
-      p <- progressor(along = 1:length(paths))
-
-      results <- foreach(i = 1:length(paths), .inorder = FALSE, .options.future = list(packages = "dplyr")) %dofuture% {
-        # Extracts cylinders for each unique path
-        cyl_id <- sort(as.numeric(names(paths[[i]])))
-
-        # Calculates Reverse Branch Order
-        path_cyl <- filter(cylinder, extension %in% cyl_id)
-        path_cyl$temp <- cumsum(c(0, as.numeric(diff(path_cyl$totalChildren, 1)) != 0))
-
-        path_cyl <- path_cyl %>%
-          mutate(temp = case_when(
-            !extension == 1 & lag(totalChildren) == 1 ~ lag(as.double(temp), 1),
-            TRUE ~ temp
-          ))
-
-        order <- path_cyl %>%
-          distinct(temp) %>%
-          mutate(
-            new = 1:n(),
-            reverseBranchOrder = abs(new - max(new)) + 1
-          )
-
-        path_cyl <- left_join(path_cyl, order, by = join_by(temp))
-
-        p(sprintf("i=%g", i))
-
-        return(path_cyl)
-      }
-    })
-
-    # Joins reverse branch order
-    reverse_order <- data.table::rbindlist(results) %>%
+    # Calculates Branch Nodes & Node Depth
+    nodes <- sapply(paths, as_ids) %>%
+      enframe() %>%
+      unnest_longer(col = "value") %>%
+      rename(index = .data$name, extension = .data$value) %>%
+      mutate_all(as.double) %>%
+      left_join(select(cylinder, .data$extension, .data$totalChildren), by = "extension") %>%
+      group_by(.data$index) %>%
+      filter(.data$extension == 1 | .data$totalChildren > 1) %>%
+      mutate(
+        depth = 1:n(),
+        reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
+      ) %>%
       group_by(.data$extension) %>%
       summarize(reverseBranchOrder = max(.data$reverseBranchOrder))
 
-    cylinder <- left_join(cylinder, reverse_order, by = "extension")
+    # Joins reverse branch order
+    cylinder <- left_join(cylinder, nodes, by = "extension") %>%
+      fill(.data$reverseBranchOrder, .direction = "down")
 
     # Branch Segments ----------------------------------------------------------
 
@@ -237,7 +185,7 @@ update_cylinders <- function(cylinder, backend = "multisession") {
       select(extension = .data$parent, childSegment = .data$segment) %>%
       distinct(.data$childSegment, .keep_all = TRUE)
 
-    segments2 <- left_join(parents, children) %>%
+    segments2 <- left_join(parents, children, by = join_by("extension")) %>%
       drop_na() %>%
       select(segment = .data$childSegment, parentSegment = .data$segment)
 
@@ -352,6 +300,79 @@ update_cylinders <- function(cylinder, backend = "multisession") {
         ) %>%
         relocate(.data$growthLength2, .after = .data$growthLength)
     }
+
+    # Calculates Reverse Branch Order if Missing
+    if (!"reverseBranchOrder" %in% colnames(cylinder)) {
+      message("Calculating Reverse Branch Order")
+
+      cylinder <- cylinder %>%
+        mutate(
+          ID = .data$ID + 1,
+          parentID = .data$parentID + 1
+        )
+
+      # Creates path network
+      g <- data.frame(parent = cylinder$parentID, extension = cylinder$ID)
+      g <- igraph::graph_from_data_frame(g)
+
+      starts <- igraph::V(g)[igraph::degree(g, mode = "in") == 0]
+      finals <- igraph::V(g)[igraph::degree(g, mode = "out") == 0]
+
+      paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
+
+      # Calculates Branch Nodes & Node Depth
+      nodes <- sapply(paths, as_ids) %>%
+        enframe() %>%
+        unnest_longer(col = "value") %>%
+        rename(index = .data$name, ID = .data$value) %>%
+        mutate_all(as.double) %>%
+        left_join(select(cylinder, .data$ID, .data$totalChildren), by = "ID") %>%
+        group_by(.data$index) %>%
+        filter(.data$ID == 1 | .data$totalChildren > 1) %>%
+        mutate(
+          depth = 1:n(),
+          reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
+        ) %>%
+        group_by(.data$ID) %>%
+        summarize(reverseBranchOrder = max(.data$reverseBranchOrder))
+
+      # Joins reverse branch order
+      cylinder <- left_join(cylinder, nodes, by = "ID") %>%
+        fill(.data$reverseBranchOrder, .direction = "down") %>%
+        mutate(
+          ID = .data$ID - 1,
+          parentID = .data$parentID - 1
+        )
+
+      # Calculates Branch Segments
+      segments <- cylinder %>%
+        distinct(.data$branchID, .data$reverseBranchOrder) %>%
+        mutate(segmentID = 1:n())
+
+      # Joins branch segments
+      cylinder <- left_join(cylinder, segments, by = join_by("branchID", "reverseBranchOrder"))
+
+      # Calculates Parent Segments
+      parents <- cylinder %>%
+        select(.data$ID, .data$segmentID)
+
+      children <- cylinder %>%
+        select(ID = .data$parentID, childSegment = .data$segmentID) %>%
+        distinct(.data$childSegment, .keep_all = TRUE)
+
+      segments2 <- left_join(parents, children, by = join_by("ID")) %>%
+        drop_na() %>%
+        select(segmentID = .data$childSegment, parentSegmentID = .data$segment)
+
+      # Joins parent segments
+      cylinder <- left_join(cylinder, segments2, by = join_by("segment"))
+      cylinder <- cylinder %>%
+        mutate(
+          parentSegmentID = replace_na(.data$parentSegmentID, 0),
+          segmentID = .data$segmentID - 1,
+          parentSegmentID = .data$parentSegmentID - 1
+        )
+    }
   } else {
     message(
       "Invalid Dataframe Supplied!!!
@@ -360,13 +381,4 @@ update_cylinders <- function(cylinder, backend = "multisession") {
     )
   }
   return(cylinder)
-
-  # Future Package Cleanup
-  chk <- Sys.getenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_", "")
-
-  if (nzchar(chk) && chk == "TRUE") {
-    future::plan("sequential")
-  } else{
-    on.exit(plan(oplan), add = TRUE)
-  }
 }
