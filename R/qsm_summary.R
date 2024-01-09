@@ -3,6 +3,7 @@
 #' @description Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
 #'
 #' @param cylinder QSM cylinder data frame
+#' @param radius Radius type as either "modified", "unmodified", or "old". Defaults to "modified".
 #' @param triangulation QSM triangulation list. Defaults to FALSE.
 #'
 #' @return Returns a list
@@ -16,33 +17,42 @@
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
 #' qsm_summary(cylinder)
 #'
 #' # TreeQSM Triangulation
 #' #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
 #' triangulation <- qsm$triangulation
 #' qsm_summary(cylinder, triangulation)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
 #' qsm_summary(cylinder)
 #' }
-qsm_summary <- function(cylinder, triangulation = FALSE) {
+qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
   message("Creating QSM Summary")
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
 
-    # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    # Setup Radius
+    if (radius == "modified") {
+      cylinder$sumrad <- cylinder$radius
+    } else if (radius == "unmodified") {
+      cylinder$sumrad<- cylinder$UnmodRadius
+    } else if (radius == "old") {
+      cylinder$sumrad <- cylinder$OldRadius
+    }
 
     dbh <- cylinder %>%
       filter(.data$BranchOrder == 0 & .data$branch == 1) %>%
       arrange(.data$PositionInBranch) %>%
-      select(.data$length, .data$radius)
+      select(.data$length, .data$sumrad)
 
     # Gets the triangulation and QSM volumes and surface areas to be swapped
     if(!is.logical(triangulation)){
@@ -54,8 +64,8 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
       QSM_vol_sa <- cylinder %>%
         filter(.data$extension %in% c(1:cyl_end)) %>%
         mutate(
-          Volume = pi * .data$radius^2 * .data$length * 1e3,
-          SurfaceArea = 2 * pi * .data$radius * .data$length
+          Volume = pi * .data$sumrad^2 * .data$length * 1e3,
+          SurfaceArea = 2 * pi * .data$sumrad * .data$length
           ) %>%
         summarize(
           CylVol = sum(.data$Volume),
@@ -78,15 +88,15 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
 
     DBHCyl <- as.numeric(i)
 
-    QSM.dbh.cm <- dbh$radius[DBHCyl] * 200
+    QSM.dbh.cm <- dbh$sumrad[DBHCyl] * 200
 
     QSM.ht.m <- max(cylinder$start.z) - min(cylinder$start.z)
 
     # Branch Order Summary
     summary <- cylinder %>%
       mutate(
-        Volume = pi * .data$radius^2 * .data$length,
-        SurfaceArea = 2 * pi * .data$radius * .data$length
+        Volume = pi * .data$sumrad^2 * .data$length,
+        SurfaceArea = 2 * pi * .data$sumrad * .data$length
       ) %>%
       group_by(.data$BranchOrder) %>%
       summarize(
@@ -137,14 +147,24 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
 
+    # Stop on Triangulation
     if(!triangulation == FALSE){
       stop("SimpleForest does not support triangulation of the main stem!")
+    }
+
+    # Setup Radius
+    if (radius == "modified") {
+      cylinder$sumrad <- cylinder$radius
+    } else if (radius == "unmodified") {
+      cylinder$sumrad<- cylinder$UnmodRadius
+    } else if (radius == "old") {
+      cylinder$sumrad <- cylinder$OldRadius
     }
 
     dbh <- cylinder %>%
       filter(.data$branchOrder == 0 & .data$branchID == 0) %>%
       arrange(.data$ID) %>%
-      select(.data$length, .data$radius)
+      select(.data$length, .data$sumrad)
 
     # Finds the DBH cylinder
     for (i in 1:nrow(dbh)) {
@@ -156,14 +176,14 @@ qsm_summary <- function(cylinder, triangulation = FALSE) {
 
     DBHCyl <- as.numeric(i)
 
-    QSM.dbh.cm <- dbh$radius[DBHCyl] * 200
+    QSM.dbh.cm <- dbh$sumrad[DBHCyl] * 200
 
     QSM.ht.m <- max(cylinder$startZ) - min(cylinder$startZ)
 
     summary <- cylinder %>%
       mutate(
-        Volume = pi * .data$radius^2 * .data$length,
-        SurfaceArea = 2 * pi * .data$radius * .data$length
+        Volume = pi * .data$sumrad^2 * .data$length,
+        SurfaceArea = 2 * pi * .data$sumrad * .data$length
       ) %>%
       group_by(.data$branchOrder) %>%
       summarize(

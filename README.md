@@ -118,4 +118,4 @@ output <- box_dimension(cloud)
 output[[2]]$slope
 ```
 
-<img src="man/figures/README/box_dimension3d.png"/>
+<img src="man/figures/README/box_dimension3d.png" align="center" width="400"/>

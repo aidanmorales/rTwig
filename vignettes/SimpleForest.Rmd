@@ -120,8 +120,7 @@ Before we correct the QSM, Let's take a look at the current metrics, so we can c
 
 ```{r, message = FALSE}
 # QSM summary
-summary1 <- qsm_summary(cylinder)
-summary1
+qsm_summary(cylinder, radius = "unmodified")
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
@@ -173,8 +172,7 @@ cylinder <- correct_radii(cylinder, twigRad = 4.23)
 
 ```{r, r, message = FALSE}
 # Corrected QSM summary
-summary2 <- qsm_summary(cylinder)
-summary2
+qsm_summary(cylinder, radius = "modified")
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
@@ -246,6 +244,9 @@ cylinder <- read.csv(file)
 # Real Twig Main Steps
 cylinder <- update_cylinders(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
+
+# Summary Metrics
+qsm_summary(cylinder)
 
 # Plot Results
 plot_qsm(cylinder, color = "GrowthLength")
