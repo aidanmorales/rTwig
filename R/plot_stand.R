@@ -3,8 +3,9 @@
 #' @description Plots multiple QSMs in a forest stand using the rgl library
 #'
 #' @param qsms A list of QSM cylinder data frames.
-#' @param radius_type Radius type as either "modified" or "unmodified". Defaults to "modified".
+#' @param radius_type Radius type as either "modified", "unmodified", or "old". Defaults to "modified".
 #' @param qsm_colors Optional qsm color parameters. Colors vector of hex colors with the same length as the qsms list. Defaults to distinct random colors.
+#' @param cyl_sides The number of sides in the polygon cross section. Defaults to 50, but can be increased to improve smoothness, and decreased to improve rendering performance.
 #' @param clouds A list of point cloud data frames where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSMs.
 #' @param pt_colors A vector of hex colors. Defaults to the same random color as the QSM.
 #' @param pt_sizes Size of the points as a number. Defaults to 0.1.
@@ -27,7 +28,7 @@
 #'
 #' plot_stand(qsms = qsms, clouds = clouds)
 #' }
-plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
+plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_sides = 50, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
   # Number of QSMs or Clouds to plot
   n_qsms <- length(qsms)
   n_clouds <- length(clouds)
@@ -36,7 +37,9 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
   palette <- distinctColorPalette(n_qsms)
 
   # Start RGL Plot
+
   open3d()
+  par3d(skipRedraw=TRUE)
 
   # Plot QSMs
   for (j in 1:length(qsms)) {
@@ -49,8 +52,10 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
       # Setup Radius
       if (radius_type == "modified") {
         cyl_radius <- cylinder$radius
-      } else {
+      } else if (radius_type == "unmodified") {
         cyl_radius <- cylinder$UnmodRadius
+      } else if (radius_type == "old") {
+        cyl_radius <- cylinder$OldRadius
       }
 
       # Setup QSM Colors
@@ -72,7 +77,7 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
             c(cylinder$start.z[i], cylinder$end.z[i])
           ),
           radius = cyl_radius[i],
-          sides = 100,
+          sides = cyl_sides,
           closed = -1
         )
         cyl$material$color <- colors[i]
@@ -86,8 +91,10 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
       # Setup Radius
       if (radius_type == "modified") {
         cyl_radius <- cylinder$radius
-      } else {
+      } else if (radius_type == "unmodified") {
         cyl_radius <- cylinder$UnmodRadius
+      } else if (radius_type == "old") {
+        cyl_radius <- cylinder$OldRadius
       }
 
       # Setup QSM Colors
@@ -108,7 +115,7 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
             c(cylinder$startZ[i], cylinder$endZ[i])
           ),
           radius = radius[i],
-          sides = 100,
+          sides = cyl_sides,
           closed = -1
         )
         cyl$material$color <- colors[i]
@@ -118,6 +125,8 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, clouds
       shapelist3d(plot_data, plot = TRUE)
     }
   }
+
+  par3d(skipRedraw=FALSE)
 
   # Plot Clouds
   for (j in 1:length(clouds)) {

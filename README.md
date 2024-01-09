@@ -32,6 +32,8 @@ included is a novel database of twig diameter measurements for many
 common North American and European trees, on both the species and genus
 level.
 
+<img src="man/figures/README/Plot_rTwig.png"/>
+
 ## Installation
 
 You can install the released version of `rTwig` from
@@ -115,3 +117,5 @@ cloud <- read.table(file)
 output <- box_dimension(cloud)
 output[[2]]$slope
 ```
+
+<img src="man/figures/README/box_dimension3d.png"/>

@@ -9,6 +9,7 @@ plot_qsm(
   radius = NULL,
   cyl_color = NULL,
   cyl_palette = NULL,
+  cyl_sides = 50,
   cloud = NULL,
   pt_color = NULL,
   pt_size = NULL,
@@ -24,6 +25,8 @@ plot_qsm(
 \item{cyl_color}{Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.}
 
 \item{cyl_palette}{Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.}
+
+\item{cyl_sides}{The number of sides in the polygon cross section. Defaults to 50, but can be increased to improve smoothness, and decreased to improve rendering performance.}
 
 \item{cloud}{Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM.}
 

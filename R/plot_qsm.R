@@ -6,6 +6,7 @@
 #' @param radius Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.
 #' @param cyl_color Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.
 #' @param cyl_palette Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.
+#' @param cyl_sides The number of sides in the polygon cross section. Defaults to 50, but can be increased to improve smoothness, and decreased to improve rendering performance.
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM.
 #' @param pt_color Color of the point cloud. Defaults to black.
 #' @param pt_size Size of the points as a number. Defaults to 0.1.
@@ -51,7 +52,7 @@
 #'   hover = TRUE
 #' )
 #' }
-plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cloud = NULL, pt_color = NULL, pt_size = NULL, axes = TRUE, hover = FALSE) {
+plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 50, cloud = NULL, pt_color = NULL, pt_size = NULL, axes = TRUE, hover = FALSE) {
   message("Plotting QSM")
 
   # TreeQSM --------------------------------------------------------------------
@@ -92,6 +93,8 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
       }
     }
 
+    message("Creating Cylinder Meshes")
+
     # Create RGL cylinders
     plot_data <- lapply(1:nrow(cylinder), function(i) {
       cyl <- cylinder3d(
@@ -101,16 +104,20 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
           c(cylinder$start.z[i], cylinder$end.z[i])
         ),
         radius = radius[i],
-        sides = 100,
+        sides = cyl_sides,
         closed = -1
       )
       cyl$material$color <- colors[i]
       cyl
     })
 
+    message("Plotting Cylinder Meshes")
+
     # Plot cylinders
     open3d()
+    par3d(skipRedraw=TRUE)
     shade3d(shapelist3d(plot_data, plot = FALSE))
+    par3d(skipRedraw=FALSE)
 
     # Plot axes
     if (axes == TRUE) {
@@ -181,6 +188,8 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
       }
     }
 
+    message("Creating Cylinder Meshes")
+
     plot_data <- lapply(1:nrow(cylinder), function(i) {
       cyl <- cylinder3d(
         center = cbind(
@@ -189,16 +198,20 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
           c(cylinder$startZ[i], cylinder$endZ[i])
         ),
         radius = radius[i],
-        sides = 100,
+        sides = cyl_sides,
         closed = -1
       )
       cyl$material$color <- colors[i]
       cyl
     })
 
+    message("Plotting Cylinder Meshes")
+
     # Plot cylinders
     open3d()
+    par3d(skipRedraw=TRUE)
     shade3d(shapelist3d(plot_data, plot = FALSE))
+    par3d(skipRedraw=FALSE)
 
     # Plot axes
     if (axes == TRUE) {
