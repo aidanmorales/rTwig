@@ -14,9 +14,7 @@
 #' @return Returns a data frame
 #' @export
 #'
-#' @import dplyr
-#' @import tidyr
-#' @import tibble
+#' @rawNamespace import(tidytable, except=c(map_dfr))
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
 #' @references {
@@ -122,9 +120,9 @@ update_cylinders <- function(cylinder) {
     # Calculate growth length
     GrowthLength <- paths %>%
       enframe() %>%
-      unnest(cols = c(.data$value)) %>%
+      unnest() %>%
       rename(index = .data$name, extension = .data$value) %>%
-      mutate_all(as.double) %>%
+      mutate(index = as.double(.data$index), extension = as.double(.data$extension)) %>%
       left_join(cylinder %>%
         select(.data$extension, .data$length), by = "extension") %>%
       select(extension = .data$index, .data$length) %>%
@@ -152,7 +150,7 @@ update_cylinders <- function(cylinder) {
       enframe() %>%
       unnest_longer(col = "value") %>%
       rename(index = .data$name, extension = .data$value) %>%
-      mutate_all(as.double) %>%
+      mutate(index = as.double(.data$index), extension = as.double(.data$extension)) %>%
       left_join(select(cylinder, .data$extension, .data$totalChildren), by = "extension") %>%
       group_by(.data$index) %>%
       filter(.data$extension == 1 | .data$totalChildren > 1) %>%
@@ -175,7 +173,7 @@ update_cylinders <- function(cylinder) {
       mutate(segment = 1:n())
 
     # Joins branch segments
-    cylinder <- left_join(cylinder, segments, by = join_by("branch", "reverseBranchOrder"))
+    cylinder <- left_join(cylinder, segments, by = c("branch", "reverseBranchOrder"))
 
     # Calculates Parent Segments
     parents <- cylinder %>%
@@ -185,12 +183,12 @@ update_cylinders <- function(cylinder) {
       select(extension = .data$parent, childSegment = .data$segment) %>%
       distinct(.data$childSegment, .keep_all = TRUE)
 
-    segments2 <- left_join(parents, children, by = join_by("extension")) %>%
+    segments2 <- left_join(parents, children, by = c("extension")) %>%
       drop_na() %>%
       select(segment = .data$childSegment, parentSegment = .data$segment)
 
     # Joins parent segments
-    cylinder <- left_join(cylinder, segments2, by = join_by("segment"))
+    cylinder <- left_join(cylinder, segments2, by = c("segment"))
     cylinder <- mutate(cylinder, parentSegment = replace_na(.data$parentSegment, 0))
 
     # Plotting Info ------------------------------------------------------------
@@ -284,9 +282,9 @@ update_cylinders <- function(cylinder) {
 
       GrowthLength <- paths %>%
         enframe() %>%
-        unnest(cols = c(.data$value)) %>%
+        unnest() %>%
         rename(index = .data$name, ID = .data$value) %>%
-        mutate_all(as.double) %>%
+        mutate(index = as.double(.data$index), ID = as.double(.data$ID)) %>%
         left_join(cylinder %>%
           select(.data$ID, .data$length), by = "ID") %>%
         select(ID = .data$index, .data$length) %>%
@@ -325,7 +323,7 @@ update_cylinders <- function(cylinder) {
         enframe() %>%
         unnest_longer(col = "value") %>%
         rename(index = .data$name, ID = .data$value) %>%
-        mutate_all(as.double) %>%
+        mutate(index = as.double(.data$index), ID = as.double(.data$ID)) %>%
         left_join(select(cylinder, .data$ID, .data$totalChildren), by = "ID") %>%
         group_by(.data$index) %>%
         filter(.data$ID == 1 | .data$totalChildren > 1) %>%
@@ -350,7 +348,7 @@ update_cylinders <- function(cylinder) {
         mutate(segmentID = 1:n())
 
       # Joins branch segments
-      cylinder <- left_join(cylinder, segments, by = join_by("branchID", "reverseBranchOrder"))
+      cylinder <- left_join(cylinder, segments, by = c("branchID", "reverseBranchOrder"))
 
       # Calculates Parent Segments
       parents <- cylinder %>%
@@ -360,12 +358,12 @@ update_cylinders <- function(cylinder) {
         select(ID = .data$parentID, childSegment = .data$segmentID) %>%
         distinct(.data$childSegment, .keep_all = TRUE)
 
-      segments2 <- left_join(parents, children, by = join_by("ID")) %>%
+      segments2 <- left_join(parents, children, by = c("ID")) %>%
         drop_na() %>%
         select(segmentID = .data$childSegment, parentSegmentID = .data$segment)
 
       # Joins parent segments
-      cylinder <- left_join(cylinder, segments2, by = join_by("segment"))
+      cylinder <- left_join(cylinder, segments2, by = c("segment"))
       cylinder <- cylinder %>%
         mutate(
           parentSegmentID = replace_na(.data$parentSegmentID, 0),

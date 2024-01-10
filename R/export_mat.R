@@ -8,9 +8,9 @@
 #' @return Returns a .mat file
 #' @export
 #'
-#' @import dplyr
 #' @importFrom Matrix as.matrix
 #' @importFrom R.matlab writeMat
+#' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @examples
 #' \dontrun{

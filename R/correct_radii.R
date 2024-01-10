@@ -9,7 +9,6 @@
 #' @return Returns a data frame
 #' @export
 #'
-#' @import dplyr
 #' @import cobs
 #' @import future
 #' @import foreach
@@ -17,6 +16,7 @@
 #' @import progressr
 #' @importFrom data.table rbindlist
 #' @importFrom stats IQR predict quantile
+#' @rawNamespace import(tidytable, except=c(map_dfr))
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
 #' @examples
@@ -168,7 +168,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         path_cyl <- path_cyl %>%
           left_join(select(path_temp, extension, bad_fit = bad_fit3), by = "extension") %>%
           mutate(
-            bad_fit = tidyr::replace_na(bad_fit, 1),
+            bad_fit = replace_na(bad_fit, 1),
             bad_fit = case_when(branch == 1 & PositionInBranch <= !!stem ~ 0, TRUE ~ bad_fit)
           )
 
@@ -298,21 +298,21 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
     # Combines all paths into one data frame
     all_cyl <- data.table::rbindlist(results)
 
-    # Finds main stem path index for separate modeling
-    main_stem_path <- all_cyl %>%
-      group_by(.data$branch, .data$pathIndex) %>%
-      summarize(max_cyl = max(.data$PositionInBranch), .groups = "drop") %>%
-      arrange(desc(.data$max_cyl)) %>%
-      arrange(.data$branch) %>%
-      group_by(.data$branch) %>%
-      slice_head(n = 1) %>%
-      filter(.data$branch == 1) %>%
-      pull(.data$pathIndex)
-
-    # Gets main stem cylinder ids
-    main_stem_cyl <- all_cyl %>%
-      filter(.data$pathIndex == !!main_stem_path) %>%
-      select(.data$extension, .data$radius)
+    # # Finds main stem path index for separate modeling
+    # main_stem_path <- all_cyl %>%
+    #   group_by(.data$branch, .data$pathIndex) %>%
+    #   summarize(max_cyl = max(.data$PositionInBranch), .groups = "drop") %>%
+    #   arrange(desc(.data$max_cyl)) %>%
+    #   arrange(.data$branch) %>%
+    #   group_by(.data$branch) %>%
+    #   slice_head(n = 1) %>%
+    #   filter(.data$branch == 1) %>%
+    #   pull(.data$pathIndex)
+    #
+    # # Gets main stem cylinder ids
+    # main_stem_cyl <- all_cyl %>%
+    #   filter(.data$pathIndex == !!main_stem_path) %>%
+    #   select(.data$extension, .data$radius)
 
     # Calculates weighted mean for each cylinder
     cyl_radii <- all_cyl %>%
@@ -320,7 +320,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
 
     # Updates the main stem with its own path
-    cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "extension")
+    #cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "extension")
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%
@@ -453,7 +453,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # Joins bad fits and accounts for buttress flare
         path_cyl <- path_cyl %>%
           left_join(select(path_temp, ID, bad_fit = bad_fit3), by = "ID") %>%
-          mutate(bad_fit = tidyr::replace_na(bad_fit, 1))
+          mutate(bad_fit = replace_na(bad_fit, 1))
 
         # Uses good cylinder fits to model paths
         # We rename growth length and radius to x a y for shorter labels
@@ -580,33 +580,33 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
     # Combines all paths into one data frame
     all_cyl <- data.table::rbindlist(results)
 
-    # Finds main stem path index for separate modeling
-    main_stem_path <- all_cyl %>%
-      group_by(.data$branchID, .data$pathIndex) %>%
-      summarize(max_cyl = max(.data$positionInBranch), .groups = "drop") %>%
-      arrange(desc(.data$max_cyl)) %>%
-      arrange(.data$branchID) %>%
-      group_by(.data$branchID) %>%
-      slice_head(n = 1) %>%
-      filter(.data$branchID == 0) %>%
-      pull(.data$pathIndex)
-
-    # Gets main stem cylinder ids
-    main_stem_cyl <- all_cyl %>%
-      filter(.data$pathIndex == !!main_stem_path) %>%
-      select(.data$ID, .data$radius, .data$UnmodRadius)
-
-    # Updates poorly modeled main stem cylinders
-    main_stem_cyl <- main_stem_cyl %>%
-      mutate(
-        IQR = IQR(.data$radius),
-        upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
-        radius = case_when(
-          .data$radius >= .data$upper ~ .data$UnmodRadius,
-          TRUE ~ .data$radius
-        )
-      ) %>%
-      select(.data$ID, .data$radius)
+    # # Finds main stem path index for separate modeling
+    # main_stem_path <- all_cyl %>%
+    #   group_by(.data$branchID, .data$pathIndex) %>%
+    #   summarize(max_cyl = max(.data$positionInBranch), .groups = "drop") %>%
+    #   arrange(desc(.data$max_cyl)) %>%
+    #   arrange(.data$branchID) %>%
+    #   group_by(.data$branchID) %>%
+    #   slice_head(n = 1) %>%
+    #   filter(.data$branchID == 0) %>%
+    #   pull(.data$pathIndex)
+    #
+    # # Gets main stem cylinder ids
+    # main_stem_cyl <- all_cyl %>%
+    #   filter(.data$pathIndex == !!main_stem_path) %>%
+    #   select(.data$ID, .data$radius, .data$UnmodRadius)
+    #
+    # # Updates poorly modeled main stem cylinders
+    # main_stem_cyl <- main_stem_cyl %>%
+    #   mutate(
+    #     IQR = IQR(.data$radius),
+    #     upper = quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
+    #     radius = case_when(
+    #       .data$radius >= .data$upper ~ .data$UnmodRadius,
+    #       TRUE ~ .data$radius
+    #     )
+    #   ) %>%
+    #   select(.data$ID, .data$radius)
 
     # Calculates weighted mean for each cylinder
     cyl_radii <- all_cyl %>%
@@ -614,7 +614,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
 
     # Updates the main stem with its own path
-    cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "ID")
+    #cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "ID")
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%

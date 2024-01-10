@@ -14,7 +14,6 @@
 #' @return Returns a list
 #' @export
 #'
-#' @import dplyr
 #' @import rgl
 #' @importFrom stats lm
 #' @importFrom Rdpack reprompt
@@ -22,6 +21,7 @@
 #' @importFrom purrr map_dfr
 #' @importFrom DescTools RoundTo
 #' @importFrom graphics abline text
+#' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @references {
 #'   \insertRef{box_dimension1}{rTwig}
@@ -114,7 +114,7 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
   # Creates the summary files from the linear model
   summary <- as.data.frame(results$coefficients) %>%
     t() %>%
-    as_tibble() %>%
+    as_tidytable() %>%
     rename("intercept" = 1, "slope" = 2) %>%
     mutate(
       r.squared = summary(results)$r.squared,

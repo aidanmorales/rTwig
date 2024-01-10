@@ -7,7 +7,7 @@
 #' @return Returns a data frame
 #' @export
 #'
-#' @import dplyr
+#' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @examples
 #' \dontrun{
