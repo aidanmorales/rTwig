@@ -1,22 +1,19 @@
-#' Plot QSM
+#' Export Mesh
 #'
-#' @description Plots QSM cylinders using the rgl library
+#' @description Exports QSM cylinder mesh using the rgl library
 #'
 #' @param cylinder QSM cylinder data frame
+#' @param filename Desired name of file. The .ply extension is automatically added.
 #' @param radius Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.
 #' @param cyl_color Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.
 #' @param cyl_palette Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.
 #' @param cyl_sides The number of sides in the polygon cross section. Defaults to 8, but can be increased to improve visual smoothness.
-#' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM.
-#' @param pt_color Color of the point cloud. Defaults to black.
-#' @param pt_size Size of the points as a number. Defaults to 0.1.
-#' @param axes Show plot axes. Defaults to TRUE.
-#' @param hover Show cylinder ID and branch on mouse hover. Defaults to FALSE.
 #'
-#' @return A rgl QSM plot
+#' @return A mesh .ply file
 #' @export
 #'
 #' @import colourvalues
+#' @import Morpho
 #' @import rgl
 #'
 #' @examples
@@ -27,33 +24,31 @@
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- correct_radii(cylinder, twigRad = 4.23)
-#' plot_qsm(cylinder)
+#'
+#' filename <- tempfile(pattern = "QSM_mesh")
+#' export_mesh(cylinder, filename)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder2 <- read.csv(file)
 #' cylinder2 <- update_cylinders(cylinder2)
 #' cylinder2 <- correct_radii(cylinder2, twigRad = 4.23)
-#' plot_qsm(cylinder2)
+#'
+#' filename2 <- tempfile(pattern = "QSM_mesh2")
+#' export_mesh(cylinder2, filename2)
 #'
 #' ## All Parameters
-#' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-#' cloud <- read.table(file2, header = FALSE)
 #'
-#' plot_qsm(
-#'   cylinder,
+#' filename <- tempfile(pattern = "QSM_mesh3")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename3,
 #'   radius = cylinder$UnmodRadius,
 #'   cyl_color = cylinder$GrowthLength,
-#'   cyl_palette = "viridis",
-#'   cyl_sides = 100,
-#'   cloud = cloud,
-#'   pt_color = "white",
-#'   pt_size = 1,
-#'   axes = FALSE,
-#'   hover = TRUE
+#'   cyl_palette = "viridis"
 #' )
 #' }
-plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 8, cloud = NULL, pt_color = NULL, pt_size = NULL, axes = TRUE, hover = FALSE) {
+export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 8) {
   message("Plotting QSM")
 
   # TreeQSM --------------------------------------------------------------------
@@ -113,51 +108,15 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
       cyl
     })
 
-    message("Plotting Cylinder Meshes")
+    message("Exporting Cylinder Mesh")
 
-    # Plot cylinders
-    open3d()
-    par3d(skipRedraw=TRUE)
-    shade3d(shapelist3d(plot_data, plot = FALSE))
-    par3d(skipRedraw=FALSE)
+    # Combine cylinder meshes into one
+    mesh <- Reduce(merge, plot_data)
 
-    # Plot axes
-    if (axes == TRUE) {
-      axes3d(edges = c("x", "y", "z"))
-    }
+    # Export mesh
+    Morpho::mesh2ply(mesh, filename = filename, writeNormals = FALSE)
 
-    # Plot cloud
-    if (!is.null(cloud)) {
-      cloud <- rename(cloud, x = 1, y = 2, z = 3)
-
-      # Initialize cloud inputs
-      if (is.null(pt_color)) {
-        pt_color <- "#000000"
-      } else {
-        pt_color <- pt_color
-      }
-
-      if (is.null(pt_size)) {
-        pt_size <- 0.1
-      } else {
-        pt_size <- pt_size
-      }
-
-      # Plot cloud
-      plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
-    }
-
-    # Set mouse hover
-    if (hover == TRUE) {
-      hover3d(
-        cylinder$start.x,
-        cylinder$start.y,
-        cylinder$start.z,
-        labels = paste0("ID:", cylinder$extension, " - Branch:", cylinder$branch)
-      )
-    }
-
-    # SimpleForest ---------------------------------------------------------------
+  # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Initialize cylinder radii
     if (is.null(radius)) {
@@ -208,52 +167,17 @@ plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NU
       cyl
     })
 
-    message("Plotting Cylinder Meshes")
+    message("Exporting Cylinder Mesh")
 
-    # Plot cylinders
-    open3d()
-    par3d(skipRedraw=TRUE)
-    shade3d(shapelist3d(plot_data, plot = FALSE))
-    par3d(skipRedraw=FALSE)
+    # Combine cylinder meshes into one
+    mesh <- Reduce(merge, plot_data)
 
-    # Plot axes
-    if (axes == TRUE) {
-      axes3d(edges = c("x", "y", "z"))
-    }
+    # Export mesh
+    Morpho::mesh2ply(mesh, filename = filename, writeNormals = FALSE)
 
-    # Plot cloud
-    if (!is.null(cloud)) {
-      cloud <- rename(cloud, x = 1, y = 2, z = 3)
-
-      # Initialize cloud inputs
-      if (is.null(pt_color)) {
-        pt_color <- "#000000"
-      } else {
-        pt_color <- pt_color
-      }
-
-      if (is.null(pt_size)) {
-        pt_size <- 0.1
-      } else {
-        pt_size <- pt_size
-      }
-
-      # Plot cloud
-      plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
-    }
-
-    # Set mouse hover
-    if (hover == TRUE) {
-      hover3d(
-        cylinder$startX,
-        cylinder$startY,
-        cylinder$startZ,
-        labels = paste0("ID:", cylinder$ID, " - Branch:", cylinder$branchID)
-      )
-    }
   } else {
     message(
-      "Invalid QSM or Cloud Supplied!!!
+      "Invalid QSM Supplied!!!
       \nMake sure the cylinder data frame and not the QSM list is supplied.
       \nMake sure the point cloud is a data frame with the first three columns as the x, y, and z coordinates."
     )

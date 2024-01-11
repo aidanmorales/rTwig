@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Real Twig was designed and tested using QSMs created with the TreeQSM modeling software. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get very good estimates of tree volume within ± 10% of the real tree volume.
+Real Twig was designed and tested using QSMs created with the [TreeQSM](https://github.com/InverseTampere/TreeQSM) modeling software. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get very good estimates of tree volume within ± 10% of the real tree volume.
 
 While Real Twig can provide excellent tree volume estimates, it can not transform poor quality data into good data. As a general rule of thumb, the closer the QSM resembles the actual tree before correction, the better the results will be after correction. Real Twig performs best when the topology of the tree is mostly correct, and only the cylinder sizes are the main sources of QSM error. Errors in QSM topology become readily apparent after correction, so Real Twig can also be used to visually validate QSM topology without reference data.
 
@@ -36,7 +36,7 @@ devtools::install_github("https://github.com/aidanmorales/rTwig")
 
 ## Load Packages
 
-The first step is to load the rTwig package. Real Twig works well when paired with the Tidyverse package, so we will also load the dplyr package for later use.
+The first step is to load the rTwig package. Real Twig works well when paired with packages from the [Tidyverse](https://www.tidyverse.org/), so we will also load the dplyr package to help with data manipulation.
 
 ```{r, message=FALSE}
 # Load rTwig
@@ -60,11 +60,11 @@ library(gt)
 
 rTwig supports all available versions of TreeQSM, from *v2.0* to *v2.4.1* at the time of writing. It is important to note that legacy versions of TreeQSM (*v2.0*) store data in a much different format than modern versions (*v2.3.0-2.4.1*). It is strongly advised to use the latest version of TreeQSM with rTwig for the best QSM topology and volume estimates. Older versions can be used, but the QSM topology is poor, and volume underestimation is almost guaranteed.
 
-Regardless of the version of TreeQSM or MATLAB used, the `import_qsm` function will import a QSM .mat file and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_qsm` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
+Regardless of the version of TreeQSM or MATLAB used, the `import_qsm()` function will import a QSM (.mat extension) and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_qsm()` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
 
 #### TreeQSM v2.3.0 - 2.4.1
 
-We can import a QSM by supplying the `import_qsm` function the directory to our QSM.
+We can import a QSM by supplying the `import_qsm()` function the directory to our QSM.
 
 ```{r, message=FALSE}
 # QSM directory
@@ -123,15 +123,15 @@ cylinder %>%
   select(branch, parent, extension, PositionInBranch) %>%
   head()
 
-# Check New Variables 
-cylinder %>% 
-  select(reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment) %>% 
+# Check New Variables
+cylinder %>%
+  select(reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment) %>%
   head()
 ```
 
 ## Topology
 
-Before we correct the QSM, it is often worthwhile to check the quality of the QSM by plotting it against its input point cloud. To do this, we load the point cloud and save it as a data frame, with the first three columns as the x, y, and z columns. We use the `plot_qsm` function to do this. We want to check the raw cylinder fits before TreeQSM modified them with its taper filter, so we will will use the raw cylinder radii.
+Before we correct the QSM, it is often worthwhile to check the quality of the QSM by plotting it against its input point cloud. To do this, we load the point cloud and save it as a data frame, with the first three columns as the x, y, and z columns. We use the `plot_qsm()` function to do this. We want to check the raw cylinder fits before TreeQSM modified them with its taper filter, so we will will use the raw cylinder radii.
 
 ```{r, eval = FALSE}
 # Load the input point cloud
@@ -156,7 +156,7 @@ filter(twigs, scientific.name == "Gymnocladus dioicus")
 
 ## Summary Metrics
 
-Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large butress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
+Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large butress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
 
 ```{r, message = FALSE}
 # QSM summary
@@ -206,7 +206,7 @@ Looking at the diagnostic plot on a log log scale, with the measured twig radius
 
 ## Correct Radii
 
-Now we can correct our QSM cylinder radii with the `correct_radii` function. In this step, we model each path in the tree separately, where poorly fit cylinders are identified and removed, and a GAM is fit, where the intercept is the measured twig radius, and the growth length predicts the cylinder radius. Let's correct the cylinder radii on our Kentucky coffee tree and look at the new volume estimates and diagnostic plots.
+Now we can correct our QSM cylinder radii with the `correct_radii()` function. In this step, we model each path in the tree separately, where poorly fit cylinders are identified and removed, and a GAM is fit, where the intercept is the measured twig radius, and the growth length predicts the cylinder radius. Let's correct the cylinder radii on our Kentucky coffee tree and look at the new volume estimates and diagnostic plots.
 
 ```{r, message = FALSE, results = 'hide'}
 # Correct cylinder radii
@@ -258,9 +258,9 @@ Here we can see that we reduced the volume of the QSM by around 3 liters, which 
 
 Looking at the diagnostic plot, we can see that individual branches can clearly be identified by their unique allometry. Notice how nearly all of the volume reduction occurred in the higher order branches, with the main stem remaining nearly unchanged. The branches now taper towards the measured twig radius for Kentucky coffee tree. Getting the real twig diameter is critical, as too high a value will overestimate volume, and too low a value will underestimate total volume, with the over or underestimate being proportional to the number of twigs and small branches in the tree. If your species is not available in the database, we have found that the genus level twig radius average is a good substitute. 
 
-## Smoothing & Visualization
+## Visualization
 
-Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm` function, and plot the results with the `plot_qsm` function. The different colors are the different branch orders. We can also color our QSM by many different variables and palettes. See the `plot_qsm` documentation for more details. 
+Optionally, we can smooth our QSM by ensuring all of the cylinders are connected. This is a visual change and does not affect the volume estimates. We can do this with the `smooth_qsm()` function, and plot the results with the `plot_qsm()` function. The different colors are the different branch orders. We can also color our QSM by many different variables and palettes. See the `plot_qsm()` documentation for more details. 
 
 ```{r, eval=FALSE}
 # Smooth QSM
@@ -270,12 +270,44 @@ cylinder <- smooth_qsm(cylinder)
 plot_qsm(cylinder)
 
 # QSM Custom Colors & Piping
-cylinder %>% 
+cylinder %>%
   plot_qsm(
-  radius = .$radius,
-  cyl_color = .$reverseBranchOrder,
-  cyl_palette = "magma"
-)
+    radius = .$radius,
+    cyl_color = .$reverseBranchOrder,
+    cyl_palette = "magma"
+  )
+
+# Plot Twigs Colored by Unique Segment
+cylinder %>%
+  filter(reverseBranchOrder == 1) %>%
+  plot_qsm(
+    radius = .$radius,
+    cyl_color = .$reverseBranchOrder,
+    cyl_palette = "rainbow"
+  )
+```
+
+We can also save our QSM as a mesh (.ply extension) for use in other modeling programs with the `export_mesh()` function. The same colors and palettes found in the `plot_qsm()` function can be used to color the mesh. 
+
+```{r, eval=FALSE}
+# Export Mesh Colored by RBO
+cylinder %>%
+  export_mest(
+    filename = "QSM_mesh",
+    radius = .$radius,
+    cyl_color = .$reverseBranchOrder,
+    cyl_palette = "magma"
+  )
+
+# Export Twigs Colored by Unique Segments
+cylinder %>%
+  filter(reverseBranchOrder == 1) %>%
+  export_mesh(
+    filename = "QSM_mesh",
+    radius = .$radius,
+    cyl_color = .$reverseBranchOrder,
+    cyl_palette = "rainbow"
+  )
 ```
 
 ## Workflow & Best Practices

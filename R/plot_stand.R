@@ -5,7 +5,7 @@
 #' @param qsms A list of QSM cylinder data frames.
 #' @param radius_type Radius type as either "modified", "unmodified", or "old". Defaults to "modified".
 #' @param qsm_colors Optional qsm color parameters. Colors vector of hex colors with the same length as the qsms list. Defaults to distinct random colors.
-#' @param cyl_sides The number of sides in the polygon cross section. Defaults to 50, but can be increased to improve smoothness, and decreased to improve rendering performance.
+#' @param cyl_sides The number of sides in the polygon cross section. Defaults to 8, but can be increased to improve visual smoothness.
 #' @param clouds A list of point cloud data frames where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSMs.
 #' @param pt_colors A vector of hex colors. Defaults to the same random color as the QSM.
 #' @param pt_sizes Size of the points as a number. Defaults to 0.1.
@@ -28,7 +28,7 @@
 #'
 #' plot_stand(qsms = qsms, clouds = clouds)
 #' }
-plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_sides = 50, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
+plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_sides = 8, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
   # Number of QSMs or Clouds to plot
   n_qsms <- length(qsms)
   n_clouds <- length(clouds)
@@ -78,7 +78,8 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
           ),
           radius = cyl_radius[i],
           sides = cyl_sides,
-          closed = -1
+          closed = 0,
+          rotationMinimizing = TRUE
         )
         cyl$material$color <- colors[i]
         cyl
@@ -116,7 +117,8 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
           ),
           radius = radius[i],
           sides = cyl_sides,
-          closed = -1
+          closed = 0,
+          rotationMinimizing = TRUE
         )
         cyl$material$color <- colors[i]
         cyl

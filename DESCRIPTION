@@ -23,7 +23,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 RdMacros: Rdpack
 Imports: igraph, R.matlab, tidytable, data.table, cobs, purrr,
-        foreach, future, doFuture, progressr, rgl, colourvalues,
+        foreach, future, doFuture, progressr, rgl, colourvalues, Morpho,
         Rdpack, DescTools, kit, rmatio, Matrix (>= 1.6-3), randomcoloR
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)

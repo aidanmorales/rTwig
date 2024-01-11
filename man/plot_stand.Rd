@@ -8,7 +8,7 @@ plot_stand(
   qsms,
   radius_type = "modified",
   qsm_colors = NULL,
-  cyl_sides = 50,
+  cyl_sides = 8,
   clouds = NULL,
   pt_colors = NULL,
   pt_sizes = NULL,
@@ -22,7 +22,7 @@ plot_stand(
 
 \item{qsm_colors}{Optional qsm color parameters. Colors vector of hex colors with the same length as the qsms list. Defaults to distinct random colors.}
 
-\item{cyl_sides}{The number of sides in the polygon cross section. Defaults to 50, but can be increased to improve smoothness, and decreased to improve rendering performance.}
+\item{cyl_sides}{The number of sides in the polygon cross section. Defaults to 8, but can be increased to improve visual smoothness.}
 
 \item{clouds}{A list of point cloud data frames where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSMs.}
 

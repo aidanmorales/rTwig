@@ -441,7 +441,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # This taper is more aggressive than the TreeQSM taper as SimpleForest
         # uses a sphere following system which tends to overestimate cylinder size
         for (k in 1:nrow(path_temp)) {
-          z <- length(which((as.vector(path_temp$radius[k] - path_temp$radius[1:k]) / path_temp$radius[k]) > 1 / k))
+          z <- length(which((as.vector(path_temp$radius[k] - path_temp$radius[1:k]) / path_temp$radius[k]) > 0))
 
           if (z > 0) {
             path_temp$bad_fit3[k] <- 1

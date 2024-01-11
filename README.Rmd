@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 The official repository for the rTwig package. The Real Twig method corrects poorly modeled cylinders in QSMs, especially overestimated small branch and twig cylinders. Real Twig is different than traditional allometric or statistical corrections. Real Twig uses real twig diameter measurements from corresponding tree species to inform individual branch taper models. Real Twig dynamically identifies correct cylinders in a QSM, using network analysis, general additive models, and real twig measurements, to model and correct poorly fit cylinders with a high degree of precision and accuracy when vetted against ground truth reference data.
 
-Real Twig does much more than correct QSM cylinder radii. Real Twig includes tools for QSM visualization and analysis that are seamlessly compatible with popular R packages, such as base R or the Tidyverse. Real Twig also includes fast, vectorized functions for point cloud fractal analysis and visualization using the box-dimension metric. Also included is a novel database of twig diameter measurements for many common North American and European trees, on both the species and genus level.
+Real Twig does much more than correct QSM cylinder radii. Real Twig includes tools for QSM visualization and analysis that are seamlessly compatible with base R and popular packages such as the Tidyverse. Real Twig also includes fast, vectorized functions for point cloud fractal analysis and visualization using the box-dimension metric. Also included is a novel database of twig diameter measurements for many common North American and European trees, on both the species and genus level.
 
 <img src="man/figures/README/Plot_rTwig.png"/>
 

@@ -25,12 +25,11 @@ reference data.
 
 Real Twig does much more than correct QSM cylinder radii. Real Twig
 includes tools for QSM visualization and analysis that are seamlessly
-compatible with popular R packages, such as base R or the Tidyverse.
-Real Twig also includes fast, vectorized functions for point cloud
-fractal analysis and visualization using the box-dimension metric. Also
-included is a novel database of twig diameter measurements for many
-common North American and European trees, on both the species and genus
-level.
+compatible with base R and popular packages such as the Tidyverse. Real
+Twig also includes fast, vectorized functions for point cloud fractal
+analysis and visualization using the box-dimension metric. Also included
+is a novel database of twig diameter measurements for many common North
+American and European trees, on both the species and genus level.
 
 <img src="man/figures/README/Plot_rTwig.png"/>
 
