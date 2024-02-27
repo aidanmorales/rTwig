@@ -20,7 +20,7 @@ Description: Tools for correcting branch overestimation in quantitative structur
     Fractal analysis uses the box counting method. 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 RdMacros: Rdpack
 Imports: igraph, R.matlab, tidytable, data.table, cobs, purrr,
         foreach, future, doFuture, progressr, rgl, colourvalues, Morpho,
