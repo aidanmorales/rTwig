@@ -25,7 +25,7 @@ RdMacros: Rdpack
 Imports: igraph, R.matlab, tidytable, data.table, cobs, purrr,
         foreach, future, doFuture, progressr, rgl, colourvalues, Morpho,
         Rdpack, DescTools, kit, rmatio, Matrix (>= 1.6-3), randomcoloR
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Depends: R (>= 3.5.0)
 LazyData: true
 Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick, dplyr, tidyr
