@@ -1,14 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# rTwig <img src="man/figures/logo.svg" align="right" height="139"/>
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
-
-# rTwig
-
-<img src="man/figures/README/rTwig.png" align="right" width="170"/>
 
 ## Description
 
