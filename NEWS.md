@@ -1,3 +1,3 @@
 # rTwig 1.0.0
 
-* Initial release of Real Twig!
+-   Initial release of Real Twig!
