@@ -6,7 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)
-[![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)[![](https://img.shields.io/github/downloads/aidanmorales/rTwig/total.svg)](https://github.com/aidanmorales/rTwig/releases)
+[![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
+[![](https://img.shields.io/github/downloads/aidanmorales/rTwig/total.svg)](https://github.com/aidanmorales/rTwig/releases)
 
 <!-- badges: end -->
 
