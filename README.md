@@ -14,9 +14,8 @@
 <figure>
 <img
 src="https://img.shields.io/github/downloads/aidanmorales/rTwig/total"
-alt="GitHub Downloads (all assets, all releases)" />
-<figcaption aria-hidden="true">GitHub Downloads (all assets, all
-releases)</figcaption>
+alt="GitHub Downloads" />
+<figcaption aria-hidden="true">GitHub Downloads</figcaption>
 </figure>
 
 <!-- badges: end -->

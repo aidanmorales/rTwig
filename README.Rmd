@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/aidanmorales/rTwig/total)
+![GitHub Downloads](https://img.shields.io/github/downloads/aidanmorales/rTwig/total)
 
 <!-- badges: end -->
 
