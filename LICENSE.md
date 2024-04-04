@@ -1,6 +1,6 @@
 rTwig is an R package to correct small branch overestimation in Quantitative Structure Models using real twig measurements.
 
-Copyright (C) 2023-2024  Aidan Morales
+Copyright (C) 2023-2024  Aidan Morales & David W. MacFarlane
 
 rTwig is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
