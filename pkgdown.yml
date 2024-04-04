@@ -1,0 +1,13 @@
+pandoc: 3.1.11
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  Box-Dimension: Box-Dimension.html
+  SimpleForest: SimpleForest.html
+  TreeQSM: TreeQSM.html
+  Twigs: Twigs.html
+last_built: 2024-04-04T19:16Z
+urls:
+  reference: https://aidanmorales.github.io/rTwig/reference
+  article: https://aidanmorales.github.io/rTwig/articles
+
