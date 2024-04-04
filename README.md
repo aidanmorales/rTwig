@@ -11,13 +11,6 @@
 
 [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
 
-<figure>
-<img
-src="https://img.shields.io/github/downloads/aidanmorales/rTwig/total"
-alt="GitHub Downloads" />
-<figcaption aria-hidden="true">GitHub Downloads</figcaption>
-</figure>
-
 <!-- badges: end -->
 
 ## Description
