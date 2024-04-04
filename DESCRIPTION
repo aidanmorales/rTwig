@@ -1,5 +1,5 @@
 Package: rTwig
-Title: Real Twig
+Title: Realistic Quantitative Structure Models
 Version: 1.0.0
 Authors@R: 
   c(
@@ -7,17 +7,19 @@ Authors@R:
       given = "Aidan", 
       family = "Morales", 
       email = "moral169@msu.edu", 
-      role = c("aut", "cre")),
+      role = c("aut", "cre", "cph")
+    ),
     person(
-      given = "David", 
+      given = "David W.",    
       family = "MacFarlane", 
       email = "macfar24@msu.edu", 
-      role = "aut")
+      role = c("aut", "cph")
+    )
   )
-Description: Tools for correcting branch overestimation in quantitative structure models ('QSM'), fractal analysis of point clouds, and a database of twig diameters. 
-    Overestimated cylinder radii of twigs are corrected using measured twig diameters of corresponding tree species and network analysis. 
-    Supported software includes 'TreeQSM' and 'SimpleForest'. 
-    Fractal analysis uses the box counting method. 
+Description: Real Twig is a method to correct branch overestimation in quantitative structure models ('QSM').
+    Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. 
+    Supported 'QSM' software includes 'TreeQSM' and 'SimpleForest'. 
+    Also included are tools for fractal analysis of point clouds and a novel database of twig diameters.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1

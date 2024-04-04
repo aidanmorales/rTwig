@@ -5,20 +5,32 @@
 
 <!-- badges: start -->
 
+[![CRAN](https://www.r-pkg.org/badges/version/rTwig?color=green)](https://cran.r-project.org/package=rTwig)
+
 [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)
+
+[![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
+
+<figure>
+<img
+src="https://img.shields.io/github/downloads/aidanmorales/rTwig/total"
+alt="GitHub Downloads (all assets, all releases)" />
+<figcaption aria-hidden="true">GitHub Downloads (all assets, all
+releases)</figcaption>
+</figure>
 
 <!-- badges: end -->
 
 ## Description
 
-The official repository for the rTwig package. The Real Twig method
-corrects poorly modeled cylinders in QSMs, especially overestimated
-small branch and twig cylinders. Real Twig is different than traditional
-allometric or statistical corrections. Real Twig uses real twig diameter
-measurements from corresponding tree species to inform individual branch
-taper models. Real Twig dynamically identifies correct cylinders in a
-QSM, using network analysis, general additive models, and real twig
-measurements, to model and correct poorly fit cylinders with a high
+Real Twig is a method to correct unrealistic cylinders in quantitative
+structure models (QSMs), especially overestimated small branch and twig
+cylinders. Real Twig is different than traditional allometric or
+statistical corrections. Real Twig uses real twig diameter measurements
+from corresponding tree species to inform individual branch taper
+models. Real Twig dynamically identifies realistic cylinders in a QSM
+using network analysis, general additive models, and real twig
+measurements, to model and correct unrealistic cylinders with a high
 degree of precision and accuracy when vetted against ground truth
 reference data.
 
@@ -31,6 +43,23 @@ is a novel database of twig diameter measurements for many common North
 American and European trees, on both the species and genus level.
 
 <img src="man/figures/README/Plot_rTwig.png"/>
+
+## Functions
+
+- `import_qsm()` imports a QSM created by TreeQSM (.mat)
+- `update_cylinders()` updates cylinder relationships and adds new QSM
+  variables
+- `correct_radii` models QSM paths and corrects cylinder radii
+- `qsm_summary()` summarizes QSM diameter, height, volume, and surface
+  area
+- `smooth_qsm()` connects cylinder end-to-end to smooth branch
+  visualization
+- `plot_qsm()` plots an individual QSM optionally with its point cloud
+- `plot_stand()` plots multiple QSMs optionally with their point cloud
+- `export_mesh()` exports a QSM as a mesh object (.ply)
+- `export_mat()` exports a QSM in a MATLAB format (.mat)
+- `box_dimension()` calculates and visualizes the structural complexity
+  of a point cloud
 
 ## Installation
 
