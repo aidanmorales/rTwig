@@ -20,7 +20,8 @@
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
@@ -35,7 +36,9 @@
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #' str(cylinder)
+#'
 #' }
+#'
 correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
   # Converts twig radius to meters
@@ -69,8 +72,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
     chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
 
     if (nzchar(chk) && chk == "TRUE") {
-      # Use 2 cores to pass checks
-      oplan <- future::plan("multisession", workers = 2L)
+      # Use sequential to pass checks
+      oplan <- future::plan("sequential")
     } else {
       # Use all cores for end-users
       if(backend == "sequential"){
@@ -353,8 +356,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
     chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
 
     if (nzchar(chk) && chk == "TRUE") {
-      # Use 2 cores to pass checks
-      oplan <- future::plan("multisession", workers = 2L)
+      # Use sequential to pass checks
+      oplan <- future::plan("sequential")
     } else {
       # Use all cores for end-users
       if(backend == "sequential"){

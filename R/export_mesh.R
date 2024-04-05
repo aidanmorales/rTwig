@@ -17,13 +17,13 @@
 #' @import rgl
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
 #'
 #' filename <- tempfile(pattern = "QSM_mesh")
 #' export_mesh(cylinder, filename)
@@ -32,14 +32,13 @@
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder2 <- read.csv(file)
 #' cylinder2 <- update_cylinders(cylinder2)
-#' cylinder2 <- correct_radii(cylinder2, twigRad = 4.23)
 #'
 #' filename2 <- tempfile(pattern = "QSM_mesh2")
 #' export_mesh(cylinder2, filename2)
 #'
 #' ## All Parameters
 #'
-#' filename <- tempfile(pattern = "QSM_mesh3")
+#' filename3 <- tempfile(pattern = "QSM_mesh3")
 #' export_mesh(
 #'   cylinder = cylinder,
 #'   filename = filename3,
@@ -47,7 +46,9 @@
 #'   cyl_color = cylinder$GrowthLength,
 #'   cyl_palette = "viridis"
 #' )
+#'
 #' }
+#'
 export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 8) {
   message("Plotting QSM")
 

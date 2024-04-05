@@ -18,20 +18,18 @@ Returns a list
 Imports a QSM created by TreeQSM
 }
 \examples{
-\dontrun{
+
 ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_qsm(file)
-names(qsm)
+qsm <- import_qsm(file, version = "2.x.x")
+summary(qsm)
 
 ## Read a TreeQSM MATLAB file in the 2.0 format
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 qsm <- import_qsm(file, version = "2.0")
 names(qsm)
-}
+
 }
 \references{
-{
 \insertRef{TreeQSM}{rTwig}
-}
 }

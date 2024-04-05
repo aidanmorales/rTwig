@@ -23,26 +23,24 @@
 #' @importFrom graphics abline text
 #' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
-#' @references {
-#'   \insertRef{box_dimension1}{rTwig}
+#' @references
+#' \insertRef{box_dimension1}{rTwig}
 #'
-#'   \insertRef{box_dimension2}{rTwig}
+#' \insertRef{box_dimension2}{rTwig}
 #'
-#'   \insertRef{box_dimension3}{rTwig}
+#' \insertRef{box_dimension3}{rTwig}
 #'
-#'   \insertRef{box_dimension4}{rTwig}
+#' \insertRef{box_dimension4}{rTwig}
 #'
-#'   \insertRef{box_dimension5}{rTwig}
-#' }
+#' \insertRef{box_dimension5}{rTwig}
 #'
 #' @examples
-#' \dontrun{
 #' ## Calculate Box Dimension
 #' file <- system.file("extdata/cloud.txt", package = "rTwig")
 #' cloud <- read.table(file, header = FALSE)
 #' output <- box_dimension(cloud, plot = "ALL")
 #' output
-#' }
+#'
 box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE) {
   # Calculates Box Dimension ---------------------------------------------------
 

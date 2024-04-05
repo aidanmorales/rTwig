@@ -32,7 +32,7 @@ analysis and visualization using the box-dimension metric. Also included
 is a novel database of twig diameter measurements for many common North
 American and European trees, on both the species and genus level.
 
-<img src="man/figures/README/Plot_rTwig.png"/>
+<img src="man/figures/Plot_rTwig.png"/>
 
 ## Functions
 
@@ -134,5 +134,3 @@ cloud <- read.table(file)
 output <- box_dimension(cloud)
 output[[2]]$slope
 ```
-
-<img src="man/figures/README/box_dimension3d.png" align="center" width="400"/>

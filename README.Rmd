@@ -8,7 +8,6 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README",
   out.width = "100%"
 )
 ```
@@ -17,7 +16,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
- [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml) [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main) [![](https://img.shields.io/github/downloads/aidanmorales/rTwig/total.svg)](https://github.com/aidanmorales/rTwig/releases)
+[![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml) [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main) [![](https://img.shields.io/github/downloads/aidanmorales/rTwig/total.svg)](https://github.com/aidanmorales/rTwig/releases)
 
 <!-- badges: end -->
 
@@ -27,7 +26,7 @@ Real Twig is a method to correct unrealistic cylinders in quantitative structure
 
 Real Twig does much more than correct QSM cylinder radii. Real Twig includes tools for QSM visualization and analysis that are seamlessly compatible with base R and popular packages such as the Tidyverse. Real Twig also includes fast, vectorized functions for point cloud fractal analysis and visualization using the box-dimension metric. Also included is a novel database of twig diameter measurements for many common North American and European trees, on both the species and genus level.
 
-<img src="man/figures/README/Plot_rTwig.png"/>
+<img src="man/figures/Plot_rTwig.png"/>
 
 ## Functions
 
@@ -116,5 +115,3 @@ cloud <- read.table(file)
 output <- box_dimension(cloud)
 output[[2]]$slope
 ```
-
-<img src="man/figures/README/box_dimension3d.png" align="center" width="400"/>

@@ -16,13 +16,12 @@ Returns a data frame
 Visual smoothing of a QSM by ensuring the midpoints of all cylinders are connected
 }
 \examples{
-\dontrun{
-## TreeQSM Smoothing
+\donttest{
+
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 1.5)
 
 ## Before Smoothing
 plot_qsm(cylinder)
@@ -30,5 +29,7 @@ plot_qsm(cylinder)
 ## After Smoothing
 cylinder <- smooth_qsm(cylinder)
 plot_qsm(cylinder)
+
 }
+
 }

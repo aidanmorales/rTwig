@@ -13,20 +13,27 @@
 #' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#'
 #' ## TreeQSM Processing Chain
-#' qsm <- import_qsm("foo.mat")
+#' file <- system.file("extdata/QSM.mat", package = "rTwig")
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
-#' export_mat(cylinder, "foo_corrected.mat")
+#'
+#' filename <- tempfile(pattern = "TreeQSM_QSM.mat")
+#' export_mat(cylinder, filename)
 #'
 #' ## SimpleForest Processing Chain
-#' cylinder <- read.csv("foo.csv")
+#' file <- system.file("extdata/QSM.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
-#' export_mat(cylinder, "foo_corrected.mat")
+#'
+#' filename <- tempfile(pattern = "SimpleForest_QSM.mat")
+#' export_mat(cylinder, filename)
+#'
 #' }
+#'
 export_mat <- function(cylinder, filename) {
   message("Exporting to .mat")
 

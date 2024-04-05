@@ -11,22 +11,21 @@
 #' @importFrom R.matlab readMat
 #' @importFrom rmatio read.mat
 #'
-#' @references {
-#'   \insertRef{TreeQSM}{rTwig}
-#' }
+#' @references
+#' \insertRef{TreeQSM}{rTwig}
 #'
 #' @examples
-#' \dontrun{
+#'
 #' ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_qsm(file)
-#' names(qsm)
+#' qsm <- import_qsm(file, version = "2.x.x")
+#' summary(qsm)
 #'
 #' ## Read a TreeQSM MATLAB file in the 2.0 format
 #' file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 #' qsm <- import_qsm(file, version = "2.0")
 #' names(qsm)
-#' }
+#'
 import_qsm <- function(file, version = "2.x.x") {
   message("Importing TreeQSM .mat")
 
@@ -88,30 +87,17 @@ import_qsm <- function(file, version = "2.x.x") {
       name <- treedata_names[j]
 
       # Extracts the tree variables
-      if (min(length(qsm$treedata[[j]])) == 1 & max(length(qsm$treedata[[j]])) == 1) {
+      if (!name %in% c("location", "StemTaper", "spreads")) {
         temp <- as.data.frame(qsm$treedata[[j]])
         colnames(temp) <- name
-
-        # Extracts the tree location as coordinates (x, y, z)
-      } else if (min(length(qsm$treedata[[j]])) == 1 & max(length(qsm$treedata[[j]])) == 3) {
-        temp <- as.data.frame(qsm$treedata[[j]])
-        colnames(temp) <- c("x", "y", "z")
-
-        # Extracts the stem taper
-      } else if (min(length(qsm$treedata[[j]])) == 2 & max(length(qsm$treedata[[j]])) >= 2) {
-        temp <- as.data.frame(qsm$treedata[[j]])
-        temp <- as.data.frame(t(temp))
+      } else if (name == "location") {
+        temp <- as.vector(qsm$treedata[[j]][[1]])
+      } else if (name == "StemTaper") {
+        temp <- as.data.frame(t(qsm$treedata[[j]][[1]]))
         rownames(temp) <- 1:nrow(temp)
         colnames(temp) <- c("Dist.m", "Stem.dia.m")
-
-        # Extracts the rest of the treedata
-      } else if (min(length(qsm$treedata[[j]])) == 1 & max(length(qsm$treedata[[j]])) > 3) {
-        temp <- as.data.frame(qsm$treedata[[j]])
-        colnames(temp) <- 1:ncol(temp)
-        temp <- as.data.frame(t(temp))
-        colnames(temp) <- name
-      } else if (min(length(qsm$treedata[[j]])) == 1 & max(length(qsm$treedata[[j]])) == 1) {
-        temp <- as.data.frame(qsm$treedata[[j]])
+      } else if (name == "spreads") {
+        temp <- qsm$treedata[[j]][[1]]
       }
 
       # Binds each iteration to the treedata qsm and names it

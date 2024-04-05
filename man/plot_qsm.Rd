@@ -45,7 +45,8 @@ A rgl QSM plot
 Plots QSM cylinders using the rgl library
 }
 \examples{
-\dontrun{
+\donttest{
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
@@ -77,5 +78,7 @@ plot_qsm(
   axes = FALSE,
   hover = TRUE
 )
+
 }
+
 }

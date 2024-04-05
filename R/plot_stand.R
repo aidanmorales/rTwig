@@ -18,16 +18,27 @@
 #' @import rgl
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#'
+#' # Import QSMs
+#' file1 <- system.file("extdata/QSM.mat", package = "rTwig")
+#' qsm <- import_qsm(file1)
+#' cylinder <- qsm$cylinder
+#' cylinder <- update_cylinders(cylinder)
 #'
 #' # Create a list of QSM cylinder data frames
-#' qsms <- list(qsm1, qsm2, qsm3, qsm4)
+#' qsms <- list(cylinder)
 #'
-#' # Optionally create a list of point clouds
-#' clouds <- list(cloud1, cloud2, cloud3, cloud4)
+#' # Optionally import and create a list of point clouds
+#' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
+#' cloud <- read.table(file2, header = FALSE)
+#' clouds <- list(cloud)
 #'
+#' # Plot QSMs and clouds
 #' plot_stand(qsms = qsms, clouds = clouds)
+#'
 #' }
+#'
 plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_sides = 8, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
   # Number of QSMs or Clouds to plot
   n_qsms <- length(qsms)

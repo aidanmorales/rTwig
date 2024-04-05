@@ -20,7 +20,8 @@ Returns a data frame
 Corrects cylinder radii
 }
 \examples{
-\dontrun{
+\donttest{
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
@@ -35,5 +36,7 @@ cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 str(cylinder)
+
 }
+
 }

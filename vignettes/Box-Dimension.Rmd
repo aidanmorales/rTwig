@@ -29,10 +29,9 @@ You can install the package directly from [CRAN](https://CRAN.R-project.org):
 install.packages("rTwig")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 # Enable RGL Plot 
 library(rgl)
-knitr::knit_hooks$set(webgl = hook_webgl)
 ```
 
 Or the latest development version from [GitHub](https://github.com/):
@@ -45,7 +44,7 @@ devtools::install_github("https://github.com/aidanmorales/rTwig")
 
 The first step is to load the rTwig package.
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(rTwig)
 ```
 

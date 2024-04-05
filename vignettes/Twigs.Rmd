@@ -70,7 +70,7 @@ unique(twigs$scientific.name)
 
 Let's visualize some of the twig data!
 
-```{r fig.height=6}
+```{r fig.height=6, fig.width=7}
 # Lets look at a subset of oak species
 twigs %>%
   filter(grepl("Quercus", scientific.name)) %>%

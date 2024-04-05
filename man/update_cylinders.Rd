@@ -24,7 +24,7 @@ The reverse branch order assigns twigs as order 1 and works backwards at each
 branching junction to the base of the stem, which has the largest reverse branch order.
 }
 \examples{
-\dontrun{
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
@@ -37,12 +37,10 @@ file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 str(cylinder)
-}
+
 }
 \references{
-{
 \insertRef{growth_parameter1}{rTwig}
 
 \insertRef{growth_parameter2}{rTwig}
-}
 }

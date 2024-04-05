@@ -20,7 +20,8 @@
 #' @import rgl
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
@@ -52,7 +53,9 @@
 #'   axes = FALSE,
 #'   hover = TRUE
 #' )
+#'
 #' }
+#'
 plot_qsm <- function(cylinder, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 8, cloud = NULL, pt_color = NULL, pt_size = NULL, axes = TRUE, hover = FALSE) {
   message("Plotting QSM")
 

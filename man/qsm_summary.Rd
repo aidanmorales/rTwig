@@ -20,7 +20,7 @@ Returns a list
 Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
 }
 \examples{
-\dontrun{
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
@@ -29,17 +29,17 @@ cylinder <- update_cylinders(cylinder)
 qsm_summary(cylinder)
 
 # TreeQSM Triangulation
-#' file <- system.file("extdata/QSM.mat", package = "rTwig")
+file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 triangulation <- qsm$triangulation
-qsm_summary(cylinder, triangulation)
+qsm_summary(cylinder = cylinder, triangulation = triangulation)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 qsm_summary(cylinder)
-}
+
 }

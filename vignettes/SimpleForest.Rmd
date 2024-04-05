@@ -38,7 +38,7 @@ devtools::install_github("https://github.com/aidanmorales/rTwig")
 
 The first step is to load the rTwig package. Real Twig works well when paired with packages from the [Tidyverse](https://www.tidyverse.org/), so we will also load the dplyr package to help with data manipulation.
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 # Load rTwig
 library(rTwig)
 
@@ -249,7 +249,7 @@ We can also save our QSM as a mesh (.ply extension) for use in other modeling pr
 ```{r, eval=FALSE}
 # Export Mesh Colored by RBO
 cylinder %>%
-  export_mest(
+  export_mesh(
     filename = "QSM_mesh",
     radius = .$radius,
     cyl_color = .$reverseBranchOrder,
@@ -294,7 +294,7 @@ It is important to note that Real Twig was not tested with SimpleForest during i
 
 Below are the mass estimates and statistics using SimpleForest v5.3.2 with its built in vessel volume correction, and Real Twig applied to the same QSMs. 
 
-```{r, echo=FALSE, results='hide', message=FALSE}
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 # Import Data
 file <- system.file("extdata/validation.csv", package = "rTwig")
 all_biomass <- read.csv(file) %>%
@@ -424,13 +424,13 @@ p6 <- ggplot(data = all_biomass, aes(x = Mb.DS, y = tperr, color = Version, fill
   scale_fill_manual(values = unique(all_biomass$colors))
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center',}
+```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center', warning=FALSE, message=FALSE}
 ggarrange(p1, p4, common.legend = TRUE, legend = "bottom")
 ggarrange(p2, p5, common.legend = TRUE, legend = "bottom")
 ggarrange(p3, p6, common.legend = TRUE, legend = "bottom")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ### TOTALS #####################################################################
 total_stats <- all_biomass %>%
   group_by(Version) %>%
@@ -551,7 +551,7 @@ data[[1]] %>%
   )
 ```
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Future Package Cleanup
 future::plan("sequential")
 ```

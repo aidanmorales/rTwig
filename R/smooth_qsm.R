@@ -10,13 +10,12 @@
 #' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @examples
-#' \dontrun{
-#' ## TreeQSM Smoothing
+#' \donttest{
+#'
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 1.5)
 #'
 #' ## Before Smoothing
 #' plot_qsm(cylinder)
@@ -24,7 +23,9 @@
 #' ## After Smoothing
 #' cylinder <- smooth_qsm(cylinder)
 #' plot_qsm(cylinder)
+#'
 #' }
+#'
 smooth_qsm <- function(cylinder) {
   message("Smoothing QSM")
 

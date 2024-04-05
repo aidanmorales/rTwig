@@ -39,14 +39,25 @@ A rgl QSM plot
 Plots multiple QSMs in a forest stand using the rgl library
 }
 \examples{
-\dontrun{
+\donttest{
+
+# Import QSMs
+file1 <- system.file("extdata/QSM.mat", package = "rTwig")
+qsm <- import_qsm(file1)
+cylinder <- qsm$cylinder
+cylinder <- update_cylinders(cylinder)
 
 # Create a list of QSM cylinder data frames
-qsms <- list(qsm1, qsm2, qsm3, qsm4)
+qsms <- list(cylinder)
 
-# Optionally create a list of point clouds
-clouds <- list(cloud1, cloud2, cloud3, cloud4)
+# Optionally import and create a list of point clouds
+file2 <- system.file("extdata/cloud.txt", package = "rTwig")
+cloud <- read.table(file2, header = FALSE)
+clouds <- list(cloud)
 
+# Plot QSMs and clouds
 plot_stand(qsms = qsms, clouds = clouds)
+
 }
+
 }

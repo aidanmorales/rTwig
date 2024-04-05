@@ -36,16 +36,14 @@ Returns a list
 R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 }
 \examples{
-\dontrun{
 ## Calculate Box Dimension
 file <- system.file("extdata/cloud.txt", package = "rTwig")
 cloud <- read.table(file, header = FALSE)
 output <- box_dimension(cloud, plot = "ALL")
 output
-}
+
 }
 \references{
-{
 \insertRef{box_dimension1}{rTwig}
 
 \insertRef{box_dimension2}{rTwig}
@@ -55,5 +53,4 @@ output
 \insertRef{box_dimension4}{rTwig}
 
 \insertRef{box_dimension5}{rTwig}
-}
 }

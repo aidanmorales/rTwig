@@ -17,14 +17,13 @@
 #' @rawNamespace import(tidytable, except=c(map_dfr))
 #' @rawNamespace import(igraph, except=c(union, as_data_frame, groups, crossing, "%->%", "%<-%"))
 #'
-#' @references {
-#'   \insertRef{growth_parameter1}{rTwig}
+#' @references
+#' \insertRef{growth_parameter1}{rTwig}
 #'
-#'   \insertRef{growth_parameter2}{rTwig}
-#' }
+#' \insertRef{growth_parameter2}{rTwig}
 #'
 #' @examples
-#' \dontrun{
+#'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
@@ -37,7 +36,7 @@
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
 #' str(cylinder)
-#' }
+#'
 update_cylinders <- function(cylinder) {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
