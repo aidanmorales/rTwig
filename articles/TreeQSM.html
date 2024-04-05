@@ -126,8 +126,6 @@ the dplyr package to help with data manipulation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load rTwig</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in rgl.init(initValue, onlyNULL): RGL: unable to open X11 display</span></span>
-<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.</span></span>
 <span></span>
 <span><span class="co"># Other useful packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
@@ -163,7 +161,7 @@ function the directory to our QSM.</p>
 <span></span>
 <span><span class="co"># Import and save QSM</span></span>
 <span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
-<p>The QSM should be a list with a length of six. We can check it as
+<p>The QSM should be a list with six elements. We can check it as
 follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span>
@@ -497,7 +495,7 @@ used to color the mesh.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export Mesh Colored by RBO</span></span>
 <span><span class="va">cylinder</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">export_mest</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/export_mesh.html">export_mesh</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="st">"QSM_mesh"</span>,</span>
 <span>    radius <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">radius</span>,</span>
 <span>    cyl_color <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">reverseBranchOrder</span>,</span>
@@ -557,34 +555,24 @@ test our model.</p>
 </h4>
 <p>Below are the mass estimates and statistics using TreeQSM v2.4.1 with
 its built in tapering and Real Twig applied to the same QSMs.</p>
-<pre><code><span><span class="co">#&gt; Warning: The `scale_name` argument of `continuous_scale()` is deprecated as of ggplot2</span></span>
-<span><span class="co">#&gt; 3.5.0.</span></span>
-<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span><span class="co">#&gt; generated.</span></span>
-<span><span class="co">#&gt; Warning: The `trans` argument of `continuous_scale()` is deprecated as of ggplot2 3.5.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `transform` argument instead.</span></span>
-<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span><span class="co">#&gt; generated.</span></span></code></pre>
 <p><img src="TreeQSM_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;"><img src="TreeQSM_files/figure-html/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;"><img src="TreeQSM_files/figure-html/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;"></p>
-<div id="kngwxvpxas" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kngwxvpxas table {
+<div id="kauuqgxfgw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kauuqgxfgw table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kngwxvpxas thead, #kngwxvpxas tbody, #kngwxvpxas tfoot, #kngwxvpxas tr, #kngwxvpxas td, #kngwxvpxas th {
+#kauuqgxfgw thead, #kauuqgxfgw tbody, #kauuqgxfgw tfoot, #kauuqgxfgw tr, #kauuqgxfgw td, #kauuqgxfgw th {
   border-style: none;
 }
 
-#kngwxvpxas p {
+#kauuqgxfgw p {
   margin: 0;
   padding: 0;
 }
 
-#kngwxvpxas .gt_table {
+#kauuqgxfgw .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -610,12 +598,12 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_caption {
+#kauuqgxfgw .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kngwxvpxas .gt_title {
+#kauuqgxfgw .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -627,7 +615,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#kngwxvpxas .gt_subtitle {
+#kauuqgxfgw .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -639,7 +627,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-width: 0;
 }
 
-#kngwxvpxas .gt_heading {
+#kauuqgxfgw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -651,13 +639,13 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_bottom_border {
+#kauuqgxfgw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#kngwxvpxas .gt_col_headings {
+#kauuqgxfgw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -672,7 +660,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_col_heading {
+#kauuqgxfgw .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -692,7 +680,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#kngwxvpxas .gt_column_spanner_outer {
+#kauuqgxfgw .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -704,15 +692,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 4px;
 }
 
-#kngwxvpxas .gt_column_spanner_outer:first-child {
+#kauuqgxfgw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kngwxvpxas .gt_column_spanner_outer:last-child {
+#kauuqgxfgw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kngwxvpxas .gt_column_spanner {
+#kauuqgxfgw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -724,11 +712,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   width: 100%;
 }
 
-#kngwxvpxas .gt_spanner_row {
+#kauuqgxfgw .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kngwxvpxas .gt_group_heading {
+#kauuqgxfgw .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -754,7 +742,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   text-align: left;
 }
 
-#kngwxvpxas .gt_empty_group_heading {
+#kauuqgxfgw .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -769,15 +757,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: middle;
 }
 
-#kngwxvpxas .gt_from_md > :first-child {
+#kauuqgxfgw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kngwxvpxas .gt_from_md > :last-child {
+#kauuqgxfgw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kngwxvpxas .gt_row {
+#kauuqgxfgw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -796,7 +784,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#kngwxvpxas .gt_stub {
+#kauuqgxfgw .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -809,7 +797,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#kngwxvpxas .gt_stub_row_group {
+#kauuqgxfgw .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -823,15 +811,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: top;
 }
 
-#kngwxvpxas .gt_row_group_first td {
+#kauuqgxfgw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kngwxvpxas .gt_row_group_first th {
+#kauuqgxfgw .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kngwxvpxas .gt_summary_row {
+#kauuqgxfgw .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -841,16 +829,16 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#kngwxvpxas .gt_first_summary_row {
+#kauuqgxfgw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_first_summary_row.thick {
+#kauuqgxfgw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kngwxvpxas .gt_last_summary_row {
+#kauuqgxfgw .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -860,7 +848,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_grand_summary_row {
+#kauuqgxfgw .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -870,7 +858,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#kngwxvpxas .gt_first_grand_summary_row {
+#kauuqgxfgw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -880,7 +868,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_last_grand_summary_row_top {
+#kauuqgxfgw .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -890,11 +878,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_striped {
+#kauuqgxfgw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kngwxvpxas .gt_table_body {
+#kauuqgxfgw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -903,7 +891,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#kngwxvpxas .gt_footnotes {
+#kauuqgxfgw .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -917,7 +905,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_footnote {
+#kauuqgxfgw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -926,7 +914,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#kngwxvpxas .gt_sourcenotes {
+#kauuqgxfgw .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -940,7 +928,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#kngwxvpxas .gt_sourcenote {
+#kauuqgxfgw .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -948,63 +936,63 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#kngwxvpxas .gt_left {
+#kauuqgxfgw .gt_left {
   text-align: left;
 }
 
-#kngwxvpxas .gt_center {
+#kauuqgxfgw .gt_center {
   text-align: center;
 }
 
-#kngwxvpxas .gt_right {
+#kauuqgxfgw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kngwxvpxas .gt_font_normal {
+#kauuqgxfgw .gt_font_normal {
   font-weight: normal;
 }
 
-#kngwxvpxas .gt_font_bold {
+#kauuqgxfgw .gt_font_bold {
   font-weight: bold;
 }
 
-#kngwxvpxas .gt_font_italic {
+#kauuqgxfgw .gt_font_italic {
   font-style: italic;
 }
 
-#kngwxvpxas .gt_super {
+#kauuqgxfgw .gt_super {
   font-size: 65%;
 }
 
-#kngwxvpxas .gt_footnote_marks {
+#kauuqgxfgw .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kngwxvpxas .gt_asterisk {
+#kauuqgxfgw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kngwxvpxas .gt_indent_1 {
+#kauuqgxfgw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kngwxvpxas .gt_indent_2 {
+#kauuqgxfgw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kngwxvpxas .gt_indent_3 {
+#kauuqgxfgw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kngwxvpxas .gt_indent_4 {
+#kauuqgxfgw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kngwxvpxas .gt_indent_5 {
+#kauuqgxfgw .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1048,23 +1036,23 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 </tbody>
 </table>
 </div>
-<div id="rxnzwocvxj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rxnzwocvxj table {
+<div id="hperhudckc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hperhudckc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rxnzwocvxj thead, #rxnzwocvxj tbody, #rxnzwocvxj tfoot, #rxnzwocvxj tr, #rxnzwocvxj td, #rxnzwocvxj th {
+#hperhudckc thead, #hperhudckc tbody, #hperhudckc tfoot, #hperhudckc tr, #hperhudckc td, #hperhudckc th {
   border-style: none;
 }
 
-#rxnzwocvxj p {
+#hperhudckc p {
   margin: 0;
   padding: 0;
 }
 
-#rxnzwocvxj .gt_table {
+#hperhudckc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1090,12 +1078,12 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_caption {
+#hperhudckc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rxnzwocvxj .gt_title {
+#hperhudckc .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -1107,7 +1095,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#rxnzwocvxj .gt_subtitle {
+#hperhudckc .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -1119,7 +1107,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-width: 0;
 }
 
-#rxnzwocvxj .gt_heading {
+#hperhudckc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1131,13 +1119,13 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_bottom_border {
+#hperhudckc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#rxnzwocvxj .gt_col_headings {
+#hperhudckc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1152,7 +1140,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_col_heading {
+#hperhudckc .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1172,7 +1160,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#rxnzwocvxj .gt_column_spanner_outer {
+#hperhudckc .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1184,15 +1172,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 4px;
 }
 
-#rxnzwocvxj .gt_column_spanner_outer:first-child {
+#hperhudckc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rxnzwocvxj .gt_column_spanner_outer:last-child {
+#hperhudckc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rxnzwocvxj .gt_column_spanner {
+#hperhudckc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -1204,11 +1192,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   width: 100%;
 }
 
-#rxnzwocvxj .gt_spanner_row {
+#hperhudckc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rxnzwocvxj .gt_group_heading {
+#hperhudckc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1234,7 +1222,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   text-align: left;
 }
 
-#rxnzwocvxj .gt_empty_group_heading {
+#hperhudckc .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1249,15 +1237,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: middle;
 }
 
-#rxnzwocvxj .gt_from_md > :first-child {
+#hperhudckc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rxnzwocvxj .gt_from_md > :last-child {
+#hperhudckc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rxnzwocvxj .gt_row {
+#hperhudckc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1276,7 +1264,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#rxnzwocvxj .gt_stub {
+#hperhudckc .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1289,7 +1277,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#rxnzwocvxj .gt_stub_row_group {
+#hperhudckc .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1303,15 +1291,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: top;
 }
 
-#rxnzwocvxj .gt_row_group_first td {
+#hperhudckc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rxnzwocvxj .gt_row_group_first th {
+#hperhudckc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rxnzwocvxj .gt_summary_row {
+#hperhudckc .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1321,16 +1309,16 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#rxnzwocvxj .gt_first_summary_row {
+#hperhudckc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_first_summary_row.thick {
+#hperhudckc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rxnzwocvxj .gt_last_summary_row {
+#hperhudckc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1340,7 +1328,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_grand_summary_row {
+#hperhudckc .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1350,7 +1338,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#rxnzwocvxj .gt_first_grand_summary_row {
+#hperhudckc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1360,7 +1348,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_last_grand_summary_row_top {
+#hperhudckc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1370,11 +1358,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_striped {
+#hperhudckc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rxnzwocvxj .gt_table_body {
+#hperhudckc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1383,7 +1371,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#rxnzwocvxj .gt_footnotes {
+#hperhudckc .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1397,7 +1385,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_footnote {
+#hperhudckc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1406,7 +1394,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#rxnzwocvxj .gt_sourcenotes {
+#hperhudckc .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1420,7 +1408,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#rxnzwocvxj .gt_sourcenote {
+#hperhudckc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1428,63 +1416,63 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#rxnzwocvxj .gt_left {
+#hperhudckc .gt_left {
   text-align: left;
 }
 
-#rxnzwocvxj .gt_center {
+#hperhudckc .gt_center {
   text-align: center;
 }
 
-#rxnzwocvxj .gt_right {
+#hperhudckc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rxnzwocvxj .gt_font_normal {
+#hperhudckc .gt_font_normal {
   font-weight: normal;
 }
 
-#rxnzwocvxj .gt_font_bold {
+#hperhudckc .gt_font_bold {
   font-weight: bold;
 }
 
-#rxnzwocvxj .gt_font_italic {
+#hperhudckc .gt_font_italic {
   font-style: italic;
 }
 
-#rxnzwocvxj .gt_super {
+#hperhudckc .gt_super {
   font-size: 65%;
 }
 
-#rxnzwocvxj .gt_footnote_marks {
+#hperhudckc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rxnzwocvxj .gt_asterisk {
+#hperhudckc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rxnzwocvxj .gt_indent_1 {
+#hperhudckc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rxnzwocvxj .gt_indent_2 {
+#hperhudckc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rxnzwocvxj .gt_indent_3 {
+#hperhudckc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rxnzwocvxj .gt_indent_4 {
+#hperhudckc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rxnzwocvxj .gt_indent_5 {
+#hperhudckc .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1535,23 +1523,23 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <p>Below are the mass estimates and statistics using TreeQSM v2.3.0 with
 its built in tapering and Real Twig applied to the same QSMs.</p>
 <p><img src="TreeQSM_files/figure-html/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;"><img src="TreeQSM_files/figure-html/unnamed-chunk-26-2.png" width="672" style="display: block; margin: auto;"><img src="TreeQSM_files/figure-html/unnamed-chunk-26-3.png" width="672" style="display: block; margin: auto;"></p>
-<div id="vdwdcctmzl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vdwdcctmzl table {
+<div id="klqvtbhdzx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#klqvtbhdzx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vdwdcctmzl thead, #vdwdcctmzl tbody, #vdwdcctmzl tfoot, #vdwdcctmzl tr, #vdwdcctmzl td, #vdwdcctmzl th {
+#klqvtbhdzx thead, #klqvtbhdzx tbody, #klqvtbhdzx tfoot, #klqvtbhdzx tr, #klqvtbhdzx td, #klqvtbhdzx th {
   border-style: none;
 }
 
-#vdwdcctmzl p {
+#klqvtbhdzx p {
   margin: 0;
   padding: 0;
 }
 
-#vdwdcctmzl .gt_table {
+#klqvtbhdzx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1577,12 +1565,12 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_caption {
+#klqvtbhdzx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vdwdcctmzl .gt_title {
+#klqvtbhdzx .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -1594,7 +1582,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#vdwdcctmzl .gt_subtitle {
+#klqvtbhdzx .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -1606,7 +1594,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-width: 0;
 }
 
-#vdwdcctmzl .gt_heading {
+#klqvtbhdzx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1618,13 +1606,13 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_bottom_border {
+#klqvtbhdzx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#vdwdcctmzl .gt_col_headings {
+#klqvtbhdzx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1639,7 +1627,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_col_heading {
+#klqvtbhdzx .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1659,7 +1647,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#vdwdcctmzl .gt_column_spanner_outer {
+#klqvtbhdzx .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1671,15 +1659,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 4px;
 }
 
-#vdwdcctmzl .gt_column_spanner_outer:first-child {
+#klqvtbhdzx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vdwdcctmzl .gt_column_spanner_outer:last-child {
+#klqvtbhdzx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vdwdcctmzl .gt_column_spanner {
+#klqvtbhdzx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -1691,11 +1679,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   width: 100%;
 }
 
-#vdwdcctmzl .gt_spanner_row {
+#klqvtbhdzx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vdwdcctmzl .gt_group_heading {
+#klqvtbhdzx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1721,7 +1709,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   text-align: left;
 }
 
-#vdwdcctmzl .gt_empty_group_heading {
+#klqvtbhdzx .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1736,15 +1724,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: middle;
 }
 
-#vdwdcctmzl .gt_from_md > :first-child {
+#klqvtbhdzx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vdwdcctmzl .gt_from_md > :last-child {
+#klqvtbhdzx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vdwdcctmzl .gt_row {
+#klqvtbhdzx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1763,7 +1751,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#vdwdcctmzl .gt_stub {
+#klqvtbhdzx .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1776,7 +1764,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#vdwdcctmzl .gt_stub_row_group {
+#klqvtbhdzx .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1790,15 +1778,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: top;
 }
 
-#vdwdcctmzl .gt_row_group_first td {
+#klqvtbhdzx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vdwdcctmzl .gt_row_group_first th {
+#klqvtbhdzx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vdwdcctmzl .gt_summary_row {
+#klqvtbhdzx .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1808,16 +1796,16 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#vdwdcctmzl .gt_first_summary_row {
+#klqvtbhdzx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_first_summary_row.thick {
+#klqvtbhdzx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vdwdcctmzl .gt_last_summary_row {
+#klqvtbhdzx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1827,7 +1815,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_grand_summary_row {
+#klqvtbhdzx .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1837,7 +1825,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#vdwdcctmzl .gt_first_grand_summary_row {
+#klqvtbhdzx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1847,7 +1835,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_last_grand_summary_row_top {
+#klqvtbhdzx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1857,11 +1845,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_striped {
+#klqvtbhdzx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vdwdcctmzl .gt_table_body {
+#klqvtbhdzx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1870,7 +1858,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#vdwdcctmzl .gt_footnotes {
+#klqvtbhdzx .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1884,7 +1872,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_footnote {
+#klqvtbhdzx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1893,7 +1881,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#vdwdcctmzl .gt_sourcenotes {
+#klqvtbhdzx .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1907,7 +1895,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#vdwdcctmzl .gt_sourcenote {
+#klqvtbhdzx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1915,63 +1903,63 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#vdwdcctmzl .gt_left {
+#klqvtbhdzx .gt_left {
   text-align: left;
 }
 
-#vdwdcctmzl .gt_center {
+#klqvtbhdzx .gt_center {
   text-align: center;
 }
 
-#vdwdcctmzl .gt_right {
+#klqvtbhdzx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vdwdcctmzl .gt_font_normal {
+#klqvtbhdzx .gt_font_normal {
   font-weight: normal;
 }
 
-#vdwdcctmzl .gt_font_bold {
+#klqvtbhdzx .gt_font_bold {
   font-weight: bold;
 }
 
-#vdwdcctmzl .gt_font_italic {
+#klqvtbhdzx .gt_font_italic {
   font-style: italic;
 }
 
-#vdwdcctmzl .gt_super {
+#klqvtbhdzx .gt_super {
   font-size: 65%;
 }
 
-#vdwdcctmzl .gt_footnote_marks {
+#klqvtbhdzx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vdwdcctmzl .gt_asterisk {
+#klqvtbhdzx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vdwdcctmzl .gt_indent_1 {
+#klqvtbhdzx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vdwdcctmzl .gt_indent_2 {
+#klqvtbhdzx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vdwdcctmzl .gt_indent_3 {
+#klqvtbhdzx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vdwdcctmzl .gt_indent_4 {
+#klqvtbhdzx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vdwdcctmzl .gt_indent_5 {
+#klqvtbhdzx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2015,23 +2003,23 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 </tbody>
 </table>
 </div>
-<div id="ywgsemnvzb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ywgsemnvzb table {
+<div id="anssvzpmud" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#anssvzpmud table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ywgsemnvzb thead, #ywgsemnvzb tbody, #ywgsemnvzb tfoot, #ywgsemnvzb tr, #ywgsemnvzb td, #ywgsemnvzb th {
+#anssvzpmud thead, #anssvzpmud tbody, #anssvzpmud tfoot, #anssvzpmud tr, #anssvzpmud td, #anssvzpmud th {
   border-style: none;
 }
 
-#ywgsemnvzb p {
+#anssvzpmud p {
   margin: 0;
   padding: 0;
 }
 
-#ywgsemnvzb .gt_table {
+#anssvzpmud .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2057,12 +2045,12 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_caption {
+#anssvzpmud .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ywgsemnvzb .gt_title {
+#anssvzpmud .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -2074,7 +2062,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#ywgsemnvzb .gt_subtitle {
+#anssvzpmud .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -2086,7 +2074,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-width: 0;
 }
 
-#ywgsemnvzb .gt_heading {
+#anssvzpmud .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2098,13 +2086,13 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_bottom_border {
+#anssvzpmud .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#ywgsemnvzb .gt_col_headings {
+#anssvzpmud .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2119,7 +2107,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_col_heading {
+#anssvzpmud .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2139,7 +2127,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#ywgsemnvzb .gt_column_spanner_outer {
+#anssvzpmud .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2151,15 +2139,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 4px;
 }
 
-#ywgsemnvzb .gt_column_spanner_outer:first-child {
+#anssvzpmud .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ywgsemnvzb .gt_column_spanner_outer:last-child {
+#anssvzpmud .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ywgsemnvzb .gt_column_spanner {
+#anssvzpmud .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -2171,11 +2159,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   width: 100%;
 }
 
-#ywgsemnvzb .gt_spanner_row {
+#anssvzpmud .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ywgsemnvzb .gt_group_heading {
+#anssvzpmud .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2201,7 +2189,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   text-align: left;
 }
 
-#ywgsemnvzb .gt_empty_group_heading {
+#anssvzpmud .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -2216,15 +2204,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: middle;
 }
 
-#ywgsemnvzb .gt_from_md > :first-child {
+#anssvzpmud .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ywgsemnvzb .gt_from_md > :last-child {
+#anssvzpmud .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ywgsemnvzb .gt_row {
+#anssvzpmud .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2243,7 +2231,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   overflow-x: hidden;
 }
 
-#ywgsemnvzb .gt_stub {
+#anssvzpmud .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2256,7 +2244,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#ywgsemnvzb .gt_stub_row_group {
+#anssvzpmud .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2270,15 +2258,15 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   vertical-align: top;
 }
 
-#ywgsemnvzb .gt_row_group_first td {
+#anssvzpmud .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ywgsemnvzb .gt_row_group_first th {
+#anssvzpmud .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ywgsemnvzb .gt_summary_row {
+#anssvzpmud .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2288,16 +2276,16 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#ywgsemnvzb .gt_first_summary_row {
+#anssvzpmud .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_first_summary_row.thick {
+#anssvzpmud .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ywgsemnvzb .gt_last_summary_row {
+#anssvzpmud .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2307,7 +2295,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_grand_summary_row {
+#anssvzpmud .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2317,7 +2305,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#ywgsemnvzb .gt_first_grand_summary_row {
+#anssvzpmud .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2327,7 +2315,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_last_grand_summary_row_top {
+#anssvzpmud .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2337,11 +2325,11 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_striped {
+#anssvzpmud .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ywgsemnvzb .gt_table_body {
+#anssvzpmud .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2350,7 +2338,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#ywgsemnvzb .gt_footnotes {
+#anssvzpmud .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2364,7 +2352,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_footnote {
+#anssvzpmud .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2373,7 +2361,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#ywgsemnvzb .gt_sourcenotes {
+#anssvzpmud .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2387,7 +2375,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ywgsemnvzb .gt_sourcenote {
+#anssvzpmud .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2395,63 +2383,63 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
   padding-right: 5px;
 }
 
-#ywgsemnvzb .gt_left {
+#anssvzpmud .gt_left {
   text-align: left;
 }
 
-#ywgsemnvzb .gt_center {
+#anssvzpmud .gt_center {
   text-align: center;
 }
 
-#ywgsemnvzb .gt_right {
+#anssvzpmud .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ywgsemnvzb .gt_font_normal {
+#anssvzpmud .gt_font_normal {
   font-weight: normal;
 }
 
-#ywgsemnvzb .gt_font_bold {
+#anssvzpmud .gt_font_bold {
   font-weight: bold;
 }
 
-#ywgsemnvzb .gt_font_italic {
+#anssvzpmud .gt_font_italic {
   font-style: italic;
 }
 
-#ywgsemnvzb .gt_super {
+#anssvzpmud .gt_super {
   font-size: 65%;
 }
 
-#ywgsemnvzb .gt_footnote_marks {
+#anssvzpmud .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ywgsemnvzb .gt_asterisk {
+#anssvzpmud .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ywgsemnvzb .gt_indent_1 {
+#anssvzpmud .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ywgsemnvzb .gt_indent_2 {
+#anssvzpmud .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ywgsemnvzb .gt_indent_3 {
+#anssvzpmud .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ywgsemnvzb .gt_indent_4 {
+#anssvzpmud .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ywgsemnvzb .gt_indent_5 {
+#anssvzpmud .gt_indent_5 {
   text-indent: 25px;
 }
 </style>

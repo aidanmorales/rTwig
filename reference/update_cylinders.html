@@ -90,7 +90,8 @@ branching junction to the base of the stem, which has the largest reverse branch
 “SimpleTree —An Efficient Open Source Tool to Build Tree Models from TLS Clouds.”
 <em>Forests</em>, <b>6</b>(11), 4245--4294.
 <a href="https://doi.org/10.3390/f6114245" class="external-link">doi:10.3390/f6114245</a>
-.Hackenberg J, Bontemps J (2023).
+.</p>
+<p>Hackenberg J, Bontemps J (2023).
 “Improving quantitative structure models with filters based on allometric scaling theory.”
 <em>Applied Geomatics</em>, <b>15</b>.
 <a href="https://doi.org/10.1007/s12518-023-00537-4" class="external-link">doi:10.1007/s12518-023-00537-4</a>
@@ -99,20 +100,78 @@ branching junction to the base of the stem, which has the largest reverse branch
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## TreeQSM Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM .mat</span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">update_cylinders</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Ordering</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Growth Length</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1136 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius            : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.768 0.768 0.769 0.769 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.y           : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.z           : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.x            : num  0.00995 -0.0111 0.01364 0.01571 0.01449 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.y            : num  0.0912 0.0391 0.0367 0.0271 0.0267 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.z            : num  0.996 0.999 0.999 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.x             : num  0.769 0.768 0.769 0.769 0.77 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.y             : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.z             : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mad               : num  0.00072 0.000538 0.000523 0.000335 0.000438 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ SurfCov           : num  0.875 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius       : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius         : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ GrowthLength      : num  32.8 32.7 32.6 32.6 32.6 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent            : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension         : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ added             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ BranchOrder       : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder: num  20 20 20 20 20 20 20 20 20 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PositionInBranch  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">update_cylinders</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1149 obs. of  24 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : int  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : int  -1 0 1 2 3 4 5 6 7 8 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX              : num  0.761 0.759 0.771 0.768 0.765 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ              : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX                : num  0.759 0.771 0.768 0.765 0.769 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY                : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ                : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX               : num  -0.0286 0.2148 -0.0473 -0.0498 0.0678 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY               : num  -0.078889 0.163918 0.03933 -0.011114 -0.000265 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ               : num  0.996 0.963 0.998 0.999 0.998 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius              : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length              : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength        : num  31.4 31.4 31.3 31.3 31.2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ averagePointDistance: num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID           : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID     : int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOrder         : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder  : int  18 18 18 18 18 18 18 18 18 18 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID            : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchNew           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius         : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren       : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

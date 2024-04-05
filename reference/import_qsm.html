@@ -90,17 +90,27 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">import_qsm</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">import_qsm</span><span class="op">(</span><span class="va">file</span>, version <span class="op">=</span> <span class="st">"2.x.x"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM .mat</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Length Class      Mode</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cylinder      17     data.frame list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> branch        10     data.frame list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> treedata      91     -none-     list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> rundata       45     data.frame list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pmdistance    21     -none-     list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> triangulation 12     -none-     list</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Read a TreeQSM MATLAB file in the 2.0 format</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM_2.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">import_qsm</span><span class="op">(</span><span class="va">file</span>, version <span class="op">=</span> <span class="st">"2.0"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM .mat</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cylinder" "treedata"</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

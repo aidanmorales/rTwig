@@ -113,17 +113,21 @@
 “Measuring the Contribution of Leaves to the Structural Complexity of Urban Tree Crowns with Terrestrial Laser Scanning.”
 <em>Remote Sensing</em>, <b>13</b>(14).
 <a href="https://doi.org/10.3390/rs13142773" class="external-link">doi:10.3390/rs13142773</a>
-.Mandelbrot BB (1983).
+.</p>
+<p>Mandelbrot BB (1983).
 <em>The fractal geometry of nature</em>.
-Freeman.Saarinen N, Calders K, Kankare V, Yrttimaa T, Junttila S, Luoma V, Huuskonen S, Hynynen J, Verbeeck H (2021).
+Freeman.</p>
+<p>Saarinen N, Calders K, Kankare V, Yrttimaa T, Junttila S, Luoma V, Huuskonen S, Hynynen J, Verbeeck H (2021).
 “Understanding 3D structural complexity of individual Scots pine trees with different management history.”
 <em>Ecology and Evolution</em>, <b>11</b>(6), 2561-2572.
 <a href="https://doi.org/10.1002/ece3.7216" class="external-link">doi:10.1002/ece3.7216</a>
-.Seidel D (2018).
+.</p>
+<p>Seidel D (2018).
 “A holistic approach to determine tree structural complexity based on laser scanning data and fractal analysis.”
 <em>Ecology and Evolution</em>, <b>8</b>(1), 128-134.
 <a href="https://doi.org/10.1002/ece3.3661" class="external-link">doi:10.1002/ece3.3661</a>
-.Seidel D, Annighöfer P, Stiers M, Zemp CD, Burkardt K, Ehbrecht M, Willim K, Kreft H, Hölscher D, Ammer C (2019).
+.</p>
+<p>Seidel D, Annighöfer P, Stiers M, Zemp CD, Burkardt K, Ehbrecht M, Willim K, Kreft H, Hölscher D, Ammer C (2019).
 “How a measure of tree structural complexity relates to architectural benefit-to-cost ratio, light availability, and growth of trees.”
 <em>Ecology and Evolution</em>, <b>9</b>(12), 7134-7142.
 <a href="https://doi.org/10.1002/ece3.5281" class="external-link">doi:10.1002/ece3.5281</a>
@@ -132,13 +136,33 @@ Freeman.Saarinen N, Calders K, Kankare V, Yrttimaa T, Junttila S, Luoma V, Huusk
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co">## Calculate Box Dimension</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Calculate Box Dimension</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">box_dimension</span><span class="op">(</span><span class="va">cloud</span>, plot <span class="op">=</span> <span class="st">"ALL"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="box_dimension-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">output</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 9 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   log.box.size log.voxels</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        0           1.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        0.693       1.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        1.39        3.09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        2.08        4.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        2.77        5.18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>        3.47        6.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>        4.16        7.16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>        4.85        8.23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span>        5.55        9.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 1 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   intercept slope r.squared adj.r.squared</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1.02  1.48      1.00          1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

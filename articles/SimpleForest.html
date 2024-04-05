@@ -127,8 +127,6 @@ the dplyr package to help with data manipulation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load rTwig</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in rgl.init(initValue, onlyNULL): RGL: unable to open X11 display</span></span>
-<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.</span></span>
 <span></span>
 <span><span class="co"># Other useful packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
@@ -150,48 +148,24 @@ to take advantage of multi-threaded support.</p>
 <p>Let’s take a look at the SimpleForest cylinder data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    1149 obs. of  41 variables:</span></span>
-<span><span class="co">#&gt;  $ type                        : chr  "cylinder" "cylinder" "cylinder" "cylinder" ...</span></span>
-<span><span class="co">#&gt;  $ ID                          : int  0 1 2 3 4 5 6 7 8 9 ...</span></span>
-<span><span class="co">#&gt;  $ parentID                    : int  -1 0 1 2 3 4 5 6 7 8 ...</span></span>
-<span><span class="co">#&gt;  $ startX                      : num  0.761 0.759 0.771 0.768 0.765 ...</span></span>
-<span><span class="co">#&gt;  $ startY                      : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span></span>
-<span><span class="co">#&gt;  $ startZ                      : num  254 254 254 254 254 ...</span></span>
-<span><span class="co">#&gt;  $ endX                        : num  0.759 0.771 0.768 0.765 0.769 ...</span></span>
-<span><span class="co">#&gt;  $ endY                        : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span></span>
-<span><span class="co">#&gt;  $ endZ                        : num  254 254 254 254 254 ...</span></span>
-<span><span class="co">#&gt;  $ radius                      : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span></span>
-<span><span class="co">#&gt;  $ volume                      : num  0.000348 0.000382 0.00037 0.000359 0.000341 0.000313 0.000316 0.000306 0.000284 0.000282 ...</span></span>
-<span><span class="co">#&gt;  $ growthVolume                : num  0.0304 0.03 0.0296 0.0293 0.0289 ...</span></span>
-<span><span class="co">#&gt;  $ length                      : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span></span>
-<span><span class="co">#&gt;  $ growthLength                : num  31.4 31.4 31.3 31.3 31.2 ...</span></span>
-<span><span class="co">#&gt;  $ vesselVolume                : num  237 233 229 226 222 ...</span></span>
-<span><span class="co">#&gt;  $ distanceToTwig              : num  4.32 4.27 4.22 4.16 4.11 ...</span></span>
-<span><span class="co">#&gt;  $ FittingType                 : chr  " SPHEREFOLLOWING" " SPHEREFOLLOWING" " SPHEREFOLLOWING" " SPHEREFOLLOWING" ...</span></span>
-<span><span class="co">#&gt;  $ averagePointDistance        : num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span></span>
-<span><span class="co">#&gt;  $ maxPointDistance            : num  0.00348 0.00348 0.00348 0.00348 0.00348 ...</span></span>
-<span><span class="co">#&gt;  $ qualityFlag                 : int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ segmentID                   : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ parentSegmentID             : int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span></span>
-<span><span class="co">#&gt;  $ segmentMedianRadius         : num  0.0414 0.0414 0.0414 0.0414 0.0414 ...</span></span>
-<span><span class="co">#&gt;  $ segmentGrowthVolume         : num  0.026 0.026 0.026 0.026 0.026 ...</span></span>
-<span><span class="co">#&gt;  $ segmentGrowthLength         : num  30.7 30.7 30.7 30.7 30.7 ...</span></span>
-<span><span class="co">#&gt;  $ branchOrder                 : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ reverseBranchOrder          : int  18 18 18 18 18 18 18 18 18 18 ...</span></span>
-<span><span class="co">#&gt;  $ reversePipeRadiusBranchorder: num  8.31 8.31 8.31 8.31 8.31 ...</span></span>
-<span><span class="co">#&gt;  $ reversePipeAreaBranchorder  : int  69 69 69 69 69 69 69 69 69 69 ...</span></span>
-<span><span class="co">#&gt;  $ branchID                    : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ treeID                      : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ treeSpecies                 : chr  " unknownSpecies" " unknownSpecies" " unknownSpecies" " unknownSpecies" ...</span></span>
-<span><span class="co">#&gt;  $ translateX                  : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ translateY                  : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ translatez                  : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ gvA                         : num  0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 ...</span></span>
-<span><span class="co">#&gt;  $ gvB                         : num  0.402 0.402 0.402 0.402 0.402 ...</span></span>
-<span><span class="co">#&gt;  $ gvC                         : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ glA                         : num  0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 ...</span></span>
-<span><span class="co">#&gt;  $ glB                         : num  0.402 0.402 0.402 0.402 0.402 ...</span></span>
-<span><span class="co">#&gt;  $ glC                         : num  0 0 0 0 0 0 0 0 0 0 ...</span></span></code></pre></div>
+<span><span class="co">#&gt; 'data.frame':    1149 obs. of  17 variables:</span></span>
+<span><span class="co">#&gt;  $ ID                  : int  0 1 2 3 4 5 6 7 8 9 ...</span></span>
+<span><span class="co">#&gt;  $ parentID            : int  -1 0 1 2 3 4 5 6 7 8 ...</span></span>
+<span><span class="co">#&gt;  $ startX              : num  0.761 0.759 0.771 0.768 0.765 ...</span></span>
+<span><span class="co">#&gt;  $ startY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span></span>
+<span><span class="co">#&gt;  $ startZ              : num  254 254 254 254 254 ...</span></span>
+<span><span class="co">#&gt;  $ endX                : num  0.759 0.771 0.768 0.765 0.769 ...</span></span>
+<span><span class="co">#&gt;  $ endY                : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span></span>
+<span><span class="co">#&gt;  $ endZ                : num  254 254 254 254 254 ...</span></span>
+<span><span class="co">#&gt;  $ radius              : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span></span>
+<span><span class="co">#&gt;  $ length              : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span></span>
+<span><span class="co">#&gt;  $ growthLength        : num  31.4 31.4 31.3 31.3 31.2 ...</span></span>
+<span><span class="co">#&gt;  $ averagePointDistance: num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span></span>
+<span><span class="co">#&gt;  $ segmentID           : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;  $ parentSegmentID     : int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span></span>
+<span><span class="co">#&gt;  $ branchOrder         : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;  $ reverseBranchOrder  : int  18 18 18 18 18 18 18 18 18 18 ...</span></span>
+<span><span class="co">#&gt;  $ branchID            : int  0 0 0 0 0 0 0 0 0 0 ...</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="cylinder-data">Cylinder Data<a class="anchor" aria-label="anchor" href="#cylinder-data"></a>
@@ -399,7 +373,7 @@ used to color the mesh.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export Mesh Colored by RBO</span></span>
 <span><span class="va">cylinder</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">export_mest</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/export_mesh.html">export_mesh</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="st">"QSM_mesh"</span>,</span>
 <span>    radius <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">radius</span>,</span>
 <span>    cyl_color <span class="op">=</span> <span class="va">.</span><span class="op">$</span><span class="va">reverseBranchOrder</span>,</span>
@@ -460,34 +434,24 @@ identification of “good” cylinders difficult.</p>
 <p>Below are the mass estimates and statistics using SimpleForest v5.3.2
 with its built in vessel volume correction, and Real Twig applied to the
 same QSMs.</p>
-<pre><code><span><span class="co">#&gt; Warning: The `scale_name` argument of `continuous_scale()` is deprecated as of ggplot2</span></span>
-<span><span class="co">#&gt; 3.5.0.</span></span>
-<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span><span class="co">#&gt; generated.</span></span>
-<span><span class="co">#&gt; Warning: The `trans` argument of `continuous_scale()` is deprecated as of ggplot2 3.5.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `transform` argument instead.</span></span>
-<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
-<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span>
-<span><span class="co">#&gt; generated.</span></span></code></pre>
 <p><img src="SimpleForest_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;"><img src="SimpleForest_files/figure-html/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;"><img src="SimpleForest_files/figure-html/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;"></p>
-<div id="aksiayknre" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aksiayknre table {
+<div id="tjqdkgxtou" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tjqdkgxtou table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aksiayknre thead, #aksiayknre tbody, #aksiayknre tfoot, #aksiayknre tr, #aksiayknre td, #aksiayknre th {
+#tjqdkgxtou thead, #tjqdkgxtou tbody, #tjqdkgxtou tfoot, #tjqdkgxtou tr, #tjqdkgxtou td, #tjqdkgxtou th {
   border-style: none;
 }
 
-#aksiayknre p {
+#tjqdkgxtou p {
   margin: 0;
   padding: 0;
 }
 
-#aksiayknre .gt_table {
+#tjqdkgxtou .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -513,12 +477,12 @@ same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#aksiayknre .gt_caption {
+#tjqdkgxtou .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aksiayknre .gt_title {
+#tjqdkgxtou .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -530,7 +494,7 @@ same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#aksiayknre .gt_subtitle {
+#tjqdkgxtou .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -542,7 +506,7 @@ same QSMs.</p>
   border-top-width: 0;
 }
 
-#aksiayknre .gt_heading {
+#tjqdkgxtou .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -554,13 +518,13 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#aksiayknre .gt_bottom_border {
+#tjqdkgxtou .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#aksiayknre .gt_col_headings {
+#tjqdkgxtou .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -575,7 +539,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#aksiayknre .gt_col_heading {
+#tjqdkgxtou .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -595,7 +559,7 @@ same QSMs.</p>
   overflow-x: hidden;
 }
 
-#aksiayknre .gt_column_spanner_outer {
+#tjqdkgxtou .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -607,15 +571,15 @@ same QSMs.</p>
   padding-right: 4px;
 }
 
-#aksiayknre .gt_column_spanner_outer:first-child {
+#tjqdkgxtou .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aksiayknre .gt_column_spanner_outer:last-child {
+#tjqdkgxtou .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aksiayknre .gt_column_spanner {
+#tjqdkgxtou .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -627,11 +591,11 @@ same QSMs.</p>
   width: 100%;
 }
 
-#aksiayknre .gt_spanner_row {
+#tjqdkgxtou .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aksiayknre .gt_group_heading {
+#tjqdkgxtou .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -657,7 +621,7 @@ same QSMs.</p>
   text-align: left;
 }
 
-#aksiayknre .gt_empty_group_heading {
+#tjqdkgxtou .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -672,15 +636,15 @@ same QSMs.</p>
   vertical-align: middle;
 }
 
-#aksiayknre .gt_from_md > :first-child {
+#tjqdkgxtou .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aksiayknre .gt_from_md > :last-child {
+#tjqdkgxtou .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aksiayknre .gt_row {
+#tjqdkgxtou .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -699,7 +663,7 @@ same QSMs.</p>
   overflow-x: hidden;
 }
 
-#aksiayknre .gt_stub {
+#tjqdkgxtou .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -712,7 +676,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#aksiayknre .gt_stub_row_group {
+#tjqdkgxtou .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -726,15 +690,15 @@ same QSMs.</p>
   vertical-align: top;
 }
 
-#aksiayknre .gt_row_group_first td {
+#tjqdkgxtou .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aksiayknre .gt_row_group_first th {
+#tjqdkgxtou .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aksiayknre .gt_summary_row {
+#tjqdkgxtou .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -744,16 +708,16 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#aksiayknre .gt_first_summary_row {
+#tjqdkgxtou .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aksiayknre .gt_first_summary_row.thick {
+#tjqdkgxtou .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aksiayknre .gt_last_summary_row {
+#tjqdkgxtou .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -763,7 +727,7 @@ same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aksiayknre .gt_grand_summary_row {
+#tjqdkgxtou .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -773,7 +737,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#aksiayknre .gt_first_grand_summary_row {
+#tjqdkgxtou .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -783,7 +747,7 @@ same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#aksiayknre .gt_last_grand_summary_row_top {
+#tjqdkgxtou .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -793,11 +757,11 @@ same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aksiayknre .gt_striped {
+#tjqdkgxtou .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aksiayknre .gt_table_body {
+#tjqdkgxtou .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -806,7 +770,7 @@ same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#aksiayknre .gt_footnotes {
+#tjqdkgxtou .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -820,7 +784,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#aksiayknre .gt_footnote {
+#tjqdkgxtou .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -829,7 +793,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#aksiayknre .gt_sourcenotes {
+#tjqdkgxtou .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -843,7 +807,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#aksiayknre .gt_sourcenote {
+#tjqdkgxtou .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -851,63 +815,63 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#aksiayknre .gt_left {
+#tjqdkgxtou .gt_left {
   text-align: left;
 }
 
-#aksiayknre .gt_center {
+#tjqdkgxtou .gt_center {
   text-align: center;
 }
 
-#aksiayknre .gt_right {
+#tjqdkgxtou .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aksiayknre .gt_font_normal {
+#tjqdkgxtou .gt_font_normal {
   font-weight: normal;
 }
 
-#aksiayknre .gt_font_bold {
+#tjqdkgxtou .gt_font_bold {
   font-weight: bold;
 }
 
-#aksiayknre .gt_font_italic {
+#tjqdkgxtou .gt_font_italic {
   font-style: italic;
 }
 
-#aksiayknre .gt_super {
+#tjqdkgxtou .gt_super {
   font-size: 65%;
 }
 
-#aksiayknre .gt_footnote_marks {
+#tjqdkgxtou .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aksiayknre .gt_asterisk {
+#tjqdkgxtou .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aksiayknre .gt_indent_1 {
+#tjqdkgxtou .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aksiayknre .gt_indent_2 {
+#tjqdkgxtou .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aksiayknre .gt_indent_3 {
+#tjqdkgxtou .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aksiayknre .gt_indent_4 {
+#tjqdkgxtou .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aksiayknre .gt_indent_5 {
+#tjqdkgxtou .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -951,23 +915,23 @@ same QSMs.</p>
 </tbody>
 </table>
 </div>
-<div id="ycuhcawcea" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ycuhcawcea table {
+<div id="ttiqrjljxe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ttiqrjljxe table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ycuhcawcea thead, #ycuhcawcea tbody, #ycuhcawcea tfoot, #ycuhcawcea tr, #ycuhcawcea td, #ycuhcawcea th {
+#ttiqrjljxe thead, #ttiqrjljxe tbody, #ttiqrjljxe tfoot, #ttiqrjljxe tr, #ttiqrjljxe td, #ttiqrjljxe th {
   border-style: none;
 }
 
-#ycuhcawcea p {
+#ttiqrjljxe p {
   margin: 0;
   padding: 0;
 }
 
-#ycuhcawcea .gt_table {
+#ttiqrjljxe .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -993,12 +957,12 @@ same QSMs.</p>
   border-left-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_caption {
+#ttiqrjljxe .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ycuhcawcea .gt_title {
+#ttiqrjljxe .gt_title {
   color: #000000;
   font-size: 125%;
   font-weight: initial;
@@ -1010,7 +974,7 @@ same QSMs.</p>
   border-bottom-width: 0;
 }
 
-#ycuhcawcea .gt_subtitle {
+#ttiqrjljxe .gt_subtitle {
   color: #000000;
   font-size: 85%;
   font-weight: initial;
@@ -1022,7 +986,7 @@ same QSMs.</p>
   border-top-width: 0;
 }
 
-#ycuhcawcea .gt_heading {
+#ttiqrjljxe .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1034,13 +998,13 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_bottom_border {
+#ttiqrjljxe .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
 }
 
-#ycuhcawcea .gt_col_headings {
+#ttiqrjljxe .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1055,7 +1019,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_col_heading {
+#ttiqrjljxe .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1075,7 +1039,7 @@ same QSMs.</p>
   overflow-x: hidden;
 }
 
-#ycuhcawcea .gt_column_spanner_outer {
+#ttiqrjljxe .gt_column_spanner_outer {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1087,15 +1051,15 @@ same QSMs.</p>
   padding-right: 4px;
 }
 
-#ycuhcawcea .gt_column_spanner_outer:first-child {
+#ttiqrjljxe .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ycuhcawcea .gt_column_spanner_outer:last-child {
+#ttiqrjljxe .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ycuhcawcea .gt_column_spanner {
+#ttiqrjljxe .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -1107,11 +1071,11 @@ same QSMs.</p>
   width: 100%;
 }
 
-#ycuhcawcea .gt_spanner_row {
+#ttiqrjljxe .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ycuhcawcea .gt_group_heading {
+#ttiqrjljxe .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1137,7 +1101,7 @@ same QSMs.</p>
   text-align: left;
 }
 
-#ycuhcawcea .gt_empty_group_heading {
+#ttiqrjljxe .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1152,15 +1116,15 @@ same QSMs.</p>
   vertical-align: middle;
 }
 
-#ycuhcawcea .gt_from_md > :first-child {
+#ttiqrjljxe .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ycuhcawcea .gt_from_md > :last-child {
+#ttiqrjljxe .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ycuhcawcea .gt_row {
+#ttiqrjljxe .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1179,7 +1143,7 @@ same QSMs.</p>
   overflow-x: hidden;
 }
 
-#ycuhcawcea .gt_stub {
+#ttiqrjljxe .gt_stub {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1192,7 +1156,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#ycuhcawcea .gt_stub_row_group {
+#ttiqrjljxe .gt_stub_row_group {
   color: #000000;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1206,15 +1170,15 @@ same QSMs.</p>
   vertical-align: top;
 }
 
-#ycuhcawcea .gt_row_group_first td {
+#ttiqrjljxe .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ycuhcawcea .gt_row_group_first th {
+#ttiqrjljxe .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ycuhcawcea .gt_summary_row {
+#ttiqrjljxe .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1224,16 +1188,16 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#ycuhcawcea .gt_first_summary_row {
+#ttiqrjljxe .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_first_summary_row.thick {
+#ttiqrjljxe .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ycuhcawcea .gt_last_summary_row {
+#ttiqrjljxe .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1243,7 +1207,7 @@ same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_grand_summary_row {
+#ttiqrjljxe .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1253,7 +1217,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#ycuhcawcea .gt_first_grand_summary_row {
+#ttiqrjljxe .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1263,7 +1227,7 @@ same QSMs.</p>
   border-top-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_last_grand_summary_row_top {
+#ttiqrjljxe .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1273,11 +1237,11 @@ same QSMs.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_striped {
+#ttiqrjljxe .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ycuhcawcea .gt_table_body {
+#ttiqrjljxe .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1286,7 +1250,7 @@ same QSMs.</p>
   border-bottom-color: #000000;
 }
 
-#ycuhcawcea .gt_footnotes {
+#ttiqrjljxe .gt_footnotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1300,7 +1264,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_footnote {
+#ttiqrjljxe .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1309,7 +1273,7 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#ycuhcawcea .gt_sourcenotes {
+#ttiqrjljxe .gt_sourcenotes {
   color: #000000;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1323,7 +1287,7 @@ same QSMs.</p>
   border-right-color: #D3D3D3;
 }
 
-#ycuhcawcea .gt_sourcenote {
+#ttiqrjljxe .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1331,63 +1295,63 @@ same QSMs.</p>
   padding-right: 5px;
 }
 
-#ycuhcawcea .gt_left {
+#ttiqrjljxe .gt_left {
   text-align: left;
 }
 
-#ycuhcawcea .gt_center {
+#ttiqrjljxe .gt_center {
   text-align: center;
 }
 
-#ycuhcawcea .gt_right {
+#ttiqrjljxe .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ycuhcawcea .gt_font_normal {
+#ttiqrjljxe .gt_font_normal {
   font-weight: normal;
 }
 
-#ycuhcawcea .gt_font_bold {
+#ttiqrjljxe .gt_font_bold {
   font-weight: bold;
 }
 
-#ycuhcawcea .gt_font_italic {
+#ttiqrjljxe .gt_font_italic {
   font-style: italic;
 }
 
-#ycuhcawcea .gt_super {
+#ttiqrjljxe .gt_super {
   font-size: 65%;
 }
 
-#ycuhcawcea .gt_footnote_marks {
+#ttiqrjljxe .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ycuhcawcea .gt_asterisk {
+#ttiqrjljxe .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ycuhcawcea .gt_indent_1 {
+#ttiqrjljxe .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ycuhcawcea .gt_indent_2 {
+#ttiqrjljxe .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ycuhcawcea .gt_indent_3 {
+#ttiqrjljxe .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ycuhcawcea .gt_indent_4 {
+#ttiqrjljxe .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ycuhcawcea .gt_indent_5 {
+#ttiqrjljxe .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
