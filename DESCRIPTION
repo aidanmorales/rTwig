@@ -1,6 +1,6 @@
 Package: rTwig
 Title: Realistic Quantitative Structure Models
-Version: 1.0.2
+Version: 1.0.2.9000
 Authors@R: 
   c(
     person(
