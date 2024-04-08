@@ -5,9 +5,13 @@
 
 <!-- badges: start -->
 
+[![](https://www.r-pkg.org/badges/version/rTwig)](https://cran.r-project.org/package=rTwig)
+[![](https://img.shields.io/badge/devel%20version-1.0.2-blueviolet.svg)](https://github.com/aidanmorales/rTwig)
 [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)
 [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
-[![](https://img.shields.io/github/downloads/aidanmorales/rTwig/total.svg)](https://github.com/aidanmorales/rTwig/releases)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/rTwig)](https://cran.r-project.org/package=rTwig)
+[![License: GPL (\>=
+3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-orchid.svg)](https://cran.r-project.org/web/licenses/GPL%20(%3E=%203))
 
 <!-- badges: end -->
 
@@ -57,7 +61,7 @@ You can install the released version of `rTwig` from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("rTwig") # placeholder for CRAN release. 
+install.packages("rTwig")
 ```
 
 You can install the development version of `rTwig` from
