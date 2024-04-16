@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">rTwig</a>
 
@@ -134,7 +134,7 @@ follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If rTwig hasn't been loaded, but just the twigs are needed</span></span>
 <span><span class="fu">rTwig</span><span class="fu">::</span><span class="va"><a href="../reference/twigs.html">twigs</a></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 96 × 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 98 × 7</span></span></span>
 <span><span class="co">#&gt;    scientific.name  radius.mm     n   min   max   std    cv</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Abies concolor        1.43    21  0.89  1.9   0.28  0.19</span></span>
@@ -147,7 +147,7 @@ follows:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Aesculus flava        2.67     8  2.29  2.79  0.2   0.08</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Aesculus spp.         2.67     8  2.29  2.79  0.2   0.08</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Betula nigra          0.85    30  0.51  1.52  0.23  0.27</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 86 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 88 more rows</span></span></span></code></pre></div>
 <p>The database is broken into 7 different columns.
 <em>scientific.name</em> is the specific epithet. Genus spp. is the
 average of all of the species in the genus. <em>radius.mm</em> is the
@@ -179,33 +179,34 @@ deviation, and <em>cv</em> is the coefficient of variation.</p>
 <span><span class="co">#&gt; [37] "Juglans nigra"                "Juglans spp."                </span></span>
 <span><span class="co">#&gt; [39] "Laguncularia racemosa"        "Laguncularia spp."           </span></span>
 <span><span class="co">#&gt; [41] "Larix laricina"               "Larix spp."                  </span></span>
-<span><span class="co">#&gt; [43] "Liriodendron spp."            "Liriodendron tulipifera"     </span></span>
-<span><span class="co">#&gt; [45] "Magnolia acuminata"           "Magnolia spp."               </span></span>
-<span><span class="co">#&gt; [47] "Malus spp."                   "Metasequoia glyptostroboides"</span></span>
-<span><span class="co">#&gt; [49] "Metasequoia spp."             "Nyssa spp."                  </span></span>
-<span><span class="co">#&gt; [51] "Nyssa sylvatica"              "Ostrya spp."                 </span></span>
-<span><span class="co">#&gt; [53] "Ostrya virginiana"            "Phellodendron amurense"      </span></span>
-<span><span class="co">#&gt; [55] "Phellodendron spp."           "Picea abies"                 </span></span>
-<span><span class="co">#&gt; [57] "Picea omorika"                "Picea pungens"               </span></span>
-<span><span class="co">#&gt; [59] "Picea spp."                   "Pinus nigra"                 </span></span>
-<span><span class="co">#&gt; [61] "Pinus spp."                   "Pinus strobus"               </span></span>
-<span><span class="co">#&gt; [63] "Platanus acerifolia"          "Platanus occidentalis"       </span></span>
-<span><span class="co">#&gt; [65] "Platanus spp."                "Populus deltoides"           </span></span>
-<span><span class="co">#&gt; [67] "Populus spp."                 "Prunus serotina"             </span></span>
-<span><span class="co">#&gt; [69] "Prunus spp."                  "Prunus virginiana"           </span></span>
-<span><span class="co">#&gt; [71] "Quercus acutissima"           "Quercus alba"                </span></span>
-<span><span class="co">#&gt; [73] "Quercus bicolor"              "Quercus coccinea"            </span></span>
-<span><span class="co">#&gt; [75] "Quercus ellipsoidalis"        "Quercus imbricaria"          </span></span>
-<span><span class="co">#&gt; [77] "Quercus macrocarpa"           "Quercus michauxii"           </span></span>
-<span><span class="co">#&gt; [79] "Quercus muehlenbergii"        "Quercus palustris"           </span></span>
-<span><span class="co">#&gt; [81] "Quercus robur"                "Quercus rubra"               </span></span>
-<span><span class="co">#&gt; [83] "Quercus spp."                 "Quercus velutina"            </span></span>
-<span><span class="co">#&gt; [85] "Rhizophora mangle"            "Rhizophora spp."             </span></span>
-<span><span class="co">#&gt; [87] "Thuja occidentalis"           "Thuja spp."                  </span></span>
-<span><span class="co">#&gt; [89] "Tilia americana"              "Tilia spp."                  </span></span>
-<span><span class="co">#&gt; [91] "Tilia tomentosa"              "Tsuga canadensis"            </span></span>
-<span><span class="co">#&gt; [93] "Tsuga spp."                   "Ulmus americana"             </span></span>
-<span><span class="co">#&gt; [95] "Ulmus rubra"                  "Ulmus spp."</span></span></code></pre></div>
+<span><span class="co">#&gt; [43] "Liquidambar spp."             "Liquidambar styraciflua"     </span></span>
+<span><span class="co">#&gt; [45] "Liriodendron spp."            "Liriodendron tulipifera"     </span></span>
+<span><span class="co">#&gt; [47] "Magnolia acuminata"           "Magnolia spp."               </span></span>
+<span><span class="co">#&gt; [49] "Malus spp."                   "Metasequoia glyptostroboides"</span></span>
+<span><span class="co">#&gt; [51] "Metasequoia spp."             "Nyssa spp."                  </span></span>
+<span><span class="co">#&gt; [53] "Nyssa sylvatica"              "Ostrya spp."                 </span></span>
+<span><span class="co">#&gt; [55] "Ostrya virginiana"            "Phellodendron amurense"      </span></span>
+<span><span class="co">#&gt; [57] "Phellodendron spp."           "Picea abies"                 </span></span>
+<span><span class="co">#&gt; [59] "Picea omorika"                "Picea pungens"               </span></span>
+<span><span class="co">#&gt; [61] "Picea spp."                   "Pinus nigra"                 </span></span>
+<span><span class="co">#&gt; [63] "Pinus spp."                   "Pinus strobus"               </span></span>
+<span><span class="co">#&gt; [65] "Platanus acerifolia"          "Platanus occidentalis"       </span></span>
+<span><span class="co">#&gt; [67] "Platanus spp."                "Populus deltoides"           </span></span>
+<span><span class="co">#&gt; [69] "Populus spp."                 "Prunus serotina"             </span></span>
+<span><span class="co">#&gt; [71] "Prunus spp."                  "Prunus virginiana"           </span></span>
+<span><span class="co">#&gt; [73] "Quercus acutissima"           "Quercus alba"                </span></span>
+<span><span class="co">#&gt; [75] "Quercus bicolor"              "Quercus coccinea"            </span></span>
+<span><span class="co">#&gt; [77] "Quercus ellipsoidalis"        "Quercus imbricaria"          </span></span>
+<span><span class="co">#&gt; [79] "Quercus macrocarpa"           "Quercus michauxii"           </span></span>
+<span><span class="co">#&gt; [81] "Quercus muehlenbergii"        "Quercus palustris"           </span></span>
+<span><span class="co">#&gt; [83] "Quercus robur"                "Quercus rubra"               </span></span>
+<span><span class="co">#&gt; [85] "Quercus spp."                 "Quercus velutina"            </span></span>
+<span><span class="co">#&gt; [87] "Rhizophora mangle"            "Rhizophora spp."             </span></span>
+<span><span class="co">#&gt; [89] "Thuja occidentalis"           "Thuja spp."                  </span></span>
+<span><span class="co">#&gt; [91] "Tilia americana"              "Tilia spp."                  </span></span>
+<span><span class="co">#&gt; [93] "Tilia tomentosa"              "Tsuga canadensis"            </span></span>
+<span><span class="co">#&gt; [95] "Tsuga spp."                   "Ulmus americana"             </span></span>
+<span><span class="co">#&gt; [97] "Ulmus rubra"                  "Ulmus spp."</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
@@ -243,7 +244,7 @@ deviation, and <em>cv</em> is the coefficient of variation.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer>
