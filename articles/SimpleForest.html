@@ -176,7 +176,13 @@ an index of 0. Let’s update the cylinders using the
 <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code> function and check to make sure the
 parent-child ordering is sequential without any gaps. Many of the extra
 QSM variables are all ready included with SimpleForest QSMs, so they are
-only calculated in this step if they are missing.</p>
+only calculated in this step if they are missing. The distance from each
+cylinder to the base, and the average distance from each cylinder to all
+supported twigs are new ways to help visualize problematic
+cylinders.</p>
+<p>Let’s save the cylinders to a new variable to make it easier to work
+with, check to make sure the parent-child ordering is sequential without
+any gaps, and look at the new variables.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Update cylinder data</span></span>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span>
@@ -187,7 +193,7 @@ only calculated in this step if they are missing.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   branchID parentID    ID</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        0       -<span style="color: #BB0000;">1</span>     0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        0        0     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        0        1     2</span></span>

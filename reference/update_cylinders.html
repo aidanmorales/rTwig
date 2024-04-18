@@ -78,11 +78,13 @@
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Updates parent-child branch and cylinder relationships to fill in any gaps.
-Three additional useful QSM metrics developed by Jan Hackenberg are also calculated.
+Four useful QSM metrics developed by Jan Hackenberg are also calculated.
 Growth length is the length of a parent cylinder, plus the lengths of all of
 its child cylinders. The segment is a portion of a branch between two branching nodes.
 The reverse branch order assigns twigs as order 1 and works backwards at each
-branching junction to the base of the stem, which has the largest reverse branch order.</p>
+branching junction to the base of the stem, which has the largest reverse branch order.
+Distance from twig is the average distance to all connected twigs for a given cylinder.
+Two new metrics, distance from base, and total ciildren, are also calculated.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -108,10 +110,14 @@ branching junction to the base of the stem, which has the largest reverse branch
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">update_cylinders</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Ordering</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Growth Length</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1136 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1136 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius            : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.768 0.768 0.769 0.769 ...</span>
@@ -123,6 +129,13 @@ branching junction to the base of the stem, which has the largest reverse branch
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.x             : num  0.769 0.768 0.769 0.769 0.77 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.y             : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.z             : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ added             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ BranchOrder       : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder: num  20 20 20 20 20 20 20 20 20 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PositionInBranch  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ mad               : num  0.00072 0.000538 0.000523 0.000335 0.000438 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ SurfCov           : num  0.875 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius       : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
@@ -131,23 +144,21 @@ branching junction to the base of the stem, which has the largest reverse branch
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent            : num  0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension         : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ added             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ BranchOrder       : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder: num  20 20 20 20 20 20 20 20 20 20 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PositionInBranch  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase  : num  0.0939 0.1661 0.2326 0.242 0.31 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig    : num  3.4 3.31 3.24 3.17 3.16 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">update_cylinders</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1149 obs. of  24 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : int  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : int  -1 0 1 2 3 4 5 6 7 8 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1149 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : num  -1 0 1 2 3 4 5 6 7 8 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX              : num  0.761 0.759 0.771 0.768 0.765 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ              : num  254 254 254 254 254 ...</span>
@@ -170,6 +181,8 @@ branching junction to the base of the stem, which has the largest reverse branch
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius         : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren       : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase    : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig      : num  3.43 3.38 3.33 3.27 3.22 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

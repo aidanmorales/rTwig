@@ -249,13 +249,19 @@ a branch or a path, where the highest growth length is equal to the base
 of the tree, and twigs have a growth length equal to their cylinder
 length. It is also important to note that the number of twigs in a QSM
 is always equal to the number of paths in a QSM, since a path goes from
-the base of the tree to a twig tip. The reverse branch order (RBO) is
-another important variable. The RBO assigns an order of 1 to the twigs,
-and works backwards to the base of the main stem, which has the highest
-RBO. This makes problematic twig cylinders easy to identify. Let’s save
-the cylinders to a new variable to make it easier to work with, check to
-make sure the parent-child ordering is sequential without any gaps, and
-look at the new variables.</p>
+the base of the tree to a twig tip.</p>
+<p>We also calculate several additional variables to improve QSM
+analysis and visualization. The reverse branch order (RBO) assigns an
+order of 1 to the twigs, and works backwards to the base of the main
+stem, which has the highest RBO. The RBO is essentially the maximum node
+depth for any given branch segment (the area between branching forks).
+RBO problematic twig cylinders easy to identify. The distance from each
+cylinder to the base, and the average distance from each cylinder to all
+supported twigs are new ways to help visualize problematic
+cylinders.</p>
+<p>Let’s save the cylinders to a new variable to make it easier to work
+with, check to make sure the parent-child ordering is sequential without
+any gaps, and look at the new variables.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Save cylinders to new object</span></span>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span></span>
@@ -279,9 +285,12 @@ look at the new variables.</p>
 <span></span>
 <span><span class="co"># Check New Variables</span></span>
 <span><span class="va">cylinder</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">reverseBranchOrder</span>, <span class="va">totalChildren</span>, <span class="va">GrowthLength</span>, <span class="va">segment</span>, <span class="va">parentSegment</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">reverseBranchOrder</span>, <span class="va">totalChildren</span>, <span class="va">GrowthLength</span>, <span class="va">segment</span>, <span class="va">parentSegment</span>,</span>
+<span>    <span class="va">distanceFromBase</span>, <span class="va">distanceToTwig</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 7</span></span></span>
 <span><span class="co">#&gt;   reverseBranchOrder totalChildren GrowthLength segment parentSegment</span></span>
 <span><span class="co">#&gt;                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                 20             1         32.8       1             0</span></span>
@@ -289,7 +298,8 @@ look at the new variables.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                 20             1         32.6       1             0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                 20             1         32.6       1             0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                 20             1         32.6       1             0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                 20             1         32.5       1             0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                 20             1         32.5       1             0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: distanceFromBase &lt;dbl&gt;, distanceToTwig &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="topology">Topology<a class="anchor" aria-label="anchor" href="#topology"></a>
