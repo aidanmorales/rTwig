@@ -6,7 +6,6 @@
 <!-- badges: start -->
 
 [![](https://www.r-pkg.org/badges/version/rTwig)](https://cran.r-project.org/package=rTwig)
-[![](https://img.shields.io/badge/devel%20version-1.0.2-blueviolet.svg)](https://github.com/aidanmorales/rTwig)
 [![R-CMD-check](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aidanmorales/rTwig/actions/workflows/R-CMD-check.yaml)
 [![](https://img.shields.io/github/last-commit/aidanmorales/rTwig.svg)](https://github.com/aidanmorales/rTwig/commits/main)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/rTwig)](https://cran.r-project.org/package=rTwig)

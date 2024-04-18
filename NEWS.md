@@ -1,5 +1,12 @@
 # rTwig (development version)
 
+-   `update_cylinders()`
+    -   \~2x performance improvement with better vectorization
+    -   Cleaned variable names and removed repeat calculations
+    -   New variables: distanceFromBase and distanceToTwig
+-   Update twig data base
+-   Update vignettes
+
 # rTwig 1.0.2
 
 -   Changes for CRAN re-submission

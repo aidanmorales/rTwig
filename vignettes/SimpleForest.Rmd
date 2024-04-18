@@ -77,7 +77,9 @@ str(cylinder)
 
 ## Cylinder Data
 
-Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis. We need the first cylinder ID to have an index of 0. Let's update the cylinders using the `update_cylinders()` function and check to make sure the parent-child ordering is sequential without any gaps. Many of the extra QSM variables are all ready included with SimpleForest QSMs, so they are only calculated in this step if they are missing. 
+Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis. We need the first cylinder ID to have an index of 0. Let's update the cylinders using the `update_cylinders()` function and check to make sure the parent-child ordering is sequential without any gaps. Many of the extra QSM variables are all ready included with SimpleForest QSMs, so they are only calculated in this step if they are missing. The distance from each cylinder to the base, and the average distance from each cylinder to all supported twigs are new ways to help visualize problematic cylinders. 
+
+Let's save the cylinders to a new variable to make it easier to work with, check to make sure the parent-child ordering is sequential without any gaps, and look at the new variables.
 
 ```{r, message=FALSE}
 # Update cylinder data

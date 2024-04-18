@@ -17,11 +17,13 @@ Updates the QSM cylinder data in preparation for radii correction
 }
 \details{
 Updates parent-child branch and cylinder relationships to fill in any gaps.
-Three additional useful QSM metrics developed by Jan Hackenberg are also calculated.
+Four useful QSM metrics developed by Jan Hackenberg are also calculated.
 Growth length is the length of a parent cylinder, plus the lengths of all of
 its child cylinders. The segment is a portion of a branch between two branching nodes.
 The reverse branch order assigns twigs as order 1 and works backwards at each
 branching junction to the base of the stem, which has the largest reverse branch order.
+Distance from twig is the average distance to all connected twigs for a given cylinder.
+Two new metrics, distance from base, and total ciildren, are also calculated.
 }
 \examples{
 

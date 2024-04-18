@@ -49,9 +49,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
     message("Generating Branch Paths")
 
-    # Error message if cylinders have not been updated or growth length has not been calculated
+    # Error message if cylinders have not been updated
     stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
-    stopifnot("Growth length missing! Please run growth_length() before proceeding." = "GrowthLength" %in% colnames(cylinder))
 
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(cylinder, .data$branch == 1)
@@ -328,7 +327,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%
       select(-.data$radius) %>%
-      left_join(cyl_radii, by = c("extension"))
+      left_join(cyl_radii, by = c("extension")) %>%
+      relocate(.data$radius, .before = .data$length)
 
     message("Done!")
 

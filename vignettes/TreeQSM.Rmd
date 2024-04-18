@@ -109,7 +109,11 @@ str(qsm2$cylinder)
 
 ## Cylinder Data
 
-Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis and add some new QSM variables. The most important QSM variable is growth length. Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. The reverse branch order (RBO) is another important variable. The RBO assigns an order of 1 to the twigs, and works backwards to the base of the main stem, which has the highest RBO. This makes problematic twig cylinders easy to identify. Let's save the cylinders to a new variable to make it easier to work with, check to make sure the parent-child ordering is sequential without any gaps, and look at the new variables.
+Next, we have to update the parent-child ordering in the cylinder data to allow for path analysis and add some new QSM variables. The most important QSM variable is growth length. Growth length is a cumulative length metric, where the growth length of a cylinder is its length, plus the lengths of all of its children. This gives us perfect ordering along a branch or a path, where the highest growth length is equal to the base of the tree, and twigs have a growth length equal to their cylinder length. It is also important to note that the number of twigs in a QSM is always equal to the number of paths in a QSM, since a path goes from the base of the tree to a twig tip. 
+
+We also calculate several additional variables to improve QSM analysis and visualization. The reverse branch order (RBO) assigns an order of 1 to the twigs, and works backwards to the base of the main stem, which has the highest RBO. The RBO is essentially the maximum node depth for any given branch segment (the area between branching forks). RBO problematic twig cylinders easy to identify. The distance from each cylinder to the base, and the average distance from each cylinder to all supported twigs are new ways to help visualize problematic cylinders. 
+
+Let's save the cylinders to a new variable to make it easier to work with, check to make sure the parent-child ordering is sequential without any gaps, and look at the new variables.
 
 ```{r, message=FALSE}
 # Save cylinders to new object
@@ -125,7 +129,10 @@ cylinder %>%
 
 # Check New Variables
 cylinder %>%
-  select(reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment) %>%
+  select(
+    reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment,
+    distanceFromBase, distanceToTwig
+  ) %>%
   head()
 ```
 
