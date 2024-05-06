@@ -1,8 +1,8 @@
-#' Import QSM
+#' Import TreeQSM
 #'
 #' @description Imports a QSM created by TreeQSM
 #'
-#' @param file a .mat MATLAB file
+#' @param file a TreeQSM .mat MATLAB file
 #' @param version TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.
 #'
 #' @return Returns a list

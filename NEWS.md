@@ -1,5 +1,8 @@
 # rTwig (development version)
 
+-   `import_treegraph()`
+    -   New function to import treegraph QSMs
+    -   radii correction support coming in the future... 
 -   `update_cylinders()`
     -   \~2x performance improvement with better vectorization
     -   Cleaned variable names and removed repeat calculations

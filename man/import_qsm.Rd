@@ -2,12 +2,12 @@
 % Please edit documentation in R/import_qsm.R
 \name{import_qsm}
 \alias{import_qsm}
-\title{Import QSM}
+\title{Import TreeQSM}
 \usage{
 import_qsm(file, version = "2.x.x")
 }
 \arguments{
-\item{file}{a .mat MATLAB file}
+\item{file}{a TreeQSM .mat MATLAB file}
 
 \item{version}{TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.}
 }

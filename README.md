@@ -40,6 +40,7 @@ American and European trees, on both the species and genus level.
 ## Functions
 
 - `import_qsm()` imports a QSM created by TreeQSM (.mat)
+- `import_treegraph()` imports a QSM created by treegraph (.json)
 - `update_cylinders()` updates cylinder relationships and adds new QSM
   variables
 - `correct_radii` models QSM paths and corrects cylinder radii

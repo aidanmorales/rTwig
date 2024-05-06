@@ -23,7 +23,7 @@ its child cylinders. The segment is a portion of a branch between two branching 
 The reverse branch order assigns twigs as order 1 and works backwards at each
 branching junction to the base of the stem, which has the largest reverse branch order.
 Distance from twig is the average distance to all connected twigs for a given cylinder.
-Two new metrics, distance from base, and total ciildren, are also calculated.
+Two new metrics, distance from base, and total children, are also calculated.
 }
 \examples{
 

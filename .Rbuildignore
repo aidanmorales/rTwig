@@ -9,4 +9,4 @@
 ^pkgdown$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
-^R_dev$
+^dev$
