@@ -184,7 +184,7 @@ plot_qsm <- function(
       }
     }
 
-  # SimpleForest ---------------------------------------------------------------
+    # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Initialize cylinder radii
     if (is.null(radius)) {
@@ -276,6 +276,101 @@ plot_qsm <- function(
         cylinder$startY,
         cylinder$startZ,
         labels = paste0("ID:", cylinder$ID, " - Branch:", cylinder$branchID)
+      )
+    }
+  }
+  # TreeGraph ------------------------------------------------------------------
+  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    # Initialize cylinder radii
+    if (is.null(radius)) {
+      radius <- cylinder$radius
+    } else {
+      if (length(radius) != nrow(cylinder)) {
+        stop("Supplied cylinder radii vector is not equal to the number of cylinders!")
+      }
+      radius <- radius
+    }
+
+    # Initialize cylinder colors
+    if (is.null(cyl_color)) {
+      colors <- colourvalues::color_values(cylinder$branch_order, palette = "rainbow")
+    } else {
+      if (length(cyl_color) > 1 & length(cyl_color) != nrow(cylinder)) {
+        stop("Supplied cylinder colors vector is not equal to the number of cylinders!")
+      } else {
+        cyl_color <- cyl_color
+      }
+
+      if (length(cyl_color) == 1) {
+        colors <- rep(cyl_color, nrow(cylinder))
+      } else if (is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
+        colors <- colourvalues::color_values(cyl_color, palette = "rainbow")
+      } else if (!is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
+        colors <- colourvalues::color_values(cyl_color, palette = cyl_palette)
+      } else if (length(cyl_color) > 1 & is.character(cyl_color)) {
+        colors <- cyl_color
+      }
+    }
+
+    message("Creating Cylinder Meshes")
+
+    plot_data <- lapply(1:nrow(cylinder), function(i) {
+      cyl <- rgl::cylinder3d(
+        center = cbind(
+          c(cylinder$sx[i], cylinder$ex[i]),
+          c(cylinder$sy[i], cylinder$ey[i]),
+          c(cylinder$sz[i], cylinder$ez[i])
+        ),
+        radius = radius[i],
+        sides = cyl_sides,
+        closed = 0,
+        rotationMinimizing = TRUE
+      )
+      cyl$material$color <- colors[i]
+      cyl
+    })
+
+    message("Plotting Cylinder Meshes")
+
+    # Plot cylinders
+    rgl::open3d()
+    rgl::par3d(skipRedraw = TRUE)
+    rgl::shade3d(shapelist3d(plot_data, plot = FALSE))
+    rgl::par3d(skipRedraw = FALSE)
+
+    # Plot axes
+    if (axes == TRUE) {
+      axes3d(edges = c("x", "y", "z"))
+    }
+
+    # Plot cloud
+    if (!is.null(cloud)) {
+      cloud <- rename(cloud, x = 1, y = 2, z = 3)
+
+      # Initialize cloud inputs
+      if (is.null(pt_color)) {
+        pt_color <- "#000000"
+      } else {
+        pt_color <- pt_color
+      }
+
+      if (is.null(pt_size)) {
+        pt_size <- 0.1
+      } else {
+        pt_size <- pt_size
+      }
+
+      # Plot cloud
+      rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
+    }
+
+    # Set mouse hover
+    if (hover == TRUE) {
+      rgl::hover3d(
+        cylinder$sx,
+        cylinder$sy,
+        cylinder$sz,
+        labels = paste0("ID:", cylinder$ninternode, " - Branch:", cylinder$nbranch)
       )
     }
   } else {

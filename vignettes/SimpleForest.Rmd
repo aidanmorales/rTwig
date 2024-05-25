@@ -286,7 +286,7 @@ cylinder <- correct_radii(cylinder, twigRad = 4.23)
 qsm_summary(cylinder)
 
 # Plot Results
-plot_qsm(cylinder, color = "GrowthLength")
+plot_qsm(cylinder)
 ```
 
 ## Validation

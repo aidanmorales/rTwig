@@ -130,7 +130,7 @@ cylinder %>%
 # Check New Variables
 cylinder %>%
   select(
-    reverseBranchOrder, totalChildren, GrowthLength, segment, parentSegment,
+    reverseBranchOrder, totalChildren, growthLength, segment, parentSegment,
     distanceFromBase, distanceToTwig
   ) %>%
   head()
@@ -176,7 +176,7 @@ qsm_summary(cylinder = cylinder, triangulation = qsm$triangulation, radius = "un
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 1
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = GrowthLength)) +
+  ggplot(aes(x = growthLength, y = radius, color = growthLength)) +
   geom_point() +
   labs(
     title = "Radius vs Growth Length",
@@ -194,7 +194,7 @@ cylinder %>%
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 2
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = branch)) +
+  ggplot(aes(x = growthLength, y = radius, color = branch)) +
   geom_point() +
   facet_wrap(~BranchOrder) +
   labs(
@@ -228,7 +228,7 @@ qsm_summary(cylinder, radius = "modified")
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 1
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = GrowthLength)) +
+  ggplot(aes(x = growthLength, y = radius, color = growthLength)) +
   geom_point() +
   labs(
     title = "Radius vs Growth Length",
@@ -246,7 +246,7 @@ cylinder %>%
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
 # Diagnostic Plot 2
 cylinder %>%
-  ggplot(aes(x = GrowthLength, y = radius, color = branch)) +
+  ggplot(aes(x = growthLength, y = radius, color = branch)) +
   geom_point() +
   facet_wrap(~BranchOrder) +
   labs(

@@ -97,9 +97,9 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # Creates indexes to identify poorly fit cylinders
         path_cyl <- filter(cylinder, .data$extension %in% !!cyl_id) %>%
           mutate(
-            index0 = .data$radius / .data$GrowthLength / (.data$BranchOrder + 1),
-            index1 = log(.data$GrowthLength) / .data$radius^2,
-            index2 = .data$radius^2 / log(.data$GrowthLength)
+            index0 = .data$radius / .data$growthLength / (.data$BranchOrder + 1),
+            index1 = log(.data$growthLength) / .data$radius^2,
+            index2 = .data$radius^2 / log(.data$growthLength)
           )
 
         # Identifies poorly modeled cylinders
@@ -152,7 +152,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # We rename growth length and radius to x a y for shorter labels
         path_temp <- path_cyl %>%
           filter(.data$bad_fit == 0) %>%
-          select(x = .data$GrowthLength, y = .data$radius)
+          select(x = .data$growthLength, y = .data$radius)
 
         # Broken Branch Filter -------------------------------------------------
 
@@ -187,7 +187,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           # Bypasses bropken branch filter if branch is alive in 1st order
           if (max_children > 3) {
             x <- path_temp$x
-            x[length(x) + 1] <- min(path_cyl$GrowthLength)
+            x[length(x) + 1] <- min(path_cyl$growthLength)
             y <- path_temp$y
             y[length(y) + 1] <- twigRad
 
@@ -196,7 +196,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           }
         } else { # Bypasses broken branch filter for alive branches
           x <- path_temp$x
-          x[length(x) + 1] <- min(path_cyl$GrowthLength)
+          x[length(x) + 1] <- min(path_cyl$growthLength)
           y <- path_temp$y
           y[length(y) + 1] <- twigRad
 
@@ -208,7 +208,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
         # Forces model intercept through the minimum twig diameter (twigRad)
         matrix <- matrix(ncol = 3, nrow = 1, byrow = TRUE)
-        matrix[1, ] <- c(0, min(path_cyl$GrowthLength), twigRad)
+        matrix[1, ] <- c(0, min(path_cyl$growthLength), twigRad)
 
         # Models new cylinder radii
         if (length(x) > 3) {
@@ -225,7 +225,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
               nknots = length(x) - 1
             )
           )
-          path_cyl$radius <- stats::predict(model, path_cyl$GrowthLength)[, 2]
+          path_cyl$radius <- stats::predict(model, path_cyl$growthLength)[, 2]
         } else { # Ignores paths that are too short to be modeled
           path_cyl$radius <- twigRad
         }
@@ -244,10 +244,10 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # Diagnostic Graph -----------------------------------------------------
 
         # path_cyl %>%
-        #   mutate(fit = stats::predict(model, path_cyl$GrowthLength)[, 2]) %>%
+        #   mutate(fit = stats::predict(model, path_cyl$growthLength)[, 2]) %>%
         #   ggplot() +
-        #   geom_line(aes(y = fit, x = GrowthLength), linewidth = 0.5, color = "black") +
-        #   geom_point(aes(x = GrowthLength, y = UnmodRadius, color = as.factor(BranchOrder), shape = as.factor(bad_fit))) +
+        #   geom_line(aes(y = fit, x = growthLength), linewidth = 0.5, color = "black") +
+        #   geom_point(aes(x = growthLength, y = UnmodRadius, color = as.factor(BranchOrder), shape = as.factor(bad_fit))) +
         #   labs(
         #     x = "Growth Length (m)",
         #     y = "Radius (m)",
@@ -515,8 +515,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
         # path_cyl %>%
         #   mutate(fit = stats::predict(model, path_cyl$growthLength)[, 2]) %>%
         #   ggplot() +
-        #   geom_line(aes(y = fit, x = GrowthLength), linewidth = 0.5, color = "black") +
-        #   geom_point(aes(x = GrowthLength, y = UnmodRadius, color = as.factor(branchOrder), shape = as.factor(bad_fit))) +
+        #   geom_line(aes(y = fit, x = growthLength), linewidth = 0.5, color = "black") +
+        #   geom_point(aes(x = growthLength, y = UnmodRadius, color = as.factor(branchOrder), shape = as.factor(bad_fit))) +
         #   labs(
         #     x = "Growth Length (m)",
         #     y = "Radius (m)",

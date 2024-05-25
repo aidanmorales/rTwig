@@ -69,6 +69,7 @@ update_cylinders <- function(cylinder) {
       )
 
     # Cylinder Ordering --------------------------------------------------------
+    cylinder <- arrange(cylinder, .data$extension)
     cylinder <- update_ordering(cylinder, "extension", "parent")
 
     # Total Children -----------------------------------------------------------
@@ -98,10 +99,10 @@ update_cylinders <- function(cylinder) {
         relocate(.data$segment, .after = .data$PositionInBranch) %>%
         relocate(.data$parentSegment, .after = .data$segment) %>%
         relocate(.data$UnmodRadius:.data$mad, .after = .data$end.z) %>%
-        relocate(.data$GrowthLength, .after = .data$mad) %>%
+        relocate(.data$growthLength, .after = .data$mad) %>%
         relocate(.data$mad, .after = .data$end.z) %>%
         relocate(.data$SurfCov, .after = .data$mad) %>%
-        relocate(.data$branch, .after = .data$GrowthLength) %>%
+        relocate(.data$branch, .after = .data$growthLength) %>%
         relocate(.data$parent, .after = .data$branch) %>%
         relocate(.data$extension, .after = .data$parent) %>%
         relocate(.data$end.x, .after = .data$axis.z) %>%
@@ -115,8 +116,8 @@ update_cylinders <- function(cylinder) {
         relocate(.data$parentSegment, .after = .data$segment) %>%
         relocate(.data$UnmodRadius, .after = .data$end.z) %>%
         relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
-        relocate(.data$GrowthLength, .after = .data$OldRadius) %>%
-        relocate(.data$branch, .after = .data$GrowthLength) %>%
+        relocate(.data$growthLength, .after = .data$OldRadius) %>%
+        relocate(.data$branch, .after = .data$growthLength) %>%
         relocate(.data$parent, .after = .data$branch) %>%
         relocate(.data$extension, .after = .data$parent) %>%
         relocate(.data$end.x, .after = .data$axis.z) %>%
@@ -187,9 +188,43 @@ update_cylinders <- function(cylinder) {
         ID = .data$ID - 1,
         parentID = .data$parentID - 1
       )
-  # TreeGraph ------------------------------------------------------------------
-  } else if (all(c("p1", "p2", "branchID", "branchOrder") %in% colnames(cylinder))) {
+  # treegraph ------------------------------------------------------------------
+  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    # Save All Radii ----------------------------------------------------------
+    cylinder <- mutate(cylinder, OldRadius = .data$radius, UnmodRadius = .data$radius)
 
+    # Plotting Info ------------------------------------------------------------
+    cylinder <- cylinder %>%
+      mutate(
+        ex = .data$sx + (.data$ax * .data$length),
+        ey = .data$sy + (.data$ay * .data$length),
+        ez = .data$sz + (.data$az * .data$length)
+      ) %>%
+      relocate(.data$ex, .after = .data$az) %>%
+      relocate(.data$ey, .after = .data$ex) %>%
+      relocate(.data$ez, .after = .data$ey)
+
+    # Cylinder Ordering --------------------------------------------------------
+    cylinder <- arrange(cylinder, .data$nbranch, .data$ninternode)
+    cylinder <- update_ordering(cylinder, "p1", "p2")
+
+    # Total Children -----------------------------------------------------------
+    cylinder <- total_children(cylinder, "p2")
+
+    # Build QSM Cylinder Network  ----------------------------------------------
+    network <- build_network(cylinder, "p1", "p2")
+
+    # Growth Length ------------------------------------------------------------
+    cylinder <- growth_length(network, cylinder, "p1", "length")
+
+    # Reverse Branch Order -----------------------------------------------------
+    cylinder <- reverse_branch_order(network, cylinder, "p1")
+
+    # Branch Segments ----------------------------------------------------------
+    cylinder <- branch_segments(cylinder, "p1", "p2", "nbranch", "reverseBranchOrder")
+
+    # Path Metrics -------------------------------------------------------------
+    cylinder <- path_metrics(network, cylinder, "p1", "length")
   } else {
     message(
       "Invalid Dataframe Supplied!!!
@@ -209,9 +244,6 @@ update_cylinders <- function(cylinder) {
 #' @noRd
 update_ordering <- function(cylinder, id, parent) {
   message("Updating Cylinder Ordering")
-
-  # Arrange cylinders by id
-  cylinder <- arrange(cylinder, !!rlang::sym(id))
 
   # Link new id to original parents
   parent_old <- cylinder %>%
@@ -339,7 +371,7 @@ growth_length <- function(network, cylinder, id, length) {
   growth_length <- network$child_df %>%
     left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
     group_by(.data$index) %>%
-    summarize(GrowthLength = sum(!!rlang::sym(length), na.rm = TRUE)) %>%
+    summarize(growthLength = sum(!!rlang::sym(length), na.rm = TRUE)) %>%
     rename(!!rlang::sym(id) := .data$index)
 
   # Joins growth length
