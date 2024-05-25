@@ -56,20 +56,27 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <ul><li>
+<em>TreeQSM</em> &amp; <em>TreeGraph</em>
+<ul><li>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with <em>SimpleForest</em>
+</li>
+</ul></li>
+<li>
 <code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>
-<ul><li>New function to import treegraph QSMs</li>
-<li>radii correction support coming in the future…</li>
+<ul><li>New function to import <em>treegraph</em> QSMs</li>
 </ul></li>
 <li>
 <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>
 <ul><li>~2x performance improvement with better vectorization</li>
 <li>Refactor with tidyeval for better maintainability</li>
 <li>Cleaned variable names and removed repeat calculations</li>
-<li>New variables: distanceFromBase and distanceToTwig</li>
+<li>New variables: <em>distanceFromBase</em> and <em>distanceToTwig</em>
+</li>
+<li>Added <em>treegraph</em> support</li>
 </ul></li>
 <li>
 <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>
 <ul><li>New QSM skeleton option for faster plotting</li>
+<li>Added <em>treegraph</em> support</li>
 </ul></li>
 <li>Reduced package dependencies</li>
 <li>Cleanup function imports</li>
