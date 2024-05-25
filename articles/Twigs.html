@@ -117,8 +117,9 @@ measurements for a wide range of tree genera and species.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in rgl.init(initValue, onlyNULL): RGL: unable to open X11 display</span></span>
-<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.</span></span>
-<span></span>
+<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Useful packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
@@ -128,10 +129,10 @@ measurements for a wide range of tree genera and species.</p>
 </h2>
 <p>The twig database is built directly into rTwig and can be called as
 follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If the rTwig library has been loaded</span></span>
 <span><span class="va">twigs</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If rTwig hasn't been loaded, but just the twigs are needed</span></span>
 <span><span class="fu">rTwig</span><span class="fu">::</span><span class="va"><a href="../reference/twigs.html">twigs</a></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 98 × 7</span></span></span>
@@ -156,7 +157,7 @@ of unique twig samples taken, <em>min</em> is the minimum twig radius,
 <em>max</em> is the max twig radius, <em>std</em> is the standard
 deviation, and <em>cv</em> is the coefficient of variation.</p>
 <p>Let’s see the breakdown of species.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">twigs</span><span class="op">$</span><span class="va">scientific.name</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "Abies concolor"               "Abies spp."                  </span></span>
 <span><span class="co">#&gt;  [3] "Acer platanoides"             "Acer rubrum"                 </span></span>
@@ -212,7 +213,7 @@ deviation, and <em>cv</em> is the coefficient of variation.</p>
 <h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h2>
 <p>Let’s visualize some of the twig data!</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lets look at a subset of oak species</span></span>
 <span><span class="va">twigs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Quercus"</span>, <span class="va">scientific.name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

@@ -152,32 +152,16 @@ smallest box size. Since our point cloud resolution is 5 mm, we set the
 summary data and extract the box dimension (slope).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Box Dimension Summary</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span>, lowercutoff <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span><span class="op">)</span></span>
 <span><span class="va">output</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 10 × 2</span></span></span>
-<span><span class="co">#&gt;    log.box.size log.voxels</span></span>
-<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        0           1.10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        0.693       1.95</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        1.39        3.09</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2.08        4.11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        2.77        5.18</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3.47        6.14</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        4.16        7.16</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4.85        8.23</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        5.55        9.27</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        6.24        9.58</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 1 × 4</span></span></span>
-<span><span class="co">#&gt;   intercept slope r.squared adj.r.squared</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      1.12  1.43     0.996         0.995</span></span>
-<span></span>
+<span><span class="co">#&gt; [[2]]</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Box Dimension (slope)</span></span>
 <span><span class="va">output</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">slope</span></span>
-<span><span class="co">#&gt; [1] 1.428561</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.483312</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
@@ -186,13 +170,13 @@ summary data and extract the box dimension (slope).</p>
 <code>plot</code> parameter to <code>2D</code>, <code>3D</code> or
 <code>ALL</code>. The <code>plot</code> parameter is set to
 <code>FALSE</code> by default to speed up the calculations.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 2D Plot</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span>, lowercutoff <span class="op">=</span> <span class="fl">0.005</span>, plot <span class="op">=</span> <span class="st">"2D"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Box-Dimension_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 2D Plot</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span>, plot <span class="op">=</span> <span class="st">"2D"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Box-Dimension_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 3D Plot</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span>, lowercutoff <span class="op">=</span> <span class="fl">0.005</span>, plot <span class="op">=</span> <span class="st">"3D"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span>, plot <span class="op">=</span> <span class="st">"3D"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
