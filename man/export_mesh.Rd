@@ -62,7 +62,6 @@ export_mesh(
   cyl_color = cylinder$GrowthLength,
   cyl_palette = "viridis"
 )
-
 }
 
 }

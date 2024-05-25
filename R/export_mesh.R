@@ -12,10 +12,6 @@
 #' @return A mesh .ply file
 #' @export
 #'
-#' @import colourvalues
-#' @import Morpho
-#' @import rgl
-#'
 #' @examples
 #' \donttest{
 #'
@@ -46,7 +42,6 @@
 #'   cyl_color = cylinder$GrowthLength,
 #'   cyl_palette = "viridis"
 #' )
-#'
 #' }
 #'
 export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl_palette = NULL, cyl_sides = 8) {
@@ -71,7 +66,7 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
 
     # Initialize cylinder colors
     if (is.null(cyl_color)) {
-      colors <- color_values(cylinder$BranchOrder, palette = "rainbow")
+      colors <- colourvalues::color_values(cylinder$BranchOrder, palette = "rainbow")
     } else {
       if (length(cyl_color) > 1 & length(cyl_color) != nrow(cylinder)) {
         stop("Supplied cylinder colors vector is not equal to the number of cylinders!")
@@ -82,9 +77,9 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
       if (length(cyl_color) == 1) {
         colors <- rep(cyl_color, nrow(cylinder))
       } else if (is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
-        colors <- color_values(cyl_color, palette = "rainbow")
+        colors <- colourvalues::color_values(cyl_color, palette = "rainbow")
       } else if (!is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
-        colors <- color_values(cyl_color, palette = cyl_palette)
+        colors <- colourvalues::color_values(cyl_color, palette = cyl_palette)
       } else if (length(cyl_color) > 1 & is.character(cyl_color)) {
         colors <- cyl_color
       }
@@ -131,7 +126,7 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
 
     # Initialize cylinder colors
     if (is.null(cyl_color)) {
-      colors <- color_values(cylinder$branchOrder, palette = "rainbow")
+      colors <- colourvalues::color_values(cylinder$branchOrder, palette = "rainbow")
     } else {
       if (length(cyl_color) > 1 & length(cyl_color) != nrow(cylinder)) {
         stop("Supplied cylinder colors vector is not equal to the number of cylinders!")
@@ -142,9 +137,9 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
       if (length(cyl_color) == 1) {
         colors <- rep(cyl_color, nrow(cylinder))
       } else if (is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
-        colors <- color_values(cyl_color, palette = "rainbow")
+        colors <- colourvalues::color_values(cyl_color, palette = "rainbow")
       } else if (!is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
-        colors <- color_values(cyl_color, palette = cyl_palette)
+        colors <- colourvalues::color_values(cyl_color, palette = cyl_palette)
       } else if (length(cyl_color) > 1 & is.character(cyl_color)) {
         colors <- cyl_color
       }
@@ -175,7 +170,6 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
 
     # Export mesh
     Morpho::mesh2ply(mesh, filename = filename, writeNormals = FALSE)
-
   } else {
     message(
       "Invalid QSM Supplied!!!

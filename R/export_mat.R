@@ -8,10 +8,6 @@
 #' @return Returns a .mat file
 #' @export
 #'
-#' @importFrom Matrix as.matrix
-#' @importFrom R.matlab writeMat
-#' @rawNamespace import(tidytable, except=c(map_dfr))
-#'
 #' @examples
 #' \donttest{
 #'
@@ -31,7 +27,6 @@
 #'
 #' filename <- tempfile(pattern = "SimpleForest_QSM.mat")
 #' export_mat(cylinder, filename)
-#'
 #' }
 #'
 export_mat <- function(cylinder, filename) {

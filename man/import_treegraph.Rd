@@ -20,7 +20,6 @@ Imports a QSM created by treegraph
 
 # Import a treegraph QSM
 qsm <- import_treegraph("path/to/json/file")
-
 }
 
 }

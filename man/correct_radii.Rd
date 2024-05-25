@@ -36,7 +36,6 @@ cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 cylinder <- correct_radii(cylinder, twigRad = 4.23)
 str(cylinder)
-
 }
 
 }

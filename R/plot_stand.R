@@ -14,9 +14,6 @@
 #' @return A rgl QSM plot
 #' @export
 #'
-#' @import randomcoloR
-#' @import rgl
-#'
 #' @examples
 #' \donttest{
 #'
@@ -36,7 +33,6 @@
 #'
 #' # Plot QSMs and clouds
 #' plot_stand(qsms = qsms, clouds = clouds)
-#'
 #' }
 #'
 plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_sides = 8, clouds = NULL, pt_colors = NULL, pt_sizes = NULL, axes = TRUE) {
@@ -45,12 +41,11 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
   n_clouds <- length(clouds)
 
   # Unique colors
-  palette <- distinctColorPalette(n_qsms)
+  palette <- generate_random_colors(n_qsms)
 
   # Start RGL Plot
-
-  open3d()
-  par3d(skipRedraw=TRUE)
+  rgl::open3d()
+  rgl::par3d(skipRedraw = TRUE)
 
   # Plot QSMs
   for (j in 1:length(qsms)) {
@@ -81,7 +76,7 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
 
       # Create RGL cylinders
       plot_data <- lapply(1:nrow(cylinder), function(i) {
-        cyl <- cylinder3d(
+        cyl <- rgl::cylinder3d(
           center = cbind(
             c(cylinder$start.x[i], cylinder$end.x[i]),
             c(cylinder$start.y[i], cylinder$end.y[i]),
@@ -96,9 +91,9 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
         cyl
       })
 
-      shapelist3d(plot_data, plot = TRUE)
+      rgl::shapelist3d(plot_data, plot = TRUE)
 
-      # SimpleForest -------------------------------------------------------------
+    # SimpleForest -------------------------------------------------------------
     } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
       # Setup Radius
       if (radius_type == "modified") {
@@ -120,13 +115,13 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
       }
 
       plot_data <- lapply(1:nrow(cylinder), function(i) {
-        cyl <- cylinder3d(
+        cyl <- rgl::cylinder3d(
           center = cbind(
             c(cylinder$startX[i], cylinder$endX[i]),
             c(cylinder$startY[i], cylinder$endY[i]),
             c(cylinder$startZ[i], cylinder$endZ[i])
           ),
-          radius = radius[i],
+          radius = cyl_radius[i],
           sides = cyl_sides,
           closed = 0,
           rotationMinimizing = TRUE
@@ -135,11 +130,11 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
         cyl
       })
 
-      shapelist3d(plot_data, plot = TRUE)
+      rgl::shapelist3d(plot_data, plot = TRUE)
     }
   }
 
-  par3d(skipRedraw=FALSE)
+  rgl::par3d(skipRedraw = FALSE)
 
   # Plot Clouds
   for (j in 1:length(clouds)) {
@@ -164,12 +159,27 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
       }
 
       # Plot cloud
-      plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_sizes, add = TRUE, aspect = FALSE)
+      rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_sizes, add = TRUE, aspect = FALSE)
     }
   }
 
   # Plot Axes
   if (axes == TRUE) {
-    axes3d(edges = c("x", "y", "z"))
+    rgl::axes3d(edges = c("x", "y", "z"))
   }
+}
+
+#' Generate random colors
+#' @param n number of colors to generate as an integer
+#' @returns returns a vector of hexidecimal colors
+#' @noRd
+generate_random_colors <- function(n) {
+  # Generate n random colors
+  colors <- replicate(n, {
+    r <- sprintf("%02X", sample(0:255, 1))
+    g <- sprintf("%02X", sample(0:255, 1))
+    b <- sprintf("%02X", sample(0:255, 1))
+    paste0("#", r, g, b)
+  })
+  return(colors)
 }

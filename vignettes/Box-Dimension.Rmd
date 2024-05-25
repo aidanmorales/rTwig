@@ -30,7 +30,7 @@ install.packages("rTwig")
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
-# Enable RGL Plot 
+# Enable RGL Plot
 library(rgl)
 ```
 
@@ -62,7 +62,7 @@ Now we can calculate the box dimension of our point cloud with the `box_dimensio
 
 ```{r}
 # Box Dimension Summary
-output <- box_dimension(cloud, lowercutoff = 0.005)
+output <- box_dimension(cloud)
 output
 
 # Box Dimension (slope)
@@ -75,10 +75,10 @@ We can also plot the results as both 2D and 3D plots, by setting the `plot` para
 
 ```{r, fig.width=7, fig.height=5}
 # 2D Plot
-output <- box_dimension(cloud, lowercutoff = 0.005, plot = "2D")
+output <- box_dimension(cloud, plot = "2D")
 ```
 
 ```{r, webgl=TRUE, fig.width=7, fig.height=5, fig.align='center', eval=FALSE}
 # 3D Plot
-output <- box_dimension(cloud, lowercutoff = 0.005, plot = "3D")
+output <- box_dimension(cloud, plot = "3D")
 ```

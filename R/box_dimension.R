@@ -2,7 +2,6 @@
 #'
 #' @description R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 #'
-#'
 #' @param cloud A point cloud object
 #' @param x The column name or position of the x coordinates. Defaults to the first column.
 #' @param y The column name or position of the y coordinates. Defaults to the second column.
@@ -13,15 +12,6 @@
 #'
 #' @return Returns a list
 #' @export
-#'
-#' @import rgl
-#' @importFrom stats lm
-#' @importFrom Rdpack reprompt
-#' @importFrom kit uniqLen
-#' @importFrom purrr map_dfr
-#' @importFrom DescTools RoundTo
-#' @importFrom graphics abline text
-#' @rawNamespace import(tidytable, except=c(map_dfr))
 #'
 #' @references
 #' \insertRef{box_dimension1}{rTwig}
@@ -93,14 +83,14 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
   }
 
   if (rm_int_box == TRUE) {
-    data <- data.frame(log(1 / ruler), log(voxelnumber)) %>%
+    data <- tidytable(log(1 / ruler), log(voxelnumber)) %>%
       rename(
         log.box.size = 1,
         log.voxels = 2
       ) %>%
       slice(-1) # Removes the initial box
   } else {
-    data <- data.frame(log(1 / ruler), log(voxelnumber)) %>%
+    data <- tidytable(log(1 / ruler), log(voxelnumber)) %>%
       rename(
         log.box.size = 1,
         log.voxels = 2
@@ -110,18 +100,15 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
   results <- lm(data$log.voxels ~ data$log.box.size)
 
   # Creates the summary files from the linear model
-  summary <- as.data.frame(results$coefficients) %>%
-    t() %>%
-    as_tidytable() %>%
-    rename("intercept" = 1, "slope" = 2) %>%
-    mutate(
-      r.squared = summary(results)$r.squared,
-      adj.r.squared = summary(results)$adj.r.squared
-    )
+  summary <- tidytable(
+    r.squared = summary(results)$r.squared,
+    adj.r.squared = summary(results)$adj.r.squared,
+    intercept = as.double(results$coefficients[1]),
+    slope = as.double(results$coefficients[2])
+  )
 
   # 2D Plot --------------------------------------------------------------------
   if (plot == "ALL" | plot == "2D") {
-
     plot(data$log.box.size,
       data$log.voxels,
       pch = 19,
@@ -147,7 +134,6 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
 
   # 3D Plot --------------------------------------------------------------------
   if (plot == "ALL" | plot == "3D") {
-
     # Convert point cloud to a local coordinate system
     cloud$x <- cloud$x - min(cloud$x)
     cloud$y <- cloud$y - min(cloud$y)

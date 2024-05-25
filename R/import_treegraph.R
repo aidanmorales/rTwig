@@ -7,9 +7,6 @@
 #' @return Returns a list
 #' @export
 #'
-#' @import RcppSimdJson
-#' @rawNamespace import(tidytable, except=c(map_dfr))
-#'
 #' @references
 #' \insertRef{treegraph1}{rTwig}
 #'
@@ -18,7 +15,6 @@
 #'
 #' # Import a treegraph QSM
 #' qsm <- import_treegraph("path/to/json/file")
-#'
 #' }
 #'
 import_treegraph <- function(file) {
@@ -43,7 +39,7 @@ import_treegraph <- function(file) {
   cyls <- flatten_json_list(cyls)
   centres <- flatten_json_list(centres)
   centres$centre_id <- 0:(nrow(centres) - 1) # fix null list values
-  centres$idx <- 0:(nrow(centres) - 1)       # fix null list values
+  centres$idx <- 0:(nrow(centres) - 1) # fix null list values
 
   # Store all QSM info as a list
   qsm <- list(

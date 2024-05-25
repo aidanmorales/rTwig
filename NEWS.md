@@ -2,11 +2,16 @@
 
 -   `import_treegraph()`
     -   New function to import treegraph QSMs
-    -   radii correction support coming in the future... 
+    -   radii correction support coming in the future...
 -   `update_cylinders()`
     -   \~2x performance improvement with better vectorization
+    -   Refactor with tidyeval for better maintainability
     -   Cleaned variable names and removed repeat calculations
     -   New variables: distanceFromBase and distanceToTwig
+-   `plot_qsm()`
+    -   New QSM skeleton option for faster plotting
+-   Reduced package dependencies
+-   Cleanup function imports
 -   Update twig data base
 -   Update vignettes
 

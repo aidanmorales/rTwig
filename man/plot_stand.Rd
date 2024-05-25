@@ -57,7 +57,6 @@ clouds <- list(cloud)
 
 # Plot QSMs and clouds
 plot_stand(qsms = qsms, clouds = clouds)
-
 }
 
 }

@@ -29,7 +29,6 @@ plot_qsm(cylinder)
 ## After Smoothing
 cylinder <- smooth_qsm(cylinder)
 plot_qsm(cylinder)
-
 }
 
 }

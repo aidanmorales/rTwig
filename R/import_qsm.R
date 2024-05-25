@@ -8,9 +8,6 @@
 #' @return Returns a list
 #' @export
 #'
-#' @importFrom R.matlab readMat
-#' @importFrom rmatio read.mat
-#'
 #' @references
 #' \insertRef{TreeQSM}{rTwig}
 #'

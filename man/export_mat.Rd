@@ -36,7 +36,6 @@ cylinder <- update_cylinders(cylinder)
 
 filename <- tempfile(pattern = "SimpleForest_QSM.mat")
 export_mat(cylinder, filename)
-
 }
 
 }

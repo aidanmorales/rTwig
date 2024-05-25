@@ -14,7 +14,8 @@ plot_qsm(
   pt_color = NULL,
   pt_size = NULL,
   axes = TRUE,
-  hover = FALSE
+  hover = FALSE,
+  skeleton = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ plot_qsm(
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
 \item{hover}{Show cylinder ID and branch on mouse hover. Defaults to FALSE.}
+
+\item{skeleton}{Plot the QSM skeleton instead of cylinders for faster visualization. Defaults to FALSE.}
 }
 \value{
 A rgl QSM plot
@@ -78,7 +81,6 @@ plot_qsm(
   axes = FALSE,
   hover = TRUE
 )
-
 }
 
 }

@@ -7,8 +7,6 @@
 #' @return Returns a data frame
 #' @export
 #'
-#' @rawNamespace import(tidytable, except=c(map_dfr))
-#'
 #' @examples
 #' \donttest{
 #'
@@ -23,7 +21,6 @@
 #' ## After Smoothing
 #' cylinder <- smooth_qsm(cylinder)
 #' plot_qsm(cylinder)
-#'
 #' }
 #'
 smooth_qsm <- function(cylinder) {
@@ -31,7 +28,7 @@ smooth_qsm <- function(cylinder) {
 
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1),.data$extension) == 1)
+    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
 
     cylinder <- cylinder %>%
       group_by(.data$branch) %>%

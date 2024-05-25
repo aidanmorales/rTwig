@@ -9,8 +9,6 @@
 #' @return Returns a list
 #' @export
 #'
-#' @rawNamespace import(tidytable, except=c(map_dfr))
-#'
 #' @examples
 #'
 #' ## TreeQSM Processing Chain
@@ -39,12 +37,11 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-
     # Setup Radius
     if (radius == "modified") {
       cylinder$sumrad <- cylinder$radius
     } else if (radius == "unmodified") {
-      cylinder$sumrad<- cylinder$UnmodRadius
+      cylinder$sumrad <- cylinder$UnmodRadius
     } else if (radius == "old") {
       cylinder$sumrad <- cylinder$OldRadius
     }
@@ -55,8 +52,7 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
       select(.data$length, .data$sumrad)
 
     # Gets the triangulation and QSM volumes and surface areas to be swapped
-    if(!is.logical(triangulation)){
-
+    if (!is.logical(triangulation)) {
       # Finds the triangulation end cylinder
       cyl_end <- pull(triangulation$cylind - 2)
 
@@ -66,16 +62,15 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
         mutate(
           Volume = pi * .data$sumrad^2 * .data$length * 1e3,
           SurfaceArea = 2 * pi * .data$sumrad * .data$length
-          ) %>%
+        ) %>%
         summarize(
           CylVol = sum(.data$Volume),
           CylSA = sum(.data$SurfaceArea)
-          )
+        )
 
       # Triangulation Volume and Surface Area
       TriVol <- pull(triangulation$volume)
       TriSA <- pull(triangulation$SideArea)
-
     }
 
     # Finds the DBH cylinder
@@ -105,7 +100,7 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
       )
 
     # Update with triangulation volumes
-    if(!is.logical(triangulation)){
+    if (!is.logical(triangulation)) {
       summary$Tot.vol.L[1] <- summary$Tot.vol.L[1] - QSM_vol_sa$CylVol + TriVol
       summary$Tot.sa.m2[1] <- summary$Tot.sa.m2[1] - QSM_vol_sa$CylSA + TriSA
     }
@@ -146,9 +141,8 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
 
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-
     # Stop on Triangulation
-    if(!triangulation == FALSE){
+    if (!triangulation == FALSE) {
       stop("SimpleForest does not support triangulation of the main stem!")
     }
 
@@ -156,7 +150,7 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
     if (radius == "modified") {
       cylinder$sumrad <- cylinder$radius
     } else if (radius == "unmodified") {
-      cylinder$sumrad<- cylinder$UnmodRadius
+      cylinder$sumrad <- cylinder$UnmodRadius
     } else if (radius == "old") {
       cylinder$sumrad <- cylinder$OldRadius
     }
