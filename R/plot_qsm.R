@@ -106,6 +106,8 @@ plot_qsm <- function(
     }
 
     if (skeleton == TRUE) {
+      message("Plotting Skeleton")
+
       # Plot Skeleton
       colors <- rep(colors, each = 2)
       rgl::segments3d(
@@ -217,69 +219,88 @@ plot_qsm <- function(
       }
     }
 
-    message("Creating Cylinder Meshes")
+    if (skeleton == TRUE) {
+      message("Plotting Skeleton")
 
-    plot_data <- lapply(1:nrow(cylinder), function(i) {
-      cyl <- rgl::cylinder3d(
-        center = cbind(
-          c(cylinder$startX[i], cylinder$endX[i]),
-          c(cylinder$startY[i], cylinder$endY[i]),
-          c(cylinder$startZ[i], cylinder$endZ[i])
-        ),
-        radius = radius[i],
-        sides = cyl_sides,
-        closed = 0,
-        rotationMinimizing = TRUE
+      # Plot Skeleton
+      colors <- rep(colors, each = 2)
+      rgl::segments3d(
+        x = as.vector(t(cylinder[, c("startX", "endX")])),
+        y = as.vector(t(cylinder[, c("startY", "endY")])),
+        z = as.vector(t(cylinder[, c("startZ", "endZ")])),
+        col = colors
       )
-      cyl$material$color <- colors[i]
-      cyl
-    })
 
-    message("Plotting Cylinder Meshes")
-
-    # Plot cylinders
-    rgl::open3d()
-    rgl::par3d(skipRedraw = TRUE)
-    rgl::shade3d(shapelist3d(plot_data, plot = FALSE))
-    rgl::par3d(skipRedraw = FALSE)
-
-    # Plot axes
-    if (axes == TRUE) {
-      axes3d(edges = c("x", "y", "z"))
-    }
-
-    # Plot cloud
-    if (!is.null(cloud)) {
-      cloud <- rename(cloud, x = 1, y = 2, z = 3)
-
-      # Initialize cloud inputs
-      if (is.null(pt_color)) {
-        pt_color <- "#000000"
-      } else {
-        pt_color <- pt_color
+      # Plot axes
+      if (axes == TRUE) {
+        rgl::axes3d(edges = c("x", "y", "z"))
       }
+    } else {
+      message("Creating Cylinder Meshes")
 
-      if (is.null(pt_size)) {
-        pt_size <- 0.1
-      } else {
-        pt_size <- pt_size
+      # Create RGL cylinders
+      plot_data <- lapply(1:nrow(cylinder), function(i) {
+        cyl <- rgl::cylinder3d(
+          center = cbind(
+            c(cylinder$startX[i], cylinder$endX[i]),
+            c(cylinder$startY[i], cylinder$endY[i]),
+            c(cylinder$startZ[i], cylinder$endZ[i])
+          ),
+          radius = radius[i],
+          sides = cyl_sides,
+          closed = 0,
+          rotationMinimizing = TRUE
+        )
+        cyl$material$color <- colors[i]
+        cyl
+      })
+
+      message("Plotting Cylinder Meshes")
+
+      # Plot cylinders
+      rgl::open3d()
+      rgl::par3d(skipRedraw = TRUE)
+      rgl::shade3d(shapelist3d(plot_data, plot = FALSE))
+      rgl::par3d(skipRedraw = FALSE)
+
+      # Plot axes
+      if (axes == TRUE) {
+        rgl::axes3d(edges = c("x", "y", "z"))
       }
 
       # Plot cloud
-      rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
-    }
+      if (!is.null(cloud)) {
+        cloud <- rename(cloud, x = 1, y = 2, z = 3)
 
-    # Set mouse hover
-    if (hover == TRUE) {
-      rgl::hover3d(
-        cylinder$startX,
-        cylinder$startY,
-        cylinder$startZ,
-        labels = paste0("ID:", cylinder$ID, " - Branch:", cylinder$branchID)
-      )
+        # Initialize cloud inputs
+        if (is.null(pt_color)) {
+          pt_color <- "#000000"
+        } else {
+          pt_color <- pt_color
+        }
+
+        if (is.null(pt_size)) {
+          pt_size <- 0.1
+        } else {
+          pt_size <- pt_size
+        }
+
+        # Plot cloud
+        rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
+      }
+
+      # Set mouse hover
+      if (hover == TRUE) {
+        rgl::hover3d(
+          cylinder$startX,
+          cylinder$startY,
+          cylinder$startZ,
+          labels = paste0("ID:", cylinder$ID, " - Branch:", cylinder$branchID)
+        )
+      }
     }
   }
-  # TreeGraph ------------------------------------------------------------------
+  # treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     # Initialize cylinder radii
     if (is.null(radius)) {
@@ -312,66 +333,85 @@ plot_qsm <- function(
       }
     }
 
-    message("Creating Cylinder Meshes")
+    if (skeleton == TRUE) {
+      message("Plotting Skeleton")
 
-    plot_data <- lapply(1:nrow(cylinder), function(i) {
-      cyl <- rgl::cylinder3d(
-        center = cbind(
-          c(cylinder$sx[i], cylinder$ex[i]),
-          c(cylinder$sy[i], cylinder$ey[i]),
-          c(cylinder$sz[i], cylinder$ez[i])
-        ),
-        radius = radius[i],
-        sides = cyl_sides,
-        closed = 0,
-        rotationMinimizing = TRUE
+      # Plot Skeleton
+      colors <- rep(colors, each = 2)
+      rgl::segments3d(
+        x = as.vector(t(cylinder[, c("sx", "ex")])),
+        y = as.vector(t(cylinder[, c("sy", "ey")])),
+        z = as.vector(t(cylinder[, c("sz", "ez")])),
+        col = colors
       )
-      cyl$material$color <- colors[i]
-      cyl
-    })
 
-    message("Plotting Cylinder Meshes")
-
-    # Plot cylinders
-    rgl::open3d()
-    rgl::par3d(skipRedraw = TRUE)
-    rgl::shade3d(shapelist3d(plot_data, plot = FALSE))
-    rgl::par3d(skipRedraw = FALSE)
-
-    # Plot axes
-    if (axes == TRUE) {
-      axes3d(edges = c("x", "y", "z"))
-    }
-
-    # Plot cloud
-    if (!is.null(cloud)) {
-      cloud <- rename(cloud, x = 1, y = 2, z = 3)
-
-      # Initialize cloud inputs
-      if (is.null(pt_color)) {
-        pt_color <- "#000000"
-      } else {
-        pt_color <- pt_color
+      # Plot axes
+      if (axes == TRUE) {
+        rgl::axes3d(edges = c("x", "y", "z"))
       }
+    } else {
+      message("Creating Cylinder Meshes")
 
-      if (is.null(pt_size)) {
-        pt_size <- 0.1
-      } else {
-        pt_size <- pt_size
+      # Create RGL cylinders
+      plot_data <- lapply(1:nrow(cylinder), function(i) {
+        cyl <- rgl::cylinder3d(
+          center = cbind(
+            c(cylinder$sx[i], cylinder$ex[i]),
+            c(cylinder$sy[i], cylinder$ey[i]),
+            c(cylinder$sz[i], cylinder$ez[i])
+          ),
+          radius = radius[i],
+          sides = cyl_sides,
+          closed = 0,
+          rotationMinimizing = TRUE
+        )
+        cyl$material$color <- colors[i]
+        cyl
+      })
+
+      message("Plotting Cylinder Meshes")
+
+      # Plot cylinders
+      rgl::open3d()
+      rgl::par3d(skipRedraw = TRUE)
+      rgl::shade3d(shapelist3d(plot_data, plot = FALSE))
+      rgl::par3d(skipRedraw = FALSE)
+
+      # Plot axes
+      if (axes == TRUE) {
+        rgl::axes3d(edges = c("x", "y", "z"))
       }
 
       # Plot cloud
-      rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
-    }
+      if (!is.null(cloud)) {
+        cloud <- rename(cloud, x = 1, y = 2, z = 3)
 
-    # Set mouse hover
-    if (hover == TRUE) {
-      rgl::hover3d(
-        cylinder$sx,
-        cylinder$sy,
-        cylinder$sz,
-        labels = paste0("ID:", cylinder$ninternode, " - Branch:", cylinder$nbranch)
-      )
+        # Initialize cloud inputs
+        if (is.null(pt_color)) {
+          pt_color <- "#000000"
+        } else {
+          pt_color <- pt_color
+        }
+
+        if (is.null(pt_size)) {
+          pt_size <- 0.1
+        } else {
+          pt_size <- pt_size
+        }
+
+        # Plot cloud
+        rgl::plot3d(cloud$x, cloud$y, cloud$z, col = pt_color, size = pt_size, add = TRUE, aspect = FALSE)
+      }
+
+      # Set mouse hover
+      if (hover == TRUE) {
+        rgl::hover3d(
+          cylinder$sx,
+          cylinder$sy,
+          cylinder$sz,
+          labels = paste0("ID:", cylinder$p1, " - Branch:", cylinder$nbranch)
+        )
+      }
     }
   } else {
     message(
