@@ -57,8 +57,8 @@ update_cylinders <- function(cylinder) {
 
     # Updates branch ordering
     cylinder <- left_join(cylinder, branch_id, by = "branch") %>%
-      select(-.data$branch) %>%
-      rename("branch" = .data$branch_new)
+      select(-"branch") %>%
+      rename("branch" = "branch_new")
 
     # Plotting Info ------------------------------------------------------------
     cylinder <- cylinder %>%
@@ -94,35 +94,35 @@ update_cylinders <- function(cylinder) {
 
     if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
       cylinder <- cylinder %>%
-        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
-        relocate(.data$reverseBranchOrder, .after = .data$BranchOrder) %>%
-        relocate(.data$segment, .after = .data$PositionInBranch) %>%
-        relocate(.data$parentSegment, .after = .data$segment) %>%
-        relocate(.data$UnmodRadius:.data$mad, .after = .data$end.z) %>%
-        relocate(.data$growthLength, .after = .data$mad) %>%
-        relocate(.data$mad, .after = .data$end.z) %>%
-        relocate(.data$SurfCov, .after = .data$mad) %>%
-        relocate(.data$branch, .after = .data$growthLength) %>%
-        relocate(.data$parent, .after = .data$branch) %>%
-        relocate(.data$extension, .after = .data$parent) %>%
-        relocate(.data$end.x, .after = .data$axis.z) %>%
-        relocate(.data$end.y, .after = .data$end.x) %>%
-        relocate(.data$end.z, .after = .data$end.y)
+        relocate("OldRadius", .after = "UnmodRadius") %>%
+        relocate("reverseBranchOrder", .after = "BranchOrder") %>%
+        relocate("segment", .after = "PositionInBranch") %>%
+        relocate("parentSegment", .after = "segment") %>%
+        relocate("UnmodRadius":"mad", .after = "end.z") %>%
+        relocate("growthLength", .after = "mad") %>%
+        relocate("mad", .after = "end.z") %>%
+        relocate("SurfCov", .after = "mad") %>%
+        relocate("branch", .after = "growthLength") %>%
+        relocate("parent", .after = "branch") %>%
+        relocate("extension", .after = "parent") %>%
+        relocate("end.x", .after = "axis.z") %>%
+        relocate("end.y", .after = "end.x") %>%
+        relocate("end.z", .after = "end.y")
     } else {
       cylinder <- cylinder %>%
-        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
-        relocate(.data$reverseBranchOrder, .after = .data$BranchOrder) %>%
-        relocate(.data$segment, .after = .data$PositionInBranch) %>%
-        relocate(.data$parentSegment, .after = .data$segment) %>%
-        relocate(.data$UnmodRadius, .after = .data$end.z) %>%
-        relocate(.data$OldRadius, .after = .data$UnmodRadius) %>%
-        relocate(.data$growthLength, .after = .data$OldRadius) %>%
-        relocate(.data$branch, .after = .data$growthLength) %>%
-        relocate(.data$parent, .after = .data$branch) %>%
-        relocate(.data$extension, .after = .data$parent) %>%
-        relocate(.data$end.x, .after = .data$axis.z) %>%
-        relocate(.data$end.y, .after = .data$end.x) %>%
-        relocate(.data$end.z, .after = .data$end.y)
+        relocate("OldRadius", .after = "UnmodRadius") %>%
+        relocate("reverseBranchOrder", .after = "BranchOrder") %>%
+        relocate("segment", .after = "PositionInBranch") %>%
+        relocate("parentSegment", .after = "segment") %>%
+        relocate("UnmodRadius", .after = "end.z") %>%
+        relocate("OldRadius", .after = "UnmodRadius") %>%
+        relocate("growthLength", .after = "OldRadius") %>%
+        relocate("branch", .after = "growthLength") %>%
+        relocate("parent", .after = "branch") %>%
+        relocate("extension", .after = "parent") %>%
+        relocate("end.x", .after = "axis.z") %>%
+        relocate("end.y", .after = "end.x") %>%
+        relocate("end.z", .after = "end.y")
     }
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
@@ -141,20 +141,20 @@ update_cylinders <- function(cylinder) {
         axisY = (.data$endY - .data$startY) / .data$length,
         axisZ = (.data$endZ - .data$startZ) / .data$length
       ) %>%
-      relocate(.data$axisX, .after = .data$endZ) %>%
-      relocate(.data$axisY, .after = .data$axisX) %>%
-      relocate(.data$axisZ, .after = .data$axisY) %>%
-      relocate(.data$radius, .before = .data$radius)
+      relocate("axisX", .after = "endZ") %>%
+      relocate("axisY", .after = "axisX") %>%
+      relocate("axisZ", .after = "axisY") %>%
+      relocate("radius", .before = "radius")
 
     # Add position in branch segment
     cylinder <- cylinder %>%
-      group_by(.data$branchOrder, .data$branchID, .data$segmentID) %>%
+      group_by("branchOrder", "branchID", "segmentID") %>%
       mutate(branchNew = cur_group_id()) %>%
-      group_by(.data$branchNew) %>%
+      group_by("branchNew") %>%
       mutate(positionInBranch = 1:n()) %>%
       ungroup() %>%
-      relocate(.data$branchNew, .after = .data$branchID) %>%
-      relocate(.data$positionInBranch, .after = .data$branchNew)
+      relocate("branchNew", .after = "branchID") %>%
+      relocate("positionInBranch", .after = "branchNew")
 
     # Total Children -----------------------------------------------------------
     cylinder <- total_children(cylinder, "parentID")
@@ -200,9 +200,9 @@ update_cylinders <- function(cylinder) {
         ey = .data$sy + (.data$ay * .data$length),
         ez = .data$sz + (.data$az * .data$length)
       ) %>%
-      relocate(.data$ex, .after = .data$az) %>%
-      relocate(.data$ey, .after = .data$ex) %>%
-      relocate(.data$ez, .after = .data$ey)
+      relocate("ex", .after = "az") %>%
+      relocate("ey", .after = "ex") %>%
+      relocate("ez", .after = "ey")
 
     # Cylinder Ordering --------------------------------------------------------
     cylinder <- arrange(cylinder, .data$nbranch, .data$ninternode)
@@ -254,10 +254,10 @@ update_ordering <- function(cylinder, id, parent) {
   # Creates new parent and child ids
   new_id <- parent_old %>%
     left_join(
-      select(parent_old, parent_old = !!rlang::sym(id), parent_new = .data$id_new),
+      select(parent_old, parent_old = !!rlang::sym(id), parent_new = "id_new"),
       by = "parent_old"
     ) %>%
-    select(parent = .data$parent_new, id = .data$id_new) %>%
+    select(parent = "parent_new", id = "id_new") %>%
     mutate(parent = case_when(is.na(.data$parent) ~ 0, TRUE ~ as.double(.data$parent))) %>%
     mutate(parent = case_when(
       .data$parent == 0 & .data$id > 1 ~ lag(as.double(.data$id), 1),
@@ -268,7 +268,7 @@ update_ordering <- function(cylinder, id, parent) {
   cylinder <- cylinder %>%
     select(-c(!!rlang::sym(id), !!rlang::sym(parent))) %>%
     bind_cols(new_id) %>%
-    rename(!!rlang::sym(parent) := .data$parent, !!rlang::sym(id) := .data$id)
+    rename(!!rlang::sym(parent) := "parent", !!rlang::sym(id) := "id")
 
   return(cylinder)
 }
@@ -298,9 +298,10 @@ total_children <- function(cylinder, parent) {
 #' @param cylinder QSM cylinder data frame
 #' @param id column name of parent cylinders
 #' @param parent column name of parent cylinders
+#' @param all_paths return all paths or just branching paths
 #' @returns list of cylinder networkd
 #' @noRd
-build_network <- function(cylinder, id, parent) {
+build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   message("Building Cylinder Network")
 
   # Extract cylinder ids
@@ -315,6 +316,16 @@ build_network <- function(cylinder, id, parent) {
   twig_id_g <- igraph::V(qsm_g)[igraph::degree(qsm_g, mode = "out") == 0]
   twig_id_v <- as.integer(igraph::as_ids(twig_id_g))
 
+  # Find all paths from base to twigs
+  paths_g <- igraph::all_simple_paths(qsm_g, from = 1, to = twig_id_g)
+  all_id <- as.integer(unlist(sapply(paths_g, igraph::as_ids), FALSE, FALSE))
+  all_index <- cumsum(all_id == 0)
+  all_df <- tidytable(index = all_index, id = all_id)
+
+  if(all_paths == FALSE) {
+    return(all_df)
+  }
+
   # Find supported children
   child_g <- qsm_g - 1 # remove cylinder 0
   child_g <- igraph::permute(child_g, match(igraph::V(child_g)$name, id))
@@ -323,12 +334,6 @@ build_network <- function(cylinder, id, parent) {
   child_id <- as.integer(unlist(child_g, FALSE, FALSE))
   child_index <- cumsum(duplicated(child_id) & !duplicated(child_id, fromLast = TRUE)) + 1
   child_df <- tidytable(index = child_index, id = child_id)
-
-  # Find all paths from base to twigs
-  paths_g <- igraph::all_simple_paths(qsm_g, from = 1, to = twig_id_g)
-  all_id <- as.integer(unlist(sapply(paths_g, igraph::as_ids), FALSE, FALSE))
-  all_index <- cumsum(all_id == 0)
-  all_df <- tidytable(index = all_index, id = all_id)
 
   # Find all paths from base to cylinder
   base_g <- igraph::all_simple_paths(qsm_g, from = 1, to = igraph::V(qsm_g))
@@ -343,7 +348,7 @@ build_network <- function(cylinder, id, parent) {
     frequency = cylinder_info
   ) %>%
     mutate(twig = .data$id %in% !!twig_id_v) %>%
-    select(.data$id, .data$frequency, .data$twig)
+    select("id", "frequency", "twig")
 
   return(
     list(
@@ -370,9 +375,9 @@ growth_length <- function(network, cylinder, id, length) {
   # Calculate growth length
   growth_length <- network$child_df %>%
     left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
-    group_by(.data$index) %>%
+    group_by("index") %>%
     summarize(growthLength = sum(!!rlang::sym(length), na.rm = TRUE)) %>%
-    rename(!!rlang::sym(id) := .data$index)
+    rename(!!rlang::sym(id) := "index")
 
   # Joins growth length
   cylinder <- left_join(cylinder, growth_length, by = id)
@@ -393,19 +398,19 @@ reverse_branch_order <- function(network, cylinder, id) {
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
     left_join(select(cylinder, id = !!rlang::sym(id), .data$totalChildren), by = "id") %>%
-    group_by(.data$index) %>%
+    group_by("index") %>%
     filter(.data$id == 1 | .data$totalChildren > 1) %>%
     mutate(
       depth = 1:n(),
       reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
     ) %>%
-    group_by(.data$id) %>%
+    group_by("id") %>%
     summarize(reverseBranchOrder = max(.data$reverseBranchOrder)) %>%
-    rename(!!rlang::sym(id) := .data$id)
+    rename(!!rlang::sym(id) := "id")
 
   # Joins reverse branch order
   cylinder <- left_join(cylinder, reverse_branch_order, by = id) %>%
-    fill(.data$reverseBranchOrder, .direction = "down")
+    fill("reverseBranchOrder", .direction = "down")
 
   return(cylinder)
 }
@@ -431,16 +436,16 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 
   # Calculates Parent Segments
   child_segments <- cylinder %>%
-    select(id = !!rlang::sym(parent), childSegment = .data$segment) %>%
-    distinct(.data$childSegment, .keep_all = TRUE)
+    select(id = !!rlang::sym(parent), childSegment = "segment") %>%
+    distinct("childSegment", .keep_all = TRUE)
 
   parent_segments <- left_join(
-    select(cylinder, id = !!rlang::sym(id), .data$segment),
+    select(cylinder, id = !!rlang::sym(id), "segment"),
     child_segments,
     by = "id"
   ) %>%
     drop_na() %>%
-    select(segment = .data$childSegment, parentSegment = .data$segment)
+    select(segment = "childSegment", parentSegment = "segment")
 
   # Joins parent segments
   cylinder <- left_join(cylinder, parent_segments, by = "segment")
@@ -463,9 +468,9 @@ path_metrics <- function(network, cylinder, id, length) {
   # Calculate distance from base to cylinder
   base_distance <- network$base_df %>%
     left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
-    group_by(.data$index) %>%
+    group_by("index") %>%
     summarize(distanceFromBase = sum(.data$length, na.rm = TRUE)) %>%
-    rename(!!rlang::sym(id) := .data$index)
+    rename(!!rlang::sym(id) := "index")
 
   # Joins distance from base
   cylinder <- left_join(cylinder, base_distance, by = id)
@@ -475,9 +480,9 @@ path_metrics <- function(network, cylinder, id, length) {
   # Calculate average distance to twigs
   twig_distance <- left_join(network$child_df, network$cylinder_info, by = "id") %>%
     left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
-    group_by(.data$index) %>%
+    group_by("index") %>%
     summarize(distanceToTwig = sum(.data$length * .data$frequency) / sum(.data$twig)) %>%
-    rename(!!rlang::sym(id) := .data$index)
+    rename(!!rlang::sym(id) := "index")
 
   # Joins distance from twig
   cylinder <- left_join(cylinder, twig_distance, by = id)

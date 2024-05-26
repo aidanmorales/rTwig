@@ -32,12 +32,12 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
   # Converts twig radius to meters
   twigRad <- twigRad / 1000
 
+  # Gets parallel backend
+  backend <- backend
+
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     message("Generating Branch Paths")
-
-    # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
 
     # Finds end of buttress at first branch for better main stem modeling
     stem <- filter(cylinder, .data$branch == 1)
@@ -52,31 +52,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
     paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
 
-    message("Starting Parallel Workers")
-
-    # Initialize parallel workers
-    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-
-    if (nzchar(chk) && chk == "TRUE") {
-      # Use sequential to pass checks
-      oplan <- future::plan("sequential")
-    } else {
-      # Use all cores for end-users
-      if (backend == "sequential") {
-        oplan <- future::plan(backend)
-      } else {
-        oplan <- future::plan(backend, workers = availableCores())
-      }
-    }
-
-    # Set dynamic progress bar
-    if ((Sys.getenv("RSTUDIO") == "1") &&
-      !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
-      progressr::handlers("rstudio", append = TRUE)
-    }
-
-    # Ignore future random seed warning
-    options(future.rng.onMisuse = "ignore")
+    # Start parallel workers
+    oplan <- parallel_workers(backend, start_workers = TRUE)
 
     # Define global variables to pass devtools::check()
     i <- NULL
@@ -323,31 +300,8 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
     paths <- igraph::all_simple_paths(g, from = starts[[1]], to = finals)
 
-    message("Starting Parallel Workers")
-
     # Initialize parallel workers
-    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-
-    if (nzchar(chk) && chk == "TRUE") {
-      # Use sequential to pass checks
-      oplan <- future::plan("sequential")
-    } else {
-      # Use all cores for end-users
-      if (backend == "sequential") {
-        oplan <- future::plan(backend)
-      } else {
-        oplan <- future::plan(backend, workers = availableCores())
-      }
-    }
-
-    # Set dynamic progress bar
-    if ((Sys.getenv("RSTUDIO") == "1") &&
-      !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
-      progressr::handlers("rstudio", append = TRUE)
-    }
-
-    # Ignore future random seed warning
-    options(future.rng.onMisuse = "ignore")
+    parallel_workers(backend, start_workers = TRUE)
 
     # Define global variables to pass devtools::check()
     i <- NULL
@@ -595,11 +549,89 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
   return(cylinder)
 
   # Future Package Cleanup
-  chk <- Sys.getenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_", "")
+  parallel_workers(end_workers = TRUE)
+}
 
-  if (nzchar(chk) && chk == "TRUE") {
-    future::plan("sequential")
-  } else {
-    on.exit(plan(oplan), add = TRUE)
+
+#' Starts parallel workers
+#' @param backend user defined parallel backend
+#' @param start_workers TRUE or NULL
+#' @param end_workers TRUE or NULL
+#' @returns cylinder data frame with reverse branch order
+#' @noRd
+parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers = NULL) {
+  message("Starting Parallel Workers")
+
+  if(start_workers == TRUE) {
+    # Initialize parallel workers
+    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+    if (nzchar(chk) && chk == "TRUE") {
+      # Use sequential to pass checks
+      oplan <- future::plan("sequential")
+    } else {
+      # Use all cores for end-users
+      if (backend == "sequential") {
+        oplan <- future::plan(backend)
+      } else {
+        oplan <- future::plan(backend, workers = availableCores())
+      }
+    }
+
+    # Set dynamic progress bar
+    if ((Sys.getenv("RSTUDIO") == "1") &&
+        !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
+      progressr::handlers("rstudio", append = TRUE)
+    }
+
+    # Ignore future random seed warning
+    options(future.rng.onMisuse = "ignore")
+
+    return(oplan)
   }
+
+  if(end_workers == TRUE){
+    # Future Package Cleanup
+    chk <- Sys.getenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_", "")
+
+    if (nzchar(chk) && chk == "TRUE") {
+      future::plan("sequential")
+    } else {
+      on.exit(plan(!!oplan), add = TRUE)
+    }
+  }
+}
+
+#' Combine all paths into one data frame
+#' @param backend user defined parallel backend
+#' @param id column name of parent cylinders
+#' @param parent column name of parent cylinders
+#' @param radius column name of the cylinder radii
+#' @param branch_order column name of the branch orders
+#' @returns cylinder data frame with all paths
+#' @noRd
+combine_paths <- function(cylinder, id, parent, radius, branch_order) {
+  # Find all paths
+  paths <- build_network(cylinder, "extension", "parent", FALSE)
+
+  # Extract required variables
+  path_vars <- cylinder %>%
+    select(
+      id = !!rlang::sym(id),
+      radius = !!rlang::sym(radius),
+      branch_order = !!rlang::sym(branch_order),
+      "growthLength"
+    ) %>%
+    mutate(
+      index0 = .data$radius / .data$growthLength / (.data$branch_order + 1),
+      index1 = log(.data$growthLength) / .data$radius^2,
+      index2 = .data$radius^2 / log(.data$growthLength)
+    )
+
+  # Combine all path data
+  path_data <- left_join(paths, path_vars) %>%
+    drop_na() %>%
+    rename(path = "index")
+
+  return(path_data)
 }
