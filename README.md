@@ -40,7 +40,7 @@ American and European trees, on both the species and genus level.
 
 ## Functions
 
-- `run_rtwig`() runs the main Real Twig steps
+- `run_rtwig()` runs the main Real Twig steps
 - `import_qsm()` imports a QSM created by TreeQSM (.mat)
 - `import_treegraph()` imports a QSM created by treegraph (.json)
 - `update_cylinders()` updates cylinder relationships and adds new QSM
@@ -100,7 +100,7 @@ vignettes for more details on a general workflow and best practices.
  # File path to QSM
  file <- system.file("extdata/QSM.mat", package = "rTwig")
  
- # Correct the cylinders
+ # Correct QSM cylinders
  qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
@@ -113,11 +113,10 @@ vignettes for more details on a general workflow and best practices.
  # Load the Real Twig library
  library(rTwig)
  
- # Import a SimpleForest QSM 
+ # File path to QSM
  file <- system.file("extdata/QSM.csv", package = "rTwig")
- qsm <- read.csv(file)
  
- # Correct the cylinders
+ # Correct QSM cylinders
  qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
