@@ -383,7 +383,7 @@ correct the cylinder radii on our Kentucky coffee tree and look at the
 new volume estimates and diagnostic plots.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Correct cylinder radii</span></span>
-<span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twigRad <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `"BranchOrder"` instead of `.data$BranchOrder`</span></span>
 <span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
@@ -585,7 +585,7 @@ each function’s documentation for more examples and unique features.</p>
 <span><span class="co"># Real Twig Main Steps</span></span>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span></span>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span>
-<span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twigRad <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Summary Metrics</span></span>
 <span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span>
