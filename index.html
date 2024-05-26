@@ -96,7 +96,7 @@
 </h2>
 <ul>
 <li>
-<code>run_rtwig</code>() runs the main Real Twig steps</li>
+<code><a href="reference/run_rtwig.html">run_rtwig()</a></code> runs the main Real Twig steps</li>
 <li>
 <code><a href="reference/import_qsm.html">import_qsm()</a></code> imports a QSM created by TreeQSM (.mat)</li>
 <li>
@@ -152,7 +152,7 @@
 <span> <span class="co"># File path to QSM</span></span>
 <span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span> </span>
-<span> <span class="co"># Correct the cylinders</span></span>
+<span> <span class="co"># Correct QSM cylinders</span></span>
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
@@ -165,11 +165,10 @@
 <code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
 <span> </span>
-<span> <span class="co"># Import a SimpleForest QSM </span></span>
+<span> <span class="co"># File path to QSM</span></span>
 <span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
-<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span> </span>
-<span> <span class="co"># Correct the cylinders</span></span>
+<span> <span class="co"># Correct QSM cylinders</span></span>
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
