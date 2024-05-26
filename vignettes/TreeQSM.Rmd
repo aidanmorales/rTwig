@@ -217,7 +217,7 @@ Now we can correct our QSM cylinder radii with the `correct_radii()` function. I
 
 ```{r, message = FALSE, results = 'hide'}
 # Correct cylinder radii
-cylinder <- correct_radii(cylinder, twigRad = 4.23)
+cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 ```
 
 ```{r, r, message = FALSE}
@@ -329,7 +329,7 @@ qsm <- import_qsm(file)
 # Real Twig Main Steps
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 4.23)
+cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 
 # Summary Metrics
 qsm_summary(cylinder)

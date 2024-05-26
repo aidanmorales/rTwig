@@ -55,14 +55,14 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twigRad = 4.23)
+cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 plot_qsm(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder2 <- read.csv(file)
 cylinder2 <- update_cylinders(cylinder2)
-cylinder2 <- correct_radii(cylinder2, twigRad = 4.23)
+cylinder2 <- correct_radii(cylinder2, twig_radius = 4.23)
 plot_qsm(cylinder2)
 
 ## All Parameters

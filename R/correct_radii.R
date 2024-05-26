@@ -3,7 +3,7 @@
 #' @description Corrects cylinder radii
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param twigRad Twig radius in millimeters
+#' @param twig_radius Twig radius in millimeters
 #' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #'
 #' @return Returns a data frame
@@ -17,20 +17,20 @@
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
+#' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twigRad = 4.23)
+#' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
 #' }
 #'
-correct_radii <- function(cylinder, twigRad, backend = "multisession") {
+correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
   # Converts twig radius to meters
-  twigRad <- twigRad / 1000
+  twig_radius <- twig_radius / 1000
 
   # Gets parallel backend
   backend <- backend
@@ -166,7 +166,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
             x <- path_temp$x
             x[length(x) + 1] <- min(path_cyl$growthLength)
             y <- path_temp$y
-            y[length(y) + 1] <- twigRad
+            y[length(y) + 1] <- twig_radius
 
             min_rad <- y[length(y)]
             max_rad_ord <- 0
@@ -175,7 +175,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           x <- path_temp$x
           x[length(x) + 1] <- min(path_cyl$growthLength)
           y <- path_temp$y
-          y[length(y) + 1] <- twigRad
+          y[length(y) + 1] <- twig_radius
 
           min_rad <- y[length(y)]
           max_rad_ord <- 0
@@ -183,9 +183,9 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
         # Fit Monotonic GAM ------------------------------------------------------
 
-        # Forces model intercept through the minimum twig diameter (twigRad)
+        # Forces model intercept through the minimum twig diameter (twig_radius)
         matrix <- matrix(ncol = 3, nrow = 1, byrow = TRUE)
-        matrix[1, ] <- c(0, min(path_cyl$growthLength), twigRad)
+        matrix[1, ] <- c(0, min(path_cyl$growthLength), twig_radius)
 
         # Models new cylinder radii
         if (length(x) > 3) {
@@ -204,7 +204,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           )
           path_cyl$radius <- stats::predict(model, path_cyl$growthLength)[, 2]
         } else { # Ignores paths that are too short to be modeled
-          path_cyl$radius <- twigRad
+          path_cyl$radius <- twig_radius
         }
 
         #  Removes tapering on main stem, broken, and dead branches
@@ -413,7 +413,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
             x <- path_temp$x
             x[length(x) + 1] <- min(path_cyl$growthLength)
             y <- path_temp$y
-            y[length(y) + 1] <- twigRad
+            y[length(y) + 1] <- twig_radius
 
             min_rad <- y[length(y)]
             max_rad_ord <- 0
@@ -422,7 +422,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           x <- path_temp$x
           x[length(x) + 1] <- min(path_cyl$growthLength)
           y <- path_temp$y
-          y[length(y) + 1] <- twigRad
+          y[length(y) + 1] <- twig_radius
 
           min_rad <- y[length(y)]
           max_rad_ord <- 0
@@ -430,9 +430,9 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
 
         # Fit Monotonic GAM ----------------------------------------------------
 
-        # Forces model intercept through the minimum twig diameter (twigRad)
+        # Forces model intercept through the minimum twig diameter (twig_radius)
         matrix <- matrix(ncol = 3, nrow = 1, byrow = TRUE)
-        matrix[1, ] <- c(0, min(path_cyl$growthLength), twigRad)
+        matrix[1, ] <- c(0, min(path_cyl$growthLength), twig_radius)
 
         # Models new cylinder radii
         if (length(x) > 3) {
@@ -450,7 +450,7 @@ correct_radii <- function(cylinder, twigRad, backend = "multisession") {
           )
           path_cyl$radius <- stats::predict(model, path_cyl$growthLength)[, 2]
         } else { # Ignores paths that are too short to be modeled
-          path_cyl$radius <- twigRad
+          path_cyl$radius <- twig_radius
         }
 
         #  Removes tapering on main stem, broken, and dead branches

@@ -40,6 +40,7 @@ American and European trees, on both the species and genus level.
 
 ## Functions
 
+- `run_rtwig`() runs the main Real Twig steps
 - `import_qsm()` imports a QSM created by TreeQSM (.mat)
 - `import_treegraph()` imports a QSM created by treegraph (.json)
 - `update_cylinders()` updates cylinder relationships and adds new QSM
@@ -59,14 +60,14 @@ American and European trees, on both the species and genus level.
 ## Installation
 
 You can install the released version of `rTwig` from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://cran.r-project.org/package=rTwig) with:
 
 ``` r
 install.packages("rTwig")
 ```
 
 You can install the development version of `rTwig` from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/aidanmorales/rTwig) with:
 
 ``` r
 # install.packages("devtools")
@@ -78,9 +79,10 @@ devtools::install_github("aidanmorales/rTwig")
 QSM radii corrections are run as a chain of function that build on one
 another. The general processing chain is as follows:
 
-1.  Import a QSM: TreeQSM and SimpleForest are currently supported.
-2.  Update the cylinder data to allow for network analysis and growth
-    length calculations.
+1.  Import a QSM: TreeQSM, SimpleForest and treegraph are currently
+    supported.
+2.  Calculate new variables with consistent QSM structure to allow for
+    network analysis.
 3.  Correct the small branch and twig cylinders using real twig diameter
     measurements.
 4.  Summarize and visualize the results.
@@ -95,13 +97,11 @@ vignettes for more details on a general workflow and best practices.
  # Load the Real Twig library
  library(rTwig)
  
- # Import a TreeQSM
+ # File path to QSM
  file <- system.file("extdata/QSM.mat", package = "rTwig")
- qsm <- import_qsm(file)
  
  # Correct the cylinders
- qsm$cylinder <- update_cylinders(qsm$cylinder)
- qsm$cylinder <- correct_radii(qsm$cylinder, twigRad = 4.23)
+ qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
  plot_qsm(qsm$cylinder)
@@ -110,6 +110,7 @@ vignettes for more details on a general workflow and best practices.
 #### SimpleForest
 
 ``` r
+ # Load the Real Twig library
  library(rTwig)
  
  # Import a SimpleForest QSM 
@@ -117,8 +118,7 @@ vignettes for more details on a general workflow and best practices.
  qsm <- read.csv(file)
  
  # Correct the cylinders
- qsm <- update_cylinders(qsm)
- qsm <- correct_radii(qsm, twigRad = 4.23)
+ qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
  plot_qsm(qsm)

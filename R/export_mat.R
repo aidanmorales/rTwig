@@ -38,11 +38,11 @@ export_mat <- function(cylinder, filename) {
     length <- as.matrix(cylinder$length)
 
     start <- cylinder %>%
-      select(.data$start.x, .data$start.y, .data$start.z) %>%
+      select("start.x", "start.y", "start.z") %>%
       as.matrix()
 
     axis <- cylinder %>%
-      select(.data$axis.x, .data$axis.y, .data$axis.z) %>%
+      select("axis.x", "axis.y", "axis.z") %>%
       as.matrix()
 
     parent <- as.matrix(cylinder$parent)
@@ -104,11 +104,11 @@ export_mat <- function(cylinder, filename) {
     length <- as.matrix(cylinder$length)
 
     start <- cylinder %>%
-      select(start.x = .data$startX, start.y = .data$startY, start.z = .data$startZ) %>%
+      select(start.x = "startX", start.y = "startY", start.z = "startZ") %>%
       as.matrix()
 
     axis <- cylinder %>%
-      select(axis.x = .data$axisX, axis.y = .data$axisY, axis.z = .data$axisZ) %>%
+      select(axis.x = "axisX", axis.y = "axisY", axis.z = "axisZ") %>%
       as.matrix()
 
     parent <- as.matrix(cylinder$parentID)
@@ -119,10 +119,10 @@ export_mat <- function(cylinder, filename) {
     SurfCov <- NA
     mad <- as.matrix(cylinder$averagePointDistance)
     BranchOrder <- as.matrix(cylinder$branchOrder)
-    PositionInBranch <- as.matrix(cylinder %>% group_by(.data$branchID) %>%
+    PositionInBranch <- as.matrix(cylinder %>% group_by("branchID") %>%
       reframe(PositionInBranch = 1:n()) %>%
       ungroup() %>%
-      select(.data$PositionInBranch) %>%
+      select("PositionInBranch") %>%
       pull())
 
     output <- list(

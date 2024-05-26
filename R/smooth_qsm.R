@@ -31,7 +31,7 @@ smooth_qsm <- function(cylinder) {
     stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
 
     cylinder <- cylinder %>%
-      group_by(.data$branch) %>%
+      group_by("branch") %>%
       mutate(
         start.x = case_when(.data$PositionInBranch > 1 ~ lag(.data$end.x, 1), TRUE ~ .data$start.x),
         start.y = case_when(.data$PositionInBranch > 1 ~ lag(.data$end.y, 1), TRUE ~ .data$start.y),
