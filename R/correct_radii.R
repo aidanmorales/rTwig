@@ -88,7 +88,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
             bad_fit0 = case_when(.data$lower <= .data$index0 & .data$index0 >= .data$upper ~ 1, TRUE ~ 0)
           ) %>%
           filter(.data$bad_fit0 == 0) %>%
-          group_by(.data$BranchOrder) %>%
+          group_by("BranchOrder") %>%
           mutate( # removes small cylinders
             IQR = stats::IQR(.data$index1),
             upper = stats::quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
@@ -119,7 +119,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
         # Joins bad fits and accounts for buttress flare
         path_cyl <- path_cyl %>%
-          left_join(select(path_temp, .data$extension, bad_fit = .data$bad_fit3), by = "extension") %>%
+          left_join(select(path_temp, "extension", bad_fit = "bad_fit3"), by = "extension") %>%
           mutate(
             bad_fit = replace_na(.data$bad_fit, 1),
             bad_fit = case_when(.data$branch == 1 & .data$PositionInBranch <= !!stem ~ 0, TRUE ~ .data$bad_fit)
@@ -129,14 +129,14 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
         # We rename growth length and radius to x a y for shorter labels
         path_temp <- path_cyl %>%
           filter(.data$bad_fit == 0) %>%
-          select(x = .data$growthLength, y = .data$radius)
+          select(x = "growthLength", y = "radius")
 
         # Broken Branch Filter -------------------------------------------------
 
         # Identifies broken branches and removes any real twig tapering
         # Broken branches have <= 1 child branch in the 1st order branches
         max_order <- slice_tail(path_cyl, n = 1) %>%
-          select(.data$BranchOrder) %>%
+          select("BranchOrder") %>%
           pull()
 
         if (max_order %in% c(1)) {
@@ -145,7 +145,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
           min_rad <- y[length(y)]
           max_rad_ord <- path_cyl %>%
             filter(.data$radius == !!min_rad) %>%
-            select(.data$BranchOrder) %>%
+            select("BranchOrder") %>%
             distinct() %>%
             pull()
 
@@ -269,7 +269,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     # Calculates weighted mean for each cylinder
     cyl_radii <- all_cyl %>%
-      group_by(.data$extension) %>%
+      group_by("extension") %>%
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
 
     # Updates the main stem with its own path
@@ -277,9 +277,9 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%
-      select(-.data$radius) %>%
-      left_join(cyl_radii, by = c("extension")) %>%
-      relocate(.data$radius, .before = .data$length)
+      select(-"radius") %>%
+      left_join(cyl_radii, by = "extension") %>%
+      relocate("radius", .before = "length")
 
     message("Done!")
 
@@ -336,7 +336,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
             bad_fit0 = case_when(.data$lower <= .data$index0 & .data$index0 >= .data$upper ~ 1, TRUE ~ 0)
           ) %>%
           filter(.data$bad_fit0 == 0) %>%
-          group_by(.data$branchOrder) %>%
+          group_by("branchOrder") %>%
           mutate( # removes small cylinders
             IQR = stats::IQR(.data$index1),
             upper = stats::quantile(.data$index1, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
@@ -369,21 +369,21 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
         # Joins bad fits and accounts for buttress flare
         path_cyl <- path_cyl %>%
-          left_join(select(path_temp, .data$ID, bad_fit = .data$bad_fit3), by = "ID") %>%
+          left_join(select(path_temp, "ID", bad_fit = "bad_fit3"), by = "ID") %>%
           mutate(bad_fit = replace_na(.data$bad_fit, 1))
 
         # Uses good cylinder fits to model paths
         # We rename growth length and radius to x a y for shorter labels
         path_temp <- path_cyl %>%
           filter(.data$bad_fit == 0) %>%
-          select(x = .data$growthLength, y = .data$radius)
+          select(x = "growthLength", y = "radius")
 
         # Dead Branch Filter ---------------------------------------------------
 
         # Identifies dead or broken branches and removes any real twig tapering
         # Dead branches have <= 1 child branch in the 1st order branches
         max_order <- slice_tail(path_cyl, n = 1) %>%
-          select(.data$branchOrder) %>%
+          select("branchOrder") %>%
           pull()
 
         if (max_order %in% c(1)) {
@@ -392,7 +392,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
           min_rad <- y[length(y)]
           max_rad_ord <- path_cyl %>%
             filter(.data$radius == !!min_rad) %>%
-            select(.data$branchOrder) %>%
+            select("branchOrder") %>%
             distinct() %>%
             pull()
 
@@ -527,7 +527,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     # Calculates weighted mean for each cylinder
     cyl_radii <- all_cyl %>%
-      group_by(.data$ID) %>%
+      group_by("ID") %>%
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
 
     # Updates the main stem with its own path
@@ -535,7 +535,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%
-      select(-.data$radius) %>%
+      select(-"radius") %>%
       left_join(cyl_radii, by = c("ID"))
 
     message("Done!")
