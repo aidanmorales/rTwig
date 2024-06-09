@@ -55,33 +55,43 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
-<ul><li>Refactor with tidyeval and tidyselect for better maintainability</li>
-<li>Renamed <em>twigRad</em> to <em>twig_radius</em> to be consistent with tidy style guidelines</li>
-<li>TreeQSM &amp; treegraph
-<ul><li>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</li>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSMs</p></li>
+<li>
+<p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code></p>
+<ul><li><p>Add Treegraph support</p></li>
+<li><p>Two new variables: <em>distanceFromBase</em> and <em>distanceToTwig</em></p></li>
 </ul></li>
 <li>
-<code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>
-<ul><li>New function to import treegraph QSMs</li>
-</ul></li>
-<li>
-<code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>
-<ul><li>~2x performance improvement with better vectorization</li>
-<li>Cleaned variable names and removed repeat calculations</li>
-<li>New variables: <em>distanceFromBase</em> and <em>distanceToTwig</em>
-</li>
-<li>Added treegraph support</li>
-</ul></li>
-<li>
-<code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>
+<p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p>
 <ul><li>New QSM skeleton option for faster plotting</li>
-<li>Added treegraph support</li>
+<li>Added Treegraph support</li>
 </ul></li>
-<li>Reduced package dependencies</li>
-<li>Cleanup function imports</li>
-<li>Update twig data base</li>
-<li>Update vignettes</li>
 </ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li><p>Renamed <em>twigRad</em> to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
+<li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<ul><li>
+<p>Implement Rcpp across package</p>
+<ul><li>
+<code><a href="../reference/box_dimension.html">box_dimension()</a></code> ~ 3x performance improvement</li>
+</ul></li>
+<li>
+<p><code>update_cylinder()</code></p>
+<ul><li><p>~2x performance improvement with better vectorization</p></li>
+<li><p>Cleaned variable names and removed repeat calculations</p></li>
+</ul></li>
+<li><p>Reduced package dependencies</p></li>
+<li><p>Cleanup function imports</p></li>
+<li><p>Update twig data base</p></li>
+<li><p>Update vignettes</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="rtwig-102">rTwig 1.0.2<a class="anchor" aria-label="anchor" href="#rtwig-102"></a></h2><p class="text-muted">CRAN release: 2024-04-08</p>
 <ul><li>Changes for CRAN re-submission

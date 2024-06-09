@@ -60,33 +60,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">box_dimension</span><span class="op">(</span></span>
-<span>  <span class="va">cloud</span>,</span>
-<span>  x <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  y <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  z <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  lowercutoff <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  rm_int_box <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plot <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">box_dimension</span><span class="op">(</span><span class="va">cloud</span>, lowercutoff <span class="op">=</span> <span class="fl">0.01</span>, rm_int_box <span class="op">=</span> <span class="cn">FALSE</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>cloud</dt>
-<dd><p>A point cloud object</p></dd>
-
-
-<dt>x</dt>
-<dd><p>The column name or position of the x coordinates. Defaults to the first column.</p></dd>
-
-
-<dt>y</dt>
-<dd><p>The column name or position of the y coordinates. Defaults to the second column.</p></dd>
-
-
-<dt>z</dt>
-<dd><p>The column name or position of the x coordinates. Defaults to the third column.</p></dd>
+<dd><p>A point cloud matrix size n x 3. Non-matrices are automatically converted to a matrix.</p></dd>
 
 
 <dt>lowercutoff</dt>
