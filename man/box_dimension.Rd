@@ -4,24 +4,10 @@
 \alias{box_dimension}
 \title{Box Dimension}
 \usage{
-box_dimension(
-  cloud,
-  x = 1,
-  y = 2,
-  z = 3,
-  lowercutoff = 0.01,
-  rm_int_box = FALSE,
-  plot = FALSE
-)
+box_dimension(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE)
 }
 \arguments{
-\item{cloud}{A point cloud object}
-
-\item{x}{The column name or position of the x coordinates. Defaults to the first column.}
-
-\item{y}{The column name or position of the y coordinates. Defaults to the second column.}
-
-\item{z}{The column name or position of the x coordinates. Defaults to the third column.}
+\item{cloud}{A point cloud matrix size n x 3. Non-matrices are automatically converted to a matrix.}
 
 \item{lowercutoff}{The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.}
 

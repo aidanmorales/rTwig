@@ -4,9 +4,9 @@
 ## usethis namespace: start
 #' @import rgl
 #' @import rlang
+#' @import tidytable
 #' @importFrom cobs cobs
 #' @importFrom colourvalues color_values
-#' @importFrom DescTools RoundTo
 #' @importFrom doFuture %dofuture%
 #' @importFrom foreach foreach
 #' @importFrom future availableCores
@@ -19,12 +19,11 @@
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph V
 #' @importFrom igraph vcount
-#' @importFrom kit uniqLen
 #' @importFrom Morpho mesh2ply
 #' @importFrom progressr handlers
-#' @importFrom purrr map_dfr
 #' @importFrom R.matlab readMat
 #' @importFrom R.matlab writeMat
+#' @importFrom Rcpp sourceCpp
 #' @importFrom RcppSimdJson fload
 #' @importFrom RcppSimdJson fparse
 #' @importFrom Rdpack reprompt
@@ -32,7 +31,7 @@
 #' @importFrom stats lm
 #' @importFrom stats predict
 #' @importFrom stats quantile
-#' @rawNamespace import(tidytable, except=c(map_dfr))
+#' @useDynLib rTwig, .registration = TRUE
 ## usethis namespace: end
 NULL
 

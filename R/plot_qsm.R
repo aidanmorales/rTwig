@@ -69,10 +69,6 @@ plot_qsm <- function(
 
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    # Error message if cylinders have not been updated
-    if (any(cylinder$extension == 1)) {
-      stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
-    }
 
     # Initialize cylinder radii
     if (is.null(radius)) {

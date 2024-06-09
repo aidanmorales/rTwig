@@ -607,10 +607,13 @@ parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers =
 #' @param id column name of parent cylinders
 #' @param parent column name of parent cylinders
 #' @param radius column name of the cylinder radii
+#' @param branch column name of the branches
 #' @param branch_order column name of the branch orders
+#' @param branch_position column name of the branch position
+#'
 #' @returns cylinder data frame with all paths
 #' @noRd
-combine_paths <- function(cylinder, id, parent, radius, branch_order) {
+combine_paths <- function(cylinder, id, parent, radius, branch, branch_order, branch_position) {
   # Find all paths
   paths <- build_network(cylinder, "extension", "parent", FALSE)
 
@@ -619,13 +622,11 @@ combine_paths <- function(cylinder, id, parent, radius, branch_order) {
     select(
       id = !!rlang::sym(id),
       radius = !!rlang::sym(radius),
+      branch = !!rlang::sym(branch),
       branch_order = !!rlang::sym(branch_order),
-      "growthLength"
-    ) %>%
-    mutate(
-      index0 = .data$radius / .data$growthLength / (.data$branch_order + 1),
-      index1 = log(.data$growthLength) / .data$radius^2,
-      index2 = .data$radius^2 / log(.data$growthLength)
+      branch_position = !!rlang::sym(branch_position),
+      "growthLength",
+      "totalChildren"
     )
 
   # Combine all path data

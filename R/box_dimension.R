@@ -2,10 +2,7 @@
 #'
 #' @description R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 #'
-#' @param cloud A point cloud object
-#' @param x The column name or position of the x coordinates. Defaults to the first column.
-#' @param y The column name or position of the y coordinates. Defaults to the second column.
-#' @param z The column name or position of the x coordinates. Defaults to the third column.
+#' @param cloud A point cloud matrix size n x 3. Non-matrices are automatically converted to a matrix.
 #' @param lowercutoff The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.
 #' @param rm_int_box Remove the initial box as TRUE or FALSE. Defaults to FALSE.
 #' @param plot Plot the results. The user can specify "2D", "3D", or "ALL" plots. FALSE disables plotting. Defaults to FALSE.
@@ -31,56 +28,22 @@
 #' output <- box_dimension(cloud, plot = "ALL")
 #' output
 #'
-box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE) {
+box_dimension <- function(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE) {
   # Calculates Box Dimension ---------------------------------------------------
 
-  # Selects only the x, y, z columns from the point cloud
-  cloud <- select(cloud, x = any_of(x), y = any_of(y), z = any_of(z))
-
-  # Error message if the supplied columns are not numeric
-  stopifnot("Supplied columns are not numeric!" = is.numeric(cloud$x) | is.numeric(cloud$y) | is.numeric(cloud$z))
-
-  # Finds the largest box size edge length that can contain all points
-  x_max <- round((max(cloud$x) - min(cloud$x)) * 100) / 100
-  y_max <- round((max(cloud$y) - min(cloud$y)) * 100) / 100
-  z_max <- round((max(cloud$z) - min(cloud$z)) * 100) / 100
-  rulerlimit <- max(x_max, y_max, z_max)
-
-  # Halves the largest box size until it reaches the lower cutoff point
-  size <- vector("double")
-
-  for (j in 1:16) {
-    if (j == 1) {
-      size[1] <- rulerlimit
-    } else {
-      size[j] <- size[j - 1] / 2
-    }
+  # Ensure cloud is a matrix
+  if(!is.matrix(cloud)){
+    cloud <- as.matrix(cloud)
+  } else{
+    cloud <- cloud
   }
 
-  for (j in 1:length(size)) {
-    if ((size[j] > lowercutoff) == TRUE) {
-    } else {
-      size <- size[-(j:length(size))]
-      break
-    }
-  }
+  # Calculate box sizes and count
+  results <- box_counting(cloud, lowercutoff)
+  voxelnumber <- results$voxelnumber
+  size <- results$size
+  ruler <- results$ruler
 
-  # Ratio between all box edge lengths and the initial box
-  ruler <- size / rulerlimit
-
-  # Inverts the box sizes
-  rf <- 1 / size
-
-  # Calculates the number of boxes in each size needed to enclose all points.
-  # This is done by rounding each coordinate in the point cloud to the highest
-  # multiple of the box size and tallying the number of distinct points.
-  # The total number of distinct points is the total number of boxes of that
-  # size needed to enclose all points in the point cloud.
-  voxelnumber <- vector("double")
-
-  for (j in 1:length(size)) {
-    voxelnumber[j] <- kit::uniqLen(purrr::map_dfr(.x = cloud, ~ DescTools::RoundTo(.x, multiple = size[j], FUN = "floor")))
-  }
 
   if (rm_int_box == TRUE) {
     data <- tidytable(log(1 / ruler), log(voxelnumber)) %>%
@@ -135,13 +98,13 @@ box_dimension <- function(cloud, x = 1, y = 2, z = 3, lowercutoff = 0.01, rm_int
   # 3D Plot --------------------------------------------------------------------
   if (plot == "ALL" | plot == "3D") {
     # Convert point cloud to a local coordinate system
-    cloud$x <- cloud$x - min(cloud$x)
-    cloud$y <- cloud$y - min(cloud$y)
-    cloud$z <- cloud$z - min(cloud$z)
+    cloud[, 1] <- cloud[, 1] - min(cloud[, 1])
+    cloud[, 2] <- cloud[, 2] - min(cloud[, 2])
+    cloud[, 3] <- cloud[, 3] - min(cloud[, 3])
 
     # Plots Point Cloud
     open3d()
-    plot3d(cloud$x, cloud$y, cloud$z, aspect = FALSE, decorate = FALSE)
+    plot3d(cloud[, 1], cloud[, 2], cloud[, 3], aspect = FALSE, decorate = FALSE)
 
     # Plot Voxels
     for (i in 1:length(size)) {

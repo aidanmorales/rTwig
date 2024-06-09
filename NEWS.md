@@ -1,22 +1,44 @@
 # rTwig (development version)
 
--   Refactor with tidyeval and tidyselect for better maintainability
--   Renamed *twigRad* to *twig_radius* to be consistent with tidy style guidelines
--   TreeQSM & treegraph
-    -   Renamed *GrowthLength* to *growthLength* to be consistent with SimpleForest
--   `import_treegraph()`
-    -   New function to import treegraph QSMs
+## New features
+
+-   `import_treegraph()`: New function to import Treegraph QSMs
+
 -   `update_cylinders()`
-    -   \~2x performance improvement with better vectorization
-    -   Cleaned variable names and removed repeat calculations
-    -   New variables: *distanceFromBase* and *distanceToTwig*
-    -   Added treegraph support
+
+    -   Add Treegraph support
+
+    -   Two new variables: *distanceFromBase* and *distanceToTwig*
+
 -   `plot_qsm()`
+
     -   New QSM skeleton option for faster plotting
-    -   Added treegraph support
+    -   Added Treegraph support
+
+## Breaking Changes
+
+-   Renamed *twigRad* to *twig_radius* to be consistent with tidy style guidelines
+
+-   Renamed *GrowthLength* to *growthLength* to be consistent with SimpleForest
+
+## Improvements
+
+-   Implement Rcpp across package
+
+    -   `box_dimension()` \~ 3x performance improvement
+
+-   `update_cylinder()`
+
+    -   \~2x performance improvement with better vectorization
+
+    -   Cleaned variable names and removed repeat calculations
+
 -   Reduced package dependencies
+
 -   Cleanup function imports
+
 -   Update twig data base
+
 -   Update vignettes
 
 # rTwig 1.0.2
