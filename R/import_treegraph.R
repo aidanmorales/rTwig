@@ -10,6 +10,8 @@
 #' @references
 #' \insertRef{treegraph1}{rTwig}
 #'
+#' \insertRef{treegraph1}{rTwig}
+#'
 #' @examples
 #' \dontrun{
 #'

@@ -2,6 +2,8 @@
 
 ## New features
 
+-   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds built entirely from the QSM. TreeQSM is currently supported, with SimpleForest and Treegraph coming very soon!
+
 -   `import_treegraph()`: New function to import Treegraph QSMs
 
 -   `update_cylinders()`
@@ -40,6 +42,8 @@
 -   Update twig data base
 
 -   Update vignettes
+
+-   Update citations
 
 # rTwig 1.0.2
 

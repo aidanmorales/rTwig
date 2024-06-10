@@ -24,7 +24,6 @@ RdMacros: Rdpack
 Imports: 
     R.matlab,
     rmatio,
-    RcppSimdJson,
     tidytable,
     cobs,
     igraph,
@@ -37,7 +36,9 @@ Imports:
     Morpho,
     Rdpack,
     rlang,
-    Rcpp
+    Rcpp,
+    RcppSimdJson,
+    geometry
 License: GPL (>= 3)
 Depends: R (>= 3.5.0)
 LazyData: true

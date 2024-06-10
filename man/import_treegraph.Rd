@@ -25,4 +25,6 @@ qsm <- import_treegraph("path/to/json/file")
 }
 \references{
 \insertRef{treegraph1}{rTwig}
+
+\insertRef{treegraph1}{rTwig}
 }

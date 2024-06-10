@@ -5,3 +5,143 @@ box_counting <- function(cloud, lowercutoff) {
     .Call(`_rTwig_box_counting`, cloud, lowercutoff)
 }
 
+#' @title Convex Hull
+#'
+#' @description Finds the indexes forming a 2d convex hull of a point cloud
+#'
+#' @param points a point cloud numeric matrix of x and y values
+#' @return integer vector of convex hull point indexes
+#'
+#' @noRd
+#'
+convex_hull <- function(points) {
+    .Call(`_rTwig_convex_hull`, points)
+}
+
+#' @title Convex Hull Area
+#'
+#' @description Finds area of a 2d convex hull with the Shoelace formula
+#'
+#' @param points a point cloud numeric matrix of x and y values
+#' @return a double of the convex hull area in square meters
+#'
+#' @noRd
+#'
+convex_hull_area <- function(points) {
+    .Call(`_rTwig_convex_hull_area`, points)
+}
+
+#' @title Generate Cloud
+#'
+#' @description Generates a synthetic point cloud from QSM cylinder attributes
+#'
+#' @param start n x 3 matrix containing the x, y, z cylinder start points
+#' @param axis n x 3 matrix containing the x, y, z cylinder axis directions
+#' @param tips n x 3 matrix containing the x, y, z cylinder end points
+#' @param length vector containing the cylinder lengths
+#' @param radius vector containing the cylinder radii
+#' @param branch vector containing the cylinder branch ids
+#' @return n x 3 point cloud matrix
+#'
+#' @noRd
+#'
+generate_cloud <- function(start, axis, tips, length, radius, branch) {
+    .Call(`_rTwig_generate_cloud`, start, axis, tips, length, radius, branch)
+}
+
+#' @title Cross Product
+#'
+#' @description Calculates the cross product of two vectors
+#'
+#' @param a first vector
+#' @param b second vector
+#' @return cross product of a and b
+#'
+#' @noRd
+#'
+cross_product <- function(a, b) {
+    .Call(`_rTwig_cross_product`, a, b)
+}
+
+#' Norm
+#'
+#' Calculates the norm of a 1 x 3 vector
+#'
+#' @param x vector x with size 1 x 3
+#' @return norm of vector x
+#'
+#' @noRd
+#'
+norm <- function(x) {
+    .Call(`_rTwig_norm`, x)
+}
+
+#' Orthonormal Vectors
+#'
+#' Generates vectors V and W that are unit vectors orthogonal to themselves
+#' and to the input vector U
+#'
+#' @param U input vector
+#' @return list containing vectors V and W
+#'
+#' @noRd
+#'
+orthonormal_vectors <- function(U) {
+    .Call(`_rTwig_orthonormal_vectors`, U)
+}
+
+#' Rotation matrix
+#'
+#' Returns the rotation matrix for the given axis A and angle
+#'
+#' @param A vector of size 1 x 3
+#' @param angle angle in radians
+#' @return rotation matrix
+#'
+#' @noRd
+#'
+rotation_matrix <- function(A, angle) {
+    .Call(`_rTwig_rotation_matrix`, A, angle)
+}
+
+#' Matrix Vector Subtraction
+#'
+#' Subtract a vector in a matrix
+#'
+#' @param A matrix of dimensions n x n
+#' @param v vector with dimensions 1 x n
+#' @return matrix
+#'
+#' @noRd
+#'
+mat_vec_subtraction <- function(A, v) {
+    .Call(`_rTwig_mat_vec_subtraction`, A, v)
+}
+
+#' Index Order
+#'
+#' Get order of sorted vector indexes
+#'
+#' @param v vector with dimensions 1 x n
+#' @return integer vector
+#'
+#' @noRd
+#'
+index_order <- function(x) {
+    .Call(`_rTwig_index_order`, x)
+}
+
+#' Sort Index
+#'
+#' Sort a vector by a specified order
+#'
+#' @param v vector with dimensions 1 x n
+#' @param indexes integer vector with desired ordering
+#' @return vector
+#'
+#' @noRd
+#'
+sort_index <- function(x, indexes) {
+    .Call(`_rTwig_sort_index`, x, indexes)
+}
+

@@ -22,9 +22,138 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// convex_hull
+IntegerVector convex_hull(NumericMatrix points);
+RcppExport SEXP _rTwig_convex_hull(SEXP pointsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type points(pointsSEXP);
+    rcpp_result_gen = Rcpp::wrap(convex_hull(points));
+    return rcpp_result_gen;
+END_RCPP
+}
+// convex_hull_area
+double convex_hull_area(NumericMatrix points);
+RcppExport SEXP _rTwig_convex_hull_area(SEXP pointsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type points(pointsSEXP);
+    rcpp_result_gen = Rcpp::wrap(convex_hull_area(points));
+    return rcpp_result_gen;
+END_RCPP
+}
+// generate_cloud
+NumericMatrix generate_cloud(NumericMatrix start, NumericMatrix axis, NumericMatrix tips, NumericVector length, NumericVector radius, IntegerVector branch);
+RcppExport SEXP _rTwig_generate_cloud(SEXP startSEXP, SEXP axisSEXP, SEXP tipsSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP branchSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type start(startSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type axis(axisSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type tips(tipsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type length(lengthSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type branch(branchSEXP);
+    rcpp_result_gen = Rcpp::wrap(generate_cloud(start, axis, tips, length, radius, branch));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cross_product
+NumericVector cross_product(NumericVector a, NumericVector b);
+RcppExport SEXP _rTwig_cross_product(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(cross_product(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// norm
+double norm(NumericVector x);
+RcppExport SEXP _rTwig_norm(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(norm(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// orthonormal_vectors
+List orthonormal_vectors(NumericVector U);
+RcppExport SEXP _rTwig_orthonormal_vectors(SEXP USEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type U(USEXP);
+    rcpp_result_gen = Rcpp::wrap(orthonormal_vectors(U));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rotation_matrix
+NumericMatrix rotation_matrix(NumericVector A, double angle);
+RcppExport SEXP _rTwig_rotation_matrix(SEXP ASEXP, SEXP angleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type A(ASEXP);
+    Rcpp::traits::input_parameter< double >::type angle(angleSEXP);
+    rcpp_result_gen = Rcpp::wrap(rotation_matrix(A, angle));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mat_vec_subtraction
+NumericMatrix mat_vec_subtraction(NumericMatrix A, NumericVector v);
+RcppExport SEXP _rTwig_mat_vec_subtraction(SEXP ASEXP, SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type A(ASEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(mat_vec_subtraction(A, v));
+    return rcpp_result_gen;
+END_RCPP
+}
+// index_order
+IntegerVector index_order(NumericVector x);
+RcppExport SEXP _rTwig_index_order(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(index_order(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sort_index
+NumericVector sort_index(NumericVector x, IntegerVector indexes);
+RcppExport SEXP _rTwig_sort_index(SEXP xSEXP, SEXP indexesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type indexes(indexesSEXP);
+    rcpp_result_gen = Rcpp::wrap(sort_index(x, indexes));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
+    {"_rTwig_convex_hull", (DL_FUNC) &_rTwig_convex_hull, 1},
+    {"_rTwig_convex_hull_area", (DL_FUNC) &_rTwig_convex_hull_area, 1},
+    {"_rTwig_generate_cloud", (DL_FUNC) &_rTwig_generate_cloud, 6},
+    {"_rTwig_cross_product", (DL_FUNC) &_rTwig_cross_product, 2},
+    {"_rTwig_norm", (DL_FUNC) &_rTwig_norm, 1},
+    {"_rTwig_orthonormal_vectors", (DL_FUNC) &_rTwig_orthonormal_vectors, 1},
+    {"_rTwig_rotation_matrix", (DL_FUNC) &_rTwig_rotation_matrix, 2},
+    {"_rTwig_mat_vec_subtraction", (DL_FUNC) &_rTwig_mat_vec_subtraction, 2},
+    {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
+    {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
     {NULL, NULL, 0}
 };
 

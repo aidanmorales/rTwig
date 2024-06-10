@@ -11,6 +11,7 @@
 #' @importFrom foreach foreach
 #' @importFrom future availableCores
 #' @importFrom future plan
+#' @importFrom geometry convhulln
 #' @importFrom graphics abline
 #' @importFrom graphics text
 #' @importFrom igraph all_simple_paths
