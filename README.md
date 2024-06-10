@@ -11,7 +11,7 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/rTwig)](https://cran.r-project.org/package=rTwig)
 [![](http://cranlogs.r-pkg.org/badges/last-month/rTwig)](https://cran.r-project.org/package=rTwig)[![License:
 GPL (\>=
-3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-orchid.svg)](https://cran.r-project.org/web/licenses/GPL%20(%3E=%203))
+3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-orchid.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 
 <!-- badges: end -->
 
