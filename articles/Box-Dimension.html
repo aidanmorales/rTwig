@@ -147,16 +147,24 @@ Kentucky coffee tree.</p>
 <code>box_dimension</code> function. We need to specify the location of
 the x, y, and z coordinates, but it defaults to the first three columns
 in the point cloud data frame. We can also set the lower cutoff, or the
-smallest box size. Since our point cloud resolution is 5 mm, we set the
-<code>lowercutoff</code> parameter to 0.005 m. Let’s take a look at the
-summary data and extract the box dimension (slope).</p>
+smallest box size. Since our point cloud resolution is 1 cm, we set the
+<code>lowercutoff</code> parameter to 0.01 m, which is also the default.
+Let’s take a look at the summary data and extract the box dimension
+(slope).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Box Dimension Summary</span></span>
 <span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/box_dimension.html">box_dimension</a></span><span class="op">(</span><span class="va">cloud</span><span class="op">)</span></span>
-<span><span class="va">output</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ :Classes 'tidytable', 'data.table' and 'data.frame':  9 obs. of  2 variables:</span></span>
+<span><span class="co">#&gt;   ..$ log.box.size: num [1:9] 0 0.693 1.386 2.079 2.773 ...</span></span>
+<span><span class="co">#&gt;   ..$ log.voxels  : num [1:9] 1.1 1.95 3.09 4.11 5.18 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ :Classes 'tidytable', 'data.table' and 'data.frame':  1 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;   ..$ r.squared    : num 1</span></span>
+<span><span class="co">#&gt;   ..$ adj.r.squared: num 1</span></span>
+<span><span class="co">#&gt;   ..$ intercept    : num 1.02</span></span>
+<span><span class="co">#&gt;   ..$ slope        : num 1.48</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Box Dimension (slope)</span></span>
