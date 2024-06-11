@@ -144,6 +144,7 @@
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Branch Ordering</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
@@ -156,8 +157,8 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Done!</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1149 obs. of  26 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : num  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : num  -1 0 1 2 3 4 5 6 7 8 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : num  0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX              : num  0.761 0.759 0.771 0.768 0.765 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ              : num  254 254 254 254 254 ...</span>
@@ -170,14 +171,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ length              : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength        : num  31.4 31.4 31.3 31.3 31.2 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ averagePointDistance: num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID           : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID     : int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID           : num  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID     : num  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOrder         : int  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder  : int  18 18 18 18 18 18 18 18 18 18 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID            : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchNew           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius         : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOld           : num  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren       : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase    : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig      : num  3.43 3.38 3.33 3.27 3.22 ...</span>

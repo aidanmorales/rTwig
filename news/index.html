@@ -56,24 +56,26 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds built entirely from the QSM. TreeQSM is currently supported, with SimpleForest and Treegraph coming very soon!</p></li>
-<li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSMs</p></li>
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM.</p></li>
+<li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSM. Treegraph support is implemeted throughout package! However, the Real Twig correction is not implemented yet, as Treegraph QSMs needs to be validated against reference data.</p></li>
 <li>
 <p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code></p>
-<ul><li><p>Add Treegraph support</p></li>
-<li><p>Two new variables: <em>distanceFromBase</em> and <em>distanceToTwig</em></p></li>
+<ul><li>Two new variables: <em>distanceFromBase</em> and <em>distanceToTwig</em>
+</li>
 </ul></li>
 <li>
 <p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p>
 <ul><li>New QSM skeleton option for faster plotting</li>
-<li>Added Treegraph support</li>
 </ul></li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
-<ul><li><p>Renamed <em>twigRad</em> to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
+<ul><li><p>All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.</p></li>
+<li><p>Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called branchOld.</p></li>
+<li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
 <li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
+<li><p>Variable names in <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> updated to be explicit and consistent with the outputs of <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
