@@ -131,6 +131,45 @@ plot_stand <- function(qsms, radius_type = "modified", qsm_colors = NULL, cyl_si
       })
 
       rgl::shapelist3d(plot_data, plot = TRUE)
+
+    # Treegraph ----------------------------------------------------------------
+    } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+      # Setup Radius
+      if (radius_type == "modified") {
+        cyl_radius <- cylinder$radius
+      } else if (radius_type == "unmodified") {
+        cyl_radius <- cylinder$UnmodRadius
+      } else if (radius_type == "old") {
+        cyl_radius <- cylinder$OldRadius
+      }
+
+      # Setup QSM Colors
+      if (is.null(qsm_colors)) {
+        colors <- rep(palette[j], nrow(cylinder))
+      } else {
+        if (length(qsm_colors) != length(qsms)) {
+          stop("Supplied QSM colors vector is not equal to the number of QSMs!")
+        }
+        colors <- rep(qsm_colors[j], nrow(cylinder))
+      }
+
+      plot_data <- lapply(1:nrow(cylinder), function(i) {
+        cyl <- rgl::cylinder3d(
+          center = cbind(
+            c(cylinder$sx[i], cylinder$ex[i]),
+            c(cylinder$sy[i], cylinder$ey[i]),
+            c(cylinder$sz[i], cylinder$ez[i])
+          ),
+          radius = cyl_radius[i],
+          sides = cyl_sides,
+          closed = 0,
+          rotationMinimizing = TRUE
+        )
+        cyl$material$color <- colors[i]
+        cyl
+      })
+
+      rgl::shapelist3d(plot_data, plot = TRUE)
     }
   }
 

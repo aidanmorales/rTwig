@@ -119,11 +119,48 @@ export_mat <- function(cylinder, filename) {
     SurfCov <- NA
     mad <- as.matrix(cylinder$averagePointDistance)
     BranchOrder <- as.matrix(cylinder$branchOrder)
-    PositionInBranch <- as.matrix(cylinder %>% group_by("branchID") %>%
-      reframe(PositionInBranch = 1:n()) %>%
-      ungroup() %>%
-      select("PositionInBranch") %>%
-      pull())
+    PositionInBranch <- as.matrix(cylinder$positionInBranch)
+
+    output <- list(
+      radius = radius,
+      length = length,
+      start = start,
+      axis = axis,
+      parent = parent,
+      extension = extension,
+      added = added,
+      UnmodRadius = UnmodRadius,
+      branch = branch,
+      SurfCov = SurfCov,
+      mad = mad,
+      BranchOrder = BranchOrder,
+      PositionInBranch = PositionInBranch
+    )
+
+    R.matlab::writeMat(filename, cylinder = output)
+
+  # Treegraph ------------------------------------------------------------------
+  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    radius <- as.matrix(cylinder$radius)
+    length <- as.matrix(cylinder$length)
+
+    start <- cylinder %>%
+      select(start.x = "sx", start.y = "sy", start.z = "sz") %>%
+      as.matrix()
+
+    axis <- cylinder %>%
+      select(axis.x = "ax", axis.y = "ay", axis.z = "az") %>%
+      as.matrix()
+
+    parent <- as.matrix(cylinder$p2)
+    extension <- as.matrix(cylinder$p1)
+    added <- NA
+    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
+    branch <- as.matrix(cylinder$nbranch)
+    SurfCov <- NA
+    mad <- NA
+    BranchOrder <- as.matrix(cylinder$branch_order)
+    PositionInBranch <- as.matrix(cylinder$positionInBranch)
 
     output <- list(
       radius = radius,

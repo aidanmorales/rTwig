@@ -34,6 +34,13 @@ cylinder <- update_cylinders(cylinder)
 metrics <- tree_metrics(cylinder)
 str(metrics)
 
+## SimpleForest Processing Chain
+file <- system.file("extdata/QSM.csv", package = "rTwig")
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+metrics <- tree_metrics(cylinder)
+str(metrics)
+
 }
 \references{
 \insertRef{TreeQSM}{rTwig}

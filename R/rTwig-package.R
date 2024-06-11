@@ -16,6 +16,7 @@
 #' @importFrom graphics text
 #' @importFrom igraph all_simple_paths
 #' @importFrom igraph as_ids
+#' @importFrom igraph clusters
 #' @importFrom igraph degree
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph V

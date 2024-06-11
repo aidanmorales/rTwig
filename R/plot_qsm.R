@@ -296,7 +296,7 @@ plot_qsm <- function(
       }
     }
   }
-  # treegraph ------------------------------------------------------------------
+  # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     # Initialize cylinder radii
     if (is.null(radius)) {

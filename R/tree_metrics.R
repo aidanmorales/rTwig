@@ -34,6 +34,13 @@
 #' metrics <- tree_metrics(cylinder)
 #' str(metrics)
 #'
+#' ## SimpleForest Processing Chain
+#' file <- system.file("extdata/QSM.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' metrics <- tree_metrics(cylinder)
+#' str(metrics)
+#'
 tree_metrics <- function(cylinder) {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
@@ -50,37 +57,37 @@ tree_metrics <- function(cylinder) {
       end_x = "end.x", end_y = "end.y", end_z = "end.z"
     )
 
-  # # SimpleForest ---------------------------------------------------------------
-  # } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-  #
-  #   metrics <- calculate_tree_metrics(
-  #     cylinder = cylinder, id = "ID", parent = "parentID",
-  #     branch = "branchNew", radius = "radius", raw_radius = "UnmodRadius",
-  #     length = "length", segment = "segmentID",
-  #     branch_position = "positionInBranch",
-  #     growth_length = "growthLength", branch_order = "branchOrder",
-  #     reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-  #     base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-  #     start_x = "startX", start_y = "startY", start_z = "startX",
-  #     axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-  #     end_x = "endX", end_y = "endY", end_z = "endZ"
-  #   )
-  #
-  #   # treegraph ------------------------------------------------------------------
-  # } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-  #
-  #   metrics <- calculate_tree_metrics(
-  #     cylinder = cylinder, id = "p1", parent = "p2",
-  #     branch = "branchNew", radius = "radius", raw_radius = "UnmodRadius",
-  #     length = "length", segment = "segmentID",
-  #     branch_position = "positionInBranch",
-  #     growth_length = "growthLength", branch_order = "branchOrder",
-  #     reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-  #     base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-  #     start_x = "startX", start_y = "startY", start_z = "startX",
-  #     axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-  #     end_x = "endX", end_y = "endY", end_z = "endZ"
-  #   )
+  # SimpleForest ---------------------------------------------------------------
+  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+
+    metrics <- calculate_tree_metrics(
+      cylinder = cylinder, id = "ID", parent = "parentID",
+      branch = "branchID", radius = "radius", raw_radius = "UnmodRadius",
+      length = "length", segment = "segmentID",
+      branch_position = "positionInBranch",
+      growth_length = "growthLength", branch_order = "branchOrder",
+      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ"
+    )
+
+  # Treegraph ------------------------------------------------------------------
+  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+
+    metrics <- calculate_tree_metrics(
+      cylinder = cylinder, id = "p1", parent = "p2",
+      branch = "nbranch", radius = "radius", raw_radius = "UnmodRadius",
+      length = "length", segment = "segment",
+      branch_position = "positionInBranch",
+      growth_length = "growthLength", branch_order = "branch_order",
+      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      start_x = "sx", start_y = "sy", start_z = "sz",
+      axis_x = "ax", axis_y = "ay", axis_z = "az",
+      end_x = "ex", end_y = "ey", end_z = "ez"
+    )
 
   } else {
     message(
@@ -216,7 +223,7 @@ calculate_tree_metrics <- function(
   tree$branch_area_m2 <- 2 * pi * sum(branch_cyl$radius * branch_cyl$length)
 
   # Diameter at Breast Height --------------------------------------------------
-  tree$dbh_metrics_cm <- dbh_cylinder(trunk_cyl, "radius") * 100
+  tree$dbh_qsm_cm <- dbh_cylinder(trunk_cyl, "radius") * 100
   tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
 
   # Generate Point Cloud -------------------------------------------------------
@@ -242,7 +249,7 @@ calculate_tree_metrics <- function(
 
   # Crown Base Height ----------------------------------------------------------
   tree$crown_base_height_m <- crown_base_height(
-    cylinder, metrics$branch, tree$dbh_metrics_cm / 100, start, axis, tips
+    cylinder, metrics$branch, tree$dbh_qsm_cm / 100, start, axis, tips
   )
 
   # Crown Length and Crown Ratio -----------------------------------------------

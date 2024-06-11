@@ -248,32 +248,10 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     message("Updating Cylinder Radii")
 
-    # Combines all paths into one data frame
-    all_cyl <- bind_rows(results)
-
-    # # Finds main stem path index for separate modeling
-    # main_stem_path <- all_cyl %>%
-    #   group_by(.data$branch, .data$pathIndex) %>%
-    #   summarize(max_cyl = max(.data$PositionInBranch), .groups = "drop") %>%
-    #   arrange(desc(.data$max_cyl)) %>%
-    #   arrange(.data$branch) %>%
-    #   group_by(.data$branch) %>%
-    #   slice_head(n = 1) %>%
-    #   filter(.data$branch == 1) %>%
-    #   pull(.data$pathIndex)
-    #
-    # # Gets main stem cylinder ids
-    # main_stem_cyl <- all_cyl %>%
-    #   filter(.data$pathIndex == !!main_stem_path) %>%
-    #   select(.data$extension, .data$radius)
-
-    # Calculates weighted mean for each cylinder
-    cyl_radii <- all_cyl %>%
+    # Combines all paths and calculates weighted mean for each cylinder
+    cyl_radii <- bind_rows(results) %>%
       group_by("extension") %>%
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
-
-    # Updates the main stem with its own path
-    # cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "extension")
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%
@@ -288,7 +266,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
     message("Generating Branch Paths")
 
     # Finds end of buttress at first branch for better main stem modeling
-    stem <- filter(cylinder, .data$branchID == 0)
+    stem <- filter(cylinder, .data$branchID == 1)
     stem <- min(which(stem$totalChildren > 1))
 
     # Creates path network
@@ -402,7 +380,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
             filter(.data$branchID %in% c(
               pull(slice_tail(path_cyl, n = 1), .data$branchID),
               pull(path_cyl %>%
-                filter(!.data$branchID == 0) %>%
+                filter(!.data$branchID == 1) %>%
                 slice_head(n = 1), .data$branchID)
             )) %>%
             filter(.data$totalChildren >= 2) %>%
@@ -494,44 +472,10 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 
     message("Updating Cylinder Radii")
 
-    # Combines all paths into one data frame
-    all_cyl <- bind_rows(results)
-
-    # # Finds main stem path index for separate modeling
-    # main_stem_path <- all_cyl %>%
-    #   group_by(.data$branchID, .data$pathIndex) %>%
-    #   summarize(max_cyl = max(.data$positionInBranch), .groups = "drop") %>%
-    #   arrange(desc(.data$max_cyl)) %>%
-    #   arrange(.data$branchID) %>%
-    #   group_by(.data$branchID) %>%
-    #   slice_head(n = 1) %>%
-    #   filter(.data$branchID == 0) %>%
-    #   pull(.data$pathIndex)
-    #
-    # # Gets main stem cylinder ids
-    # main_stem_cyl <- all_cyl %>%
-    #   filter(.data$pathIndex == !!main_stem_path) %>%
-    #   select(.data$ID, .data$radius, .data$UnmodRadius)
-    #
-    # # Updates poorly modeled main stem cylinders
-    # main_stem_cyl <- main_stem_cyl %>%
-    #   mutate(
-    #     IQR = stats::IQR(.data$radius),
-    #     upper = stats::quantile(.data$radius, probs = c(.75), na.rm = FALSE) + 1.5 * .data$IQR,
-    #     radius = case_when(
-    #       .data$radius >= .data$upper ~ .data$UnmodRadius,
-    #       TRUE ~ .data$radius
-    #     )
-    #   ) %>%
-    #   select(.data$ID, .data$radius)
-
-    # Calculates weighted mean for each cylinder
-    cyl_radii <- all_cyl %>%
+    # Combines all paths and calculates weighted mean for each cylinder
+    cyl_radii <- bind_rows(results) %>%
       group_by("ID") %>%
       summarize(radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE))
-
-    # Updates the main stem with its own path
-    # cyl_radii <- rows_update(cyl_radii, main_stem_cyl, by = "ID")
 
     # Updates the QSM with new radii and interpolates any missing radii
     cylinder <- cylinder %>%

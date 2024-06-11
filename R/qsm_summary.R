@@ -83,9 +83,9 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
 
     DBHCyl <- as.numeric(i)
 
-    QSM.dbh.cm <- dbh$sumrad[DBHCyl] * 200
+    dbh_qsm_cm <- dbh$sumrad[DBHCyl] * 200
 
-    QSM.ht.m <- max(cylinder$start.z) - min(cylinder$start.z)
+    tree_height_m <- max(cylinder$start.z) - min(cylinder$start.z)
 
     # Branch Order Summary
     summary <- cylinder %>%
@@ -93,50 +93,50 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
         Volume = pi * .data$sumrad^2 * .data$length,
         SurfaceArea = 2 * pi * .data$sumrad * .data$length
       ) %>%
-      group_by(.data$BranchOrder) %>%
+      group_by("BranchOrder") %>%
       summarize(
-        Tot.vol.L = sum(.data$Volume, na.rm = TRUE) * 1e3,
-        Tot.sa.m2 = sum(.data$SurfaceArea, na.rm = TRUE)
+        tree_volume_L = sum(.data$Volume, na.rm = TRUE) * 1e3,
+        tree_area_m2 = sum(.data$SurfaceArea, na.rm = TRUE)
       )
 
     # Update with triangulation volumes
     if (!is.logical(triangulation)) {
-      summary$Tot.vol.L[1] <- summary$Tot.vol.L[1] - QSM_vol_sa$CylVol + TriVol
-      summary$Tot.sa.m2[1] <- summary$Tot.sa.m2[1] - QSM_vol_sa$CylSA + TriSA
+      summary$tree_volume_L[1] <- summary$tree_volume_L[1] - QSM_vol_sa$CylVol + TriVol
+      summary$tree_area_m2[1] <- summary$tree_area_m2[1] - QSM_vol_sa$CylSA + TriSA
     }
 
     # Total Summary
-    Tot.vol.L <- summary %>%
-      summarize(Tot.vol.L = sum(.data$Tot.vol.L))
+    tree_volume_L <- summary %>%
+      summarize(tree_volume_L = sum(.data$tree_volume_L))
 
-    Stem.vol.L <- summary %>%
+    stem_volume_L <- summary %>%
       filter(.data$BranchOrder == 0) %>%
-      summarize(Stem.vol.L = sum(.data$Tot.vol.L))
+      summarize(stem_volume_L = sum(.data$tree_volume_L))
 
-    Branch.vol.L <- summary %>%
+    branch_volume_L <- summary %>%
       filter(.data$BranchOrder != 0) %>%
-      summarize(Branch.vol.L = sum(.data$Tot.vol.L))
+      summarize(branch_volume_L = sum(.data$tree_volume_L))
 
-    Tot.sa.m2 <- summary %>%
-      summarize(Tot.sa.m2 = sum(.data$Tot.sa.m2))
+    tree_area_m2 <- summary %>%
+      summarize(tree_area_m2 = sum(.data$tree_area_m2))
 
-    Stem.sa.m2 <- summary %>%
+    stem_area_m2 <- summary %>%
       filter(.data$BranchOrder == 0) %>%
-      summarize(Stem.sa.m2 = sum(.data$Tot.sa.m2))
+      summarize(stem_area_m2 = sum(.data$tree_area_m2))
 
-    Branch.sa.m2 <- summary %>%
+    branch_area_m2 <- summary %>%
       filter(.data$BranchOrder != 0) %>%
-      summarize(Branch.sa.m2 = sum(.data$Tot.sa.m2))
+      summarize(branch_area_m2 = sum(.data$tree_area_m2))
 
     summary2 <- bind_cols(
-      "QSM.dbh.cm" = QSM.dbh.cm,
-      "QSM.ht.m" = QSM.ht.m,
-      Stem.vol.L,
-      Branch.vol.L,
-      Tot.vol.L,
-      Stem.sa.m2,
-      Branch.sa.m2,
-      Tot.sa.m2
+      "dbh_qsm_cm" = dbh_qsm_cm,
+      "tree_height_m" = tree_height_m,
+      stem_volume_L,
+      branch_volume_L,
+      tree_volume_L,
+      stem_area_m2,
+      branch_area_m2,
+      tree_area_m2
     )
 
   # SimpleForest ---------------------------------------------------------------
@@ -156,9 +156,9 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
     }
 
     dbh <- cylinder %>%
-      filter(.data$branchOrder == 0 & .data$branchID == 0) %>%
+      filter(.data$branchOrder == 0 & .data$branchID == 1) %>%
       arrange(.data$ID) %>%
-      select(.data$length, .data$sumrad)
+      select("length", "sumrad")
 
     # Finds the DBH cylinder
     for (i in 1:nrow(dbh)) {
@@ -170,53 +170,133 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
 
     DBHCyl <- as.numeric(i)
 
-    QSM.dbh.cm <- dbh$sumrad[DBHCyl] * 200
+    dbh_qsm_cm <- dbh$sumrad[DBHCyl] * 200
 
-    QSM.ht.m <- max(cylinder$startZ) - min(cylinder$startZ)
+    tree_height_m <- max(cylinder$startZ) - min(cylinder$startZ)
 
     summary <- cylinder %>%
       mutate(
         Volume = pi * .data$sumrad^2 * .data$length,
         SurfaceArea = 2 * pi * .data$sumrad * .data$length
       ) %>%
-      group_by(.data$branchOrder) %>%
+      group_by("branchOrder") %>%
       summarize(
-        Tot.vol.L = sum(.data$Volume, na.rm = TRUE) * 1e3,
-        Tot.sa.m2 = sum(.data$SurfaceArea, na.rm = TRUE)
+        tree_volume_L = sum(.data$Volume, na.rm = TRUE) * 1e3,
+        tree_area_m2 = sum(.data$SurfaceArea, na.rm = TRUE)
       ) %>%
-      rename(BranchOrder = .data$branchOrder)
+      rename(BranchOrder = "branchOrder")
 
-    Tot.vol.L <- summary %>%
-      summarize(Tot.vol.L = sum(.data$Tot.vol.L))
+    tree_volume_L <- summary %>%
+      summarize(tree_volume_L = sum(.data$tree_volume_L))
 
-    Stem.vol.L <- summary %>%
+    stem_volume_L <- summary %>%
       filter(.data$BranchOrder == 0) %>%
-      summarize(Stem.vol.L = sum(.data$Tot.vol.L))
+      summarize(stem_volume_L = sum(.data$tree_volume_L))
 
-    Branch.vol.L <- summary %>%
+    branch_volume_L <- summary %>%
       filter(.data$BranchOrder != 0) %>%
-      summarize(Branch.vol.L = sum(.data$Tot.vol.L))
+      summarize(branch_volume_L = sum(.data$tree_volume_L))
 
-    Tot.sa.m2 <- summary %>%
-      summarize(Tot.sa.m2 = sum(.data$Tot.sa.m2))
+    tree_area_m2 <- summary %>%
+      summarize(tree_area_m2 = sum(.data$tree_area_m2))
 
-    Stem.sa.m2 <- summary %>%
+    stem_area_m2 <- summary %>%
       filter(.data$BranchOrder == 0) %>%
-      summarize(Stem.sa.m2 = sum(.data$Tot.sa.m2))
+      summarize(stem_area_m2 = sum(.data$tree_area_m2))
 
-    Branch.sa.m2 <- summary %>%
+    branch_area_m2 <- summary %>%
       filter(.data$BranchOrder != 0) %>%
-      summarize(Branch.sa.m2 = sum(.data$Tot.sa.m2))
+      summarize(branch_area_m2 = sum(.data$tree_area_m2))
 
     summary2 <- bind_cols(
-      "QSM.dbh.cm" = QSM.dbh.cm,
-      "QSM.ht.m" = QSM.ht.m,
-      Stem.vol.L,
-      Branch.vol.L,
-      Tot.vol.L,
-      Stem.sa.m2,
-      Branch.sa.m2,
-      Tot.sa.m2
+      "dbh_qsm_cm" = dbh_qsm_cm,
+      "tree_height_m" = tree_height_m,
+      stem_volume_L,
+      branch_volume_L,
+      tree_volume_L,
+      stem_area_m2,
+      branch_area_m2,
+      tree_area_m2
+    )
+
+  # Treegraph ------------------------------------------------------------------
+  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    # Stop on Triangulation
+    if (!triangulation == FALSE) {
+      stop("Treegraph does not support triangulation of the main stem!")
+    }
+
+    # Setup Radius
+    if (radius == "modified") {
+      cylinder$sumrad <- cylinder$radius
+    } else if (radius == "unmodified") {
+      cylinder$sumrad <- cylinder$UnmodRadius
+    } else if (radius == "old") {
+      cylinder$sumrad <- cylinder$OldRadius
+    }
+
+    dbh <- cylinder %>%
+      filter(.data$branch_order == 0 & .data$nbranch == 1) %>%
+      arrange(.data$p1) %>%
+      select("length", "sumrad")
+
+    # Finds the DBH cylinder
+    for (i in 1:nrow(dbh)) {
+      DBHCyl <- sum(dbh$length[1:i])
+      if (DBHCyl >= 1.37) {
+        break
+      }
+    }
+
+    DBHCyl <- as.numeric(i)
+
+    dbh_qsm_cm <- dbh$sumrad[DBHCyl] * 200
+
+    tree_height_m <- max(cylinder$sz) - min(cylinder$sz)
+
+    summary <- cylinder %>%
+      mutate(
+        Volume = pi * .data$sumrad^2 * .data$length,
+        SurfaceArea = 2 * pi * .data$sumrad * .data$length
+      ) %>%
+      group_by("branch_order") %>%
+      summarize(
+        tree_volume_L = sum(.data$Volume, na.rm = TRUE) * 1e3,
+        tree_area_m2 = sum(.data$SurfaceArea, na.rm = TRUE)
+      ) %>%
+      rename(BranchOrder = "branch_order")
+
+    tree_volume_L <- summary %>%
+      summarize(tree_volume_L = sum(.data$tree_volume_L))
+
+    stem_volume_L <- summary %>%
+      filter(.data$BranchOrder == 0) %>%
+      summarize(stem_volume_L = sum(.data$tree_volume_L))
+
+    branch_volume_L <- summary %>%
+      filter(.data$BranchOrder != 0) %>%
+      summarize(branch_volume_L = sum(.data$tree_volume_L))
+
+    tree_area_m2 <- summary %>%
+      summarize(tree_area_m2 = sum(.data$tree_area_m2))
+
+    stem_area_m2 <- summary %>%
+      filter(.data$BranchOrder == 0) %>%
+      summarize(stem_area_m2 = sum(.data$tree_area_m2))
+
+    branch_area_m2 <- summary %>%
+      filter(.data$BranchOrder != 0) %>%
+      summarize(branch_area_m2 = sum(.data$tree_area_m2))
+
+    summary2 <- bind_cols(
+      "dbh_qsm_cm" = dbh_qsm_cm,
+      "tree_height_m" = tree_height_m,
+      stem_volume_L,
+      branch_volume_L,
+      tree_volume_L,
+      stem_area_m2,
+      branch_area_m2,
+      tree_area_m2
     )
   } else {
     message(

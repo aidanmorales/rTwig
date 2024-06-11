@@ -170,6 +170,65 @@ export_mesh <- function(cylinder, filename, radius = NULL, cyl_color = NULL, cyl
 
     # Export mesh
     Morpho::mesh2ply(mesh, filename = filename, writeNormals = FALSE)
+
+  # Treegraph ------------------------------------------------------------------
+  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    # Initialize cylinder radii
+    if (is.null(radius)) {
+      radius <- cylinder$radius
+    } else {
+      if (length(radius) != nrow(cylinder)) {
+        stop("Supplied cylinder radii vector is not equal to the number of cylinders!")
+      }
+      radius <- radius
+    }
+
+    # Initialize cylinder colors
+    if (is.null(cyl_color)) {
+      colors <- colourvalues::color_values(cylinder$branch_order, palette = "rainbow")
+    } else {
+      if (length(cyl_color) > 1 & length(cyl_color) != nrow(cylinder)) {
+        stop("Supplied cylinder colors vector is not equal to the number of cylinders!")
+      } else {
+        cyl_color <- cyl_color
+      }
+
+      if (length(cyl_color) == 1) {
+        colors <- rep(cyl_color, nrow(cylinder))
+      } else if (is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
+        colors <- colourvalues::color_values(cyl_color, palette = "rainbow")
+      } else if (!is.null(cyl_palette) & length(cyl_color) > 1 & !is.character(cyl_color)) {
+        colors <- colourvalues::color_values(cyl_color, palette = cyl_palette)
+      } else if (length(cyl_color) > 1 & is.character(cyl_color)) {
+        colors <- cyl_color
+      }
+    }
+
+    message("Creating Cylinder Meshes")
+
+    plot_data <- lapply(1:nrow(cylinder), function(i) {
+      cyl <- cylinder3d(
+        center = cbind(
+          c(cylinder$sx[i], cylinder$ex[i]),
+          c(cylinder$sy[i], cylinder$ey[i]),
+          c(cylinder$sz[i], cylinder$ez[i])
+        ),
+        radius = radius[i],
+        sides = cyl_sides,
+        closed = 0,
+        rotationMinimizing = TRUE
+      )
+      cyl$material$color <- colors[i]
+      cyl
+    })
+
+    message("Exporting Cylinder Mesh")
+
+    # Combine cylinder meshes into one
+    mesh <- Reduce(merge, plot_data)
+
+    # Export mesh
+    Morpho::mesh2ply(mesh, filename = filename, writeNormals = FALSE)
   } else {
     message(
       "Invalid QSM Supplied!!!

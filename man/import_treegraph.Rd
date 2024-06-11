@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_treegraph.R
 \name{import_treegraph}
 \alias{import_treegraph}
-\title{Import treegraph}
+\title{Import Treegraph}
 \usage{
 import_treegraph(file)
 }
@@ -24,7 +24,7 @@ qsm <- import_treegraph("path/to/json/file")
 
 }
 \references{
-\insertRef{treegraph1}{rTwig}
+\insertRef{treegraph2}{rTwig}
 
 \insertRef{treegraph1}{rTwig}
 }

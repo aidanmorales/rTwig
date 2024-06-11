@@ -1,4 +1,4 @@
-#' Import treegraph
+#' Import Treegraph
 #'
 #' @description Imports a QSM created by treegraph
 #'
@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @references
-#' \insertRef{treegraph1}{rTwig}
+#' \insertRef{treegraph2}{rTwig}
 #'
 #' \insertRef{treegraph1}{rTwig}
 #'

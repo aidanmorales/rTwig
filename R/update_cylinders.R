@@ -126,14 +126,17 @@ update_cylinders <- function(cylinder) {
     }
   # SimpleForest ---------------------------------------------------------------
   } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    # Adjusts indexing to be compatible with igraph
+    # Adjusts indexing to be compatible with igraph ----------------------------
     cylinder <- cylinder %>%
       mutate(
         ID = .data$ID + 1,
-        parentID = .data$parentID + 1
+        parentID = .data$parentID + 1,
+        branchID = .data$branchID + 1,
+        segmentID = .data$segmentID + 1,
+        parentSegmentID = .data$parentSegmentID + 1
       )
 
-    # Adds cylinder info for plotting
+    # Adds cylinder info for plotting ------------------------------------------
     cylinder <- cylinder %>%
       mutate(
         UnmodRadius = .data$radius,
@@ -146,15 +149,51 @@ update_cylinders <- function(cylinder) {
       relocate("axisZ", .after = "axisY") %>%
       relocate("radius", .before = "radius")
 
-    # Add position in branch segment
+    # Save Old Branch ID -------------------------------------------------------
     cylinder <- cylinder %>%
-      group_by("branchOrder", "branchID", "segmentID") %>%
-      mutate(branchNew = cur_group_id()) %>%
-      group_by("branchNew") %>%
-      mutate(positionInBranch = 1:n()) %>%
+      mutate(branchOld = .data$branchID) %>%
+      select(-"branchID")
+
+    # Generates new branch IDs -------------------------------------------------
+    message("Updating Branch Ordering")
+
+    # Initialize an empty list to store results
+    connected_segments <- list()
+
+    # Find unique branches w
+    for (order in unique(cylinder$branchOrder)) {
+      order_df <- filter(cylinder, .data$branchOrder == order)
+      edges <- tidytable(from = order_df$parentID, to = order_df$ID)
+      g <- igraph::graph_from_data_frame(d = edges, directed = FALSE)
+      components <- igraph::clusters(g)
+      order_df$index <- components$membership[match(order_df$ID, igraph::V(g)$name)]
+      connected_segments[[as.character(order)]] <- order_df
+    }
+
+    # Create unique branch ids
+    branch_new <- bind_rows(connected_segments) %>%
+      group_by("branchOrder", "index") %>%
+      mutate(branchID = cur_group_id()) %>%
       ungroup() %>%
-      relocate("branchNew", .after = "branchID") %>%
-      relocate("positionInBranch", .after = "branchNew")
+      select("ID", "branchID")
+
+    # Join new branch ids and calculates position in branch
+    cylinder <- left_join(cylinder, branch_new) %>%
+      group_by("branchID") %>%
+      mutate(positionInBranch = 1:n()) %>%
+      ungroup()
+
+    # Relabels branches consecutively
+    branches <- unique(cylinder$branchID)
+    branch_id <- tidytable(
+      branchID = branches,
+      branch_new = 1:length(branches)
+    )
+
+    # Updates branch ordering
+    cylinder <- left_join(cylinder, branch_id, by = "branchID") %>%
+      select(-"branchID") %>%
+      rename("branchID" = "branch_new")
 
     # Total Children -----------------------------------------------------------
     cylinder <- total_children(cylinder, "parentID")
@@ -182,15 +221,9 @@ update_cylinders <- function(cylinder) {
       cylinder <- path_metrics(network, cylinder, "ID", "length")
     }
 
-    # Resets cylinder ordering
-    cylinder <- cylinder %>%
-      mutate(
-        ID = .data$ID - 1,
-        parentID = .data$parentID - 1
-      )
-  # treegraph ------------------------------------------------------------------
+  # Treegraph ------------------------------------------------------------------
   } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    # Save All Radii ----------------------------------------------------------
+    # Save All Radii -----------------------------------------------------------
     cylinder <- mutate(cylinder, OldRadius = .data$radius, UnmodRadius = .data$radius)
 
     # Plotting Info ------------------------------------------------------------
@@ -203,6 +236,26 @@ update_cylinders <- function(cylinder) {
       relocate("ex", .after = "az") %>%
       relocate("ey", .after = "ex") %>%
       relocate("ez", .after = "ey")
+
+    # Update Branch and Node Index ---------------------------------------------
+    cylinder <- cylinder %>%
+      mutate(
+        nbranch = .data$nbranch + 1,
+        ninternode = .data$ninternode + 1
+      ) %>%
+      group_by("nbranch") %>%
+      mutate(positionInBranch = 1:n()) %>%
+      ungroup()
+
+    # Branch Order -------------------------------------------------------------
+    if (!"branch_order2" %in% colnames(cylinder)) {
+      cylinder <- mutate(cylinder, branch_order = .data$branch_order - 1)
+    } else if (all(c("branch_order2", "branch_order") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
+        select(-"branch_order") %>%
+        rename(branch_order = "branch_order2") %>%
+        mutate(branch_order = .data$branch_order - 1)
+    }
 
     # Cylinder Ordering --------------------------------------------------------
     cylinder <- arrange(cylinder, .data$nbranch, .data$ninternode)
