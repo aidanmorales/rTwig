@@ -372,7 +372,7 @@ branch_metrics <- function(cylinder) {
       diameter_base_cm = 2 * first(.data$radius) * 100,
       diameter_mid_cm = case_when(n() > 1 ~ .data$radius[ceiling(n() / 2)] * 100, TRUE ~ .data$radius * 2),
       diameter_tip_cm = last(.data$radius) * 2 * 100,
-      volume_m3 = 1000 * pi * sum(.data$radius^2 * .data$length),
+      volume_m3 = pi * sum(.data$radius^2 * .data$length),
       area_m2 = 2 * pi * sum(.data$length * .data$radius),
       length_m = sum(.data$length),
       height_m = first(.data$start_z) - !!base,
