@@ -145,7 +145,7 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_base_cm: num [1:82] 9.29 3.35 1.11 3.37 4.75 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_mid_cm : num [1:82] 2.47 1.04 0.587 1.128 1.374 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_tip_cm : num [1:82] 1.963 1.121 0.882 2.925 0.856 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:82] 10.771 0.5179 0.0138 0.9045 2.1014 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:82] 1.08e-02 5.18e-04 1.38e-05 9.04e-04 2.10e-03 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2         : num [1:82] 0.64394 0.08328 0.00503 0.13603 0.23585 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m        : num [1:82] 3.461 1.177 0.147 1.708 2.399 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ height_m        : num [1:82] 0 1.3 1.67 1.75 1.82 ...</span>
@@ -215,8 +215,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_diameter_dist     :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	5 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_class_cm: num [1:5] 1 2 3 4 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:5] 0 0.0219 0.6717 2.0121 1.9555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:5] 0 0 0.0582 0.2439 0.6748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:5] 0.00 2.19e-05 6.72e-04 2.01e-03 1.96e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:5] 0.00 0.00 5.82e-05 2.44e-04 6.75e-04</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2          : num [1:5] 0 0.0109 0.1743 0.3908 0.4042</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2        : num [1:5] 0 0 0.0187 0.058 0.1312</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m         : num [1:5] 0 0.44 4.12 7.11 6.89</span>
@@ -226,8 +226,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_height_dist       :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ height_class_m: num [1:4] 1 2 3 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3     : num [1:4] 0 4.34 5.12 1.92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3   : num [1:4] 0 3.577 1.8 0.419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3     : num [1:4] 0 0.00434 0.00512 0.00192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3   : num [1:4] 0 0.003577 0.0018 0.000419</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2       : num [1:4] 0 0.622 0.856 0.404</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2     : num [1:4] 0 0.472 0.2706 0.0847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m      : num [1:4] 0 8.27 13.61 7.46</span>
@@ -237,8 +237,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_angle_dist        :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ angle_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3      : num [1:18] 0 0.0627 0.1304 0.6257 2.2808 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3    : num [1:18] 0 0 0 0.518 1.035 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3      : num [1:18] 0.00 6.27e-05 1.30e-04 6.26e-04 2.28e-03 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3    : num [1:18] 0 0 0 0.000518 0.001035 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2        : num [1:18] 0 0.0145 0.0272 0.1101 0.3457 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2      : num [1:18] 0 0 0 0.0833 0.1651 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m       : num [1:18] 0 0.27 0.496 1.775 4.619 ...</span>
@@ -248,8 +248,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_zenith_dist       :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ zenith_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:18] 0.0372 0.253 2.1864 0.4858 3.2117 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3     : num [1:18] 0 0 2.1 0.13 1.92 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:18] 3.72e-05 2.53e-04 2.19e-03 4.86e-04 3.21e-03 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3     : num [1:18] 0 0 0.0021 0.00013 0.00192 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2         : num [1:18] 0.00858 0.04931 0.25267 0.1042 0.45743 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2       : num [1:18] 0 0 0.2359 0.0291 0.2698 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m        : num [1:18] 0.16 0.855 2.676 2.001 5.832 ...</span>
@@ -259,8 +259,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_azimuth_dist      :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	36 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ azimuth_class_deg: num [1:36] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:36] 0.40453 0.0939 0.00442 0.02694 0.03356 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:36] 0.2885 0 0 0 0.0138 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:36] 4.05e-04 9.39e-05 4.42e-06 2.69e-05 3.36e-05 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:36] 2.88e-04 0.00 0.00 0.00 1.38e-05 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2          : num [1:36] 0.08238 0.01788 0.00219 0.00932 0.01128 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2        : num [1:36] 0.05563 0 0 0 0.00503 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m         : num [1:36] 1.4416 0.3695 0.0888 0.2682 0.3045 ...</span>
@@ -271,14 +271,14 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_order_dist        :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	5 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_order: int [1:5] 1 2 3 4 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branches    : int [1:5] 14 35 23 8 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3   : num [1:5] 5.7959 3.8637 1.0645 0.6224 0.0346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3   : num [1:5] 5.80e-03 3.86e-03 1.06e-03 6.22e-04 3.46e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2     : num [1:5] 0.82732 0.73184 0.2375 0.07846 0.00693</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m    : num [1:5] 10.83 12.3 4.66 1.44 0.11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_reverse_order_dist:Classes ‘tidytable’, ‘data.table’ and 'data.frame':	8 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ reverse_order: num [1:8] 1 2 3 4 5 6 7 16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segments     : int [1:8] 52 16 4 2 2 2 2 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3    : num [1:8] 2.042 1.876 0.557 0.648 0.51 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3    : num [1:8] 0.002042 0.001876 0.000557 0.000648 0.00051 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2      : num [1:8] 0.459 0.348 0.111 0.112 0.105 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m     : num [1:8] 9.22 6.08 1.88 1.7 1.82 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
@@ -324,7 +324,7 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_base_cm: num [1:65] 9.44 1.52 1.96 2.87 2.37 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_mid_cm : num [1:65] 2.387 0.815 1.5 1.239 0.85 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_tip_cm : num [1:65] 1.12 1.26 1.16 1.72 1.47 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:65] 12.9223 0.0269 0.0765 0.3065 0.1963 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:65] 1.29e-02 2.69e-05 7.65e-05 3.07e-04 1.96e-04 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2         : num [1:65] 0.76808 0.00716 0.01581 0.04765 0.03439 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m        : num [1:65] 4.321 0.153 0.274 0.615 0.501 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ height_m        : num [1:65] 0 3.23 3.19 3.17 3.16 ...</span>
@@ -394,8 +394,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_diameter_dist     :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	6 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ diameter_class_cm: num [1:6] 1 2 3 4 5 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:6] 0 0 0.108 1.386 1.816 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:6] 0 0 0.0282 0.1034 0.6949 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:6] 0 0 0.000108 0.001386 0.001816 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:6] 0.00 0.00 2.82e-05 1.03e-04 6.95e-04 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2          : num [1:6] 0 0 0.0243 0.2515 0.3099 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2        : num [1:6] 0 0 0.00727 0.02297 0.12553 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m         : num [1:6] 0 0 0.455 3.935 4.493 ...</span>
@@ -405,8 +405,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_height_dist       :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ height_class_m: num [1:4] 1 2 3 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3     : num [1:4] 0 6.5 8.08 2.48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3   : num [1:4] 0 5.473 2.528 0.695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3     : num [1:4] 0 0.0065 0.00808 0.00248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3   : num [1:4] 0 0.005473 0.002528 0.000695</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2       : num [1:4] 0 0.772 1.078 0.407</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2     : num [1:4] 0 0.602 0.354 0.118</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m      : num [1:4] 0 8.36 12.96 5.78</span>
@@ -416,8 +416,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_angle_dist        :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ angle_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3      : num [1:18] 0 0 0.158 1.303 5.613 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3    : num [1:18] 0 0 0 0.089 4.599 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3      : num [1:18] 0 0 0.000158 0.001303 0.005613 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3    : num [1:18] 0.0 0.0 0.0 8.9e-05 4.6e-03 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2        : num [1:18] 0 0 0.0248 0.1747 0.6259 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2      : num [1:18] 0 0 0 0.0134 0.4767 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m       : num [1:18] 0 0 0.317 2.059 6.412 ...</span>
@@ -427,8 +427,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_zenith_dist       :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ zenith_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:18] 0 0.479 1.105 0.417 3.383 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3     : num [1:18] 0 0.0765 0.089 0 3.1277 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3       : num [1:18] 0 0.000479 0.001105 0.000417 0.003383 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3     : num [1:18] 0.00 7.65e-05 8.90e-05 0.00 3.13e-03 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2         : num [1:18] 0 0.079 0.1425 0.0719 0.3334 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2       : num [1:18] 0 0.0158 0.0134 0 0.2973 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m        : num [1:18] 0 1.13 1.61 1.04 2.95 ...</span>
@@ -438,8 +438,8 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_azimuth_dist      :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	36 obs. of  9 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ azimuth_class_deg: num [1:36] 10 20 30 40 50 60 70 80 90 100 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:36] 0.0524 0.3065 0.0839 0.1522 0.0457 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:36] 0 0.307 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3        : num [1:36] 5.24e-05 3.07e-04 8.39e-05 1.52e-04 4.57e-05 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_1_m3      : num [1:36] 0 0.000307 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2          : num [1:36] 0.0108 0.04765 0.0181 0.02557 0.00883 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_1_m2        : num [1:36] 0 0.0476 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m         : num [1:36] 0.188 0.615 0.324 0.365 0.146 ...</span>
@@ -450,14 +450,14 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_order_dist        :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_order: int [1:4] 1 2 3 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branches    : int [1:4] 17 26 18 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3   : num [1:4] 8.6957 6.4593 1.8241 0.0723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3   : num [1:4] 8.70e-03 6.46e-03 1.82e-03 7.23e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2     : num [1:4] 1.0741 0.8713 0.2976 0.0148</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m    : num [1:4] 12.01 10.63 4.216 0.249</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_reverse_order_dist:Classes ‘tidytable’, ‘data.table’ and 'data.frame':	8 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ reverse_order: int [1:8] 1 2 3 4 5 6 8 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segments     : int [1:8] 47 8 2 3 1 1 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3    : num [1:8] 4.292 1.983 0.571 2.081 1.349 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ volume_m3    : num [1:8] 0.004292 0.001983 0.000571 0.002081 0.001349 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ area_m2      : num [1:8] 0.715 0.313 0.091 0.27 0.171 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ length_m     : num [1:8] 10.36 4.23 1.22 3.08 1.82 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
