@@ -49,9 +49,9 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/Box-Dimension.html">Box-Dimension</a>
-    <a class="dropdown-item" href="articles/SimpleForest.html">SimpleForest</a>
-    <a class="dropdown-item" href="articles/TreeQSM.html">TreeQSM</a>
+    <a class="dropdown-item" href="articles/Overview.html">Real Twig Overview</a>
     <a class="dropdown-item" href="articles/Twigs.html">Twigs</a>
+    <a class="dropdown-item" href="articles/Validation.html">Real Twig Validation</a>
   </div>
 </li>
 <li class="nav-item">
@@ -96,7 +96,7 @@
 </h2>
 <ul>
 <li>
-<code><a href="reference/run_rtwig.html">run_rtwig()</a></code> runs the main Real Twig steps</li>
+<code><a href="reference/run_rtwig.html">run_rtwig()</a></code> runs the Real Twig method on a QSM</li>
 <li>
 <code><a href="reference/import_qsm.html">import_qsm()</a></code> imports a QSM created by TreeQSM (.mat)</li>
 <li>
@@ -105,6 +105,8 @@
 <code><a href="reference/update_cylinders.html">update_cylinders()</a></code> updates cylinder relationships and adds new QSM variables</li>
 <li>
 <code>correct_radii</code> models QSM paths and corrects cylinder radii</li>
+<li>
+<code><a href="reference/tree_metrics.html">tree_metrics()</a></code> generates detailed tree metrics and a simulated point cloud</li>
 <li>
 <code><a href="reference/qsm_summary.html">qsm_summary()</a></code> summarizes QSM diameter, height, volume, and surface area</li>
 <li>
@@ -136,7 +138,7 @@
 </h3>
 <p>QSM radii corrections are run as a chain of function that build on one another. The general processing chain is as follows:</p>
 <ol style="list-style-type: decimal">
-<li>Import a QSM: TreeQSM, SimpleForest and treegraph are currently supported.</li>
+<li>Import a QSM: TreeQSM, SimpleForest and Treegraph are currently supported.</li>
 <li>Calculate new variables with consistent QSM structure to allow for network analysis.</li>
 <li>Correct the small branch and twig cylinders using real twig diameter measurements.</li>
 <li>Summarize and visualize the results.</li>
@@ -156,7 +158,10 @@
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
-<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Calculate detailed tree metrics</span></span>
+<span> <span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="simpleforest">SimpleForest<a class="anchor" aria-label="anchor" href="#simpleforest"></a>
@@ -172,7 +177,10 @@
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
-<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></code></pre></div>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Calculate detailed tree metrics</span></span>
+<span> <span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">

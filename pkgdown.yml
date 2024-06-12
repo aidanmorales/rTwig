@@ -3,10 +3,10 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   Box-Dimension: Box-Dimension.html
-  SimpleForest: SimpleForest.html
-  TreeQSM: TreeQSM.html
+  Overview: Overview.html
   Twigs: Twigs.html
-last_built: 2024-06-12T20:43Z
+  Validation: Validation.html
+last_built: 2024-06-12T21:31Z
 urls:
   reference: https://aidanmorales.github.io/rTwig/reference
   article: https://aidanmorales.github.io/rTwig/articles
