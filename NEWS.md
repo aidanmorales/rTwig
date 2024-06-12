@@ -4,7 +4,7 @@
 
 -   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM.
 
--   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemeted throughout package! However, the Real Twig correction is not implemented yet, as Treegraph QSMs needs to be validated against reference data.
+-   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!
 
 -   `update_cylinders()`
 
