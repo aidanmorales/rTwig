@@ -1,5 +1,5 @@
 ---
-title: "Real Twig Overview"
+title: "Overview"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Overview}
@@ -12,8 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ## Background

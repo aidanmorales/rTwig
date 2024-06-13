@@ -1,5 +1,5 @@
 ---
-title: "Real Twig Validation"
+title: "Validation"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Validaion}
@@ -12,8 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ```{r, echo=FALSE, message=FALSE}
