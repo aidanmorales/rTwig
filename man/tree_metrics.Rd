@@ -16,14 +16,14 @@ Returns a list of tree metric data frames and synthetic point cloud
 Calculates tree metrics from a QSM
 }
 \details{
-Calculates detailed tree metrics from a QSM. The outputs include all
-of the standard outputs from TreeQSM, and also additional variables,
-including, but not limited to, growth length, reverse branch order, branch
-segment or node relationships, and distances from twigs and the base of the
-tree, across various distribution metrics. Also included is a simulated point
-cloud of the tree, based on the QSM cylinder radii. When corrected with Real
-Twig, this allow for the testing and validation of point cloud diameter
-overestimation throughout the tree.
+Calculates detailed tree, branch, and segment metrics from a QSM.
+The outputs include all of the standard outputs from TreeQSM, and also
+additional variables,including, but not limited to, growth length,
+reverse branch order, branch segment or node relationships, and distances
+from twigs and the base of the tree, across various distribution metrics.
+Also included is a simulated point cloud of the tree, based on the QSM
+cylinder radii. When corrected with Real Twig, this allow for the testing and
+validation of point cloud diameter overestimation throughout the tree.
 }
 \examples{
 
@@ -32,14 +32,14 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 cylinder <- import_qsm(file)$cylinder
 cylinder <- update_cylinders(cylinder)
 metrics <- tree_metrics(cylinder)
-str(metrics)
+names(metrics)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 metrics <- tree_metrics(cylinder)
-str(metrics)
+names(metrics)
 
 }
 \references{
