@@ -519,7 +519,6 @@ metrics$spreads %>%
   theme_classic()
 ```
 
-
 ## Point Cloud
 
 We can even plot the simulated point cloud with the rgl library, and look at the cylinder connectivity.
