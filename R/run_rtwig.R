@@ -4,11 +4,12 @@
 #'
 #' @param file file path to QSM (.mat, .csv, .json)
 #' @param twig_radius Twig radius in millimeters
+#' @param metrics Calculate tree metrics? Defaults to TRUE.
 #' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #' @param version Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).
 #' @param smooth Defaults to NULL. If using TreeQSM, set to TRUE to smooth the QSM.
 #'
-#' @return Returns a data frame
+#' @return Returns cylinder data frame or list if metrics is true.
 #' @export
 #'
 #' @examples
@@ -25,7 +26,13 @@
 #' str(qsm)
 #' }
 #'
-run_rtwig <- function(file, twig_radius, backend = "multisession", version = NULL, smooth = NULL) {
+run_rtwig <- function(
+    file,
+    twig_radius,
+    backend = "multisession",
+    metrics = TRUE,
+    version = NULL,
+    smooth = NULL) {
   # Get file extension
   extension <- sub(".*\\.", "", basename(file))
 
@@ -42,69 +49,82 @@ run_rtwig <- function(file, twig_radius, backend = "multisession", version = NUL
       version <- version
       qsm <- import_qsm(file, version)
     } else {
-      qsm <- import_qsm(file)
+      cylinder <- import_qsm(file)$cylinder
     }
 
     # Update Cylinders ---------------------------------------------------------
-    qsm$cylinder <- update_cylinders(qsm$cylinder)
+    cylinder <- update_cylinders(cylinder)
 
     # Correct Radii ------------------------------------------------------------
-    qsm$cylinder <- correct_radii(
-      cylinder = qsm$cylinder,
+    cylinder <- correct_radii(
+      cylinder = cylinder,
       twig_radius = twig_radius,
       backend = backend
     )
 
     # Smooth QSM ---------------------------------------------------------------
-    if(!is.null(smooth)){
-      qsm$cylinder <- smooth_qsm(qsm$cylinder)
+    if (!is.null(smooth)) {
+      cylinder <- smooth_qsm(cylinder)
     }
 
-    return(qsm)
+    # Tree Metrics -------------------------------------------------------------
+    if (metrics == TRUE) {
+      metrics <- tree_metrics(cylinder)
+      return(list(cylinder = cylinder, metrics = metrics))
+    } else{
+      return(cylinder)
+    }
 
   # SimpleForest ---------------------------------------------------------------
   } else if (extension == "csv") {
-
     # Import QSM ---------------------------------------------------------------
-    qsm <- tidytable::fread(file)
+    cylinder <- tidytable::fread(file)
 
     # Update Cylinders ---------------------------------------------------------
-    qsm <- update_cylinders(qsm)
+    cylinder <- update_cylinders(cylinder)
 
     # Correct Radii ------------------------------------------------------------
-    qsm <- correct_radii(
-      cylinder = qsm,
+    cylinder <- correct_radii(
+      cylinder = cylinder,
       twig_radius = twig_radius,
       backend = backend
     )
 
-    return(qsm)
+    # Tree Metrics -------------------------------------------------------------
+    if (metrics == TRUE) {
+      metrics <- tree_metrics(cylinder)
+      return(list(cylinder = cylinder, metrics = metrics))
+    } else{
+      return(cylinder)
+    }
 
-  # treegraph ------------------------------------------------------------------
+  # Treegraph ------------------------------------------------------------------
   } else if (extension == "json") {
-
     # Import QSM ---------------------------------------------------------------
-    qsm <- import_treegraph(file)
+    cylinder <- import_treegraph(file)$cyls
 
     # Update Cylinders ---------------------------------------------------------
-    qsm$cyls <- update_cylinders(qsm$cyls)
+    cylinder <- update_cylinders(cylinder)
 
     # Correct Radii ------------------------------------------------------------
+    cylinder <- correct_radii(
+      cylinder = cylinder,
+      twig_radius = twig_radius,
+      backend = backend
+    )
 
-    # IMPLEMENT LATER!!!
-
-    # qsm$cyls <- correct_radii(
-    #   cylinder = qsm$cyls,
-    #   twig_radius = twig_radius,
-    #   backend = backend
-    # )
-
-    return(qsm)
+    # Tree Metrics -------------------------------------------------------------
+    if (metrics == TRUE) {
+      metrics <- tree_metrics(cylinder)
+      return(list(cylinder = cylinder, metrics = metrics))
+    } else{
+      return(cylinder)
+    }
 
   } else {
     message(
       "Unsupported QSM supplied!!!
-      \nOnly TreeQSM (.mat), SimpleForest (.mat), and treegraph (.json) are supported."
+      \nOnly TreeQSM (.mat), SimpleForest (.mat), and Treegraph (.json) are supported."
     )
   }
 }
