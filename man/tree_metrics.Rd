@@ -18,7 +18,7 @@ Calculates tree metrics from a QSM
 \details{
 Calculates detailed tree, branch, and segment metrics from a QSM.
 The outputs include all of the standard outputs from TreeQSM, and also
-additional variables,including, but not limited to, growth length,
+additional variables, including, but not limited to, growth length,
 reverse branch order, branch segment or node relationships, and distances
 from twigs and the base of the tree, across various distribution metrics.
 Also included is a simulated point cloud of the tree, based on the QSM
