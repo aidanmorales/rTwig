@@ -65,6 +65,7 @@
 <span>  <span class="va">file</span>,</span>
 <span>  <span class="va">twig_radius</span>,</span>
 <span>  backend <span class="op">=</span> <span class="st">"multisession"</span>,</span>
+<span>  metrics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  version <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  smooth <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -84,6 +85,10 @@
 <dd><p>Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS &amp; Linux), "cluster" (all platforms), or a "package::backend" string.</p></dd>
 
 
+<dt>metrics</dt>
+<dd><p>Calculate tree metrics? Defaults to TRUE.</p></dd>
+
+
 <dt>version</dt>
 <dd><p>Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).</p></dd>
 
@@ -96,7 +101,7 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns a data frame</p>
+<p>Returns cylinder data frame or list if metrics is true.</p>
     </div>
 
     <div class="section level2">
