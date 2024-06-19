@@ -76,10 +76,10 @@ norm <- function(x) {
     .Call(`_rTwig_norm`, x)
 }
 
-#' Orthonormal Vectors
+#' @title Orthonormal Vectors
 #'
-#' Generates vectors V and W that are unit vectors orthogonal to themselves
-#' and to the input vector U
+#' @description Generates vectors V and W that are unit vectors orthogonal to
+#' themselves and to the input vector U
 #'
 #' @param U input vector
 #' @return list containing vectors V and W
@@ -90,9 +90,9 @@ orthonormal_vectors <- function(U) {
     .Call(`_rTwig_orthonormal_vectors`, U)
 }
 
-#' Rotation matrix
+#' @title Rotation matrix
 #'
-#' Returns the rotation matrix for the given axis A and angle
+#' @description Returns the rotation matrix for the given axis A and angle
 #'
 #' @param A vector of size 1 x 3
 #' @param angle angle in radians
@@ -104,9 +104,9 @@ rotation_matrix <- function(A, angle) {
     .Call(`_rTwig_rotation_matrix`, A, angle)
 }
 
-#' Matrix Vector Subtraction
+#' @title Matrix Vector Subtraction
 #'
-#' Subtract a vector in a matrix
+#' @description Subtract a vector in a matrix
 #'
 #' @param A matrix of dimensions n x n
 #' @param v vector with dimensions 1 x n
@@ -118,9 +118,23 @@ mat_vec_subtraction <- function(A, v) {
     .Call(`_rTwig_mat_vec_subtraction`, A, v)
 }
 
-#' Index Order
+#' @title Matrix Multiplication
 #'
-#' Get order of sorted vector indexes
+#' @description Subtract a matrix by a matrix
+#'
+#' @param A matrix of dimensions n x n
+#' @param B vector with dimensions n x n
+#' @return matrix
+#'
+#' @noRd
+#'
+mat_multiplication <- function(A, B) {
+    .Call(`_rTwig_mat_multiplication`, A, B)
+}
+
+#' @title Index Order
+#'
+#' @description Get order of sorted vector indexes
 #'
 #' @param v vector with dimensions 1 x n
 #' @return integer vector
@@ -131,9 +145,9 @@ index_order <- function(x) {
     .Call(`_rTwig_index_order`, x)
 }
 
-#' Sort Index
+#' @title Sort Index
 #'
-#' Sort a vector by a specified order
+#' @description Sort a vector by a specified order
 #'
 #' @param v vector with dimensions 1 x n
 #' @param indexes integer vector with desired ordering
@@ -143,5 +157,52 @@ index_order <- function(x) {
 #'
 sort_index <- function(x, indexes) {
     .Call(`_rTwig_sort_index`, x, indexes)
+}
+
+#' @title Generate Circle Points
+#'
+#' @description Generate circular points from n facets
+#'
+#' @param center cylinder center
+#' @param radius cylinder radius
+#' @param facets number of cylinder facets
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+generate_circle_points <- function(center, radius, facets) {
+    .Call(`_rTwig_generate_circle_points`, center, radius, facets)
+}
+
+#' @title Rotate Circle Points
+#'
+#' @description Rotate circle points along an axis
+#'
+#' @param points circle points
+#' @param start cylinder start point
+#' @param axis cylinder axis
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+rotate_circle_points <- function(points, start, axis) {
+    .Call(`_rTwig_rotate_circle_points`, points, start, axis)
+}
+
+#' Generate Mesh
+#'
+#' Get order of sorted vector indexes
+#'
+#' @param start cylinder starts
+#' @param axis cylinder axes
+#' @param length cylinder length
+#' @param radius cylinder radius
+#' @param facets number of cylinder facets
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+generate_mesh <- function(start, axis, length, radius, facets) {
+    .Call(`_rTwig_generate_mesh`, start, axis, length, radius, facets)
 }
 

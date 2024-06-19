@@ -39,10 +39,10 @@ double norm(NumericVector x) {
 
 
 
-//' Orthonormal Vectors
+//' @title Orthonormal Vectors
 //'
-//' Generates vectors V and W that are unit vectors orthogonal to themselves
-//' and to the input vector U
+//' @description Generates vectors V and W that are unit vectors orthogonal to
+//' themselves and to the input vector U
 //'
 //' @param U input vector
 //' @return list containing vectors V and W
@@ -69,9 +69,9 @@ List orthonormal_vectors(NumericVector U) {
 
 
 
-//' Rotation matrix
+//' @title Rotation matrix
 //'
-//' Returns the rotation matrix for the given axis A and angle
+//' @description Returns the rotation matrix for the given axis A and angle
 //'
 //' @param A vector of size 1 x 3
 //' @param angle angle in radians
@@ -107,9 +107,9 @@ NumericMatrix rotation_matrix(NumericVector A, double angle) {
 
 
 
-//' Matrix Vector Subtraction
+//' @title Matrix Vector Subtraction
 //'
-//' Subtract a vector in a matrix
+//' @description Subtract a vector in a matrix
 //'
 //' @param A matrix of dimensions n x n
 //' @param v vector with dimensions 1 x n
@@ -132,10 +132,44 @@ NumericMatrix mat_vec_subtraction(NumericMatrix A, NumericVector v) {
 }
 
 
-
-//' Index Order
+//' @title Matrix Multiplication
 //'
-//' Get order of sorted vector indexes
+//' @description Subtract a matrix by a matrix
+//'
+//' @param A matrix of dimensions n x n
+//' @param B vector with dimensions n x n
+//' @return matrix
+//'
+//' @noRd
+//'
+// [[Rcpp::export]]
+NumericMatrix mat_multiplication(NumericMatrix A, NumericMatrix B) {
+  int nrow_A = A.nrow();
+  int ncol_A = A.ncol();
+  int ncol_B = B.ncol();
+
+  // Result matrix dimensions
+  NumericMatrix C(nrow_A, ncol_B);
+
+  // Perform matrix multiplication
+  for (int i = 0; i < nrow_A; i++) {
+    for (int j = 0; j < ncol_B; j++) {
+      double sum = 0.0;
+      for (int k = 0; k < ncol_A; k++) {
+        sum += A(i, k) * B(k, j);
+      }
+      C(i, j) = sum;
+    }
+  }
+
+  return C;
+}
+
+
+
+//' @title Index Order
+//'
+//' @description Get order of sorted vector indexes
 //'
 //' @param v vector with dimensions 1 x n
 //' @return integer vector
@@ -153,9 +187,9 @@ IntegerVector index_order(NumericVector x) {
 
 
 
-//' Sort Index
+//' @title Sort Index
 //'
-//' Sort a vector by a specified order
+//' @description Sort a vector by a specified order
 //'
 //' @param v vector with dimensions 1 x n
 //' @param indexes integer vector with desired ordering

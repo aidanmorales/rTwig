@@ -13,6 +13,7 @@ IntegerVector index_order(NumericVector x);
 
 NumericMatrix rotation_matrix(NumericVector A, double angle);
 NumericMatrix mat_vec_subtraction(NumericMatrix A, NumericVector v);
+NumericMatrix mat_multiplication(NumericMatrix A, NumericMatrix B);
 
 List orthonormal_vectors(NumericVector U);
 

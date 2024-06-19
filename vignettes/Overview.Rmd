@@ -154,7 +154,7 @@ file <- system.file("extdata/cloud.txt", package = "rTwig")
 cloud <- read.table(file, header = FALSE)
 
 # Plot the qsm and point cloud
-plot_qsm(cylinder = cylinder, cloud = cloud, radius = cylinder$UnmodRadius)
+plot_qsm(cylinder = cylinder, cloud = cloud, radius = "UnmodRadius")
 ```
 
 ## Twig Diameters
@@ -251,8 +251,8 @@ plot_qsm(cylinder)
 # QSM Custom Colors & Piping
 cylinder %>%
   plot_qsm(
-    radius = .$radius,
-    cyl_color = .$reverseBranchOrder,
+    radius = "radius",
+    cyl_color = "reverseBranchOrder",
     cyl_palette = "magma"
   )
 
@@ -260,8 +260,8 @@ cylinder %>%
 cylinder %>%
   filter(reverseBranchOrder == 1) %>%
   plot_qsm(
-    radius = .$radius,
-    cyl_color = .$reverseBranchOrder,
+    radius = "radius",
+    cyl_color = "reverseBranchOrder",
     cyl_palette = "rainbow"
   )
 ```

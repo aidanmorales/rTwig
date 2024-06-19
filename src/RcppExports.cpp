@@ -118,6 +118,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mat_multiplication
+NumericMatrix mat_multiplication(NumericMatrix A, NumericMatrix B);
+RcppExport SEXP _rTwig_mat_multiplication(SEXP ASEXP, SEXP BSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type A(ASEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(mat_multiplication(A, B));
+    return rcpp_result_gen;
+END_RCPP
+}
 // index_order
 IntegerVector index_order(NumericVector x);
 RcppExport SEXP _rTwig_index_order(SEXP xSEXP) {
@@ -141,6 +153,47 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// generate_circle_points
+NumericMatrix generate_circle_points(NumericVector center, double radius, int facets);
+RcppExport SEXP _rTwig_generate_circle_points(SEXP centerSEXP, SEXP radiusSEXP, SEXP facetsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type center(centerSEXP);
+    Rcpp::traits::input_parameter< double >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
+    rcpp_result_gen = Rcpp::wrap(generate_circle_points(center, radius, facets));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rotate_circle_points
+NumericMatrix rotate_circle_points(NumericMatrix points, NumericVector start, NumericVector axis);
+RcppExport SEXP _rTwig_rotate_circle_points(SEXP pointsSEXP, SEXP startSEXP, SEXP axisSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type axis(axisSEXP);
+    rcpp_result_gen = Rcpp::wrap(rotate_circle_points(points, start, axis));
+    return rcpp_result_gen;
+END_RCPP
+}
+// generate_mesh
+NumericMatrix generate_mesh(NumericMatrix start, NumericMatrix axis, NumericVector length, NumericVector radius, int facets);
+RcppExport SEXP _rTwig_generate_mesh(SEXP startSEXP, SEXP axisSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP facetsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type start(startSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type axis(axisSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type length(lengthSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
+    rcpp_result_gen = Rcpp::wrap(generate_mesh(start, axis, length, radius, facets));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
@@ -152,8 +205,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_orthonormal_vectors", (DL_FUNC) &_rTwig_orthonormal_vectors, 1},
     {"_rTwig_rotation_matrix", (DL_FUNC) &_rTwig_rotation_matrix, 2},
     {"_rTwig_mat_vec_subtraction", (DL_FUNC) &_rTwig_mat_vec_subtraction, 2},
+    {"_rTwig_mat_multiplication", (DL_FUNC) &_rTwig_mat_multiplication, 2},
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
+    {"_rTwig_generate_circle_points", (DL_FUNC) &_rTwig_generate_circle_points, 3},
+    {"_rTwig_rotate_circle_points", (DL_FUNC) &_rTwig_rotate_circle_points, 3},
+    {"_rTwig_generate_mesh", (DL_FUNC) &_rTwig_generate_mesh, 5},
     {NULL, NULL, 0}
 };
 

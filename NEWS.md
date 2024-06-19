@@ -2,7 +2,7 @@
 
 ## New Features
 
--   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM.
+-   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.
 
 -   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!
 
@@ -12,7 +12,11 @@
 
 -   `plot_qsm()`
 
-    -   New QSM skeleton option for faster plotting
+    -   Complete refactor with Rcpp and tidyeval for massive performance improvements
+    -   New QSM skeleton plotting option
+    -   Supports plotting multiple QSMs in the same plot
+    -   Cylinder and cloud colors can now be set to *random*
+    -   *bg_color* can change the background color of the plot
 
 ## Breaking Changes
 
@@ -26,9 +30,15 @@
 
 -   Variable names in `qsm_summary()` updated to be explicit and consistent with the outputs of `tree_metrics()`
 
+-   `plot_qsm()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* changed to *color* and *palette* respectively. *cyl_sized* has been renamed to *facets*.
+
+-   `plot_stand()` has been deprecated as all of its functionality is now incorporated into `plot_qsm()`
+
 ## Improvements
 
 -   Implement Rcpp across package
+
+    -   `plot_qsm()` \> 10x performance improvement!
 
     -   `box_dimension()` \~ 3x performance improvement
 
