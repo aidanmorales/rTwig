@@ -58,7 +58,7 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM in R, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM.</p></li>
+<ul><li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.</p></li>
 <li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!</p></li>
 <li>
 <p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code></p>
@@ -67,7 +67,13 @@
 </ul></li>
 <li>
 <p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p>
-<ul><li>New QSM skeleton option for faster plotting</li>
+<ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
+<li>New QSM skeleton plotting option</li>
+<li>Supports plotting multiple QSMs in the same plot</li>
+<li>Cylinder and cloud colors can now be set to <em>random</em>
+</li>
+<li>
+<em>bg_color</em> can change the background color of the plot</li>
 </ul></li>
 </ul></div>
 <div class="section level3">
@@ -77,13 +83,15 @@
 <li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
 <li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
 <li><p>Variable names in <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> updated to be explicit and consistent with the outputs of <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p></li>
+<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sized</em> has been renamed to <em>facets</em>.</p></li>
+<li><p><code>plot_stand()</code> has been deprecated as all of its functionality is now incorporated into <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
 <ul><li>
 <p>Implement Rcpp across package</p>
-<ul><li>
-<code><a href="../reference/box_dimension.html">box_dimension()</a></code> ~ 3x performance improvement</li>
+<ul><li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> &gt; 10x performance improvement!</p></li>
+<li><p><code><a href="../reference/box_dimension.html">box_dimension()</a></code> ~ 3x performance improvement</p></li>
 </ul></li>
 <li>
 <p><code>update_cylinder()</code></p>
