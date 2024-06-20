@@ -88,6 +88,7 @@ export_mesh <- function(
   } else {
     message(
       "Invalid QSM Supplied!!!
+      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied.
       \nMake sure the point cloud is a data frame with the first three columns as the x, y, and z coordinates."
     )
@@ -146,10 +147,12 @@ plot_mesh <- function(
   rgl::open3d()
 
   # Plot cylinders -------------------------------------------------------------
-  plot_cylinders(
-    cylinder, radius, length, start_x, start_y, start_z,
-    axis_x, axis_y, axis_z, facets, colors,
-    axes = FALSE
+  suppressMessages(
+    plot_cylinders(
+      cylinder, radius, length, start_x, start_y, start_z,
+      axis_x, axis_y, axis_z, facets, colors,
+      axes = FALSE
+    )
   )
 
   # Export mesh ----------------------------------------------------------------

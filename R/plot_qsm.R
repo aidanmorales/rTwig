@@ -112,6 +112,7 @@ plot_qsm <- function(
   } else {
     message(
       "Invalid QSM or Cloud Supplied!!!
+      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied.
       \nMake sure the point cloud is a data frame or matrix with the first three columns as the x, y, and z coordinates."
     )

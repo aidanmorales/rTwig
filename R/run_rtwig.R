@@ -71,12 +71,12 @@ run_rtwig <- function(
     if (metrics == TRUE) {
       metrics <- tree_metrics(cylinder)
       return(list(cylinder = cylinder, metrics = metrics))
-    } else{
+    } else {
       return(cylinder)
     }
-
+  }
   # SimpleForest ---------------------------------------------------------------
-  } else if (extension == "csv") {
+  else if (extension == "csv") {
     # Import QSM ---------------------------------------------------------------
     cylinder <- tidytable::fread(file)
 
@@ -94,12 +94,12 @@ run_rtwig <- function(
     if (metrics == TRUE) {
       metrics <- tree_metrics(cylinder)
       return(list(cylinder = cylinder, metrics = metrics))
-    } else{
+    } else {
       return(cylinder)
     }
-
+  }
   # Treegraph ------------------------------------------------------------------
-  } else if (extension == "json") {
+  else if (extension == "json") {
     # Import QSM ---------------------------------------------------------------
     cylinder <- import_treegraph(file)$cyls
 
@@ -117,10 +117,9 @@ run_rtwig <- function(
     if (metrics == TRUE) {
       metrics <- tree_metrics(cylinder)
       return(list(cylinder = cylinder, metrics = metrics))
-    } else{
+    } else {
       return(cylinder)
     }
-
   } else {
     message(
       "Unsupported QSM supplied!!!

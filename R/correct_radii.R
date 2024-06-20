@@ -66,7 +66,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
       p <- progressr::progressor(along = 1:length(paths))
 
       results <- foreach::foreach(i = 1:length(paths), .inorder = FALSE) %dofuture% {
-        # Identify Good Cylinder Fits --------------------------------------------
+        # Identify Good Cylinder Fits ------------------------------------------
 
         # Extracts cylinders for each unique path
         cyl_id <- sort(as.numeric(names(paths[[i]])))
@@ -181,7 +181,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
           max_rad_ord <- 0
         }
 
-        # Fit Monotonic GAM ------------------------------------------------------
+        # Fit Monotonic GAM ----------------------------------------------------
 
         # Forces model intercept through the minimum twig diameter (twig_radius)
         matrix <- matrix(ncol = 3, nrow = 1, byrow = TRUE)
@@ -260,9 +260,9 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
       relocate("radius", .before = "length")
 
     message("Done!")
-
+  }
   # SimpleForest  --------------------------------------------------------------
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     message("Generating Branch Paths")
 
     # Finds end of buttress at first branch for better main stem modeling
@@ -483,9 +483,9 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
       left_join(cyl_radii, by = c("ID"))
 
     message("Done!")
-
+  }
   # Treegraph ------------------------------------------------------------------
-  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     message("Generating Branch Paths")
 
     # Finds end of buttress at first branch for better main stem modeling
@@ -602,8 +602,8 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
             filter(.data$nbranch %in% c(
               pull(slice_tail(path_cyl, n = 1), .data$nbranch),
               pull(path_cyl %>%
-                     filter(!.data$nbranch == 1) %>%
-                     slice_head(n = 1), .data$nbranch)
+                filter(!.data$nbranch == 1) %>%
+                slice_head(n = 1), .data$nbranch)
             )) %>%
             filter(.data$totalChildren >= 2) %>%
             nrow()
@@ -639,13 +639,13 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
           # Fits monotonic GAM using the cobs package
           model <- suppressWarnings(
             cobs::cobs(x, y,
-                       lambda = 0.01,
-                       degree = 1,
-                       constraint = "increase",
-                       pointwise = matrix,
-                       print.mesg = FALSE,
-                       repeat.delete.add = FALSE,
-                       nknots = length(x) - 1
+              lambda = 0.01,
+              degree = 1,
+              constraint = "increase",
+              pointwise = matrix,
+              print.mesg = FALSE,
+              repeat.delete.add = FALSE,
+              nknots = length(x) - 1
             )
           )
           path_cyl$radius <- stats::predict(model, path_cyl$growthLength)[, 2]
@@ -708,7 +708,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest and Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
@@ -728,7 +728,7 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers = NULL) {
   message("Starting Parallel Workers")
 
-  if(start_workers == TRUE) {
+  if (start_workers == TRUE) {
     # Initialize parallel workers
     chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
 
@@ -746,7 +746,7 @@ parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers =
 
     # Set dynamic progress bar
     if ((Sys.getenv("RSTUDIO") == "1") &&
-        !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
+      !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
       progressr::handlers("rstudio", append = TRUE)
     }
 
@@ -756,7 +756,7 @@ parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers =
     return(oplan)
   }
 
-  if(end_workers == TRUE){
+  if (end_workers == TRUE) {
     # Future Package Cleanup
     chk <- Sys.getenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_", "")
 

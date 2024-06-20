@@ -138,9 +138,9 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
       branch_area_m2,
       tree_area_m2
     )
-
+  }
   # SimpleForest ---------------------------------------------------------------
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Stop on Triangulation
     if (!triangulation == FALSE) {
       stop("SimpleForest does not support triangulation of the main stem!")
@@ -218,9 +218,9 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
       branch_area_m2,
       tree_area_m2
     )
-
+  }
   # Treegraph ------------------------------------------------------------------
-  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     # Stop on Triangulation
     if (!triangulation == FALSE) {
       stop("Treegraph does not support triangulation of the main stem!")
@@ -301,7 +301,7 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

@@ -124,8 +124,9 @@ update_cylinders <- function(cylinder) {
         relocate("end.y", .after = "end.x") %>%
         relocate("end.z", .after = "end.y")
     }
+  }
   # SimpleForest ---------------------------------------------------------------
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     # Adjusts indexing to be compatible with igraph ----------------------------
     cylinder <- cylinder %>%
       mutate(
@@ -220,9 +221,9 @@ update_cylinders <- function(cylinder) {
     if (!"distanceFromBase" %in% colnames(cylinder) & !"distanceToTwig" %in% colnames(cylinder)) {
       cylinder <- path_metrics(network, cylinder, "ID", "length")
     }
-
+  }
   # Treegraph ------------------------------------------------------------------
-  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     # Save All Radii -----------------------------------------------------------
     cylinder <- mutate(cylinder, OldRadius = .data$radius, UnmodRadius = .data$radius)
 
@@ -281,13 +282,12 @@ update_cylinders <- function(cylinder) {
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
   return(cylinder)
 }
-
 
 #' Updates cylinder parent child ordering
 #' @param cylinder QSM cylinder data frame
@@ -326,7 +326,6 @@ update_ordering <- function(cylinder, id, parent) {
   return(cylinder)
 }
 
-
 #' Finds total children for each cylinder
 #' @param cylinder QSM cylinder data frame
 #' @param parent column name of parent cylinders
@@ -345,7 +344,6 @@ total_children <- function(cylinder, parent) {
 
   return(cylinder)
 }
-
 
 #' Builds QSM cylinder network with igraph
 #' @param cylinder QSM cylinder data frame
@@ -375,7 +373,7 @@ build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   all_index <- cumsum(all_id == 0)
   all_df <- tidytable(index = all_index, id = all_id)
 
-  if(all_paths == FALSE) {
+  if (all_paths == FALSE) {
     return(all_df)
   }
 
@@ -414,7 +412,6 @@ build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   )
 }
 
-
 #' Calculates growth length for each cylinder
 #' @param network QSM cylinder network list
 #' @param cylinder QSM cylinder data frame
@@ -437,7 +434,6 @@ growth_length <- function(network, cylinder, id, length) {
 
   return(cylinder)
 }
-
 
 #' Calculates the reverse branch order for each cylinder
 #' @param network QSM cylinder network list
@@ -467,7 +463,6 @@ reverse_branch_order <- function(network, cylinder, id) {
 
   return(cylinder)
 }
-
 
 #' Calculates branching segments or "nodes"
 #' @param cylinder QSM cylinder data frame
@@ -506,7 +501,6 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 
   return(cylinder)
 }
-
 
 #' Calculates path based distance metrics
 #' @param network QSM cylinder network list

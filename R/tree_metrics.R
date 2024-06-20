@@ -56,10 +56,9 @@ tree_metrics <- function(cylinder) {
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
       end_x = "end.x", end_y = "end.y", end_z = "end.z"
     )
-
+  }
   # SimpleForest ---------------------------------------------------------------
-  } else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-
+  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "ID", parent = "parentID",
       branch = "branchID", radius = "radius", raw_radius = "UnmodRadius",
@@ -72,10 +71,9 @@ tree_metrics <- function(cylinder) {
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ"
     )
-
+  }
   # Treegraph ------------------------------------------------------------------
-  } else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-
+  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "p1", parent = "p2",
       branch = "nbranch", radius = "radius", raw_radius = "UnmodRadius",
@@ -88,7 +86,6 @@ tree_metrics <- function(cylinder) {
       axis_x = "ax", axis_y = "ay", axis_z = "az",
       end_x = "ex", end_y = "ey", end_z = "ez"
     )
-
   } else {
     message(
       "Invalid Dataframe Supplied!!!
@@ -803,25 +800,25 @@ branch_distributions <- function(branch, tree, distribution) {
   results <- tidytable(
     !!name := index,
     volume_m3 = na_dbl,
-    #volume_1_m3 = na_dbl,
+    # volume_1_m3 = na_dbl,
     area_m2 = na_dbl,
-    #area_1_m2 = na_dbl,
+    # area_1_m2 = na_dbl,
     length_m = na_dbl,
-    #length_1_m = na_dbl,
+    # length_1_m = na_dbl,
     branches = na_int,
-    #branches_1 = na_int
+    # branches_1 = na_int
   )
 
   for (i in 1:n) {
     I <- Par >= (i - 1) * a & Par < i * a
     results[i, 2] <- sum(branch$volume_m3[-1][I]) # volume (all branches)
-    #results[i, 3] <- sum(branch$volume_m3[-1][I & branch$branch_order[-1] == 1]) # volume (1st-branches)
+    # results[i, 3] <- sum(branch$volume_m3[-1][I & branch$branch_order[-1] == 1]) # volume (1st-branches)
     results[i, 3] <- sum(branch$area_m2[-1][I]) # area (all branches)
-    #results[i, 5] <- sum(branch$area_m2[-1][I & branch$branch_order[-1] == 1]) # area (1st-branches)
+    # results[i, 5] <- sum(branch$area_m2[-1][I & branch$branch_order[-1] == 1]) # area (1st-branches)
     results[i, 4] <- sum(branch$length_m[-1][I]) # length (all branches)
-    #results[i, 7] <- sum(branch$length_m[-1][I & branch$branch_order[-1] == 1]) # length (1st-branches)
+    # results[i, 7] <- sum(branch$length_m[-1][I & branch$branch_order[-1] == 1]) # length (1st-branches)
     results[i, 5] <- sum(I) # number (all branches)
-    #results[i, 9] <- sum(I & branch$branch_order[-1] == 1) # number (1st-branches)
+    # results[i, 9] <- sum(I & branch$branch_order[-1] == 1) # number (1st-branches)
   }
 
   return(results)
@@ -903,15 +900,15 @@ segment_distributions <- function(segment, tree, distribution) {
 #' @returns data frame of branch metrics by branch order
 #' @noRd
 branch_order_distributions <- function(branch) {
-    results <- branch %>%
-      filter(!.data$branch_order == 0) %>%
-      group_by("branch_order") %>%
-      summarize(
-        branches = n(),
-        volume_m3 = sum(.data$volume_m3),
-        area_m2 = sum(.data$area_m2),
-        length_m = sum(.data$length_m)
-      )
+  results <- branch %>%
+    filter(!.data$branch_order == 0) %>%
+    group_by("branch_order") %>%
+    summarize(
+      branches = n(),
+      volume_m3 = sum(.data$volume_m3),
+      area_m2 = sum(.data$area_m2),
+      length_m = sum(.data$length_m)
+    )
 
   return(results)
 }
@@ -933,6 +930,3 @@ segment_order_distributions <- function(segment) {
 
   return(results)
 }
-
-
-
