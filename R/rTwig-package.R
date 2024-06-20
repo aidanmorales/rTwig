@@ -21,7 +21,6 @@
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph V
 #' @importFrom igraph vcount
-#' @importFrom Morpho mesh2ply
 #' @importFrom progressr handlers
 #' @importFrom R.matlab readMat
 #' @importFrom R.matlab writeMat

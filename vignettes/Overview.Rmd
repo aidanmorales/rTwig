@@ -273,9 +273,9 @@ We can also save our QSM as a mesh (.ply extension) for use in other modeling pr
 cylinder %>%
   export_mesh(
     filename = "QSM_mesh",
-    radius = .$radius,
-    cyl_color = .$reverseBranchOrder,
-    cyl_palette = "magma"
+    radius = "radius",
+    color = "reverseBranchOrder",
+    palette = "magma"
   )
 
 # Export Twigs Colored by Unique Segments
@@ -283,9 +283,9 @@ cylinder %>%
   filter(reverseBranchOrder == 1) %>%
   export_mesh(
     filename = "QSM_mesh",
-    radius = .$radius,
-    cyl_color = .$reverseBranchOrder,
-    cyl_palette = "rainbow"
+    radius = "radius",
+    color = "reverseBranchOrder",
+    palette = "rainbow"
   )
 ```
 

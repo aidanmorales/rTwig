@@ -8,23 +8,26 @@ export_mesh(
   cylinder,
   filename,
   radius = NULL,
-  cyl_color = NULL,
-  cyl_palette = NULL,
-  cyl_sides = 8
+  color = NULL,
+  palette = NULL,
+  facets = 6,
+  normals = FALSE
 )
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
-\item{filename}{Desired name of file. The .ply extension is automatically added.}
+\item{filename}{File name and path for exporting. The .ply extension is automatically added if not present.}
 
 \item{radius}{Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.}
 
-\item{cyl_color}{Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.}
+\item{color}{Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.}
 
-\item{cyl_palette}{Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.}
+\item{palette}{Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.}
 
-\item{cyl_sides}{The number of sides in the polygon cross section. Defaults to 8, but can be increased to improve visual smoothness.}
+\item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
+
+\item{normals}{Option to export normals. Defaults to FALSE, but can be set to TRUE.}
 }
 \value{
 A mesh .ply file
@@ -33,7 +36,6 @@ A mesh .ply file
 Exports QSM cylinder mesh using the rgl library
 }
 \examples{
-\donttest{
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -58,10 +60,9 @@ filename3 <- tempfile(pattern = "QSM_mesh3")
 export_mesh(
   cylinder = cylinder,
   filename = filename3,
-  radius = cylinder$UnmodRadius,
-  cyl_color = cylinder$GrowthLength,
-  cyl_palette = "viridis"
+  radius = "UnmodRadius",
+  color = "growthLength",
+  palette = "viridis"
 )
-}
 
 }

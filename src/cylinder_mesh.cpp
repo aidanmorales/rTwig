@@ -79,9 +79,9 @@ NumericMatrix rotate_circle_points(
   return result;
 }
 
-//' Generate Mesh
+//' @title Generate Mesh
 //'
-//' Get order of sorted vector indexes
+//' @description Generate mesh vertices to visualize cylinder
 //'
 //' @param start cylinder starts
 //' @param axis cylinder axes

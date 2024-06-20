@@ -18,6 +18,11 @@
     -   Cylinder and cloud colors can now be set to *random*
     -   *bg_color* can change the background color of the plot
 
+-   `export_mesh()`
+
+    -   Complete refactor with Rcpp and tidyeval for massive performance improvements
+    -   Cylinder *color* parameter can now be set to *random*, or *FALSE* to disable exporting colors
+
 ## Breaking Changes
 
 -   All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.
@@ -30,7 +35,9 @@
 
 -   Variable names in `qsm_summary()` updated to be explicit and consistent with the outputs of `tree_metrics()`
 
--   `plot_qsm()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* changed to *color* and *palette* respectively. *cyl_sized* has been renamed to *facets*.
+-   `plot_qsm()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
+
+-   `export_mesh()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
 
 -   `plot_stand()` has been deprecated as all of its functionality is now incorporated into `plot_qsm()`
 
@@ -39,6 +46,8 @@
 -   Implement Rcpp across package
 
     -   `plot_qsm()` \> 10x performance improvement!
+    
+    -   `export_mesh()` \> 10x performance improvement!
 
     -   `box_dimension()` \~ 3x performance improvement
 

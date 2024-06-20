@@ -274,21 +274,6 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
   return(plot_colors)
 }
 
-#' Generate random colors
-#' @param n number of colors to generate as an integer
-#' @returns returns a vector of hexidecimal colors
-#' @noRd
-generate_random_colors <- function(n) {
-  # Generate n random colors
-  colors <- replicate(n, {
-    r <- sprintf("%02X", sample(0:255, 1))
-    g <- sprintf("%02X", sample(0:255, 1))
-    b <- sprintf("%02X", sample(0:255, 1))
-    paste0("#", r, g, b)
-  })
-  return(colors)
-}
-
 #' Plot skeleton
 #' @param cylinder QSM cylinder data frame
 #' @param colors cylinder colors
@@ -335,9 +320,9 @@ plot_skeleton <- function(
 #' @param start_x column name of start_x
 #' @param start_y column name of start_y
 #' @param start_z column name of start_z
-#' @param end_x column name of end_x
-#' @param end_y column name of end_y
-#' @param end_z column name of end_z
+#' @param axis_x column name of axis_x
+#' @param axis_y column name of axis_y
+#' @param axis_z column name of axis_z
 #' @param facets cylinder facets
 #' @param colors cylinder colors
 #' @param axes logical for plotting axes

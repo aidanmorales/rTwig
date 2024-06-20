@@ -5,6 +5,32 @@ box_counting <- function(cloud, lowercutoff) {
     .Call(`_rTwig_box_counting`, cloud, lowercutoff)
 }
 
+#' @title Generate random colors
+#'
+#' @description Generates random hex colors
+#'
+#' @param n number of colors to generate as an integer
+#' @return returns a character vector of hexidecimal colors
+#'
+#' @noRd
+#'
+generate_random_colors <- function(n) {
+    .Call(`_rTwig_generate_random_colors`, n)
+}
+
+#' @title Hexidecimal to floating point
+#'
+#' @description Convert hex colors to floating points between 0-1
+#'
+#' @param hex_colors character string of hex colors
+#' @return returns a character vector of floating point colors
+#'
+#' @noRd
+#'
+hex_to_float <- function(hex_colors) {
+    .Call(`_rTwig_hex_to_float`, hex_colors)
+}
+
 #' @title Convex Hull
 #'
 #' @description Finds the indexes forming a 2d convex hull of a point cloud
@@ -29,6 +55,53 @@ convex_hull <- function(points) {
 #'
 convex_hull_area <- function(points) {
     .Call(`_rTwig_convex_hull_area`, points)
+}
+
+#' @title Generate Circle Points
+#'
+#' @description Generate circular points from n facets
+#'
+#' @param center cylinder center
+#' @param radius cylinder radius
+#' @param facets number of cylinder facets
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+generate_circle_points <- function(center, radius, facets) {
+    .Call(`_rTwig_generate_circle_points`, center, radius, facets)
+}
+
+#' @title Rotate Circle Points
+#'
+#' @description Rotate circle points along an axis
+#'
+#' @param points circle points
+#' @param start cylinder start point
+#' @param axis cylinder axis
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+rotate_circle_points <- function(points, start, axis) {
+    .Call(`_rTwig_rotate_circle_points`, points, start, axis)
+}
+
+#' @title Generate Mesh
+#'
+#' @description Generate mesh vertices to visualize cylinder
+#'
+#' @param start cylinder starts
+#' @param axis cylinder axes
+#' @param length cylinder length
+#' @param radius cylinder radius
+#' @param facets number of cylinder facets
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+generate_mesh <- function(start, axis, length, radius, facets) {
+    .Call(`_rTwig_generate_mesh`, start, axis, length, radius, facets)
 }
 
 #' @title Generate Cloud
@@ -157,52 +230,5 @@ index_order <- function(x) {
 #'
 sort_index <- function(x, indexes) {
     .Call(`_rTwig_sort_index`, x, indexes)
-}
-
-#' @title Generate Circle Points
-#'
-#' @description Generate circular points from n facets
-#'
-#' @param center cylinder center
-#' @param radius cylinder radius
-#' @param facets number of cylinder facets
-#' @return Numeric Matrix
-#'
-#' @noRd
-#'
-generate_circle_points <- function(center, radius, facets) {
-    .Call(`_rTwig_generate_circle_points`, center, radius, facets)
-}
-
-#' @title Rotate Circle Points
-#'
-#' @description Rotate circle points along an axis
-#'
-#' @param points circle points
-#' @param start cylinder start point
-#' @param axis cylinder axis
-#' @return Numeric Matrix
-#'
-#' @noRd
-#'
-rotate_circle_points <- function(points, start, axis) {
-    .Call(`_rTwig_rotate_circle_points`, points, start, axis)
-}
-
-#' Generate Mesh
-#'
-#' Get order of sorted vector indexes
-#'
-#' @param start cylinder starts
-#' @param axis cylinder axes
-#' @param length cylinder length
-#' @param radius cylinder radius
-#' @param facets number of cylinder facets
-#' @return Numeric Matrix
-#'
-#' @noRd
-#'
-generate_mesh <- function(start, axis, length, radius, facets) {
-    .Call(`_rTwig_generate_mesh`, start, axis, length, radius, facets)
 }
 
