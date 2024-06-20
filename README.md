@@ -43,6 +43,8 @@ American and European trees, on both the species and genus level.
 - `run_rtwig()` runs the Real Twig method on a QSM
 - `import_qsm()` imports a QSM created by TreeQSM (.mat)
 - `import_treegraph()` imports a QSM created by treegraph (.json)
+- `standardize_qsm()` standardizes QSM variable names across supported
+  software
 - `update_cylinders()` updates cylinder relationships and adds new QSM
   variables
 - `correct_radii` models QSM paths and corrects cylinder radii

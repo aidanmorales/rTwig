@@ -33,6 +33,7 @@ Real Twig does much more than correct QSM cylinder radii. Real Twig includes too
 -   `run_rtwig()` runs the Real Twig method on a QSM
 -   `import_qsm()` imports a QSM created by TreeQSM (.mat)
 -   `import_treegraph()` imports a QSM created by treegraph (.json)
+-   `standardize_qsm()` standardizes QSM variable names across supported software
 -   `update_cylinders()` updates cylinder relationships and adds new QSM variables
 -   `correct_radii` models QSM paths and corrects cylinder radii
 -   `tree_metrics()` generates detailed tree metrics and a simulated point cloud

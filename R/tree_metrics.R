@@ -42,8 +42,24 @@
 #' names(metrics)
 #'
 tree_metrics <- function(cylinder) {
+
+  # rTwig ----------------------------------------------------------------------
+  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+    metrics <- calculate_tree_metrics(
+      cylinder = cylinder, id = "id", parent = "parent",
+      branch = "branch", radius = "radius", raw_radius = "raw_radius",
+      length = "length", segment = "segment",
+      branch_position = "branch_position",
+      growth_length = "growth_length", branch_order = "branch_order",
+      reverse_order = "reverse_order", total_children = "total_children",
+      base_distance = "base_distance", twig_distance = "twig_distance",
+      start_x = "start_x", start_y = "start_y", start_z = "start_z",
+      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      end_x = "end_x", end_y = "end_y", end_z = "end_z"
+    )
+  }
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "extension", parent = "parent",
       branch = "branch", radius = "radius", raw_radius = "UnmodRadius",

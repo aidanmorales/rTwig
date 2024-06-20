@@ -56,8 +56,18 @@ export_mesh <- function(
     filename <- paste0(filename, ".ply")
   }
 
+  # rTwig ----------------------------------------------------------------------
+  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+    plot_mesh(
+      filename = filename, cylinder = cylinder, radius = radius,
+      length = "length", branch_order = "branch_order",
+      start_x = "start_x", start_y = "start_y", start_z = "start_z",
+      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      facets = facets, color = color, palette = palette, normals = normals
+    )
+  }
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     plot_mesh(
       filename = filename, cylinder = cylinder, radius = radius,
       length = "length", branch_order = "BranchOrder",

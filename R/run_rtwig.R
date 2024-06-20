@@ -8,6 +8,7 @@
 #' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #' @param version Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).
 #' @param smooth Defaults to NULL. If using TreeQSM, set to TRUE to smooth the QSM.
+#' @param standardize Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.
 #'
 #' @return Returns cylinder data frame or list if metrics is true.
 #' @export
@@ -32,7 +33,8 @@ run_rtwig <- function(
     backend = "multisession",
     metrics = TRUE,
     version = NULL,
-    smooth = NULL) {
+    smooth = NULL,
+    standardize = FALSE) {
   # Get file extension
   extension <- sub(".*\\.", "", basename(file))
 
@@ -52,8 +54,18 @@ run_rtwig <- function(
       cylinder <- import_qsm(file)$cylinder
     }
 
+    # Smooth QSM ---------------------------------------------------------------
+    if (!is.null(smooth)) {
+      cylinder <- smooth_qsm(cylinder)
+    }
+
     # Update Cylinders ---------------------------------------------------------
     cylinder <- update_cylinders(cylinder)
+
+    # Standardize QSM ----------------------------------------------------------
+    if (standardize == TRUE) {
+      cylinder <- standardize_qsm(cylinder)
+    }
 
     # Correct Radii ------------------------------------------------------------
     cylinder <- correct_radii(
@@ -61,11 +73,6 @@ run_rtwig <- function(
       twig_radius = twig_radius,
       backend = backend
     )
-
-    # Smooth QSM ---------------------------------------------------------------
-    if (!is.null(smooth)) {
-      cylinder <- smooth_qsm(cylinder)
-    }
 
     # Tree Metrics -------------------------------------------------------------
     if (metrics == TRUE) {
@@ -82,6 +89,11 @@ run_rtwig <- function(
 
     # Update Cylinders ---------------------------------------------------------
     cylinder <- update_cylinders(cylinder)
+
+    # Standardize QSM ----------------------------------------------------------
+    if (standardize == TRUE) {
+      cylinder <- standardize_qsm(cylinder)
+    }
 
     # Correct Radii ------------------------------------------------------------
     cylinder <- correct_radii(
@@ -105,6 +117,11 @@ run_rtwig <- function(
 
     # Update Cylinders ---------------------------------------------------------
     cylinder <- update_cylinders(cylinder)
+
+    # Standardize QSM ----------------------------------------------------------
+    if (standardize == TRUE) {
+      cylinder <- standardize_qsm(cylinder)
+    }
 
     # Correct Radii ------------------------------------------------------------
     cylinder <- correct_radii(

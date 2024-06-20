@@ -2,6 +2,8 @@
 
 ## New Features
 
+-   `standardize_qsm()`: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names. 
+
 -   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.
 
 -   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!

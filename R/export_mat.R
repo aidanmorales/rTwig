@@ -32,8 +32,49 @@
 export_mat <- function(cylinder, filename) {
   message("Exporting to .mat")
 
+  # rTwig ----------------------------------------------------------------------
+  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+    radius <- as.matrix(cylinder$radius)
+    length <- as.matrix(cylinder$length)
+
+    start <- cylinder %>%
+      select(start.x = "start_x", start.y = "start_y", start.z = "start_z") %>%
+      as.matrix()
+
+    axis <- cylinder %>%
+      select(axis.x = "axis_x", axis.y = "axis_y", axis.z = "axis_z") %>%
+      as.matrix()
+
+    parent <- as.matrix(cylinder$parent)
+    extension <- as.matrix(cylinder$id)
+    added <- NA
+    UnmodRadius <- as.matrix(cylinder$raw_radius)
+    branch <- as.matrix(cylinder$branch)
+    SurfCov <- NA
+    mad <- NA
+    BranchOrder <- as.matrix(cylinder$branch_order)
+    PositionInBranch <- as.matrix(cylinder$branch_position)
+
+    output <- list(
+      radius = radius,
+      length = length,
+      start = start,
+      axis = axis,
+      parent = parent,
+      extension = extension,
+      added = added,
+      UnmodRadius = UnmodRadius,
+      branch = branch,
+      SurfCov = SurfCov,
+      mad = mad,
+      BranchOrder = BranchOrder,
+      PositionInBranch = PositionInBranch
+    )
+
+    R.matlab::writeMat(filename, cylinder = output)
+  }
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     radius <- as.matrix(cylinder$radius)
     length <- as.matrix(cylinder$length)
 

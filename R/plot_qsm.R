@@ -64,15 +64,27 @@ plot_qsm <- function(
     hover = FALSE,
     skeleton = FALSE,
     bg_color = NULL) {
-
   message("Plotting QSM")
 
-  if(nrow(cylinder) == 0) {
+  if (nrow(cylinder) == 0) {
     stop("Cylinder data frame empty!")
   }
 
+  # rTwig ----------------------------------------------------------------------
+  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+    plot_data(
+      cylinder = cylinder, radius = radius, length = "length", id = "id",
+      branch = "branch", branch_order = "branch_order",
+      start_x = "start_x", start_y = "start_y", start_z = "start_z",
+      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      end_x = "end_x", end_y = "end_y", end_z = "end_z",
+      facets = facets, color = color, palette = palette, axes = axes,
+      hover = hover, skeleton = skeleton, cloud = cloud, pt_color = pt_color,
+      pt_size = pt_size, bg_color = bg_color
+    )
+  }
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     plot_data(
       cylinder = cylinder, radius = radius, length = "length", id = "extension",
       branch = "branch", branch_order = "BranchOrder",
