@@ -65,9 +65,10 @@
 <span>  <span class="va">cylinder</span>,</span>
 <span>  <span class="va">filename</span>,</span>
 <span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cyl_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cyl_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cyl_sides <span class="op">=</span> <span class="fl">8</span></span>
+<span>  color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  facets <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  normals <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,23 +79,27 @@
 
 
 <dt>filename</dt>
-<dd><p>Desired name of file. The .ply extension is automatically added.</p></dd>
+<dd><p>File name and path for exporting. The .ply extension is automatically added if not present.</p></dd>
 
 
 <dt>radius</dt>
 <dd><p>Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.</p></dd>
 
 
-<dt>cyl_color</dt>
-<dd><p>Optional cylinder color parameter. Colors must be a single hex color, or a vector or column of hex colors with the same length as the cylinder data frame.</p></dd>
+<dt>color</dt>
+<dd><p>Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.</p></dd>
 
 
-<dt>cyl_palette</dt>
+<dt>palette</dt>
 <dd><p>Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.</p></dd>
 
 
-<dt>cyl_sides</dt>
-<dd><p>The number of sides in the polygon cross section. Defaults to 8, but can be increased to improve visual smoothness.</p></dd>
+<dt>facets</dt>
+<dd><p>The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.</p></dd>
+
+
+<dt>normals</dt>
+<dd><p>Option to export normals. Defaults to FALSE, but can be set to TRUE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -106,8 +111,7 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## TreeQSM Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
@@ -125,9 +129,8 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"QSM_mesh"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">export_mesh</span><span class="op">(</span><span class="va">cylinder</span>, <span class="va">filename</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting QSM</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating Cylinder Meshes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Cylinder Mesh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Mesh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
@@ -141,9 +144,8 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">filename2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"QSM_mesh2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">export_mesh</span><span class="op">(</span><span class="va">cylinder2</span>, <span class="va">filename2</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting QSM</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating Cylinder Meshes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Cylinder Mesh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Mesh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## All Parameters</span></span></span>
 <span class="r-in"><span></span></span>
@@ -151,14 +153,12 @@
 <span class="r-in"><span><span class="fu">export_mesh</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  cylinder <span class="op">=</span> <span class="va">cylinder</span>,</span></span>
 <span class="r-in"><span>  filename <span class="op">=</span> <span class="va">filename3</span>,</span></span>
-<span class="r-in"><span>  radius <span class="op">=</span> <span class="va">cylinder</span><span class="op">$</span><span class="va">UnmodRadius</span>,</span></span>
-<span class="r-in"><span>  cyl_color <span class="op">=</span> <span class="va">cylinder</span><span class="op">$</span><span class="va">GrowthLength</span>,</span></span>
-<span class="r-in"><span>  cyl_palette <span class="op">=</span> <span class="st">"viridis"</span></span></span>
+<span class="r-in"><span>  radius <span class="op">=</span> <span class="st">"UnmodRadius"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"growthLength"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="st">"viridis"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting QSM</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating Cylinder Meshes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Cylinder Mesh</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Mesh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

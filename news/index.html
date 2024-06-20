@@ -75,6 +75,11 @@
 <li>
 <em>bg_color</em> can change the background color of the plot</li>
 </ul></li>
+<li>
+<p><code><a href="../reference/export_mesh.html">export_mesh()</a></code></p>
+<ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
+<li>Cylinder <em>color</em> parameter can now be set to <em>random</em>, or <em>FALSE</em> to disable exporting colors</li>
+</ul></li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
@@ -83,7 +88,8 @@
 <li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
 <li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
 <li><p>Variable names in <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> updated to be explicit and consistent with the outputs of <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p></li>
-<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sized</em> has been renamed to <em>facets</em>.</p></li>
+<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
+<li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
 <li><p><code>plot_stand()</code> has been deprecated as all of its functionality is now incorporated into <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p></li>
 </ul></div>
 <div class="section level3">
@@ -91,6 +97,7 @@
 <ul><li>
 <p>Implement Rcpp across package</p>
 <ul><li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> &gt; 10x performance improvement!</p></li>
+<li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code> &gt; 10x performance improvement!</p></li>
 <li><p><code><a href="../reference/box_dimension.html">box_dimension()</a></code> ~ 3x performance improvement</p></li>
 </ul></li>
 <li>
