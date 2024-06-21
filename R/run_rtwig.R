@@ -54,13 +54,13 @@ run_rtwig <- function(
       cylinder <- import_qsm(file)$cylinder
     }
 
+    # Update Cylinders ---------------------------------------------------------
+    cylinder <- update_cylinders(cylinder)
+
     # Smooth QSM ---------------------------------------------------------------
     if (!is.null(smooth)) {
       cylinder <- smooth_qsm(cylinder)
     }
-
-    # Update Cylinders ---------------------------------------------------------
-    cylinder <- update_cylinders(cylinder)
 
     # Standardize QSM ----------------------------------------------------------
     if (standardize == TRUE) {
