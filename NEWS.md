@@ -2,7 +2,7 @@
 
 ## New Features
 
--   `standardize_qsm()`: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names. 
+-   `standardize_qsm()`: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.
 
 -   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.
 
@@ -43,12 +43,14 @@
 
 -   `plot_stand()` has been deprecated as all of its functionality is now incorporated into `plot_qsm()`
 
+-   *twigs*: renamed *scientific.name* to *scientific_name* and *radius.mm* to *radius_mm* for consistent naming conventions across the package.
+
 ## Improvements
 
 -   Implement Rcpp across package
 
     -   `plot_qsm()` \> 10x performance improvement!
-    
+
     -   `export_mesh()` \> 10x performance improvement!
 
     -   `box_dimension()` \~ 3x performance improvement

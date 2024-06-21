@@ -166,7 +166,7 @@ Before we can correct the QSM radii, we need to know what our real twig diameter
 twigs
 
 # Find our species
-filter(twigs, scientific.name == "Gymnocladus dioicus")
+filter(twigs, scientific_name == "Gymnocladus dioicus")
 ```
 
 ## Summary Metrics

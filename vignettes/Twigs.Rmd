@@ -58,12 +58,12 @@ twigs
 rTwig::twigs
 ```
 
-The database is broken into 7 different columns. *scientific.name* is the specific epithet. Genus spp. is the average of all of the species in the genus. *radius.mm* is the twig radius in millimeters. For each species, *n* is the number of unique twig samples taken, *min* is the minimum twig radius, *max* is the max twig radius, *std* is the standard deviation, and *cv* is the coefficient of variation.
+The database is broken into 7 different columns. *scientific_name* is the specific epithet. Genus spp. is the average of all of the species in the genus. *radius_mm* is the twig radius in millimeters. For each species, *n* is the number of unique twig samples taken, *min* is the minimum twig radius, *max* is the max twig radius, *std* is the standard deviation, and *cv* is the coefficient of variation.
 
 Let's see the breakdown of species.
 
 ```{r}
-unique(twigs$scientific.name)
+unique(twigs$scientific_name)
 ```
 
 ## Visualization
@@ -73,8 +73,8 @@ Let's visualize some of the twig data!
 ```{r fig.height=6, fig.width=7}
 # Lets look at a subset of oak species
 twigs %>%
-  filter(grepl("Quercus", scientific.name)) %>%
-  ggplot(aes(x = scientific.name, y = radius.mm, color = scientific.name)) +
+  filter(grepl("Quercus", scientific_name)) %>%
+  ggplot(aes(x = scientific_name, y = radius_mm, color = scientific_name)) +
   geom_point(aes(size = n)) +
   geom_errorbar(aes(ymax = max, ymin = min)) +
   coord_flip() +
