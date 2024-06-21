@@ -33,7 +33,7 @@ run_rtwig <- function(
     backend = "multisession",
     metrics = TRUE,
     version = NULL,
-    smooth = NULL,
+    smooth = FALSE,
     standardize = FALSE) {
   # Get file extension
   extension <- sub(".*\\.", "", basename(file))

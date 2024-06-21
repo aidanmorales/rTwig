@@ -10,7 +10,7 @@ run_rtwig(
   backend = "multisession",
   metrics = TRUE,
   version = NULL,
-  smooth = NULL,
+  smooth = FALSE,
   standardize = FALSE
 )
 }
