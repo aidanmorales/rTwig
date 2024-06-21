@@ -25,7 +25,7 @@ run_rtwig(
 
 \item{version}{Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).}
 
-\item{smooth}{Defaults to NULL. If using TreeQSM, set to TRUE to smooth the QSM.}
+\item{smooth}{Defaults to FALSE. If using TreeQSM, set to TRUE to smooth the QSM.}
 
 \item{standardize}{Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.}
 }

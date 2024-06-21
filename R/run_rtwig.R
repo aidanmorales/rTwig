@@ -7,7 +7,7 @@
 #' @param metrics Calculate tree metrics? Defaults to TRUE.
 #' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #' @param version Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).
-#' @param smooth Defaults to NULL. If using TreeQSM, set to TRUE to smooth the QSM.
+#' @param smooth Defaults to FALSE. If using TreeQSM, set to TRUE to smooth the QSM.
 #' @param standardize Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.
 #'
 #' @return Returns cylinder data frame or list if metrics is true.
@@ -58,7 +58,7 @@ run_rtwig <- function(
     cylinder <- update_cylinders(cylinder)
 
     # Smooth QSM ---------------------------------------------------------------
-    if (!is.null(smooth)) {
+    if (smooth == TRUE) {
       cylinder <- smooth_qsm(cylinder)
     }
 
