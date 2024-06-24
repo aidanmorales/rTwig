@@ -10,7 +10,7 @@ run_rtwig(
   backend = "multisession",
   metrics = TRUE,
   version = NULL,
-  smooth = FALSE,
+  smooth = TRUE,
   standardize = FALSE
 )
 }
@@ -27,7 +27,7 @@ run_rtwig(
 
 \item{smooth}{Defaults to FALSE. If using TreeQSM, set to TRUE to smooth the QSM.}
 
-\item{standardize}{Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.}
+\item{standardize}{Standardize QSM cylinder data? Defaults to TRUE. Can be set to FALSE.}
 }
 \value{
 Returns cylinder data frame or list if metrics is true.

@@ -16,7 +16,6 @@ Returns a data frame
 Visual smoothing of a QSM by ensuring the midpoints of all cylinders are connected
 }
 \examples{
-\donttest{
 
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
@@ -29,6 +28,5 @@ plot_qsm(cylinder)
 ## After Smoothing
 cylinder <- smooth_qsm(cylinder)
 plot_qsm(cylinder)
-}
 
 }

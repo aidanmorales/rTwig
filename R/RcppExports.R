@@ -136,9 +136,9 @@ cross_product <- function(a, b) {
     .Call(`_rTwig_cross_product`, a, b)
 }
 
-#' Norm
+#' @title Norm
 #'
-#' Calculates the norm of a 1 x 3 vector
+#' @description Calculates the norm of a 1 x 3 vector
 #'
 #' @param x vector x with size 1 x 3
 #' @return norm of vector x
@@ -230,5 +230,28 @@ index_order <- function(x) {
 #'
 sort_index <- function(x, indexes) {
     .Call(`_rTwig_sort_index`, x, indexes)
+}
+
+#' @title Connect Cylinders
+#'
+#' @description Connects cylinder endpoints and smooths axes
+#'
+#' @param branch_position position in the branch
+#' @param branch branch id
+#' @param start x x start
+#' @param start y y start
+#' @param start z z start
+#' @param axis x x axis
+#' @param axis y y axis
+#' @param axis z z axis
+#' @param end x x end
+#' @param end y y end
+#' @param end z z end
+#' @return n x 3 point cloud matrix
+#'
+#' @noRd
+#'
+connect_cylinders <- function(cylinder) {
+    invisible(.Call(`_rTwig_connect_cylinders`, cylinder))
 }
 

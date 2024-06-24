@@ -216,6 +216,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// connect_cylinders
+void connect_cylinders(DataFrame& cylinder);
+RcppExport SEXP _rTwig_connect_cylinders(SEXP cylinderSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame& >::type cylinder(cylinderSEXP);
+    connect_cylinders(cylinder);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
@@ -235,6 +245,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_mat_multiplication", (DL_FUNC) &_rTwig_mat_multiplication, 2},
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
+    {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
     {NULL, NULL, 0}
 };
 

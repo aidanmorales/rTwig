@@ -23,9 +23,9 @@ NumericVector cross_product(NumericVector a, NumericVector b) {
 
 
 
-//' Norm
+//' @title Norm
 //'
-//' Calculates the norm of a 1 x 3 vector
+//' @description Calculates the norm of a 1 x 3 vector
 //'
 //' @param x vector x with size 1 x 3
 //' @return norm of vector x

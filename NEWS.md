@@ -2,6 +2,8 @@
 
 ## New Features
 
+-   `run_rTwig`: New function to run the Real Twig method and calculate tree metrics in one simple function.
+
 -   `standardize_qsm()`: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.
 
 -   `tree_metrics()`: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.
@@ -50,6 +52,8 @@
 -   Implement Rcpp across package
 
     -   `plot_qsm()` \> 10x performance improvement!
+        
+    -   `smooth_qsm()` \> 10x performance improvement!
 
     -   `export_mesh()` \> 10x performance improvement!
 
