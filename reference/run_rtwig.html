@@ -67,7 +67,7 @@
 <span>  backend <span class="op">=</span> <span class="st">"multisession"</span>,</span>
 <span>  metrics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  version <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  smooth <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  smooth <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  standardize <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -99,7 +99,7 @@
 
 
 <dt>standardize</dt>
-<dd><p>Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.</p></dd>
+<dd><p>Standardize QSM cylinder data? Defaults to TRUE. Can be set to FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -125,6 +125,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Smoothing QSM</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Branch Paths</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Starting Parallel Workers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Correcting Branch Paths</span>
@@ -144,12 +145,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1136 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius            : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.768 0.768 0.769 0.769 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.769 0.768 0.769 0.769 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.y           : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.z           : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.x            : num  0.00995 -0.0111 0.01364 0.01571 0.01449 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.y            : num  0.0912 0.0391 0.0367 0.0271 0.0267 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.z            : num  0.996 0.999 0.999 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.x            : num  0.009949 -0.022059 0.016224 -0.000391 0.012068 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.y            : num  0.091165 0.019722 0.034392 -0.000295 0.023483 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.z            : num  0.996 1 0.999 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.x             : num  0.769 0.768 0.769 0.769 0.77 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.y             : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.z             : num  254 254 254 254 254 ...</span>
