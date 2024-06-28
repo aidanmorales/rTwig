@@ -49,6 +49,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Box-Dimension.html">Box-Dimension</a>
+    <a class="dropdown-item" href="../articles/Dictionary.html">Dictionary</a>
     <a class="dropdown-item" href="../articles/Metrics.html">Metrics</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
     <a class="dropdown-item" href="../articles/Twigs.html">Twigs</a>
@@ -124,45 +125,45 @@ our tree metrics with <code><a href="../reference/tree_metrics.html">tree_metric
 <span></span>
 <span><span class="co"># Calculate detailed tree metrics</span></span>
 <span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="stem-taper">Stem Taper<a class="anchor" aria-label="anchor" href="#stem-taper"></a>
-</h2>
+<div class="section level4">
+<h4 id="stem-taper">Stem Taper<a class="anchor" aria-label="anchor" href="#stem-taper"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level2">
-<h2 id="tree-metrics">Tree Metrics<a class="anchor" aria-label="anchor" href="#tree-metrics"></a>
-</h2>
+<div class="section level4">
+<h4 id="tree-metrics">Tree Metrics<a class="anchor" aria-label="anchor" href="#tree-metrics"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level2">
-<h2 id="branch-metrics">Branch Metrics<a class="anchor" aria-label="anchor" href="#branch-metrics"></a>
-</h2>
+<div class="section level4">
+<h4 id="branch-metrics">Branch Metrics<a class="anchor" aria-label="anchor" href="#branch-metrics"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level2">
-<h2 id="segment-metrics">Segment Metrics<a class="anchor" aria-label="anchor" href="#segment-metrics"></a>
-</h2>
+<div class="section level4">
+<h4 id="segment-metrics">Segment Metrics<a class="anchor" aria-label="anchor" href="#segment-metrics"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level2">
-<h2 id="spreads">Spreads<a class="anchor" aria-label="anchor" href="#spreads"></a>
-</h2>
+<div class="section level4">
+<h4 id="spreads">Spreads<a class="anchor" aria-label="anchor" href="#spreads"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-25-1.png" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="vertical-profile">Vertical Profile<a class="anchor" aria-label="anchor" href="#vertical-profile"></a>
-</h2>
+<div class="section level4">
+<h4 id="vertical-profile">Vertical Profile<a class="anchor" aria-label="anchor" href="#vertical-profile"></a>
+</h4>
 <p><img src="Metrics_files/figure-html/unnamed-chunk-26-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level2">
-<h2 id="point-cloud">Point Cloud<a class="anchor" aria-label="anchor" href="#point-cloud"></a>
-</h2>
+<div class="section level4">
+<h4 id="point-cloud">Point Cloud<a class="anchor" aria-label="anchor" href="#point-cloud"></a>
+</h4>
 <p>We can even plot the simulated point cloud with the rgl library, and
 look at the cylinder connectivity.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/plot3d.html" class="external-link">plot3d</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">$</span><span class="va">cloud</span>, aspect <span class="op">=</span> <span class="cn">FALSE</span>, decorate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span>, skeleton <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="plotting-code">Plotting Code<a class="anchor" aria-label="anchor" href="#plotting-code"></a>
