@@ -50,7 +50,7 @@ metrics <- tree_metrics(qsm$cylinder)
 future::plan("sequential")
 ```
 
-## Stem Taper
+#### Stem Taper
 
 ```{r, fig.width=6, fig.height=3, fig.align='center', out.width="100%", echo=FALSE}
 metrics$stem_taper %>%
@@ -65,7 +65,7 @@ metrics$stem_taper %>%
   )
 ```
 
-## Tree Metrics
+#### Tree Metrics
 
 ```{r, echo=FALSE}
 tree_h <- metrics$tree_height_dist %>%
@@ -165,7 +165,7 @@ ggarrange(tree_d, tree_h, tree_az, tree_z)
 # annotate_figure(tree, top = text_grob("Tree Metrics", size = 16, face = "bold"))
 ```
 
-## Branch Metrics
+#### Branch Metrics
 
 ```{r, echo=FALSE}
 branch_d <- metrics$branch_diameter_dist %>%
@@ -316,7 +316,7 @@ ggarrange(branch_d, branch_h, branch_ang, branch_az, branch_z, branch_o, ncol = 
 # annotate_figure(branch, top = text_grob("Branch Metrics", size = 16, face = "bold"))
 ```
 
-## Segment Metrics
+#### Segment Metrics
 
 ```{r, echo=FALSE}
 segment_d <- metrics$segment_diameter_dist %>%
@@ -467,7 +467,7 @@ ggarrange(segment_d, segment_h, segment_ang, segment_az, segment_z, segment_o, n
 # annotate_figure(segment, top = text_grob("Branch Metrics", size = 16, face = "bold"))
 ```
 
-## Spreads
+#### Spreads
 
 ```{r, echo=FALSE, fig.width=6, fig.height=6, out.width="100%"}
 spreads <- metrics$spreads
@@ -498,7 +498,7 @@ spreads %>%
   theme(axis.text.y = element_blank())
 ```
 
-## Vertical Profile
+#### Vertical Profile
 
 ```{r, fig.width=6, fig.height=3, fig.align='center', out.width="100%", echo=FALSE}
 metrics$spreads %>%
@@ -519,7 +519,7 @@ metrics$spreads %>%
   theme_classic()
 ```
 
-## Point Cloud
+#### Point Cloud
 
 We can even plot the simulated point cloud with the rgl library, and look at the cylinder connectivity.
 
