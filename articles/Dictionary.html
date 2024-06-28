@@ -142,7 +142,6 @@ converted to this definition when standardizing the QSM. The first
 branch is always the main stem under the rTwig format. Treegraph QSMs
 retain their definition of branches. TreeQSM and SimpleForest are
 numbered consecutively in order of the cylinder ids.</p>
-<p><strong><code>branch2:</code></strong> implement this!</p>
 <p><strong><code>branch_position:</code></strong> This is an index of
 the cylinder’s position within a branch. This is the same as TreeQSM’s
 <em>PositionInBranch</em> definition. The first position is always the
@@ -166,6 +165,13 @@ within a QSM. RBO assigns a value of one at the end of twigs or broken
 branches, and works backwards until the base of the tree is reached,
 which is assigned the highest RBO. The RBO of any branch is the maximum
 segment (internode) depth relative to the twigs in a tree.</p>
+<p><strong><code>branch_alt:</code></strong> This is the alternate
+branch index. Alternate branch zero is always the main stem. The rest of
+the branches are first order branches and all of their children. This is
+similar to cutting the first order branches off with a saw and labeling
+them consecutively. If using a SimpleForest QSM, this is the old
+<em>branchID</em> column updated so that the main stem is index
+zero.</p>
 </div>
 <div class="section level4">
 <h4 id="segment-attributes">Segment Attributes<a class="anchor" aria-label="anchor" href="#segment-attributes"></a>

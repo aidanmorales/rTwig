@@ -63,11 +63,7 @@
 <li><p><code><a href="../reference/standardize_qsm.html">standardize_qsm()</a></code>: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.</p></li>
 <li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.</p></li>
 <li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!</p></li>
-<li>
-<p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code></p>
-<ul><li>Two new variables: <em>distanceFromBase</em> and <em>distanceToTwig</em>
-</li>
-</ul></li>
+<li><p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: New variables: <em>distanceFromBase</em>, <em>distanceToTwig</em>, <em>branch_alt</em></p></li>
 <li>
 <p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p>
 <ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
@@ -82,19 +78,8 @@
 <p><code><a href="../reference/export_mesh.html">export_mesh()</a></code></p>
 <ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
 <li>Cylinder <em>color</em> parameter can now be set to <em>random</em>, or <em>FALSE</em> to disable exporting colors</li>
+<li><em>Note: color exporting is currently broken but will be fixed in a future rgl package update</em></li>
 </ul></li>
-</ul></div>
-<div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
-<ul><li><p>All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.</p></li>
-<li><p>Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called branchOld.</p></li>
-<li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
-<li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
-<li><p>Variable names in <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> updated to be explicit and consistent with the outputs of <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p></li>
-<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
-<li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
-<li><p><code>plot_stand()</code> has been deprecated as all of its functionality is now incorporated into <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p></li>
-<li><p><em>twigs</em>: renamed <em>scientific.name</em> to <em>scientific_name</em> and <em>radius.mm</em> to <em>radius_mm</em> for consistent naming conventions across the package.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
@@ -115,6 +100,18 @@
 <li><p>Update twig data base</p></li>
 <li><p>Update vignettes</p></li>
 <li><p>Update citations</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li><p>All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.</p></li>
+<li><p>Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called <em>branch_alt</em>, and is changed to begin at zero to be consistent with the new <em>branch_alt</em> variable from Real Twig.</p></li>
+<li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
+<li><p>Renamed <em>GrowthLength</em> to <em>growthLength</em> to be consistent with SimpleForest</p></li>
+<li><p>Variable names in <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> updated to be explicit and consistent with the outputs of <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p></li>
+<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
+<li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code> now takes input column parameters as quoted variables. <em>cyl_color</em> and <em>cyl_palette</em> have been changed to <em>color</em> and <em>palette</em> respectively. <em>cyl_sides</em> has been renamed to <em>facets</em>.</p></li>
+<li><p><code>plot_stand()</code> has been deprecated as all of its functionality is now incorporated into <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p></li>
+<li><p><em>twigs</em>: renamed <em>scientific.name</em> to <em>scientific_name</em> and <em>radius.mm</em> to <em>radius_mm</em> for consistent naming conventions across the package.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
