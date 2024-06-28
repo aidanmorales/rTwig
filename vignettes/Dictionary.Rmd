@@ -42,13 +42,13 @@ Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleFor
 
 **`branch:`** A branch is defined as starting at a new branch order and continuing until a twig is reached. This definition is what TreeQSM and Treegraph use. SimpleForest branches are converted to this definition when standardizing the QSM. The first branch is always the main stem under the rTwig format. Treegraph QSMs retain their definition of branches. TreeQSM and SimpleForest are numbered consecutively in order of the cylinder ids.
 
-**`branch2:`** implement this!
-
 **`branch_position:`** This is an index of the cylinder's position within a branch. This is the same as TreeQSM's *PositionInBranch* definition. The first position is always the base of the branch, and the last position is always a twig or the branch end in the case of a broken branch.
 
 **`branch_order:`** This is the order of every branch. The smallest branch order zero is always the main stem. First order branches are connected to the main stem, and so on a so forth for higher order branches. A new branch order always begins at a new branching fork, continues to a twig or end of a broken branch, and is one greater than the parent order. This definition is consistent between TreeQSM, SimpleForest, and Treegraph, but the rTwig format always defines the main stem as order zero for consistency.
 
 **`reverse_order:`** This is the reverse branch order (RBO). Traditional branch ordering is relative to the main stem, and does not tell us anything about the position or size of the branch. Small twigs and large branches can both be first order branches if they are connected to the main stem under the traditional definition. RBO solves this problem by considering the relative position of branches within a QSM. RBO assigns a value of one at the end of twigs or broken branches, and works backwards until the base of the tree is reached, which is assigned the highest RBO. The RBO of any branch is the maximum segment (internode) depth relative to the twigs in a tree.
+
+**`branch_alt:`** This is the alternate branch index. Alternate branch zero is always the main stem. The rest of the branches are first order branches and all of their children. This is similar to cutting the first order branches off with a saw and labeling them consecutively. If using a SimpleForest QSM, this is the old *branchID* column updated so that the main stem is index zero.
 
 #### Segment Attributes
 
@@ -56,12 +56,12 @@ Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleFor
 
 **`parent_segment:`** This shows the relationships between segments in the QSM. The parent segment of the first segment is always zero, because the first segment (the base of the tree) has no parent segment. The parent segment is the node the current segment forked from.
 
-**`total_children:`** This is the total number of cylinders supported by the given cylinder. This is useful to find where branches fork. A value of one means that there are no branching forks. A value of two means that there is one branching fork, etc. 
+**`total_children:`** This is the total number of cylinders supported by the given cylinder. This is useful to find where branches fork. A value of one means that there are no branching forks. A value of two means that there is one branching fork, etc.
 
 #### Additional Metrics
 
 **`growth_length:`** This is the growth length in meters of any given cylinder. Growth length can be defined as the sum of the lengths of the cylinders supported by the given cylinder. We can visualize growth length by cutting a tree with a saw at any given point. The cumulative length of this cut portion is the growth length where the part of the tree was cut. The growth length of the base of the tree is the sum of the lengths of all the cylinders in the QSM. The growth length of a twig is simply the length of its cylinder. Growth length reflects a measurement that could be taken on a real tree, but is easier to obtain with QSMs.
 
-**`base_distance:`** This is the distance in meters of any given cylinder from the base of the tree. This distance is calculated by taking the simplest complete path from the given cylinder to the base of the tree. 
+**`base_distance:`** This is the distance in meters of any given cylinder from the base of the tree. This distance is calculated by taking the simplest complete path from the given cylinder to the base of the tree.
 
-**`twig_distance:`** This is the average distance in meters a given cylinder is away from all supported twigs. This is calculated by finding all complete simple paths from the given cylinder to the supported twigs, summing the lengths, and then dividing by the number of paths. 
+**`twig_distance:`** This is the average distance in meters a given cylinder is away from all supported twigs. This is calculated by finding all complete simple paths from the given cylinder to the supported twigs, summing the lengths, and then dividing by the number of paths.

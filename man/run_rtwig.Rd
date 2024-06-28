@@ -25,9 +25,9 @@ run_rtwig(
 
 \item{version}{Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).}
 
-\item{smooth}{Defaults to FALSE. If using TreeQSM, set to TRUE to smooth the QSM.}
+\item{smooth}{Defaults to TRUE, if using TreeQSM. Can be set to FALSE.}
 
-\item{standardize}{Standardize QSM cylinder data? Defaults to TRUE. Can be set to FALSE.}
+\item{standardize}{Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.}
 }
 \value{
 Returns cylinder data frame or list if metrics is true.

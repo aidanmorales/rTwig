@@ -10,9 +10,7 @@
 
 -   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!
 
--   `update_cylinders()`
-
-    -   Two new variables: *distanceFromBase* and *distanceToTwig*
+-   `update_cylinders()`: New variables: *distanceFromBase*, *distanceToTwig*, *branch_alt*
 
 -   `plot_qsm()`
 
@@ -26,33 +24,14 @@
 
     -   Complete refactor with Rcpp and tidyeval for massive performance improvements
     -   Cylinder *color* parameter can now be set to *random*, or *FALSE* to disable exporting colors
-
-## Breaking Changes
-
--   All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.
-
--   Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called branchOld.
-
--   Renamed *twigRad* function parameter to *twig_radius* to be consistent with tidy style guidelines
-
--   Renamed *GrowthLength* to *growthLength* to be consistent with SimpleForest
-
--   Variable names in `qsm_summary()` updated to be explicit and consistent with the outputs of `tree_metrics()`
-
--   `plot_qsm()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
-
--   `export_mesh()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
-
--   `plot_stand()` has been deprecated as all of its functionality is now incorporated into `plot_qsm()`
-
--   *twigs*: renamed *scientific.name* to *scientific_name* and *radius.mm* to *radius_mm* for consistent naming conventions across the package.
+    -   *Note: color exporting is currently broken but will be fixed in a future rgl package update*
 
 ## Improvements
 
 -   Implement Rcpp across package
 
     -   `plot_qsm()` \> 10x performance improvement!
-        
+
     -   `smooth_qsm()` \> 10x performance improvement!
 
     -   `export_mesh()` \> 10x performance improvement!
@@ -74,6 +53,26 @@
 -   Update vignettes
 
 -   Update citations
+
+## Breaking Changes
+
+-   All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.
+
+-   Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called *branch_alt*, and is changed to begin at zero to be consistent with the new *branch_alt* variable from Real Twig.
+
+-   Renamed *twigRad* function parameter to *twig_radius* to be consistent with tidy style guidelines
+
+-   Renamed *GrowthLength* to *growthLength* to be consistent with SimpleForest
+
+-   Variable names in `qsm_summary()` updated to be explicit and consistent with the outputs of `tree_metrics()`
+
+-   `plot_qsm()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
+
+-   `export_mesh()` now takes input column parameters as quoted variables. *cyl_color* and *cyl_palette* have been changed to *color* and *palette* respectively. *cyl_sides* has been renamed to *facets*.
+
+-   `plot_stand()` has been deprecated as all of its functionality is now incorporated into `plot_qsm()`
+
+-   *twigs*: renamed *scientific.name* to *scientific_name* and *radius.mm* to *radius_mm* for consistent naming conventions across the package.
 
 # rTwig 1.0.2
 

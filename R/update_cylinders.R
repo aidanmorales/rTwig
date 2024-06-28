@@ -87,6 +87,9 @@ update_cylinders <- function(cylinder) {
     # Branch Segments ----------------------------------------------------------
     cylinder <- branch_segments(cylinder, "extension", "parent", "branch", "reverseBranchOrder")
 
+    # Alternate Branch Numbering -----------------------------------------------
+    cylinder <- branch_alt(network, cylinder, "extension", "parent", "branch", "BranchOrder")
+
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "extension", "length")
 
@@ -107,7 +110,8 @@ update_cylinders <- function(cylinder) {
         relocate("extension", .after = "parent") %>%
         relocate("end.x", .after = "axis.z") %>%
         relocate("end.y", .after = "end.x") %>%
-        relocate("end.z", .after = "end.y")
+        relocate("end.z", .after = "end.y") %>%
+        relocate("branch_alt", .after = "branch")
     } else {
       cylinder <- cylinder %>%
         relocate("OldRadius", .after = "UnmodRadius") %>%
@@ -122,7 +126,8 @@ update_cylinders <- function(cylinder) {
         relocate("extension", .after = "parent") %>%
         relocate("end.x", .after = "axis.z") %>%
         relocate("end.y", .after = "end.x") %>%
-        relocate("end.z", .after = "end.y")
+        relocate("end.z", .after = "end.y") %>%
+        relocate("branch_alt", .after = "branch")
     }
   }
   # SimpleForest ---------------------------------------------------------------
@@ -150,9 +155,9 @@ update_cylinders <- function(cylinder) {
       relocate("axisZ", .after = "axisY") %>%
       relocate("radius", .before = "radius")
 
-    # Save Old Branch ID -------------------------------------------------------
+    # Save Alternate Branch ID -------------------------------------------------
     cylinder <- cylinder %>%
-      mutate(branchOld = .data$branchID) %>%
+      mutate(branch_alt = .data$branchID - 1) %>%
       select(-"branchID")
 
     # Generates new branch IDs -------------------------------------------------
@@ -276,6 +281,9 @@ update_cylinders <- function(cylinder) {
 
     # Branch Segments ----------------------------------------------------------
     cylinder <- branch_segments(cylinder, "p1", "p2", "nbranch", "reverseBranchOrder")
+
+    # Alternate Branch Numbering -----------------------------------------------
+    cylinder <- branch_alt(network, cylinder, "p1", "p2", "nbranch", "branch_order")
 
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "p1", "length")
@@ -464,7 +472,7 @@ reverse_branch_order <- function(network, cylinder, id) {
   return(cylinder)
 }
 
-#' Calculates branching segments or "nodes"
+#' Calculates branching segments or "internodes"
 #' @param cylinder QSM cylinder data frame
 #' @param id column name of cylinder indexes
 #' @param branch column name of branch ids
@@ -498,6 +506,46 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
   # Joins parent segments
   cylinder <- left_join(cylinder, parent_segments, by = "segment")
   cylinder <- mutate(cylinder, parentSegment = replace_na(.data$parentSegment, 0))
+
+  return(cylinder)
+}
+
+#' Calculates the alternate branch index
+#' @param network QSM cylinder network list
+#' @param cylinder QSM cylinder data frame
+#' @param id column name of cylinder indexes
+#' @param parent column name of parent cylinders
+#' @param branch column name of branch ids
+#' @param branch_order column name of cylinder branch order
+#' @returns cylinder data frame with growth length
+#' @noRd
+branch_alt <- function(
+    network,
+    cylinder,
+    id,
+    parent,
+    branch,
+    branch_order) {
+  message("Calculating Alternate Branch Numbers")
+
+  # Find first order branch bases
+  first_branch <- cylinder %>%
+    filter(!!rlang::sym(branch_order) == 1) %>%
+    group_by(!!rlang::sym(branch)) %>%
+    slice_head(n = 1) %>%
+    ungroup() %>%
+    mutate(branch_alt = 1:n()) %>%
+    select(index = !!rlang::sym(id), "branch_alt")
+
+  # Find cylinder
+  cylinder <- filter(network$child_df, .data$index %in% first_branch$index) %>%
+    rename(!!rlang::sym(id) := "id") %>%
+    right_join(cylinder, by = id) %>%
+    left_join(first_branch, by = "index") %>%
+    select(-"index") %>%
+    relocate(!!rlang::sym(id), .before = !!rlang::sym(parent))
+
+  cylinder$branch_alt <- replace_na(cylinder$branch_alt, 0)
 
   return(cylinder)
 }
