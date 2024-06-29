@@ -47,7 +47,8 @@ tree_metrics <- function(cylinder) {
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "id", parent = "parent",
-      branch = "branch", radius = "radius", raw_radius = "raw_radius",
+      branch = "branch", branch_alt = "branch_alt",
+      radius = "radius", raw_radius = "raw_radius",
       length = "length", segment = "segment",
       branch_position = "branch_position",
       growth_length = "growth_length", branch_order = "branch_order",
@@ -62,7 +63,8 @@ tree_metrics <- function(cylinder) {
   else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "extension", parent = "parent",
-      branch = "branch", radius = "radius", raw_radius = "UnmodRadius",
+      branch = "branch", branch_alt = "branch_alt",
+      radius = "radius", raw_radius = "UnmodRadius",
       length = "length", segment = "segment",
       branch_position = "PositionInBranch",
       growth_length = "growthLength", branch_order = "BranchOrder",
@@ -77,7 +79,8 @@ tree_metrics <- function(cylinder) {
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
       cylinder = cylinder, id = "ID", parent = "parentID",
-      branch = "branchID", radius = "radius", raw_radius = "UnmodRadius",
+      branch = "branchID", branch_alt = "branch_alt",
+      radius = "radius", raw_radius = "UnmodRadius",
       length = "length", segment = "segmentID",
       branch_position = "positionInBranch",
       growth_length = "growthLength", branch_order = "branchOrder",
@@ -118,6 +121,7 @@ tree_metrics <- function(cylinder) {
 #' @param id cylinder ids
 #' @param parent cylinder parent ids
 #' @param branch cylinder branch id
+#' @param branch_alt cylinder alternate branch id
 #' @param radius cylinder radius
 #' @param raw_radius cylinder unmodified radius
 #' @param length cylinder length
@@ -145,6 +149,7 @@ calculate_tree_metrics <- function(
     id,
     parent,
     branch,
+    branch_alt,
     radius,
     raw_radius,
     length,
@@ -168,15 +173,13 @@ calculate_tree_metrics <- function(
   # List to store metrics ------------------------------------------------------
   metrics <- list()
 
-  # # Save cylinder data -------------------------------------------------------
-  # metrics$cylinder <- cylinder
-
   # Dynamically select cylinder variables --------------------------------------
   cylinder <- cylinder %>%
     select(
       id = !!rlang::sym(id),
       parent = !!rlang::sym(parent),
       branch = !!rlang::sym(branch),
+      branch_alt = !!rlang::sym(branch_alt),
       radius = !!rlang::sym(radius),
       raw_radius = !!rlang::sym(raw_radius),
       length = !!rlang::sym(length),
@@ -338,6 +341,10 @@ calculate_tree_metrics <- function(
     group_by("height_class") %>%
     summarize(avg_spread_m = mean(.data$spread_m))
 
+  # Alternate Branch Metrics ---------------------------------------------------
+  message("Calculating Alternate Branch Metrics")
+  metrics$branch_alt <- branch_alt_metrics(cylinder)
+
   return(metrics)
 }
 
@@ -424,6 +431,78 @@ branch_metrics <- function(cylinder) {
     relocate("parent_branch", .after = "branch")
 
   return(branch)
+}
+
+#' Calculates alternate branch metrics
+#' @param cylinder QSM cylinder data frame
+#' @returns data frame with per branch summary metrics
+#' @noRd
+branch_alt_metrics <- function(cylinder) {
+  # Get Parent Axis IDs
+  parent_axis <- cylinder %>%
+    select(
+      parent = "id",
+      parent_branch = "branch",
+      p_axis_x = "axis_x",
+      p_axis_y = "axis_y",
+      p_axis_z = "axis_z"
+    )
+
+  # Base Cylinder
+  base <- cylinder %>%
+    filter(.data$branch == 1) %>%
+    select(start_z = "start_z") %>%
+    slice_head(1) %>%
+    pull()
+
+  # Calculate Alternate Branch Metrics
+  branch_alt <- cylinder %>%
+    filter(!.data$branch_alt == 0) %>%
+    group_by("branch_alt") %>%
+    summarize(
+      parent = first(.data$parent),
+      axis_x = first(.data$axis_x),
+      axis_y = first(.data$axis_y),
+      axis_z = first(.data$axis_z),
+      branch_order = first(.data$branch_order),
+      reverse_order = first(.data$reverse_order),
+      diameter_base_cm = 2 * first(.data$radius) * 100,
+      volume_m3 = pi * sum(.data$radius^2 * .data$length),
+      area_m2 = 2 * pi * sum(.data$length * .data$radius),
+      x_length = max(.data$end_x) - min(.data$start_x),
+      y_length = max(.data$end_y) - min(.data$start_y),
+      z_length = max(.data$end_z) - min(.data$start_z),
+      height_m = first(.data$start_z) - !!base,
+      azimuth_deg = 180 / pi * atan2(first(.data$axis_y), first(.data$axis_x)),
+      zenith_deg = 180 / pi * acos(first(.data$axis_z)),
+      growth_length = first(.data$growth_length),
+      cylinders = n(),
+      segments = length(unique(.data$segment)),
+      base_distance_m = first(.data$base_distance),
+      twig_distance_m = first(.data$twig_distance)
+    ) %>%
+    left_join(parent_axis, by = "parent") %>%
+    ungroup() %>%
+    group_by("branch_alt") %>%
+    mutate(
+      length_m = abs(max(c(.data$x_length, .data$y_length, .data$z_length))),
+      dot_product = .data$axis_x * .data$p_axis_x + .data$axis_y * .data$p_axis_y + .data$axis_z * .data$p_axis_z,
+      angle_deg = acos(.data$dot_product) * 180 / pi,
+      angle_deg = if_else(is.na(.data$angle_deg), 0, .data$angle_deg),
+      parent_branch = if_else(is.na(.data$parent_branch), 0, .data$parent_branch)
+    ) %>%
+    select(
+      -c(
+        "parent", "dot_product",
+        "p_axis_x", "p_axis_y", "p_axis_z", "axis_x", "axis_y", "axis_z",
+        "x_length", "y_length", "z_length"
+      )
+    ) %>%
+    relocate("angle_deg", .after = "height_m") %>%
+    relocate("parent_branch", .after = "branch_alt") %>%
+    relocate("length_m", .after = "area_m2")
+
+  return(branch_alt)
 }
 
 #' Calculates segment metrics
