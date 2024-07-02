@@ -42,7 +42,6 @@
 #' names(metrics)
 #'
 tree_metrics <- function(cylinder) {
-
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     metrics <- calculate_tree_metrics(
@@ -222,6 +221,7 @@ calculate_tree_metrics <- function(
   message("Calculating Tree Metrics")
   trunk_cyl <- filter(cylinder, branch == 1)
   branch_cyl <- filter(cylinder, !branch == 1)
+  twig_cyl <- filter(cylinder, reverse_order == 1)
 
   # Tree Attributes from Cylinders ---------------------------------------------
   tree$tree_volume_m3 <- sum(pi * cylinder$radius^2 * cylinder$length)
@@ -234,9 +234,13 @@ calculate_tree_metrics <- function(
   tree$stem_length_m <- sum(trunk_cyl$length)
   tree$branch_length_m <- sum(branch_cyl$length)
 
-  tree$branches <- max(unique(cylinder$branch))
+  tree$branches <- length(unique(cylinder$branch))
+  tree$branches_alt <- length(unique(cylinder$branch_alt))
   tree$max_branch_order <- max(cylinder$branch_order)
   tree$max_reverse_order <- max(cylinder$reverse_order)
+
+  tree$twigs <- length(unique(twig_cyl$branch))
+  tree$twig_length_m <- sum(twig_cyl$length)
 
   tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
   tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)

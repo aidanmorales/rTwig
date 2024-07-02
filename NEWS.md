@@ -2,7 +2,7 @@
 
 ## New Features
 
--   `run_rtwig`: New function to run the Real Twig method and calculate tree metrics in one simple function.
+-   `run_rtwig()`: New function to run the Real Twig method and calculate tree metrics in one simple function.
 
 -   `standardize_qsm()`: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.
 
