@@ -32,7 +32,7 @@ library(ggpubr)
 
 ## Run Real Twig & Calculate Metrics
 
-Next, let's run Real Twig with `run_rTwig()` and calculate our tree metrics with `tree_metrics()`.
+Next, let's run Real Twig with `run_rtwig()` and calculate our tree metrics with `tree_metrics()`.
 
 ```{r, message=FALSE}
 # File path to QSM

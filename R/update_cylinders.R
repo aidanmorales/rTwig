@@ -73,7 +73,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- update_ordering(cylinder, "extension", "parent")
 
     # Total Children -----------------------------------------------------------
-    cylinder <- total_children(cylinder, "parent")
+    cylinder <- total_children(cylinder, "parent", "extension")
 
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "extension", "parent")
@@ -166,7 +166,7 @@ update_cylinders <- function(cylinder) {
     # Initialize an empty list to store results
     connected_segments <- list()
 
-    # Find unique branches w
+    # Find unique branches
     for (order in unique(cylinder$branchOrder)) {
       order_df <- filter(cylinder, .data$branchOrder == order)
       edges <- tidytable(from = order_df$parentID, to = order_df$ID)
@@ -202,7 +202,7 @@ update_cylinders <- function(cylinder) {
       rename("branchID" = "branch_new")
 
     # Total Children -----------------------------------------------------------
-    cylinder <- total_children(cylinder, "parentID")
+    cylinder <- total_children(cylinder, "parentID", "ID")
 
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "ID", "parentID")
@@ -268,7 +268,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- update_ordering(cylinder, "p1", "p2")
 
     # Total Children -----------------------------------------------------------
-    cylinder <- total_children(cylinder, "p2")
+    cylinder <- total_children(cylinder, "p2", "p1")
 
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "p1", "p2")
@@ -337,18 +337,23 @@ update_ordering <- function(cylinder, id, parent) {
 #' Finds total children for each cylinder
 #' @param cylinder QSM cylinder data frame
 #' @param parent column name of parent cylinders
+#' @param id column name of cylinder indexes
 #' @returns cylinder data frame with total children
 #' @noRd
-total_children <- function(cylinder, parent) {
+total_children <- function(cylinder, parent, id) {
   message("Calculating Total Children")
 
   # Adds supported children for each cylinder
   total_children <- cylinder %>%
     group_by(!!rlang::sym(parent)) %>%
-    summarize(totalChildren = n())
+    summarize(totalChildren = n()) %>%
+    rename(!!rlang::sym(id) := !!rlang::sym(parent))
 
   # Joins total children
-  cylinder <- left_join(cylinder, total_children, by = parent)
+  cylinder <- left_join(cylinder, total_children, by = id)
+
+  # Fill NA with 0
+  cylinder$totalChildren <- replace_na(cylinder$totalChildren, 0)
 
   return(cylinder)
 }
