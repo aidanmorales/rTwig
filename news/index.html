@@ -48,7 +48,7 @@
 <li><p><code><a href="../reference/standardize_qsm.html">standardize_qsm()</a></code>: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.</p></li>
 <li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.</p></li>
 <li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!</p></li>
-<li><p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: New variables: <em>distanceFromBase</em>, <em>distanceToTwig</em>, <em>branch_alt</em></p></li>
+<li><p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: New variables: <em>distanceFromBase</em>, <em>distanceToTwig</em>, <em>branch_alt.</em> QSM topology is now verified and corrected if there are any topological errors.</p></li>
 <li>
 <p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code></p>
 <ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
@@ -79,6 +79,7 @@
 <p><code>update_cylinder()</code></p>
 <ul><li><p>~2x performance improvement with better vectorization</p></li>
 <li><p>Cleaned variable names and removed repeat calculations</p></li>
+<li><p>Verify and correct QSM topology</p></li>
 </ul></li>
 <li><p>Reduced package dependencies</p></li>
 <li><p>Cleanup function imports</p></li>
