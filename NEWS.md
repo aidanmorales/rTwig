@@ -10,7 +10,7 @@
 
 -   `import_treegraph()`: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!
 
--   `update_cylinders()`: New variables: *distanceFromBase*, *distanceToTwig*, *branch_alt*
+-   `update_cylinders()`: New variables: *distanceFromBase*, *distanceToTwig*, *branch_alt.* QSM topology is now verified and corrected if there are any topological errors.
 
 -   `plot_qsm()`
 
@@ -43,6 +43,8 @@
     -   \~2x performance improvement with better vectorization
 
     -   Cleaned variable names and removed repeat calculations
+
+    -   Verify and correct QSM topology
 
 -   Reduced package dependencies
 

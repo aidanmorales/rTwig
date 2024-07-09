@@ -78,6 +78,11 @@ update_cylinders <- function(cylinder) {
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "extension", "parent")
 
+    # Verify Topology ----------------------------------------------------------
+    cylinder <- verify_topology(
+      network, cylinder, "extension", "parent", "branch", "BranchOrder"
+    )
+
     # Growth Length ------------------------------------------------------------
     cylinder <- growth_length(network, cylinder, "extension", "length")
 
@@ -85,10 +90,14 @@ update_cylinders <- function(cylinder) {
     cylinder <- reverse_branch_order(network, cylinder, "extension")
 
     # Branch Segments ----------------------------------------------------------
-    cylinder <- branch_segments(cylinder, "extension", "parent", "branch", "reverseBranchOrder")
+    cylinder <- branch_segments(
+      cylinder, "extension", "parent", "branch", "reverseBranchOrder"
+    )
 
     # Alternate Branch Numbering -----------------------------------------------
-    cylinder <- branch_alt(network, cylinder, "extension", "parent", "branch", "BranchOrder")
+    cylinder <- branch_alt(
+      network, cylinder, "extension", "parent", "branch", "BranchOrder"
+    )
 
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "extension", "length")
@@ -207,6 +216,11 @@ update_cylinders <- function(cylinder) {
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "ID", "parentID")
 
+    # Verify Topology ----------------------------------------------------------
+    cylinder <- verify_topology(
+      network, cylinder, "ID", "parentID", "branchID", "branchOrder"
+    )
+
     # Growth Length (if missing) -----------------------------------------------
     if (!"growthLength" %in% colnames(cylinder)) {
       cylinder <- growth_length(network, cylinder, "ID", "parentID")
@@ -219,7 +233,9 @@ update_cylinders <- function(cylinder) {
 
     # Branch Segments (if missing) ---------------------------------------------
     if (!"segmentID" %in% colnames(cylinder)) {
-      cylinder <- branch_segments(cylinder, "ID", "parentID", "branchID", "reverseBranchOrder")
+      cylinder <- branch_segments(
+        cylinder, "ID", "parentID", "branchID", "reverseBranchOrder"
+      )
     }
 
     # Path Metrics -------------------------------------------------------------
@@ -273,6 +289,11 @@ update_cylinders <- function(cylinder) {
     # Build QSM Cylinder Network  ----------------------------------------------
     network <- build_network(cylinder, "p1", "p2")
 
+    # Verify Topology ----------------------------------------------------------
+    cylinder <- verify_topology(
+      network, cylinder, "p1", "p2", "nbranch", "branch_order"
+    )
+
     # Growth Length ------------------------------------------------------------
     cylinder <- growth_length(network, cylinder, "p1", "length")
 
@@ -280,10 +301,14 @@ update_cylinders <- function(cylinder) {
     cylinder <- reverse_branch_order(network, cylinder, "p1")
 
     # Branch Segments ----------------------------------------------------------
-    cylinder <- branch_segments(cylinder, "p1", "p2", "nbranch", "reverseBranchOrder")
+    cylinder <- branch_segments(
+      cylinder, "p1", "p2", "nbranch", "reverseBranchOrder"
+    )
 
     # Alternate Branch Numbering -----------------------------------------------
-    cylinder <- branch_alt(network, cylinder, "p1", "p2", "nbranch", "branch_order")
+    cylinder <- branch_alt(
+      network, cylinder, "p1", "p2", "nbranch", "branch_order"
+    )
 
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "p1", "length")
@@ -319,11 +344,15 @@ update_ordering <- function(cylinder, id, parent) {
       by = "parent_old"
     ) %>%
     select(parent = "parent_new", id = "id_new") %>%
-    mutate(parent = case_when(is.na(.data$parent) ~ 0, TRUE ~ as.double(.data$parent))) %>%
-    mutate(parent = case_when(
-      .data$parent == 0 & .data$id > 1 ~ lag(as.double(.data$id), 1),
-      TRUE ~ as.double(.data$parent)
-    ))
+    mutate(
+      parent = case_when(is.na(.data$parent) ~ 0, TRUE ~ as.double(.data$parent))
+    ) %>%
+    mutate(
+      parent = case_when(
+        .data$parent == 0 & .data$id > 1 ~ lag(as.double(.data$id), 1),
+        TRUE ~ as.double(.data$parent)
+      )
+    )
 
   # Join new ids
   cylinder <- cylinder %>%
@@ -437,7 +466,10 @@ growth_length <- function(network, cylinder, id, length) {
 
   # Calculate growth length
   growth_length <- network$child_df %>%
-    left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
+    left_join(
+      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      by = "id"
+    ) %>%
     group_by("index") %>%
     summarize(growthLength = sum(!!rlang::sym(length), na.rm = TRUE)) %>%
     rename(!!rlang::sym(id) := "index")
@@ -459,7 +491,10 @@ reverse_branch_order <- function(network, cylinder, id) {
 
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
-    left_join(select(cylinder, id = !!rlang::sym(id), .data$totalChildren), by = "id") %>%
+    left_join(
+      select(cylinder, id = !!rlang::sym(id), .data$totalChildren),
+      by = "id"
+    ) %>%
     group_by("index") %>%
     filter(.data$id == 1 | .data$totalChildren > 1) %>%
     mutate(
@@ -510,7 +545,7 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 
   # Joins parent segments
   cylinder <- left_join(cylinder, parent_segments, by = "segment")
-  cylinder <- mutate(cylinder, parentSegment = replace_na(.data$parentSegment, 0))
+  cylinder$parentSegment <- replace_na(cylinder$parentSegment, 0)
 
   return(cylinder)
 }
@@ -567,7 +602,10 @@ path_metrics <- function(network, cylinder, id, length) {
 
   # Calculate distance from base to cylinder
   base_distance <- network$base_df %>%
-    left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
+    left_join(
+      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      by = "id"
+    ) %>%
     group_by("index") %>%
     summarize(distanceFromBase = sum(.data$length, na.rm = TRUE)) %>%
     rename(!!rlang::sym(id) := "index")
@@ -579,13 +617,90 @@ path_metrics <- function(network, cylinder, id, length) {
 
   # Calculate average distance to twigs
   twig_distance <- left_join(network$child_df, network$cylinder_info, by = "id") %>%
-    left_join(select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)), by = "id") %>%
+    left_join(
+      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      by = "id"
+    ) %>%
     group_by("index") %>%
-    summarize(distanceToTwig = sum(.data$length * .data$frequency) / sum(.data$twig)) %>%
+    summarize(
+      distanceToTwig = sum(.data$length * .data$frequency) / sum(.data$twig)
+    ) %>%
     rename(!!rlang::sym(id) := "index")
 
   # Joins distance from twig
   cylinder <- left_join(cylinder, twig_distance, by = id)
+
+  return(cylinder)
+}
+
+#' Verify QSM topology
+#' @param network QSM cylinder network list
+#' @param cylinder QSM cylinder data frame
+#' @param id column name of cylinder indexes
+#' @param parent column name of parent cylinders
+#' @param branch column name of branch ids
+#' @param branch_order column name of cylinder branch order
+#' @return cylinder data frame with corrected topology
+#' @noRd
+verify_topology <- function(
+    network,
+    cylinder,
+    id,
+    parent,
+    branch,
+    branch_order,
+    branch_position) {
+  message("Verifying Topology")
+
+  # Generate branch order topology
+  topology <- cylinder %>%
+    select(
+      id = !!rlang::sym(id),
+      parent = !!rlang::sym(parent),
+      branch_order = !!rlang::sym(branch_order)
+    ) %>%
+    left_join(
+      select(
+        cylinder,
+        parent = !!rlang::sym(id),
+        parent_order = !!rlang::sym(branch_order)
+      ),
+      by = "parent"
+    )
+
+  # Check for topological errors
+  error_topology <- topology %>%
+    mutate(check = .data$branch_order - .data$parent_order) %>%
+    filter(!.data$check %in% c(NA_integer_, 0, 1)) %>%
+    pull("id")
+
+  if (length(error_topology) > 0) {
+    message("Correcting Topology")
+
+    # Correct topology
+    corrected_topology <- network$child_df %>%
+      filter(.data$index %in% !!error_topology) %>%
+      left_join(
+        select(topology, "id", "branch_order"),
+        by = c("index" = "id")
+      ) %>%
+      left_join(
+        select(topology, "id", "parent_order"),
+        by = c("index" = "id")
+      ) %>%
+      mutate(branch_order = .data$branch_order + .data$parent_order + 1) %>%
+      select(id, branch_order) %>%
+      rename(!!rlang::sym(id) := "id")
+
+    # Update QSM topology
+    cylinder <- cylinder %>%
+      rename(branch_order = !!rlang::sym(branch_order)) %>%
+      left_join(corrected_topology, by = id) %>%
+      mutate(
+        !!rlang::sym(branch_order) := coalesce(.data$branch_order.y, .data$branch_order.x)
+      ) %>%
+      select(-c("branch_order.x", "branch_order.y"))
+  }
 
   return(cylinder)
 }
