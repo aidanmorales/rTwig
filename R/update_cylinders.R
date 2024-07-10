@@ -640,6 +640,7 @@ path_metrics <- function(network, cylinder, id, length) {
 #' @param parent column name of parent cylinders
 #' @param branch column name of branch ids
 #' @param branch_order column name of cylinder branch order
+#' @param verify dev Boolean to output error cylinders
 #' @return cylinder data frame with corrected topology
 #' @noRd
 verify_topology <- function(
@@ -649,7 +650,7 @@ verify_topology <- function(
     parent,
     branch,
     branch_order,
-    branch_position) {
+    verify = FALSE) {
   message("Verifying Topology")
 
   # Generate branch order topology
@@ -674,6 +675,11 @@ verify_topology <- function(
     filter(!.data$check %in% c(NA_integer_, 0, 1)) %>%
     pull("id")
 
+  # Output error cylinders
+  if (verify == TRUE) {
+    return(error_topology)
+  }
+
   if (length(error_topology) > 0) {
     message("Correcting Topology")
 
@@ -690,6 +696,8 @@ verify_topology <- function(
       ) %>%
       mutate(branch_order = .data$branch_order + .data$parent_order + 1) %>%
       select(id, branch_order) %>%
+      group_by("id") %>%
+      filter(branch_order == max(.data$branch_order)) %>%
       rename(!!rlang::sym(id) := "id")
 
     # Update QSM topology
