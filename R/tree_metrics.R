@@ -417,7 +417,7 @@ branch_metrics <- function(cylinder) {
       growth_length = first(.data$growth_length),
       cylinders = n(),
       segments = length(unique(.data$segment)),
-      children = sum(.data$total_children - 1),
+      children = sum(.data$total_children),
       base_distance_m = first(.data$base_distance),
       twig_distance_m = first(.data$twig_distance)
     ) %>%
@@ -551,7 +551,7 @@ segment_metrics <- function(cylinder) {
       azimuth_deg = 180 / pi * atan2(first(.data$axis_y), first(.data$axis_x)),
       zenith_deg = 180 / pi * acos(first(.data$axis_z)),
       cylinders = n(),
-      children = sum(.data$total_children - 1),
+      children = sum(.data$total_children),
       base_distance_m = first(.data$base_distance),
       twig_distance_m = first(.data$twig_distance)
     ) %>%
@@ -586,6 +586,11 @@ calculate_spreads <- function(cloud) {
     if (any(I)) {
       cloud_sub <- unique(cloud[I, , drop = FALSE])
       cloud_sub <- cloud_sub[order(cloud_sub[, 1]), ]
+
+      if (!is.matrix(cloud_sub)) {
+        cloud_sub <- matrix(cloud_sub, ncol = 3)
+      }
+
       if (nrow(cloud_sub) > 2) {
         hull_indexes <- convex_hull(cloud_sub[, 1:2]) + 1
         hull_area <- convex_hull_area(cloud_sub[, 1:2])

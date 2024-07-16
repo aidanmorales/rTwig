@@ -87,7 +87,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- growth_length(network, cylinder, "extension", "length")
 
     # Reverse Branch Order -----------------------------------------------------
-    cylinder <- reverse_branch_order(network, cylinder, "extension")
+    cylinder <- reverse_branch_order(network, cylinder, "extension", "parent")
 
     # Branch Segments ----------------------------------------------------------
     cylinder <- branch_segments(
@@ -228,7 +228,7 @@ update_cylinders <- function(cylinder) {
 
     # Reverse Branch Order (if missing) ----------------------------------------
     if (!"reverseBranchOrder" %in% colnames(cylinder)) {
-      cylinder <- reverse_branch_order(network, cylinder, "ID")
+      cylinder <- reverse_branch_order( network, cylinder, "ID", "parentID")
     }
 
     # Branch Segments (if missing) ---------------------------------------------
@@ -298,7 +298,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- growth_length(network, cylinder, "p1", "length")
 
     # Reverse Branch Order -----------------------------------------------------
-    cylinder <- reverse_branch_order(network, cylinder, "p1")
+    cylinder <- reverse_branch_order(network, cylinder, "p1", "p2")
 
     # Branch Segments ----------------------------------------------------------
     cylinder <- branch_segments(
@@ -484,19 +484,27 @@ growth_length <- function(network, cylinder, id, length) {
 #' @param network QSM cylinder network list
 #' @param cylinder QSM cylinder data frame
 #' @param id column name of cylinder indexes
+#' @param parent column name of parent cylinders
 #' @returns cylinder data frame with reverse branch order
 #' @noRd
-reverse_branch_order <- function(network, cylinder, id) {
+reverse_branch_order <- function(network, cylinder, id, parent) {
   message("Calculating Reverse Branch Order")
+
+  # Find branch break points
+  breaks <- cylinder %>%
+    rename(parent := !!rlang::sym(parent)) %>%
+    group_by("parent") %>%
+    summarize(breaks = n())
 
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
     left_join(
-      select(cylinder, id = !!rlang::sym(id), .data$totalChildren),
+      select(cylinder, id = !!rlang::sym(id), parent = !!rlang::sym(parent)),
       by = "id"
     ) %>%
+    left_join(breaks, by = "parent") %>%
     group_by("index") %>%
-    filter(.data$id == 1 | .data$totalChildren > 1) %>%
+    filter(.data$id == 1 | .data$breaks > 1) %>%
     mutate(
       depth = 1:n(),
       reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
