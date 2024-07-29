@@ -7,7 +7,8 @@ Authors@R:
       given = "Aidan", 
       family = "Morales", 
       email = "moral169@msu.edu", 
-      role = c("aut", "cre", "cph")
+      role = c("aut", "cre", "cph"),
+      comment = c(ORCID = "0009-0000-4513-4908")
     ),
     person(
       given = "David W.",    
@@ -22,33 +23,17 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
 Imports: 
-    R.matlab,
-    rmatio,
-    tidytable,
-    cobs,
-    igraph,
-    future,
-    foreach,
-    doFuture,
-    progressr,
-    rgl,
-    colourvalues,
-    Rdpack,
-    rlang,
-    Rcpp,
-    RcppSimdJson,
-    geometry
+    R.matlab, rmatio, tidytable, cobs, igraph, future, foreach, doFuture,
+    progressr, rgl, colourvalues, Rdpack, rlang, Rcpp, RcppSimdJson, geometry
 License: GPL (>= 3)
 Depends: R (>= 3.5.0)
 LazyData: true
 Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick, dplyr, tidyr
 VignetteBuilder: knitr
-NeedsCompilation: no
+NeedsCompilation: yes
 Packaged: 2023-12-14 23:03:09 UTC; moral169
-Author: Aidan Morales [aut, cre, cph],
-  David W. MacFarlane [aut, cph]
+Author: Aidan Morales [aut, cre, cph], David W. MacFarlane [aut, cph]
 Maintainer: Aidan Morales <moral169@msu.edu>
 URL: https://aidanmorales.github.io/rTwig/, https://github.com/aidanmorales/rTwig
 BugReports: https://github.com/aidanmorales/rTwig/issues
-LinkingTo: 
-    Rcpp
+LinkingTo: Rcpp

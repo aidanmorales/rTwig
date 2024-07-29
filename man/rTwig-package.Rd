@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Aidan Morales \email{moral169@msu.edu} [copyright holder]
+\strong{Maintainer}: Aidan Morales \email{moral169@msu.edu} (\href{https://orcid.org/0009-0000-4513-4908}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{
