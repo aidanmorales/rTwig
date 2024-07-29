@@ -131,7 +131,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Spreads</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1136 obs. of  29 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  29 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius            : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.769 0.768 0.769 0.769 ...</span>
@@ -190,7 +190,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cylinder:Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1149 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cylinder:Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  26 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ ID                  : int [1:1149] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parentID            : num [1:1149] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ startX              : num [1:1149] 0.761 0.759 0.771 0.768 0.765 ...</span>
@@ -219,7 +219,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ radius              : num [1:1149] 0.0472 0.047 0.0469 0.0467 0.0453 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ metrics :List of 24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch               :Classes ‘grouped_tt’, ‘tidytable’, ‘data.table’ and 'data.frame':	65 obs. of  20 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch               :Classes ‘grouped_tt’, ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	65 obs. of  20 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch          : int [1:65] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parent_branch   : int [1:65] 0 1 1 1 1 5 1 1 1 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_order    : int [1:65] 0 1 1 1 1 2 1 1 1 2 ...</span>
@@ -242,7 +242,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ twig_distance_m : num [1:65] 3.4286 0.0939 0.2738 0.615 0.4527 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "groups")= chr "branch"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment              :Classes ‘grouped_tt’, ‘tidytable’, ‘data.table’ and 'data.frame':	133 obs. of  18 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment              :Classes ‘grouped_tt’, ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	133 obs. of  18 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segment         : num [1:133] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parent_segment  : num [1:133] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_order    : int [1:133] 0 0 0 0 0 0 0 0 0 0 ...</span>
@@ -264,7 +264,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "groups")= chr "segment"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ cloud                : num [1:12262, 1:3] 0.787 0.796 0.803 0.807 0.807 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree                 :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	1 obs. of  30 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree                 :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1 obs. of  30 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tree_volume_m3         : num 0.0218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ stem_volume_m3         : num 0.012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_volume_m3       : num 0.00975</span>
@@ -296,128 +296,128 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ start_y                : num -0.0789</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ start_z                : num 0.996</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_height_dist     :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_height_dist     :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	4 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class_m: int [1:4] 1 2 3 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3     : num [1:4] 0.00583 0.00616 0.00725 0.00251</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2       : num [1:4] 0.271 0.493 1.008 0.542</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m      : num [1:4] 1 4.53 14.56 11.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_diameter_dist   :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	10 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_diameter_dist   :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	10 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ diameter_class_cm: num [1:10] 1 2 3 4 5 6 7 8 9 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:10] 0.000461 0.001691 0.00263 0.004425 0.000752 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:10] 0.2043 0.463 0.4336 0.4998 0.0731 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:10] 7.217 10.498 5.754 4.515 0.566 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_zenith_dist     :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	14 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_zenith_dist     :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	14 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ zenith_class_deg: num [1:14] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3       : num [1:14] 0.00862 0.00327 0.00229 0.00131 0.00189 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2         : num [1:14] 0.462 0.286 0.26 0.204 0.273 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m        : num [1:14] 2.34 2.88 3.25 3.63 4.35 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_azimuth_dist    :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	36 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree_azimuth_dist    :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	36 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ azimuth_class_deg: num [1:36] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:36] 2.87e-04 5.77e-04 3.01e-04 2.20e-04 5.84e-05 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:36] 0.0467 0.0499 0.0378 0.0362 0.0164 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:36] 0.789 0.638 0.725 0.71 0.416 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_diameter_dist :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	6 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_diameter_dist :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	6 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ diameter_class_cm: num [1:6] 1 2 3 4 5 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:6] 0 0.000186 0.000378 0.000453 0.000743 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:6] 0 0.0836 0.1472 0.1217 0.1567 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:6] 0 3 4.63 2.72 2.76 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches         : int [1:6] 0 25 18 5 5 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_height_dist   :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_height_dist   :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class_m: num [1:4] 1 2 3 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3     : num [1:4] 0 0.004522 0.004497 0.000734</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2       : num [1:4] 0 0.613 0.761 0.219</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m      : num [1:4] 0 8.36 12.96 5.78</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches      : int [1:4] 0 13 29 22</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_angle_dist    :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_angle_dist    :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ angle_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3      : num [1:18] 0.00 0.00 2.61e-05 5.87e-04 3.61e-03 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2        : num [1:18] 0 0 0.0101 0.1105 0.4659 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m       : num [1:18] 0 0 0.317 2.059 6.412 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches       : int [1:18] 0 0 2 5 11 7 9 16 9 3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_zenith_dist   :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_zenith_dist   :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ zenith_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3       : num [1:18] 0 0.000105 0.00053 0.000105 0.002499 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2         : num [1:18] 0 0.0378 0.0927 0.0358 0.2775 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m        : num [1:18] 0 1.13 1.61 1.04 2.95 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches        : int [1:18] 0 4 4 6 2 6 10 8 4 8 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_azimuth_dist  :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	36 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_azimuth_dist  :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	36 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ azimuth_class_deg: num [1:36] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:36] 1.42e-05 1.74e-04 2.06e-05 2.82e-05 1.31e-05 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:36] 0.00578 0.03567 0.00917 0.01129 0.00486 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:36] 0.188 0.615 0.324 0.365 0.146 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches         : int [1:36] 1 1 3 2 1 0 2 2 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_order_dist    :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_order_dist    :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_order: int [1:4] 1 2 3 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branches    : int [1:4] 17 26 18 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3   : num [1:4] 5.99e-03 3.24e-03 5.08e-04 1.55e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2     : num [1:4] 0.85701 0.57187 0.15626 0.00695</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m    : num [1:4] 12.01 10.63 4.216 0.249</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_diameter_dist:Classes ‘tidytable’, ‘data.table’ and 'data.frame':	8 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_diameter_dist:Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	8 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ diameter_class_cm: num [1:8] 1 2 3 4 5 6 7 8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:8] 0 0.000246 0.000582 0.000914 0.001156 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:8] 0 0.11 0.215 0.24 0.233 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:8] 0 3.96 6.48 5.21 3.89 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments         : int [1:8] 0 34 30 17 11 9 8 9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_height_dist  :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_height_dist  :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	4 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class_m: num [1:4] 1 2 3 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3     : num [1:4] 0 0.00581 0.00665 0.00186</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2       : num [1:4] 0 0.546 0.976 0.438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m      : num [1:4] 0 5.62 14.76 9.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments      : int [1:4] 0 26 60 46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_angle_dist   :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_angle_dist   :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ angle_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3      : num [1:18] 0 0.000678 0.002517 0.002932 0.002966 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2        : num [1:18] 0 0.0438 0.2548 0.2863 0.3763 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m       : num [1:18] 0 0.23 2.45 3.62 5.28 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments       : int [1:18] 0 2 13 17 25 19 19 20 11 4 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_zenith_dist  :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_zenith_dist  :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ zenith_class_deg: num [1:18] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3       : num [1:18] 0.00104 0.00329 0.00115 0.00112 0.00174 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2         : num [1:18] 0.084 0.268 0.152 0.165 0.17 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m        : num [1:18] 0.551 2.568 2.263 2.827 1.459 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments        : int [1:18] 3 11 10 13 7 10 17 18 10 16 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_azimuth_dist :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	36 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_azimuth_dist :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	36 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ azimuth_class_deg: num [1:36] 10 20 30 40 50 60 70 80 90 100 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3        : num [1:36] 1.42e-05 1.74e-04 2.53e-04 8.08e-04 1.56e-04 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2          : num [1:36] 0.00578 0.03567 0.03081 0.08626 0.04052 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m         : num [1:36] 0.188 0.615 0.621 1.215 0.959 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments         : int [1:36] 1 1 5 5 4 1 3 2 0 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_order_dist   :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ segment_order_dist   :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ reverse_order: int [1:18] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ segments     : int [1:18] 69 18 10 8 5 4 3 3 2 2 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ volume_m3    : num [1:18] 0.0019 0.00115 0.00119 0.00162 0.00102 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ area_m2      : num [1:18] 0.567 0.236 0.206 0.205 0.13 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ length_m     : num [1:18] 15.01 4.21 2.98 2.15 1.35 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ stem_taper           :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	123 obs. of  2 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ stem_taper           :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	123 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_m   : num [1:123] 0 0.0497 0.1027 0.1562 0.2086 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ diameter_cm: num [1:123] 9.44 9.41 9.38 9.33 9.07 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ spreads              :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	360 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ spreads              :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	360 obs. of  3 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ azimuth_deg : num [1:360] 20 40 60 80 100 120 140 160 180 200 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class: int [1:360] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ spread_m    : num [1:360] 0.1055 0.0986 0.1075 0.1075 0.1081 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ vertical_profile     :Classes ‘tidytable’, ‘data.table’ and 'data.frame':	20 obs. of  2 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ vertical_profile     :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	20 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class: int [1:20] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ avg_spread_m: num [1:20] 0.1011 0.0952 0.0917 0.0856 0.0861 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_alt           :Classes ‘grouped_tt’, ‘tidytable’, ‘data.table’ and 'data.frame':	18 obs. of  17 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_alt           :Classes ‘grouped_tt’, ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  17 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_alt      : num [1:18] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parent_branch   : int [1:18] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_order    : int [1:18] 1 1 1 1 1 1 1 1 1 1 ...</span>

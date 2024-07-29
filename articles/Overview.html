@@ -365,9 +365,27 @@ much overestimation there is in the twig radii.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># QSM summary</span></span>
 <span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="st">"unmodified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0       10.8         0.644  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1        5.80        0.827  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2        3.86        0.732  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3        1.06        0.237  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span>
 <span></span>
 <span><span class="co"># QSM summary with Triangulation</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span>, radius <span class="op">=</span> <span class="st">"unmodified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span>, radius <span class="op">=</span> <span class="st">"unmodified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0       29.0         0.645  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1        5.80        0.827  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2        3.86        0.732  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3        1.06        0.237  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Looking at the diagnostic plot on a log log scale, with the measured
 twig radius as the horizontal line, we can see that nearly all of the
@@ -390,7 +408,16 @@ new volume estimates and diagnostic plots.</p>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Corrected QSM summary</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="st">"modified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="st">"modified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0      10.8          0.640  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1       5.20         0.754  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2       2.69         0.583  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3       0.539        0.170  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4       0.104        0.043<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5       0.006<span style="text-decoration: underline;">83</span>      0.003<span style="text-decoration: underline;">08</span></span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Here we can see that we reduced the volume of the QSM by around 3
 liters, which is around a 15% overestimation in volume before
