@@ -49,7 +49,7 @@ run_rtwig <- function(
     # Import QSM ---------------------------------------------------------------
     if (!is.null(version)) {
       version <- version
-      qsm <- import_qsm(file, version)
+      cylinder <- import_qsm(file, version)$cylinder
     } else {
       cylinder <- import_qsm(file)$cylinder
     }
