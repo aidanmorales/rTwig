@@ -951,7 +951,10 @@ correct_radii <- function(cylinder, twig_radius, backend = "multisession") {
 #' @param end_workers TRUE or NULL
 #' @returns cylinder data frame with reverse branch order
 #' @noRd
-parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers = NULL) {
+parallel_workers <- function(
+    backend = NULL,
+    start_workers = NULL,
+    end_workers = NULL) {
   message("Starting Parallel Workers")
 
   if (start_workers == TRUE) {
@@ -1003,12 +1006,29 @@ parallel_workers <- function(backend = NULL, start_workers = NULL, end_workers =
 #' @param branch_order column name of the branch orders
 #' @param reverse_order column name of the reverse branch order
 #' @param branch_position column name of the branch position
+#' @param growth_length column name of growth length
+#' @param total_children column name of total children
 #'
 #' @returns cylinder data frame with all paths
 #' @noRd
-combine_paths <- function(cylinder, id, parent, radius, branch, branch_order, reverse_order, branch_position) {
+combine_paths <- function(
+    cylinder,
+    id,
+    parent,
+    radius,
+    branch,
+    branch_order,
+    reverse_order,
+    branch_position,
+    growth_length,
+    total_children) {
   # Find all paths
-  paths <- build_network(cylinder, "extension", "parent", FALSE)
+  paths <- build_network(
+    cylinder = cylinder,
+    id = id,
+    parent = parent,
+    all_paths = FALSE
+  )
 
   # Extract required variables
   path_vars <- cylinder %>%
@@ -1019,8 +1039,8 @@ combine_paths <- function(cylinder, id, parent, radius, branch, branch_order, re
       branch_order = !!rlang::sym(branch_order),
       reverse_order = !!rlang::sym(reverse_order),
       branch_position = !!rlang::sym(branch_position),
-      "growthLength",
-      "totalChildren"
+      growth_length = !!rlang::sym(growth_length),
+      total_children = !!rlang::sym(total_children)
     )
 
   # Combine all path data
