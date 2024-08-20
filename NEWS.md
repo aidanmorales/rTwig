@@ -1,4 +1,4 @@
-# rTwig (development version)
+# rTwig 1.1.0
 
 ## New Features
 
@@ -24,7 +24,7 @@
 
     -   Complete refactor with Rcpp and tidyeval for massive performance improvements
     -   Cylinder *color* parameter can now be set to *random*, or *FALSE* to disable exporting colors
-    -   *Note: color exporting is currently broken but will be fixed in a future rgl package update*
+    -   *Note: color exporting will be fixed in a future rgl package update*
 
 ## Improvements
 

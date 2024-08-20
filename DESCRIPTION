@@ -32,7 +32,6 @@ Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick, dplyr, tidy
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2023-12-14 23:03:09 UTC; moral169
-Author: Aidan Morales [aut, cre, cph], David W. MacFarlane [aut, cph]
 Maintainer: Aidan Morales <moral169@msu.edu>
 URL: https://aidanmorales.github.io/rTwig/, https://github.com/aidanmorales/rTwig
 BugReports: https://github.com/aidanmorales/rTwig/issues
