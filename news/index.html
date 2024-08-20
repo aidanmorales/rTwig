@@ -41,9 +41,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="rtwig-110">rTwig 1.1.0<a class="anchor" aria-label="anchor" href="#rtwig-110"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-1-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: New function to run the Real Twig method and calculate tree metrics in one simple function.</p></li>
 <li><p><code><a href="../reference/standardize_qsm.html">standardize_qsm()</a></code>: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.</p></li>
 <li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.</p></li>
@@ -63,11 +63,11 @@
 <p><code><a href="../reference/export_mesh.html">export_mesh()</a></code></p>
 <ul><li>Complete refactor with Rcpp and tidyeval for massive performance improvements</li>
 <li>Cylinder <em>color</em> parameter can now be set to <em>random</em>, or <em>FALSE</em> to disable exporting colors</li>
-<li><em>Note: color exporting is currently broken but will be fixed in a future rgl package update</em></li>
+<li><em>Note: color exporting will be fixed in a future rgl package update</em></li>
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-1-1-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-1-0"></a></h3>
 <ul><li>
 <p>Implement Rcpp across package</p>
 <ul><li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> &gt; 10x performance improvement!</p></li>
@@ -88,7 +88,7 @@
 <li><p>Update citations</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-1-1-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-1-0"></a></h3>
 <ul><li><p>All parent child cylinder IDs, nodes, and branches begin numbering at 1 to ensure compatibility with R indexing and igraph. This affects SimpleForest and Treegraph.</p></li>
 <li><p>Redefined SimpleForest branch structure to begin at a new branch order and end in a twig. This ensures consistency in the code and calculations between TreeQSM, Treegraph, and SimpleForest. The old branch definition is saved as a new variable called <em>branch_alt</em>, and is changed to begin at zero to be consistent with the new <em>branch_alt</em> variable from Real Twig.</p></li>
 <li><p>Renamed <em>twigRad</em> function parameter to <em>twig_radius</em> to be consistent with tidy style guidelines</p></li>
