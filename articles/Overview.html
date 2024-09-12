@@ -330,7 +330,7 @@ twig diameter for Kentucky coffee tree.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Look at the twigs database</span></span>
 <span><span class="va">twigs</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 102 × 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 104 × 7</span></span></span>
 <span><span class="co">#&gt;    scientific_name  radius_mm     n   min   max   std    cv</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Abies concolor        1.43    21  0.89  1.9   0.28  0.19</span></span>
@@ -340,10 +340,10 @@ twig diameter for Kentucky coffee tree.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Acer saccharinum      1.41    14  0.89  1.9   0.27  0.2 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Acer saccharum        1.2     30  0.89  1.65  0.23  0.19</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Acer spp.             1.29   104  0.89  2.03  0.23  0.18</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Aesculus flava        2.67     8  2.29  2.79  0.2   0.08</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Aesculus spp.         2.67     8  2.29  2.79  0.2   0.08</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Aesculus flava        2.96    14  2.29  4.44  0.58  0.19</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Aesculus spp.         2.96    14  2.29  4.44  0.58  0.19</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Betula nigra          0.85    30  0.51  1.52  0.23  0.27</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 92 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 94 more rows</span></span></span>
 <span></span>
 <span><span class="co"># Find our species</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">twigs</span>, <span class="va">scientific_name</span> <span class="op">==</span> <span class="st">"Gymnocladus dioicus"</span><span class="op">)</span></span>
