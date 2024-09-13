@@ -232,6 +232,96 @@ sort_index <- function(x, indexes) {
     .Call(`_rTwig_sort_index`, x, indexes)
 }
 
+#' @title Normalize View
+#'
+#' @description Normalizes RGL plot view
+#'
+#' @param x NumericVector x coordinate
+#' @param y NumericVector y coordinate
+#' @param z NumericVector z coordinate
+#' @param viewport NumericVector from RGL
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+normalize_view <- function(x, y, z, viewport) {
+    .Call(`_rTwig_normalize_view`, x, y, z, viewport)
+}
+
+#' @title Solve and Transpose
+#'
+#' @description Solves and transposes RGL view matrices
+#'
+#' @param proj NumericMatrix from rgl.projection function
+#' @param model NumericMatrix from rgl.projection function
+#' @param normalized NumericMatrix from normalize_view function
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+solve_and_transpose <- function(proj, model, normalized) {
+    .Call(`_rTwig_solve_and_transpose`, proj, model, normalized)
+}
+
+#' @title As Euclidean
+#'
+#' @description Rcpp port of RGL's asEuclidean function.
+#' Converts n x 4 matrix to n x 3 euclidean matrix.
+#'
+#' @param x NumericMatrix
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+as_euclidean <- function(x) {
+    .Call(`_rTwig_as_euclidean`, x)
+}
+
+#' @title RGL Window to User
+#'
+#' @description Rcpp port of RGL's rgl.window2user function
+#'
+#' @param x NumericVector x coordinate
+#' @param y NumericVector y coordinate
+#' @param z NumericVector z coordinate
+#' @param projection List from RGL rgl.projection function
+#' @return Numeric Matrix
+#'
+#' @noRd
+#'
+rtwig_window2user <- function(x, y, z, projection) {
+    .Call(`_rTwig_rtwig_window2user`, x, y, z, projection)
+}
+
+#' @title Translation Matrix
+#'
+#' @description Generates translation matrix
+#'
+#' @param x coordinate
+#' @param y coordinate
+#' @param z coordinate
+#'
+#' @noRd
+#'
+translation_matrix <- function(x, y, z) {
+    .Call(`_rTwig_translation_matrix`, x, y, z)
+}
+
+#' @title User Matrix
+#'
+#' @description Generates user matrix to update RGL plot view
+#'
+#' @param x coordinate
+#' @param y coordinate
+#' @param z coordinate
+#' @param start List of starting values
+#'
+#' @noRd
+#'
+user_matrix <- function(x, y, z, start) {
+    .Call(`_rTwig_user_matrix`, x, y, z, start)
+}
+
 #' @title Connect Cylinders
 #'
 #' @description Connects cylinder endpoints and smooths axes

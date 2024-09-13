@@ -5,18 +5,22 @@
 \title{Plot QSM}
 \usage{
 plot_qsm(
-  cylinder,
+  cylinder = NULL,
   radius = NULL,
   color = NULL,
   palette = NULL,
   facets = 6,
+  skeleton = FALSE,
+  skeleton_lwd = NULL,
   cloud = NULL,
   pt_color = NULL,
   pt_size = NULL,
   axes = TRUE,
+  axes_color = NULL,
   hover = FALSE,
-  skeleton = FALSE,
-  bg_color = NULL
+  bg_color = NULL,
+  lit = TRUE,
+  pan = TRUE
 )
 }
 \arguments{
@@ -30,6 +34,10 @@ plot_qsm(
 
 \item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
 
+\item{skeleton}{Plot the QSM skeleton instead of cylinders. Defaults to FALSE.}
+
+\item{skeleton_lwd}{Skeleton line width. Defaults to 1.}
+
 \item{cloud}{Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.}
 
 \item{pt_color}{Color of the point cloud. Defaults to black. Can be set to "random".}
@@ -38,17 +46,21 @@ plot_qsm(
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
+\item{axes_color}{Set the axes color. Defaults to black.}
+
 \item{hover}{Show cylinder and branch id on mouse hover. Defaults to FALSE.}
 
-\item{skeleton}{Plot the QSM skeleton instead of cylinders. Defaults to FALSE.}
+\item{bg_color}{Set the background color of the plot. Defaults to white.}
 
-\item{bg_color}{Set the background color of the rgl plot. Defaults to NULL.}
+\item{lit}{Enable light source in plot. Defaults to TRUE. Can be set to FALSE.}
+
+\item{pan}{Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.}
 }
 \value{
 A rgl plot
 }
 \description{
-Plots QSM cylinders and point clouds using the rgl library
+Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backends.
 }
 \examples{
 

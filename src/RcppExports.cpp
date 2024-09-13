@@ -216,6 +216,85 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// normalize_view
+NumericMatrix normalize_view(NumericVector x, NumericVector y, NumericVector z, NumericVector viewport);
+RcppExport SEXP _rTwig_normalize_view(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP viewportSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type viewport(viewportSEXP);
+    rcpp_result_gen = Rcpp::wrap(normalize_view(x, y, z, viewport));
+    return rcpp_result_gen;
+END_RCPP
+}
+// solve_and_transpose
+NumericMatrix solve_and_transpose(const NumericMatrix& proj, const NumericMatrix& model, const NumericMatrix& normalized);
+RcppExport SEXP _rTwig_solve_and_transpose(SEXP projSEXP, SEXP modelSEXP, SEXP normalizedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type proj(projSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type normalized(normalizedSEXP);
+    rcpp_result_gen = Rcpp::wrap(solve_and_transpose(proj, model, normalized));
+    return rcpp_result_gen;
+END_RCPP
+}
+// as_euclidean
+NumericMatrix as_euclidean(const NumericMatrix& x);
+RcppExport SEXP _rTwig_as_euclidean(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(as_euclidean(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtwig_window2user
+NumericMatrix rtwig_window2user(NumericVector x, NumericVector y, NumericVector z, List projection);
+RcppExport SEXP _rTwig_rtwig_window2user(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP projectionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    Rcpp::traits::input_parameter< List >::type projection(projectionSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtwig_window2user(x, y, z, projection));
+    return rcpp_result_gen;
+END_RCPP
+}
+// translation_matrix
+NumericMatrix translation_matrix(double x, double y, double z);
+RcppExport SEXP _rTwig_translation_matrix(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type z(zSEXP);
+    rcpp_result_gen = Rcpp::wrap(translation_matrix(x, y, z));
+    return rcpp_result_gen;
+END_RCPP
+}
+// user_matrix
+NumericMatrix user_matrix(NumericVector x, NumericVector y, NumericVector z, List start);
+RcppExport SEXP _rTwig_user_matrix(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP startSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    Rcpp::traits::input_parameter< List >::type start(startSEXP);
+    rcpp_result_gen = Rcpp::wrap(user_matrix(x, y, z, start));
+    return rcpp_result_gen;
+END_RCPP
+}
 // connect_cylinders
 void connect_cylinders(DataFrame& cylinder);
 RcppExport SEXP _rTwig_connect_cylinders(SEXP cylinderSEXP) {
@@ -245,6 +324,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_mat_multiplication", (DL_FUNC) &_rTwig_mat_multiplication, 2},
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
+    {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
+    {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
+    {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},
+    {"_rTwig_rtwig_window2user", (DL_FUNC) &_rTwig_rtwig_window2user, 4},
+    {"_rTwig_translation_matrix", (DL_FUNC) &_rTwig_translation_matrix, 3},
+    {"_rTwig_user_matrix", (DL_FUNC) &_rTwig_user_matrix, 4},
     {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
     {NULL, NULL, 0}
 };

@@ -1,5 +1,17 @@
 # rTwig (development version)
 
+## New Features
+
+-   `plot_qsm()`: Point clouds can now be plotted independently of a QSM.
+    -   *pan*: The right mouse button now pans the plot instead of zooming by default. The functionality mimics `pan3d()` from RGL, but rewritten with Rcpp for better responsiveness.
+    -   *lit*: Enable or disable plot lighting
+    -   *axes_color*: The axes color can now be set by the user.
+    -   *skeleton_lwd*: Set the line width of the skeleton plots.
+
+## Improvements
+
+-   Update twig data base
+
 # rTwig 1.1.0
 
 ## New Features
