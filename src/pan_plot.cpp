@@ -295,10 +295,10 @@ NumericMatrix user_matrix(
   NumericVector x_normalized = x / viewport[2];
   NumericVector y_normalized = 1 - (y / viewport[3]);
   NumericMatrix xlat = rtwig_window2user(
-    x = x_normalized,
-    y = y_normalized,
-    z = z,
-    projection = projection
+    x_normalized,
+    y_normalized,
+    z,
+    projection
   );
 
   // Adjust xlat
