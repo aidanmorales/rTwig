@@ -141,8 +141,8 @@ plot_qsm <- function(
   # Point Cloud ----------------------------------------------------------------
   else if (is.null(cylinder) & !is.null(cloud)) {
     plot_data(
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      axes = axes, axes_color = axes_color, bg_color = bg_color, pan = pan
+      cloud = cloud, pt_color = pt_color, pt_size = pt_size, axes = axes,
+      axes_color = axes_color, bg_color = bg_color, hover = hover, pan = pan
     )
   } else {
     message(
@@ -539,5 +539,6 @@ pan_plot <- function(button = 2) {
   }
 
   rgl::rgl.setMouseCallbacks(button, begin, update)
-  # cat("Callbacks set on button", button, "of rgl device", rgl.cur(), "")
+  #cat("Callbacks set on button", button, "of rgl device", rgl.cur(), "")
+  cat("Panning plot on rgl device:", rgl.cur())
 }
