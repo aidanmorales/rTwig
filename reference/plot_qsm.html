@@ -165,37 +165,36 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cylinder2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cylinder2</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finding Branches</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
-<span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span><span class="va">cylinder2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Panning plot on rgl device: 1</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## All Parameters</span></span></span>
-<span class="r-in"><span><span class="va">file2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file2</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">cylinder</span>,</span></span>
-<span class="r-in"><span>  radius <span class="op">=</span> <span class="st">"UnmodRadius"</span>,</span></span>
-<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"growthLength"</span>,</span></span>
-<span class="r-in"><span>  palette <span class="op">=</span> <span class="st">"viridis"</span>,</span></span>
-<span class="r-in"><span>  facets <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  cloud <span class="op">=</span> <span class="va">cloud</span>,</span></span>
-<span class="r-in"><span>  pt_color <span class="op">=</span> <span class="st">"random"</span>,</span></span>
-<span class="r-in"><span>  pt_size <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  hover <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  bg_color <span class="op">=</span> <span class="st">"black"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## aRchi Processing Chain</span></span></span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM2.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Ordering</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finding Branches</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Growth Length</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cloud</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Panning plot on rgl device: 1</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

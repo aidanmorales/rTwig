@@ -190,7 +190,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cylinder:Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cylinder:Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  27 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ ID                  : int [1:1149] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parentID            : num [1:1149] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ startX              : num [1:1149] 0.761 0.759 0.771 0.768 0.765 ...</span>
@@ -210,6 +210,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branchOrder         : int [1:1149] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ reverseBranchOrder  : int [1:1149] 18 18 18 18 18 18 18 18 18 18 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ UnmodRadius         : num [1:1149] 0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ OldRadius           : num [1:1149] 0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_alt          : num [1:1149] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branchID            : int [1:1149] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ positionInBranch    : int [1:1149] 1 2 3 4 5 6 7 8 9 10 ...</span>
@@ -263,7 +264,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ twig_distance_m : num [1:133] 3.43 2.17 1.84 1.82 1.77 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "groups")= chr "segment"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ cloud                : num [1:12262, 1:3] 0.787 0.796 0.803 0.807 0.807 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ cloud                : num [1:12262, 1:3] 0.786 0.795 0.802 0.806 0.807 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tree                 :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1 obs. of  30 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tree_volume_m3         : num 0.0218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ stem_volume_m3         : num 0.012</span>
@@ -286,7 +287,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_diameter_mean_m  : num 1.52</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_diameter_max_m   : num 2.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_diameter_min_m   : num 0.905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_projected_area_m2: num 3.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_projected_area_m2: num 3.26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_base_height_m    : num 2.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_length_m         : num 1.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ crown_ratio            : num 0.381</span>
@@ -411,11 +412,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ spreads              :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	360 obs. of  3 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ azimuth_deg : num [1:360] 20 40 60 80 100 120 140 160 180 200 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class: int [1:360] 1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ spread_m    : num [1:360] 0.1055 0.0986 0.1075 0.1075 0.1081 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ spread_m    : num [1:360] 0.105 0.106 0.103 0.108 0.108 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ vertical_profile     :Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	20 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ height_class: int [1:20] 1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ avg_spread_m: num [1:20] 0.1011 0.0952 0.0917 0.0856 0.0861 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ avg_spread_m: num [1:20] 0.1019 0.0954 0.0921 0.0854 0.0865 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ branch_alt           :Classes ‘grouped_tt’, ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	18 obs. of  17 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ branch_alt      : num [1:18] 1 2 3 4 5 6 7 8 9 10 ...</span>
