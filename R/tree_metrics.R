@@ -104,10 +104,26 @@ tree_metrics <- function(cylinder) {
       axis_x = "ax", axis_y = "ay", axis_z = "az",
       end_x = "ex", end_y = "ey", end_z = "ez"
     )
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    metrics <- calculate_tree_metrics(
+      cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
+      branch = "branch_ID", branch_alt = "branch_alt",
+      radius = "radius_cyl", raw_radius = "UnmodRadius",
+      length = "length", segment = "segment",
+      branch_position = "positionInBranch",
+      growth_length = "growthLength", branch_order = "branching_order",
+      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ"
+    )
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM or SimpleForest QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

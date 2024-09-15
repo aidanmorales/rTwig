@@ -73,26 +73,14 @@ plot_qsm(cylinder)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-cylinder2 <- read.csv(file)
-cylinder2 <- update_cylinders(cylinder2)
-plot_qsm(cylinder2)
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+plot_qsm(cylinder)
 
-## All Parameters
-file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-cloud <- read.table(file2, header = FALSE)
-
-plot_qsm(
-  cylinder,
-  radius = "UnmodRadius",
-  color = "growthLength",
-  palette = "viridis",
-  facets = 100,
-  cloud = cloud,
-  pt_color = "random",
-  pt_size = 1,
-  axes = FALSE,
-  hover = TRUE,
-  bg_color = "black"
-)
+## aRchi Processing Chain
+file <- system.file("extdata/QSM2.csv", package = "rTwig")
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+plot_qsm(cylinder)
 
 }

@@ -161,6 +161,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- cylinder %>%
       mutate(
         UnmodRadius = .data$radius,
+        OldRadius = .data$radius,
         axisX = (.data$endX - .data$startX) / .data$length,
         axisY = (.data$endY - .data$startY) / .data$length,
         axisZ = (.data$endZ - .data$startZ) / .data$length
@@ -289,6 +290,9 @@ update_cylinders <- function(cylinder) {
     cylinder <- arrange(cylinder, .data$cyl_ID)
     cylinder <- update_ordering(cylinder, "cyl_ID", "parent_ID")
 
+    # Branch Order -------------------------------------------------------------
+    cylinder <- mutate(cylinder, branching_order = .data$branching_order - 1)
+
     # Adds cylinder info for plotting ------------------------------------------
     cylinder <- cylinder %>%
       mutate(
@@ -330,12 +334,17 @@ update_cylinders <- function(cylinder) {
       cylinder, "cyl_ID", "parent_ID", "branch_ID", "reverseBranchOrder"
     )
 
+    # Alternate Branch Numbering -----------------------------------------------
+    cylinder <- branch_alt(
+      network, cylinder, "cyl_ID", "parent_ID", "branch_ID", "branching_order"
+    )
+
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "cyl_ID", "length")
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

@@ -69,7 +69,7 @@ standardize_qsm <- function(cylinder) {
         axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
         end_x = "endX", end_y = "endY", end_z = "endZ",
         id = "ID", parent = "parentID", radius = "radius",
-        raw_radius = "radius", length = "length",
+        raw_radius = "UnmodRadius", length = "length",
         branch = "branchID", branch_position = "positionInBranch",
         branch_order = "branchOrder", reverse_order = "reverseBranchOrder",
         branch_alt = "branch_alt",
@@ -94,9 +94,34 @@ standardize_qsm <- function(cylinder) {
         axis_x = "ax", axis_y = "ay", axis_z = "az",
         end_x = "ex", end_y = "ey", end_z = "ez",
         id = "p1", parent = "p2", radius = "radius",
-        raw_radius = "radius", length = "length",
+        raw_radius = "UnmodRadius", length = "length",
         branch = "nbranch", branch_position = "positionInBranch",
         branch_order = "branch_order", reverse_order = "reverseBranchOrder",
+        branch_alt = "branch_alt",
+        segment = "segment", parent_segment = "parentSegment",
+        total_children = "totalChildren",
+        growth_length = "growthLength",
+        base_distance = "distanceFromBase",
+        twig_distance = "distanceToTwig"
+      )
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    # Check if update_cylinders() has already been run
+    if (!all(c("distanceFromBase", "distanceToTwig", "totalChildren") %in% colnames(cylinder))) {
+      cylinder <- update_cylinders(cylinder)
+    }
+
+    # Standardize SimpleForest variable names ----------------------------------
+    cylinder <- cylinder %>%
+      select(
+        start_x = "startX", start_y = "startY", start_z = "startZ",
+        axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+        end_x = "endX", end_y = "endY", end_z = "endZ",
+        id = "cyl_ID", parent = "parent_ID", radius = "radius_cyl",
+        raw_radius = "UnmodRadius", length = "length",
+        branch = "branch_ID", branch_position = "positionInBranch",
+        branch_order = "branching_order", reverse_order = "reverseBranchOrder",
         branch_alt = "branch_alt",
         segment = "segment", parent_segment = "parentSegment",
         total_children = "totalChildren",
@@ -107,7 +132,7 @@ standardize_qsm <- function(cylinder) {
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

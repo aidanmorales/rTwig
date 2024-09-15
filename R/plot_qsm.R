@@ -33,27 +33,15 @@
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' cylinder2 <- read.csv(file)
-#' cylinder2 <- update_cylinders(cylinder2)
-#' plot_qsm(cylinder2)
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' plot_qsm(cylinder)
 #'
-#' ## All Parameters
-#' file2 <- system.file("extdata/cloud.txt", package = "rTwig")
-#' cloud <- read.table(file2, header = FALSE)
-#'
-#' plot_qsm(
-#'   cylinder,
-#'   radius = "UnmodRadius",
-#'   color = "growthLength",
-#'   palette = "viridis",
-#'   facets = 100,
-#'   cloud = cloud,
-#'   pt_color = "random",
-#'   pt_size = 1,
-#'   axes = FALSE,
-#'   hover = TRUE,
-#'   bg_color = "black"
-#' )
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' plot_qsm(cylinder)
 #'
 plot_qsm <- function(
     cylinder = NULL,
@@ -138,6 +126,21 @@ plot_qsm <- function(
       bg_color = bg_color, lit = lit, pan = pan
     )
   }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    plot_data(
+      cylinder = cylinder, radius = radius, length = "length", id = "cyl_ID",
+      branch = "branch_ID", branch_order = "branching_order",
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ",
+      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      color = color, palette = palette,
+      axes = axes, axes_color = axes_color, hover = hover,
+      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      bg_color = bg_color, lit = lit, pan = pan
+    )
+  }
   # Point Cloud ----------------------------------------------------------------
   else if (is.null(cylinder) & !is.null(cloud)) {
     plot_data(
@@ -147,7 +150,7 @@ plot_qsm <- function(
   } else {
     message(
       "Invalid QSM or Cloud Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied.
       \nMake sure the point cloud is a data frame or matrix with the first three columns as the x, y, and z coordinates."
     )

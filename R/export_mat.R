@@ -27,6 +27,14 @@
 #'
 #' filename <- tempfile(pattern = "SimpleForest_QSM.mat")
 #' export_mat(cylinder, filename)
+#'
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#'
+#' filename <- tempfile(pattern = "aRchi_QSM.mat")
+#' export_mat(cylinder, filename)
 #' }
 #'
 export_mat <- function(cylinder, filename) {
@@ -220,10 +228,51 @@ export_mat <- function(cylinder, filename) {
     )
 
     R.matlab::writeMat(filename, cylinder = output)
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    radius <- as.matrix(cylinder$radius_cyl)
+    length <- as.matrix(cylinder$length)
+
+    start <- cylinder %>%
+      select(start.x = "startX", start.y = "startY", start.z = "startZ") %>%
+      as.matrix()
+
+    axis <- cylinder %>%
+      select(axis.x = "axisX", axis.y = "axisY", axis.z = "axisZ") %>%
+      as.matrix()
+
+    parent <- as.matrix(cylinder$parent_ID)
+    extension <- as.matrix(cylinder$cyl_ID)
+    added <- NA
+    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
+    branch <- as.matrix(cylinder$branch_ID)
+    SurfCov <- NA
+    mad <- NA
+    BranchOrder <- as.matrix(cylinder$branching_order)
+    PositionInBranch <- as.matrix(cylinder$positionInBranch)
+
+    output <- list(
+      radius = radius,
+      length = length,
+      start = start,
+      axis = axis,
+      parent = parent,
+      extension = extension,
+      added = added,
+      UnmodRadius = UnmodRadius,
+      branch = branch,
+      SurfCov = SurfCov,
+      mad = mad,
+      BranchOrder = BranchOrder,
+      PositionInBranch = PositionInBranch
+    )
+
+    R.matlab::writeMat(filename, cylinder = output)
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

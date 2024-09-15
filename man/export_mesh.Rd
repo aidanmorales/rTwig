@@ -43,26 +43,23 @@ qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 
-filename <- tempfile(pattern = "QSM_mesh")
+filename <- tempfile(pattern = "TreeQSM_mesh")
 export_mesh(cylinder, filename)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
-cylinder2 <- read.csv(file)
-cylinder2 <- update_cylinders(cylinder2)
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
 
-filename2 <- tempfile(pattern = "QSM_mesh2")
-export_mesh(cylinder2, filename2)
+filename <- tempfile(pattern = "SimpleForest_mesh")
+export_mesh(cylinder, filename)
 
-## All Parameters
+## aRchi Processing Chain
+file <- system.file("extdata/QSM2.csv", package = "rTwig")
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
 
-filename3 <- tempfile(pattern = "QSM_mesh3")
-export_mesh(
-  cylinder = cylinder,
-  filename = filename3,
-  radius = "UnmodRadius",
-  color = "growthLength",
-  palette = "viridis"
-)
+filename <- tempfile(pattern = "aRchi_mesh")
+export_mesh(cylinder, filename)
 
 }

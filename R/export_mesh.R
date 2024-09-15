@@ -21,27 +21,24 @@
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
-#' filename <- tempfile(pattern = "QSM_mesh")
+#' filename <- tempfile(pattern = "TreeQSM_mesh")
 #' export_mesh(cylinder, filename)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' cylinder2 <- read.csv(file)
-#' cylinder2 <- update_cylinders(cylinder2)
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
 #'
-#' filename2 <- tempfile(pattern = "QSM_mesh2")
-#' export_mesh(cylinder2, filename2)
+#' filename <- tempfile(pattern = "SimpleForest_mesh")
+#' export_mesh(cylinder, filename)
 #'
-#' ## All Parameters
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
 #'
-#' filename3 <- tempfile(pattern = "QSM_mesh3")
-#' export_mesh(
-#'   cylinder = cylinder,
-#'   filename = filename3,
-#'   radius = "UnmodRadius",
-#'   color = "growthLength",
-#'   palette = "viridis"
-#' )
+#' filename <- tempfile(pattern = "aRchi_mesh")
+#' export_mesh(cylinder, filename)
 #'
 export_mesh <- function(
     cylinder,
@@ -95,10 +92,20 @@ export_mesh <- function(
       axis_x = "ax", axis_y = "ay", axis_z = "az",
       facets = facets, color = color, palette = palette, normals = normals
     )
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    plot_mesh(
+      filename = filename, cylinder = cylinder, radius = radius,
+      length = "length", branch_order = "branching_order",
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      facets = facets, color = color, palette = palette, normals = normals
+    )
   } else {
     message(
       "Invalid QSM Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied.
       \nMake sure the point cloud is a data frame with the first three columns as the x, y, and z coordinates."
     )
