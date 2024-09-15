@@ -134,7 +134,7 @@
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Branch Ordering</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finding Branches</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
@@ -168,8 +168,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder  : int  18 18 18 18 18 18 18 18 18 18 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius         : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt          : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren       : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase    : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig      : num  3.43 3.38 3.33 3.27 3.22 ...</span>
