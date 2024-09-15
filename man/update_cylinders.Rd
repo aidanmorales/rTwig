@@ -40,6 +40,12 @@ cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
 str(cylinder)
 
+## aRchi Processing Chain
+file <- system.file("extdata/QSM2.csv", package = "rTwig")
+cylinder <- read.csv(file)
+cylinder <- update_cylinders(cylinder)
+str(cylinder)
+
 }
 \references{
 \insertRef{growth_parameter1}{rTwig}

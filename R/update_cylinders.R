@@ -36,6 +36,12 @@
 #' cylinder <- update_cylinders(cylinder)
 #' str(cylinder)
 #'
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' str(cylinder)
+#'
 update_cylinders <- function(cylinder) {
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
@@ -151,7 +157,7 @@ update_cylinders <- function(cylinder) {
         parentSegmentID = .data$parentSegmentID + 1
       )
 
-    # Adds cylinder info for plotting ------------------------------------------
+    # Plotting Info ------------------------------------------------------------
     cylinder <- cylinder %>%
       mutate(
         UnmodRadius = .data$radius,
@@ -276,6 +282,56 @@ update_cylinders <- function(cylinder) {
 
     # Path Metrics -------------------------------------------------------------
     cylinder <- path_metrics(network, cylinder, "p1", "length")
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    # Cylinder Ordering --------------------------------------------------------
+    cylinder <- arrange(cylinder, .data$cyl_ID)
+    cylinder <- update_ordering(cylinder, "cyl_ID", "parent_ID")
+
+    # Adds cylinder info for plotting ------------------------------------------
+    cylinder <- cylinder %>%
+      mutate(
+        UnmodRadius = .data$radius_cyl,
+        axisX = (.data$endX - .data$startX) / .data$length,
+        axisY = (.data$endY - .data$startY) / .data$length,
+        axisZ = (.data$endZ - .data$startZ) / .data$length
+      ) %>%
+      relocate("axisX", .after = "endZ") %>%
+      relocate("axisY", .after = "axisX") %>%
+      relocate("axisZ", .after = "axisY") %>%
+      relocate("radius_cyl", .before = "radius_cyl")
+
+    # Find Branches ------------------------------------------------------------
+    cylinder <- branch_from_order(
+      cylinder, "cyl_ID", "parent_ID", "branching_order",
+      branch_name = "branch_ID"
+    )
+
+    # Total Children -----------------------------------------------------------
+    cylinder <- total_children(cylinder, "parent_ID", "cyl_ID")
+
+    # Build QSM Cylinder Network  ----------------------------------------------
+    network <- build_network(cylinder, "cyl_ID", "parent_ID")
+
+    # Verify Topology ----------------------------------------------------------
+    cylinder <- verify_topology(
+      network, cylinder, "cyl_ID", "parent_ID", "branch_ID", "branching_order"
+    )
+
+    # Growth Length ------------------------------------------------------------
+    cylinder <- growth_length(network, cylinder, "cyl_ID", "length")
+
+    # Reverse Branch Order -----------------------------------------------------
+    cylinder <- reverse_branch_order(network, cylinder, "cyl_ID", "parent_ID")
+
+    # Branch Segments ----------------------------------------------------------
+    cylinder <- branch_segments(
+      cylinder, "cyl_ID", "parent_ID", "branch_ID", "reverseBranchOrder"
+    )
+
+    # Path Metrics -------------------------------------------------------------
+    cylinder <- path_metrics(network, cylinder, "cyl_ID", "length")
   } else {
     message(
       "Invalid Dataframe Supplied!!!
