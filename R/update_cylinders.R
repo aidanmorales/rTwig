@@ -169,46 +169,10 @@ update_cylinders <- function(cylinder) {
       mutate(branch_alt = .data$branchID - 1) %>%
       select(-"branchID")
 
-    # Generates new branch IDs -------------------------------------------------
-    message("Updating Branch Ordering")
-
-    # Initialize an empty list to store results
-    connected_segments <- list()
-
-    # Find unique branches
-    for (order in unique(cylinder$branchOrder)) {
-      order_df <- filter(cylinder, .data$branchOrder == order)
-      edges <- tidytable(from = order_df$parentID, to = order_df$ID)
-      g <- igraph::graph_from_data_frame(d = edges, directed = FALSE)
-      components <- igraph::components(g)
-      order_df$index <- components$membership[match(order_df$ID, igraph::V(g)$name)]
-      connected_segments[[as.character(order)]] <- order_df
-    }
-
-    # Create unique branch ids
-    branch_new <- bind_rows(connected_segments) %>%
-      group_by("branchOrder", "index") %>%
-      mutate(branchID = cur_group_id()) %>%
-      ungroup() %>%
-      select("ID", "branchID")
-
-    # Join new branch ids and calculates position in branch
-    cylinder <- left_join(cylinder, branch_new) %>%
-      group_by("branchID") %>%
-      mutate(positionInBranch = 1:n()) %>%
-      ungroup()
-
-    # Relabels branches consecutively
-    branches <- unique(cylinder$branchID)
-    branch_id <- tidytable(
-      branchID = branches,
-      branch_new = 1:length(branches)
+    # Find Branches ------------------------------------------------------------
+    cylinder <- branch_from_order(
+      cylinder, "ID", "parentID", "branchOrder", "branchID"
     )
-
-    # Updates branch ordering
-    cylinder <- left_join(cylinder, branch_id, by = "branchID") %>%
-      select(-"branchID") %>%
-      rename("branchID" = "branch_new")
 
     # Total Children -----------------------------------------------------------
     cylinder <- total_children(cylinder, "parentID", "ID")
@@ -392,7 +356,7 @@ total_children <- function(cylinder, parent, id) {
 #' @param id column name of parent cylinders
 #' @param parent column name of parent cylinders
 #' @param all_paths return all paths or just branching paths
-#' @returns list of cylinder networkd
+#' @returns list of cylinder network
 #' @noRd
 build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   message("Building Cylinder Network")
@@ -565,7 +529,7 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 #' @param parent column name of parent cylinders
 #' @param branch column name of branch ids
 #' @param branch_order column name of cylinder branch order
-#' @returns cylinder data frame with growth length
+#' @returns cylinder data frame with alterate branches
 #' @noRd
 branch_alt <- function(
     network,
@@ -594,6 +558,68 @@ branch_alt <- function(
     relocate(!!rlang::sym(id), .before = !!rlang::sym(parent))
 
   cylinder$branch_alt <- replace_na(cylinder$branch_alt, 0)
+
+  return(cylinder)
+}
+
+#' Calculates branch ids from branch order
+#' @param cylinder QSM cylinder data frame
+#' @param id column name of cylinder indexes
+#' @param parent column name of parent cylinders
+#' @param branch_order column name of cylinder branch order
+#' @param branch_name output column name for the branches
+#' @returns cylinder data frame with branches
+#' @noRd
+branch_from_order <- function(cylinder, id, parent, branch_order, branch_name) {
+  message("Finding Branches")
+
+  # Dynamically select ids and branch order
+  data <- select(cylinder, all_of(id), all_of(parent), all_of(branch_order)) %>%
+    rename("id" = id, "parent" = parent, "branch_order" = branch_order)
+
+  # Initialize an empty list to store results
+  connected_segments <- list()
+
+  # Find unique branches per order
+  for (order in unique(data$branch_order)) {
+    order_df <- filter(data, .data$branch_order == order)
+    edges <- tidytable(from = order_df$parent, to = order_df$id)
+    g <- igraph::graph_from_data_frame(d = edges, directed = FALSE)
+    components <- igraph::components(g)
+    order_df$index <- components$membership[match(order_df$id, igraph::V(g)$name)]
+    connected_segments[[as.character(order)]] <- order_df
+  }
+
+  # Create unique branch ids
+  branch <- bind_rows(connected_segments) %>%
+    group_by("branch_order", "index") %>%
+    mutate(branch = cur_group_id()) %>%
+    ungroup() %>%
+    select("id", "branch")
+
+  # Join new branch ids and calculate position in branch
+  data <- left_join(data, branch) %>%
+    group_by("branch") %>%
+    mutate(positionInBranch = 1:n()) %>%
+    ungroup()
+
+  # Relabels branches consecutively
+  branches <- unique(data$branch)
+  branch <- tidytable(
+    branch = branches,
+    branch_new = 1:length(branches)
+  )
+
+  # Updates branch ordering
+  branch <- left_join(data, branch, by = "branch") %>%
+    select("id", "branch_new", "positionInBranch") %>%
+    rename(
+      !!rlang::sym(id) := "id",
+      !!rlang::sym(branch_name) := "branch_new"
+    )
+
+  # Joins branches
+  cylinder <- left_join(cylinder, branch, by = id)
 
   return(cylinder)
 }
