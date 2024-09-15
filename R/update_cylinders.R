@@ -180,7 +180,7 @@ update_cylinders <- function(cylinder) {
       order_df <- filter(cylinder, .data$branchOrder == order)
       edges <- tidytable(from = order_df$parentID, to = order_df$ID)
       g <- igraph::graph_from_data_frame(d = edges, directed = FALSE)
-      components <- igraph::clusters(g)
+      components <- igraph::components(g)
       order_df$index <- components$membership[match(order_df$ID, igraph::V(g)$name)]
       connected_segments[[as.character(order)]] <- order_df
     }
@@ -223,12 +223,12 @@ update_cylinders <- function(cylinder) {
 
     # Growth Length (if missing) -----------------------------------------------
     if (!"growthLength" %in% colnames(cylinder)) {
-      cylinder <- growth_length(network, cylinder, "ID", "parentID")
+      cylinder <- growth_length(network, cylinder, "ID", "length")
     }
 
     # Reverse Branch Order (if missing) ----------------------------------------
     if (!"reverseBranchOrder" %in% colnames(cylinder)) {
-      cylinder <- reverse_branch_order( network, cylinder, "ID", "parentID")
+      cylinder <- reverse_branch_order(network, cylinder, "ID", "parentID")
     }
 
     # Branch Segments (if missing) ---------------------------------------------
