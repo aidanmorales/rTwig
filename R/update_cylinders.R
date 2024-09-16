@@ -111,7 +111,7 @@ update_cylinders <- function(cylinder) {
     # Organize Cylinders  ------------------------------------------------------
 
     if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
-      cylinder <- cylinder %>%
+      cylinder %>%
         relocate("OldRadius", .after = "UnmodRadius") %>%
         relocate("reverseBranchOrder", .after = "BranchOrder") %>%
         relocate("segment", .after = "PositionInBranch") %>%
@@ -128,7 +128,7 @@ update_cylinders <- function(cylinder) {
         relocate("end.z", .after = "end.y") %>%
         relocate("branch_alt", .after = "branch")
     } else {
-      cylinder <- cylinder %>%
+      cylinder %>%
         relocate("OldRadius", .after = "UnmodRadius") %>%
         relocate("reverseBranchOrder", .after = "BranchOrder") %>%
         relocate("segment", .after = "PositionInBranch") %>%
@@ -348,7 +348,6 @@ update_cylinders <- function(cylinder) {
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
-  return(cylinder)
 }
 
 #' Updates cylinder parent child ordering
@@ -384,12 +383,10 @@ update_ordering <- function(cylinder, id, parent) {
     )
 
   # Join new ids
-  cylinder <- cylinder %>%
+  cylinder %>%
     select(-c(!!rlang::sym(id), !!rlang::sym(parent))) %>%
     bind_cols(new_id) %>%
     rename(!!rlang::sym(parent) := "parent", !!rlang::sym(id) := "id")
-
-  return(cylinder)
 }
 
 #' Finds total children for each cylinder
@@ -504,9 +501,7 @@ growth_length <- function(network, cylinder, id, length) {
     rename(!!rlang::sym(id) := "index")
 
   # Joins growth length
-  cylinder <- left_join(cylinder, growth_length, by = id)
-
-  return(cylinder)
+  left_join(cylinder, growth_length, by = id)
 }
 
 #' Calculates the reverse branch order for each cylinder
@@ -543,10 +538,8 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
     rename(!!rlang::sym(id) := "id")
 
   # Joins reverse branch order
-  cylinder <- left_join(cylinder, reverse_branch_order, by = id) %>%
+  left_join(cylinder, reverse_branch_order, by = id) %>%
     fill("reverseBranchOrder", .direction = "down")
-
-  return(cylinder)
 }
 
 #' Calculates branching segments or "internodes"
@@ -684,9 +677,7 @@ branch_from_order <- function(cylinder, id, parent, branch_order, branch_name) {
     )
 
   # Joins branches
-  cylinder <- left_join(cylinder, branch, by = id)
-
-  return(cylinder)
+  left_join(cylinder, branch, by = id)
 }
 
 #' Calculates path based distance metrics
@@ -727,9 +718,7 @@ path_metrics <- function(network, cylinder, id, length) {
     rename(!!rlang::sym(id) := "index")
 
   # Joins distance from twig
-  cylinder <- left_join(cylinder, twig_distance, by = id)
-
-  return(cylinder)
+  left_join(cylinder, twig_distance, by = id)
 }
 
 #' Verify QSM topology
@@ -786,11 +775,7 @@ verify_topology <- function(
     corrected_topology <- network$child_df %>%
       filter(.data$index %in% !!error_topology) %>%
       left_join(
-        select(topology, "id", "branch_order"),
-        by = c("index" = "id")
-      ) %>%
-      left_join(
-        select(topology, "id", "parent_order"),
+        select(topology, "id", "branch_order", "parent_order"),
         by = c("index" = "id")
       ) %>%
       mutate(branch_order = .data$branch_order + .data$parent_order + 1) %>%

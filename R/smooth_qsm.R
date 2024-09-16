@@ -38,5 +38,4 @@ smooth_qsm <- function(cylinder) {
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
-  return(cylinder)
 }

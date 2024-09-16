@@ -38,8 +38,7 @@ standardize_qsm <- function(cylinder) {
     }
 
     # Standardize TreeQSM variable names ---------------------------------------
-    cylinder <- cylinder %>%
-      select(
+      select(cylinder,
         start_x = "start.x", start_y = "start.y", start_z = "start.z",
         axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
         end_x = "end.x", end_y = "end.y", end_z = "end.z",
@@ -63,8 +62,7 @@ standardize_qsm <- function(cylinder) {
     }
 
     # Standardize SimpleForest variable names ----------------------------------
-    cylinder <- cylinder %>%
-      select(
+      select(cylinder,
         start_x = "startX", start_y = "startY", start_z = "startZ",
         axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
         end_x = "endX", end_y = "endY", end_z = "endZ",
@@ -88,8 +86,7 @@ standardize_qsm <- function(cylinder) {
     }
 
     # Standardize TreeGraph variable names -------------------------------------
-    cylinder <- cylinder %>%
-      select(
+      select(cylinder,
         start_x = "sx", start_y = "sy", start_z = "sz",
         axis_x = "ax", axis_y = "ay", axis_z = "az",
         end_x = "ex", end_y = "ey", end_z = "ez",
@@ -113,8 +110,7 @@ standardize_qsm <- function(cylinder) {
     }
 
     # Standardize SimpleForest variable names ----------------------------------
-    cylinder <- cylinder %>%
-      select(
+      select(cylinder,
         start_x = "startX", start_y = "startY", start_z = "startZ",
         axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
         end_x = "endX", end_y = "endY", end_z = "endZ",
@@ -136,5 +132,4 @@ standardize_qsm <- function(cylinder) {
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
-  return(cylinder)
 }
