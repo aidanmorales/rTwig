@@ -31,6 +31,7 @@ smooth_qsm <- function(cylinder) {
     # Connect cylinder endpoints
     connect_cylinders(cylinder)
 
+    return(cylinder)
   } else {
     message(
       "Invalid Dataframe Supplied!!!
