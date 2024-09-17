@@ -27,6 +27,13 @@
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
+#'
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- update_cylinders(cylinder)
+#' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
+#' str(cylinder)
 #' }
 #'
 correct_radii <- function(
@@ -110,7 +117,7 @@ correct_radii <- function(
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }
@@ -449,12 +456,12 @@ model_paths <- function(
     left_join(cyl_radii, by = id)
 }
 
-#' Starts parallel workers
+#' Parallel workers
 #' @param backend user defined parallel backend
 #' @param start_workers TRUE or NULL
 #' @param end_workers TRUE or NULL
 #' @param oplan oplan
-#' @returns cylinder data frame with reverse branch order
+#' @returns parallel backend
 #' @noRd
 parallel_workers <- function(
     backend = NULL,
