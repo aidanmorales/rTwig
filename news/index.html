@@ -44,7 +44,8 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>
+<ul><li>aRchi QSMs are now supported in the package.</li>
+</ul><!-- --><ul><li>
 <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>: Point clouds can now be plotted independently of a QSM.
 <ul><li>
 <em>pan</em>: The right mouse button now pans the plot instead of zooming by default. The functionality mimics <code>pan3d()</code> from RGL, but rewritten with Rcpp for better responsiveness.</li>
@@ -55,10 +56,18 @@
 <li>
 <em>skeleton_lwd</em>: Set the line width of the skeleton plots.</li>
 </ul></li>
+<li>
+<code><a href="../reference/correct_radii.html">correct_radii()</a></code>: The broken branch filter can now be disabled, with <em>broken_branch = FALSE</em>
+</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
-<ul><li>Update twig data base</li>
+<ul><li>
+<code><a href="../reference/correct_radii.html">correct_radii()</a></code>: Refactor with tidyeval for better maintainability.
+<ul><li>Only required data is now sent to parallel workers, reducing memory usage and overhead.</li>
+<li>Fix a bug where parallel workers were not closing properly.</li>
+</ul></li>
+<li>Update twig data base</li>
 </ul></div>
 </div>
     <div class="section level2">
