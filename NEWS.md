@@ -2,14 +2,23 @@
 
 ## New Features
 
+-   aRchi QSMs are now supported in the package.
+
+```{=html}
+<!-- -->
+```
 -   `plot_qsm()`: Point clouds can now be plotted independently of a QSM.
     -   *pan*: The right mouse button now pans the plot instead of zooming by default. The functionality mimics `pan3d()` from RGL, but rewritten with Rcpp for better responsiveness.
     -   *lit*: Enable or disable plot lighting
     -   *axes_color*: The axes color can now be set by the user.
     -   *skeleton_lwd*: Set the line width of the skeleton plots.
+-   `correct_radii()`: The broken branch filter can now be disabled, with *broken_branch = FALSE*
 
 ## Improvements
 
+-   `correct_radii()`: Refactor with tidyeval for better maintainability.
+    -   Only required data is now sent to parallel workers, reducing memory usage and overhead.
+    -   Fix a bug where parallel workers were not closing properly.
 -   Update twig data base
 
 # rTwig 1.1.0

@@ -4,12 +4,19 @@
 \alias{correct_radii}
 \title{Correct Radii}
 \usage{
-correct_radii(cylinder, twig_radius, backend = "multisession")
+correct_radii(
+  cylinder,
+  twig_radius,
+  broken_branch = TRUE,
+  backend = "multisession"
+)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
 \item{twig_radius}{Twig radius in millimeters}
+
+\item{broken_branch}{Enable or disable the broken branch filter. Defaults to enabled (TRUE).}
 
 \item{backend}{Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.}
 }

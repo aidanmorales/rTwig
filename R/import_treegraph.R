@@ -44,7 +44,7 @@ import_treegraph <- function(file) {
   centres$idx <- 0:(nrow(centres) - 1) # fix null list values
 
   # Store all QSM info as a list
-  qsm <- list(
+  list(
     name = name,
     created = created,
     tree = tree,
@@ -53,8 +53,6 @@ import_treegraph <- function(file) {
     cyls = cyls,
     centres = centres
   )
-
-  return(qsm)
 }
 
 #' Flattens sublists of json files into vectors and combines into a data frame
