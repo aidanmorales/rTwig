@@ -374,10 +374,90 @@ qsm_summary <- function(cylinder, radius = "modified", triangulation = FALSE) {
       branch_area_m2,
       tree_area_m2
     )
+  }
+  # aRchi ----------------------------------------------------------------------
+  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    # Stop on Triangulation
+    if (!triangulation == FALSE) {
+      stop("aRchi does not support triangulation of the main stem!")
+    }
+
+    # Setup Radius
+    if (radius == "modified") {
+      cylinder$sumrad <- cylinder$radius_cyl
+    } else if (radius == "unmodified") {
+      cylinder$sumrad <- cylinder$UnmodRadius
+    } else if (radius == "old") {
+      cylinder$sumrad <- cylinder$OldRadius
+    }
+
+    dbh <- cylinder %>%
+      filter(.data$branching_order == 0 & .data$branch_ID == 1) %>%
+      arrange(.data$cyl_ID) %>%
+      select("length", "sumrad")
+
+    # Finds the DBH cylinder
+    for (i in 1:nrow(dbh)) {
+      DBHCyl <- sum(dbh$length[1:i])
+      if (DBHCyl >= 1.37) {
+        break
+      }
+    }
+
+    DBHCyl <- as.numeric(i)
+
+    dbh_qsm_cm <- dbh$sumrad[DBHCyl] * 200
+
+    tree_height_m <- max(cylinder$startZ) - min(cylinder$startZ)
+
+    summary <- cylinder %>%
+      mutate(
+        Volume = pi * .data$sumrad^2 * .data$length,
+        SurfaceArea = 2 * pi * .data$sumrad * .data$length
+      ) %>%
+      group_by("branching_order") %>%
+      summarize(
+        tree_volume_L = sum(.data$Volume, na.rm = TRUE) * 1e3,
+        tree_area_m2 = sum(.data$SurfaceArea, na.rm = TRUE)
+      ) %>%
+      rename(BranchOrder = "branching_order")
+
+    tree_volume_L <- summary %>%
+      summarize(tree_volume_L = sum(.data$tree_volume_L))
+
+    stem_volume_L <- summary %>%
+      filter(.data$BranchOrder == 0) %>%
+      summarize(stem_volume_L = sum(.data$tree_volume_L))
+
+    branch_volume_L <- summary %>%
+      filter(.data$BranchOrder != 0) %>%
+      summarize(branch_volume_L = sum(.data$tree_volume_L))
+
+    tree_area_m2 <- summary %>%
+      summarize(tree_area_m2 = sum(.data$tree_area_m2))
+
+    stem_area_m2 <- summary %>%
+      filter(.data$BranchOrder == 0) %>%
+      summarize(stem_area_m2 = sum(.data$tree_area_m2))
+
+    branch_area_m2 <- summary %>%
+      filter(.data$BranchOrder != 0) %>%
+      summarize(branch_area_m2 = sum(.data$tree_area_m2))
+
+    summary2 <- bind_cols(
+      "dbh_qsm_cm" = dbh_qsm_cm,
+      "tree_height_m" = tree_height_m,
+      stem_volume_L,
+      branch_volume_L,
+      tree_volume_L,
+      stem_area_m2,
+      branch_area_m2,
+      tree_area_m2
+    )
   } else {
     message(
       "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, or Treegraph QSMs are supported.
+      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
   }

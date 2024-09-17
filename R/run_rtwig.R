@@ -82,7 +82,7 @@ run_rtwig <- function(
       return(cylinder)
     }
   }
-  # SimpleForest ---------------------------------------------------------------
+  # SimpleForest & aRchi -------------------------------------------------------
   else if (extension == "csv") {
     # Import QSM ---------------------------------------------------------------
     cylinder <- tidytable::fread(file)
@@ -140,7 +140,7 @@ run_rtwig <- function(
   } else {
     message(
       "Unsupported QSM supplied!!!
-      \nOnly TreeQSM (.mat), SimpleForest (.mat), and Treegraph (.json) are supported."
+      \nOnly TreeQSM (.mat), SimpleForest, aRchi (.csv), and Treegraph (.json) are supported."
     )
   }
 }
