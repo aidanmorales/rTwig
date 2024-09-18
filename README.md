@@ -36,11 +36,11 @@ visualization using the box-dimension metric. Also included is a novel
 database of twig diameter measurements for many common North American
 and European trees, on both the species and genus level.
 
-[![](man/figures/plot_rTwig_cropped.png)](https://skfb.ly/oXJDG)
+<img src="man/figures/plot_rTwig_cropped.png"/>
 
 ## Features
 
-<img src="man/figures/plot.gif" data-align="right" width="280" />
+<img src="man/figures/plot.gif" align="right" width="271" height="371"/>
 
 #### Efficient Visualization
 
@@ -49,7 +49,7 @@ display, and `Rcpp` to efficiently build the cylinders. The cylinders,
 simulated point cloud, and skeleton, can all be plotted and colored by
 any variable and desired color palette.
 
-<img src="man/figures/trees.gif" data-align="left" width="350" />
+<img src="man/figures/trees.gif" align="left" width="409"/>
 
 ## Functions
 
