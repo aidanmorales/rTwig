@@ -26,19 +26,20 @@ Real Twig is a method to correct unrealistic cylinders in quantitative structure
 
 Real Twig does much more than correct QSM cylinder radii. Real Twig also includes fast and efficient tools for QSM visualization and analysis that are seamlessly compatible with the R ecosystem. Real Twig also includes fast, vectorized functions for point cloud fractal analysis and visualization using the box-dimension metric. Also included is a novel database of twig diameter measurements for many common North American and European trees, on both the species and genus level.
 
-<img src="man/figures/plot_rTwig_cropped.png"/>
+<img src="man/figures/Plot_rTwig_cropped.png"/>
 
 ## Features
 
-<img src="man/figures/plot.gif" align="right" width="271" height="371"/>
+<img src="man/figures/plot.gif" align="right" height="425"/>
 
 #### Efficient Visualization
 
 `plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D display, and `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton, can all be plotted and colored by any variable and desired color palette.
 
-<img src="man/figures/trees.gif" align="left" width="409"/>
+::: {style="width: 500px; margin-bottom:px;"}
+<img src="man/figures/trees.gif" width="500"/>
+:::
 
-::: {style="clear: left;"}
 ## Functions
 
 -   `run_rtwig()` runs the Real Twig method on a QSM
@@ -144,4 +145,3 @@ cloud <- read.table(file)
 output <- box_dimension(cloud)
 output[[2]]$slope
 ```
-:::
