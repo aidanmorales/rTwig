@@ -77,7 +77,18 @@
 </h2>
 <p>Real Twig is a method to correct unrealistic cylinders in quantitative structure models (QSMs), especially overestimated small branch and twig cylinders. Real Twig is different than traditional allometric or statistical corrections. Real Twig uses real twig diameter measurements from corresponding tree species to inform individual branch taper models. Real Twig dynamically identifies realistic cylinders in a QSM using network analysis, general additive models, and real twig measurements, to model and correct unrealistic cylinders with a high degree of precision and accuracy when vetted against ground truth reference data.</p>
 <p>Real Twig does much more than correct QSM cylinder radii. Real Twig also includes fast and efficient tools for QSM visualization and analysis that are seamlessly compatible with the R ecosystem. Real Twig also includes fast, vectorized functions for point cloud fractal analysis and visualization using the box-dimension metric. Also included is a novel database of twig diameter measurements for many common North American and European trees, on both the species and genus level.</p>
-<p><img src="reference/figures/Plot_rTwig.png"></p>
+<p><a href="https://skfb.ly/oXJDG" class="external-link"><img src="reference/figures/plot_rTwig_cropped.png"></a></p>
+</div>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<p><img src="reference/figures/plot.gif" data-align="right" width="280"></p>
+<div class="section level4">
+<h4 id="efficient-visualization">Efficient Visualization<a class="anchor" aria-label="anchor" href="#efficient-visualization"></a>
+</h4>
+<p><code>plot_qsm</code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton, can all be plotted and colored by any variable and desired color palette.</p>
+<p><img src="reference/figures/trees.gif" data-align="left" width="350"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
@@ -122,16 +133,9 @@
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aidanmorales/rTwig"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="quick-start-qsm-radii-correction">Quick Start: QSM Radii Correction<a class="anchor" aria-label="anchor" href="#quick-start-qsm-radii-correction"></a>
+<h3 id="quick-start-real-twig">Quick Start: Real Twig<a class="anchor" aria-label="anchor" href="#quick-start-real-twig"></a>
 </h3>
-<p>QSM radii corrections are run as a chain of function that build on one another. The general processing chain is as follows:</p>
-<ol style="list-style-type: decimal">
-<li>Import a QSM: TreeQSM, SimpleForest and Treegraph are currently supported.</li>
-<li>Calculate new variables with consistent QSM structure to allow for network analysis.</li>
-<li>Correct the small branch and twig cylinders using real twig diameter measurements.</li>
-<li>Summarize and visualize the results.</li>
-</ol>
-<p>Below are examples of how to quickly run Real Twig on TreeQSM and SimpleForest QSMs, using example data from the package. See the vignettes for more details on a general workflow and best practices.</p>
+<p>Below are examples of how to quickly run and visualize Real Twig, using example data from the package. Currently, TreeQSM, SimpleForest, Treegraph, and aRchi QSMs are supported. See the vignettes for more details on a general workflow and best practices.</p>
 <div class="section level4">
 <h4 id="treeqsm">TreeQSM<a class="anchor" aria-label="anchor" href="#treeqsm"></a>
 </h4>
@@ -148,8 +152,8 @@
 <span> <span class="co"># Plot the result</span></span>
 <span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
 <span> </span>
-<span> <span class="co"># Calculate detailed tree metrics</span></span>
-<span> <span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
+<span> <span class="co"># View detailed tree metrics</span></span>
+<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="simpleforest">SimpleForest<a class="anchor" aria-label="anchor" href="#simpleforest"></a>
@@ -165,17 +169,36 @@
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
-<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
 <span> </span>
-<span> <span class="co"># Calculate detailed tree metrics</span></span>
-<span> <span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">)</span></span></code></pre></div>
+<span> <span class="co"># View detailed tree metrics</span></span>
+<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="archi">aRchi<a class="anchor" aria-label="anchor" href="#archi"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
+<span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># File path to QSM</span></span>
+<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM2.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Correct QSM cylinders</span></span>
+<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Plot the result</span></span>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># View detailed tree metrics</span></span>
+<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="quick-start-box-dimension">Quick Start: Box Dimension<a class="anchor" aria-label="anchor" href="#quick-start-box-dimension"></a>
 </h3>
 <p>Below is an example of how to quickly calculate box-dimension on a point cloud using example data from the package. See the vignette for more details and explanation.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load a point cloud</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
