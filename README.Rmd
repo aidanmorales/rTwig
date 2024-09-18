@@ -36,7 +36,7 @@ Real Twig does much more than correct QSM cylinder radii. Real Twig also include
 
 `plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D display, and `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton, can all be plotted and colored by any variable and desired color palette.
 
-<img src="man/figures/trees.gif" align="left" width="409"/>
+<img src="man/figures/trees.gif" align="left" width="409"/><br>
 
 ## Functions
 

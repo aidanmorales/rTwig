@@ -49,7 +49,7 @@ display, and `Rcpp` to efficiently build the cylinders. The cylinders,
 simulated point cloud, and skeleton, can all be plotted and colored by
 any variable and desired color palette.
 
-<img src="man/figures/trees.gif" align="left" width="409"/>
+<img src="man/figures/trees.gif" align="left" width="409"/><br>
 
 ## Functions
 
