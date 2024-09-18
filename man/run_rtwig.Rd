@@ -11,7 +11,8 @@ run_rtwig(
   metrics = TRUE,
   version = NULL,
   smooth = TRUE,
-  standardize = FALSE
+  standardize = FALSE,
+  broken_branch = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ run_rtwig(
 \item{smooth}{Defaults to TRUE, if using TreeQSM. Can be set to FALSE.}
 
 \item{standardize}{Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.}
+
+\item{broken_branch}{Enable or disable the broken branch filter. Defaults to TRUE.}
 }
 \value{
 Returns cylinder data frame or list if metrics is true.

@@ -9,6 +9,7 @@
 #' @param version Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).
 #' @param smooth Defaults to TRUE, if using TreeQSM. Can be set to FALSE.
 #' @param standardize Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.
+#' @param broken_branch Enable or disable the broken branch filter. Defaults to TRUE.
 #'
 #' @return Returns cylinder data frame or list if metrics is true.
 #' @export
@@ -34,15 +35,11 @@ run_rtwig <- function(
     metrics = TRUE,
     version = NULL,
     smooth = TRUE,
-    standardize = FALSE) {
+    standardize = FALSE,
+    broken_branch = TRUE) {
+
   # Get file extension
   extension <- sub(".*\\.", "", basename(file))
-
-  # Get parallel backend
-  backend <- backend
-
-  # Get twig radius
-  twig_radius <- twig_radius
 
   # TreeQSM --------------------------------------------------------------------
   if (extension == "mat") {
@@ -71,7 +68,8 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend
+      backend = backend,
+      broken_branch = broken_branch
     )
 
     # Tree Metrics -------------------------------------------------------------
@@ -99,7 +97,8 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend
+      backend = backend,
+      broken_branch = broken_branch
     )
 
     # Tree Metrics -------------------------------------------------------------
@@ -127,7 +126,8 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend
+      backend = backend,
+      broken_branch = broken_branch
     )
 
     # Tree Metrics -------------------------------------------------------------
