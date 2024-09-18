@@ -36,7 +36,20 @@ visualization using the box-dimension metric. Also included is a novel
 database of twig diameter measurements for many common North American
 and European trees, on both the species and genus level.
 
-<img src="man/figures/Plot_rTwig.png"/>
+[![](man/figures/plot_rTwig_cropped.png)](https://skfb.ly/oXJDG)
+
+## Features
+
+<img src="man/figures/plot.gif" data-align="right" width="280" />
+
+#### Efficient Visualization
+
+`plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D
+display, and `Rcpp` to efficiently build the cylinders. The cylinders,
+simulated point cloud, and skeleton, can all be plotted and colored by
+any variable and desired color palette.
+
+<img src="man/figures/trees.gif" data-align="left" width="350" />
 
 ## Functions
 
@@ -77,22 +90,12 @@ You can install the development version of `rTwig` from
 devtools::install_github("aidanmorales/rTwig")
 ```
 
-### Quick Start: QSM Radii Correction
+### Quick Start: Real Twig
 
-QSM radii corrections are run as a chain of function that build on one
-another. The general processing chain is as follows:
-
-1.  Import a QSM: TreeQSM, SimpleForest and Treegraph are currently
-    supported.
-2.  Calculate new variables with consistent QSM structure to allow for
-    network analysis.
-3.  Correct the small branch and twig cylinders using real twig diameter
-    measurements.
-4.  Summarize and visualize the results.
-
-Below are examples of how to quickly run Real Twig on TreeQSM and
-SimpleForest QSMs, using example data from the package. See the
-vignettes for more details on a general workflow and best practices.
+Below are examples of how to quickly run and visualize Real Twig, using
+example data from the package. Currently, TreeQSM, SimpleForest,
+Treegraph, and aRchi QSMs are supported. See the vignettes for more
+details on a general workflow and best practices.
 
 #### TreeQSM
 
@@ -109,8 +112,8 @@ vignettes for more details on a general workflow and best practices.
  # Plot the result
  plot_qsm(qsm$cylinder)
  
- # Calculate detailed tree metrics
- metrics <- tree_metrics(qsm$cylinder)
+ # View detailed tree metrics
+ qsm$metrics
 ```
 
 #### SimpleForest
@@ -126,10 +129,29 @@ vignettes for more details on a general workflow and best practices.
  qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
- plot_qsm(qsm)
+ plot_qsm(qsm$cylinder)
  
- # Calculate detailed tree metrics
- metrics <- tree_metrics(qsm)
+ # View detailed tree metrics
+ qsm$metrics
+```
+
+#### aRchi
+
+``` r
+ # Load the Real Twig library
+ library(rTwig)
+ 
+ # File path to QSM
+ file <- system.file("extdata/QSM2.csv", package = "rTwig")
+ 
+ # Correct QSM cylinders
+ qsm <- run_rtwig(file, twig_radius = 4.23)
+ 
+ # Plot the result
+ plot_qsm(qsm$cylinder)
+ 
+ # View detailed tree metrics
+ qsm$metrics
 ```
 
 ### Quick Start: Box Dimension
