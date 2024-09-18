@@ -109,7 +109,6 @@ update_cylinders <- function(cylinder) {
     cylinder <- path_metrics(network, cylinder, "extension", "length")
 
     # Organize Cylinders  ------------------------------------------------------
-
     if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
       cylinder %>%
         relocate("OldRadius", .after = "UnmodRadius") %>%
@@ -210,8 +209,17 @@ update_cylinders <- function(cylinder) {
     }
 
     # Path Metrics -------------------------------------------------------------
-    if (!"distanceFromBase" %in% colnames(cylinder) & !"distanceToTwig" %in% colnames(cylinder)) {
-      cylinder <- path_metrics(network, cylinder, "ID", "length")
+    cylinder <- path_metrics(network, cylinder, "ID", "length")
+
+    # Check for existing path metrics columns
+    if (all(c("distanceToTwig.x", "distanceToTwig.y") %in% colnames(cylinder))) {
+      cylinder %>%
+        rename(
+          distanceToTwigSF = "distanceToTwig.x",
+          distanceToTwig = "distanceToTwig.y"
+        )
+    } else {
+      return(cylinder)
     }
   }
   # Treegraph ------------------------------------------------------------------
@@ -282,7 +290,7 @@ update_cylinders <- function(cylinder) {
     )
 
     # Path Metrics -------------------------------------------------------------
-    cylinder <- path_metrics(network, cylinder, "p1", "length")
+    path_metrics(network, cylinder, "p1", "length")
   }
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
@@ -340,7 +348,7 @@ update_cylinders <- function(cylinder) {
     )
 
     # Path Metrics -------------------------------------------------------------
-    cylinder <- path_metrics(network, cylinder, "cyl_ID", "length")
+    path_metrics(network, cylinder, "cyl_ID", "length")
   } else {
     message(
       "Invalid Dataframe Supplied!!!
@@ -404,13 +412,9 @@ total_children <- function(cylinder, parent, id) {
     summarize(totalChildren = n()) %>%
     rename(!!rlang::sym(id) := !!rlang::sym(parent))
 
-  # Joins total children
-  cylinder <- left_join(cylinder, total_children, by = id)
-
-  # Fill NA with 0
-  cylinder$totalChildren <- replace_na(cylinder$totalChildren, 0)
-
-  return(cylinder)
+  # Joins total children and fill na with 0
+  left_join(cylinder, total_children, by = id) %>%
+    mutate(totalChildren = replace_na(.data$totalChildren, 0))
 }
 
 #' Builds QSM cylinder network with igraph
@@ -574,10 +578,8 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
     select(segment = "childSegment", parentSegment = "segment")
 
   # Joins parent segments
-  cylinder <- left_join(cylinder, parent_segments, by = "segment")
-  cylinder$parentSegment <- replace_na(cylinder$parentSegment, 0)
-
-  return(cylinder)
+  left_join(cylinder, parent_segments, by = "segment") %>%
+    mutate(parentSegment = replace_na(.data$parentSegment, 0))
 }
 
 #' Calculates the alternate branch index
@@ -608,16 +610,13 @@ branch_alt <- function(
     select(index = !!rlang::sym(id), "branch_alt")
 
   # Find cylinder
-  cylinder <- filter(network$child_df, .data$index %in% first_branch$index) %>%
+  filter(network$child_df, .data$index %in% first_branch$index) %>%
     rename(!!rlang::sym(id) := "id") %>%
     right_join(cylinder, by = id) %>%
     left_join(first_branch, by = "index") %>%
     select(-"index") %>%
-    relocate(!!rlang::sym(id), .before = !!rlang::sym(parent))
-
-  cylinder$branch_alt <- replace_na(cylinder$branch_alt, 0)
-
-  return(cylinder)
+    relocate(!!rlang::sym(id), .before = !!rlang::sym(parent)) %>%
+    mutate(branch_alt = replace_na(.data$branch_alt, 0))
 }
 
 #' Calculates branch ids from branch order
@@ -785,14 +784,14 @@ verify_topology <- function(
       rename(!!rlang::sym(id) := "id")
 
     # Update QSM topology
-    cylinder <- cylinder %>%
+    cylinder %>%
       rename(branch_order = !!rlang::sym(branch_order)) %>%
       left_join(corrected_topology, by = id) %>%
       mutate(
         !!rlang::sym(branch_order) := coalesce(.data$branch_order.y, .data$branch_order.x)
       ) %>%
       select(-c("branch_order.x", "branch_order.y"))
+  } else {
+    return(cylinder)
   }
-
-  return(cylinder)
 }
