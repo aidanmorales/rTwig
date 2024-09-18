@@ -49,7 +49,9 @@ display, and `Rcpp` to efficiently build the cylinders. The cylinders,
 simulated point cloud, and skeleton, can all be plotted and colored by
 any variable and desired color palette.
 
-<img src="man/figures/trees.gif" align="left" width="409"/><br>
+<img src="man/figures/trees.gif" align="left" width="409"/>
+
+<div style="clear: left;">
 
 ## Functions
 
@@ -169,3 +171,5 @@ cloud <- read.table(file)
 output <- box_dimension(cloud)
 output[[2]]$slope
 ```
+
+</div>
