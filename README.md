@@ -58,27 +58,10 @@ display, and C++ via `Rcpp` to efficiently build the cylinders. The
 cylinders, simulated point cloud, and skeleton can all be plotted and
 colored by any variable or user supplied color palette.
 
-<table style="width:85%;">
-<colgroup>
-<col style="width: 38%" />
-<col style="width: 45%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><img src="man/figures/plot.gif" /></td>
-<td><table>
-<tbody>
-<tr class="odd">
-<td><img src="man/figures/WO7.gif" /></td>
-</tr>
-<tr class="even">
-<td><img src="man/figures/stand.gif" /></td>
-</tr>
-</tbody>
-</table></td>
-</tr>
-</tbody>
-</table>
+|                               |                                   |
+|-------------------------------|-----------------------------------|
+| ![Plot](man/figures/plot.gif) | ![Trees](man/figures/WO7.gif)     |
+| ![Plot](man/figures/RO1.gif)  | ![Another](man/figures/stand.gif) |
 
 #### Supported Software
 
