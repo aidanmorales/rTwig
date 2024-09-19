@@ -38,9 +38,12 @@ The main goal of Real Twig was to correct volume overestimation in QSMs caused b
 
 `plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D display, and C++ via `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.
 
-<img src="man/figures/plot.gif" style="width: 75%; display: block; margin: 0 auto;"/>
-
-<img src="man/figures/trees.gif" style="display: block; margin: 0 auto;"/>
++---------------------------+--------------------------------+
+| ![](man/figures/plot.gif) | |                            | |
+|                           | |----------------------------| |
+|                           | | ![](man/figures/WO7.gif)   | |
+|                           | | ![](man/figures/stand.gif) | |
++---------------------------+--------------------------------+
 
 #### Supported Software
 
