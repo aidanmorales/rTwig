@@ -51,8 +51,6 @@ Real Twig.
 
 <img src="man/figures/WO18_comparison.png"/>
 
-<img src="man/figures/plot.gif" align="right" height="425"/>
-
 #### Efficient Visualization
 
 `plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D
@@ -60,21 +58,23 @@ display, and C++ via `Rcpp` to efficiently build the cylinders. The
 cylinders, simulated point cloud, and skeleton can all be plotted and
 colored by any variable or user supplied color palette.
 
-<div style="width: 490px; margin-bottom:px;">
+<img src="man/figures/plot.gif" style="width: 75%; display: block; margin: 0 auto;"/>
 
-<img src="man/figures/trees.gif" width="490"/>
-
-</div>
+<img src="man/figures/trees.gif" style="display: block; margin: 0 auto;"/>
 
 #### Supported Software
 
-rTwig currently supports TreeQSM, SimpleForest, Treegraph, and aRchi.
+rTwig currently supports
+[TreeQSM](https://github.com/InverseTampere/TreeQSM),
+[SimpleForest](https://www.simpleforest.org/),
+[Treegraph](https://github.com/wanxinyang/treegraph), and
+[aRchi](https://github.com/umr-amap/aRchi)
 
 ## Functions
 
 - `run_rtwig()` runs the Real Twig method on a QSM
 - `import_qsm()` imports a QSM created by TreeQSM (.mat)
-- `import_treegraph()` imports a QSM created by treegraph (.json)
+- `import_treegraph()` imports a QSM created by Treegraph (.json)
 - `standardize_qsm()` standardizes QSM variable names across supported
   software
 - `update_cylinders()` updates cylinder relationships and adds new QSM
