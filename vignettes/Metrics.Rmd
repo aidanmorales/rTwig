@@ -39,10 +39,10 @@ Next, let's run Real Twig with `run_rtwig()` and calculate our tree metrics with
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
 # Run Real Twig 
-qsm <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
+cylinder <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
 
 # Calculate detailed tree metrics
-metrics <- tree_metrics(qsm$cylinder)
+metrics <- tree_metrics(cylinder)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
