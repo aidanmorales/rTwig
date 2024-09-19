@@ -84,11 +84,12 @@ settings, and species specific twig diameter measurements are supplied,
 you can expect to get very good estimates of tree volume within ± 10% of
 the real tree volume.</p>
 <p>If any given QSM provides parent-child cylinder relationships, Real
-Twig will work, as is the case of the <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a> and <a href="https://github.com/wanxinyang/treegraph/tree/master" class="external-link">Treegraph</a>
-software packages. If high quality point clouds, QSMs with the proper
-input settings, and species specific twig diameter measurements are
-supplied, you can expect to get good estimates of tree volume across
-multiple different software packages.</p>
+Twig will work, as is the case of the <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph/tree/master" class="external-link">Treegraph</a>,
+and <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a> software
+packages. If high quality point clouds, QSMs with the proper input
+settings, and species specific twig diameter measurements are supplied,
+you can expect to get good estimates of tree volume across multiple
+different software packages.</p>
 <p>While Real Twig can provide excellent tree volume estimates, it can
 not transform poor quality data into good data. As a general rule of
 thumb, the closer the QSM resembles the actual tree before correction,
@@ -149,6 +150,9 @@ to take advantage of multi-threaded support.</p>
 <p>Treegraph exports its QSMs as .json files. To import them into R, we
 can use the <code><a href="../reference/import_treegraph.html">import_treegraph()</a></code> function to quickly load in
 a Treegraph QSM.</p>
+<p>aRchi is built in R, so there is no provided function to import the
+data. Users can extract the aRchi cylinder data with
+<code>aRchi::get_QSM()</code> before running the rTwig functions.</p>
 <div class="section level4">
 <h4 id="example-1-treeqsm-v2-3-0---2-4-1">Example 1: TreeQSM v2.3.0 - 2.4.1<a class="anchor" aria-label="anchor" href="#example-1-treeqsm-v2-3-0---2-4-1"></a>
 </h4>

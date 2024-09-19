@@ -103,11 +103,11 @@ our tree metrics with <code><a href="../reference/tree_metrics.html">tree_metric
 <code class="sourceCode R"><span><span class="co"># File path to QSM</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Correct QSM cylinders</span></span>
-<span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span><span class="co"># Run Real Twig </span></span>
+<span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span>, metrics <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate detailed tree metrics</span></span>
-<span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tree_metrics.html">tree_metrics</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="stem-taper">Stem Taper<a class="anchor" aria-label="anchor" href="#stem-taper"></a>
 </h4>
@@ -144,8 +144,7 @@ our tree metrics with <code><a href="../reference/tree_metrics.html">tree_metric
 <p>We can even plot the simulated point cloud with the rgl library, and
 look at the cylinder connectivity.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/plot3d.html" class="external-link">plot3d</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">$</span><span class="va">cloud</span>, aspect <span class="op">=</span> <span class="cn">FALSE</span>, decorate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span>, skeleton <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">cylinder</span>, <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span>, cloud <span class="op">=</span> <span class="va">metrics</span><span class="op">$</span><span class="va">cloud</span>, skeleton <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

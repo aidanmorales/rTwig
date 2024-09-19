@@ -90,7 +90,7 @@
 <div class="section level4">
 <h4 id="efficient-visualization">Efficient Visualization<a class="anchor" aria-label="anchor" href="#efficient-visualization"></a>
 </h4>
-<p><code>plot_qsm</code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and C++ via <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.</p>
+<p><code><a href="reference/plot_qsm.html">plot_qsm()</a></code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and C++ via <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.</p>
 <table class="table"><tbody>
 <tr class="odd">
 <td><img src="reference/figures/plot.gif" alt="Plot"></td>
@@ -101,6 +101,11 @@
 <td><img src="reference/figures/stand.gif" alt="Another"></td>
 </tr>
 </tbody></table>
+</div>
+<div class="section level4">
+<h4 id="detailed-tree-metrics">Detailed Tree Metrics<a class="anchor" aria-label="anchor" href="#detailed-tree-metrics"></a>
+</h4>
+<p>The goal of rTwig was to provide users with tools to visualize and analyze QSM metrics without being tied to any particular QSM software. To that end, <code><a href="reference/tree_metrics.html">tree_metrics()</a></code> calculates all of the major QSM metrics between all supported software. Additionally, <code><a href="reference/standardize_qsm.html">standardize_qsm()</a></code> provides a consistent naming convention between supported QSMs, making it easy to combine and analyze QSMs from different sources. See the Dictionary and Metrics vignettes for more details.</p>
 </div>
 <div class="section level4">
 <h4 id="supported-software">Supported Software<a class="anchor" aria-label="anchor" href="#supported-software"></a>
