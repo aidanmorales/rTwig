@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleForest, and Treegraph. This is done with the `standardize_qsm()` function, and creates a more consistent experience when working with QSMs. Below are detailed definitions of the variable names using the rTwig QSM format.
+Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with the `standardize_qsm()` function, and creates a more consistent experience when working with QSMs. Below are detailed definitions of the variable names using the rTwig QSM format.
 
 ## Dictionary
 

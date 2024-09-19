@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 Real Twig was designed and tested using QSMs created with the [TreeQSM](https://github.com/InverseTampere/TreeQSM) modeling software. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get very good estimates of tree volume within ± 10% of the real tree volume. 
 
-If any given QSM provides parent-child cylinder relationships, Real Twig will work, as is the case of the [SimpleForest](https://www.simpleforest.org/) and [Treegraph](https://github.com/wanxinyang/treegraph/tree/master) software packages. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get good estimates of tree volume across multiple different software packages.
+If any given QSM provides parent-child cylinder relationships, Real Twig will work, as is the case of the [SimpleForest](https://www.simpleforest.org/), [Treegraph](https://github.com/wanxinyang/treegraph/tree/master), and [aRchi](https://github.com/umr-amap/aRchi) software packages. If high quality point clouds, QSMs with the proper input settings, and species specific twig diameter measurements are supplied, you can expect to get good estimates of tree volume across multiple different software packages.
 
 While Real Twig can provide excellent tree volume estimates, it can not transform poor quality data into good data. As a general rule of thumb, the closer the QSM resembles the actual tree before correction, the better the results will be after correction. Real Twig performs best when the topology of the tree is correct, and only the cylinder sizes are the main sources of QSM error. Errors in QSM topology become readily apparent after correction, so Real Twig can also be used to visually validate QSM topology without reference data.
 
@@ -67,6 +67,8 @@ Regardless of the version of TreeQSM or MATLAB used, the `import_qsm()` function
 SimpleForest exports its QSMs as .csv files, so they are easy to load into R using the built in `read.csv()` function. If the QSM contains thousands of cylinders, it is much faster to use the `fread()` function from the `data.table` package to take advantage of multi-threaded support.
 
 Treegraph exports its QSMs as .json files. To import them into R, we can use the `import_treegraph()` function to quickly load in a Treegraph QSM.
+
+aRchi is built in R, so there is no provided function to import the data. Users can extract the aRchi cylinder data with `aRchi::get_QSM()` before running the rTwig functions. 
 
 #### Example 1: TreeQSM v2.3.0 - 2.4.1
 

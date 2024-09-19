@@ -36,12 +36,16 @@ The main goal of Real Twig was to correct volume overestimation in QSMs caused b
 
 #### Efficient Visualization
 
-`plot_qsm` can plot QSMs and point clouds, using `rgl` as the 3D display, and C++ via `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.
+`plot_qsm()` can plot QSMs and point clouds, using `rgl` as the 3D display, and C++ via `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.
 
 |                               |                                   |
 |-------------------------------|-----------------------------------|
 | ![Plot](man/figures/plot.gif) | ![Trees](man/figures/WO7.gif)     |
 | ![Plot](man/figures/RO1.gif)  | ![Another](man/figures/stand.gif) |
+
+#### Detailed Tree Metrics
+
+The goal of rTwig was to provide users with tools to visualize and analyze QSM metrics without being tied to any particular QSM software. To that end, `tree_metrics()` calculates all of the major QSM metrics between all supported software. Additionally, `standardize_qsm()` provides a consistent naming convention between supported QSMs, making it easy to combine and analyze QSMs from different sources. See the Dictionary and Metrics vignettes for more details. 
 
 #### Supported Software
 

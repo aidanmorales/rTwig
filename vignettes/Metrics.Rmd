@@ -38,8 +38,8 @@ Next, let's run Real Twig with `run_rtwig()` and calculate our tree metrics with
 # File path to QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
-# Correct QSM cylinders
-qsm <- run_rtwig(file, twig_radius = 4.23)
+# Run Real Twig 
+qsm <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
 
 # Calculate detailed tree metrics
 metrics <- tree_metrics(qsm$cylinder)
@@ -524,8 +524,7 @@ metrics$spreads %>%
 We can even plot the simulated point cloud with the rgl library, and look at the cylinder connectivity.
 
 ```{r, eval=FALSE}
-rgl::plot3d(metrics$cloud, aspect = FALSE, decorate = FALSE)
-plot_qsm(qsm$cylinder, skeleton = TRUE)
+plot_qsm(cylinder, qsm$cylinder, cloud = metrics$cloud, skeleton = TRUE)
 ```
 
 ## Plotting Code
