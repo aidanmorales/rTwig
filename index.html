@@ -86,20 +86,18 @@
 </h4>
 <p>The main goal of Real Twig was to correct volume overestimation in QSMs caused by the limitations of LiDAR sensors for better non-destructive aboveground biomass estimates. Real Twig incorporates direct measurement into the QSM, resulting in models that not only have accurate volume metrics, but are also visually realistic, independent of tree species or size. Shown below is a 300+ year old white oak tree, with and without Real Twig.</p>
 <p><img src="reference/figures/WO18_comparison.png"></p>
-<p><img src="reference/figures/plot.gif" align="right" height="425"></p>
 </div>
 <div class="section level4">
 <h4 id="efficient-visualization">Efficient Visualization<a class="anchor" aria-label="anchor" href="#efficient-visualization"></a>
 </h4>
 <p><code>plot_qsm</code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and C++ via <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette.</p>
-<div style="width: 490px; margin-bottom:px;">
-<p><img src="reference/figures/trees.gif" width="490"></p>
-</div>
+<p><img src="reference/figures/plot.gif" style="width: 75%; display: block; margin: 0 auto;"></p>
+<p><img src="reference/figures/trees.gif" style="display: block; margin: 0 auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="supported-software">Supported Software<a class="anchor" aria-label="anchor" href="#supported-software"></a>
 </h4>
-<p>rTwig currently supports TreeQSM, SimpleForest, Treegraph, and aRchi.</p>
+<p>rTwig currently supports <a href="https://github.com/InverseTampere/TreeQSM" class="external-link">TreeQSM</a>, <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph" class="external-link">Treegraph</a>, and <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a></p>
 </div>
 </div>
 <div class="section level2">
@@ -111,7 +109,7 @@
 <li>
 <code><a href="reference/import_qsm.html">import_qsm()</a></code> imports a QSM created by TreeQSM (.mat)</li>
 <li>
-<code><a href="reference/import_treegraph.html">import_treegraph()</a></code> imports a QSM created by treegraph (.json)</li>
+<code><a href="reference/import_treegraph.html">import_treegraph()</a></code> imports a QSM created by Treegraph (.json)</li>
 <li>
 <code><a href="reference/standardize_qsm.html">standardize_qsm()</a></code> standardizes QSM variable names across supported software</li>
 <li>
