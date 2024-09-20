@@ -572,7 +572,6 @@ pan_plot <- function(button = 2) {
 #' @param end_x column name of end_x
 #' @param end_y column name of end_y
 #' @param end_z column name of end_z
-#' @param return_base boolean return base
 #' @returns normalized coordinates or tree start
 #' @noRd
 normalize_qsm <- function(
@@ -583,8 +582,7 @@ normalize_qsm <- function(
     start_z = NULL,
     end_x = NULL,
     end_y = NULL,
-    end_z = NULL,
-    return_base = NULL) {
+    end_z = NULL) {
   # Find base cylinder
   base <- cylinder %>%
     select(
@@ -594,10 +592,6 @@ normalize_qsm <- function(
       "start_z" = all_of(start_z)
     ) %>%
     filter(id == 1)
-
-  if (return_base == TRUE) {
-    return(base)
-  }
 
   # Update cylinder coordinates
   coords <- cylinder %>%
