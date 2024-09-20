@@ -18,6 +18,6 @@ select_column <- function(...) {
   if (is.null(expr) | is.character(expr)) {
     return(expr)
   } else {
-    as_label(expr)
+    rlang::as_label(expr)
   }
 }

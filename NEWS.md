@@ -12,6 +12,7 @@
     -   *lit*: Enable or disable plot lighting
     -   *axes_color*: The axes color can now be set by the user.
     -   *skeleton_lwd*: Set the line width of the skeleton plots.
+    -   *normalize*: Center the base of the QSM at 0,0,0. Defaults to FALSE.
 
 -   `correct_radii()`: The broken branch filter can now be disabled, with *broken_branch = FALSE*
 

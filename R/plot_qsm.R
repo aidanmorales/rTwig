@@ -18,6 +18,7 @@
 #' @param bg_color Set the background color of the plot. Defaults to white.
 #' @param lit Enable light source in plot. Defaults to TRUE. Can be set to FALSE.
 #' @param pan Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.
+#' @param normalize Normalize the base of the QSM to 0,0,0. Defaults to FALSE.
 #'
 #' @return A rgl plot
 #' @export
@@ -59,7 +60,8 @@ plot_qsm <- function(
     hover = FALSE,
     bg_color = NULL,
     lit = TRUE,
-    pan = TRUE) {
+    pan = TRUE,
+    normalize = FALSE) {
   if (!is.null(cylinder)) {
     if (nrow(cylinder) == 0) {
       stop("Cylinder data frame empty!")
@@ -82,7 +84,7 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -97,7 +99,7 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -112,7 +114,7 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -127,7 +129,7 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -142,7 +144,7 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
     )
   }
   # Point Cloud ----------------------------------------------------------------
@@ -191,6 +193,7 @@ plot_qsm <- function(
 #' @param bg_color plot background color
 #' @param lit plot lighting
 #' @param pan pan plot on right click
+#' @param normalize normalize QSM
 #' @returns an rgl plot
 #' @noRd
 plot_data <- function(
@@ -222,13 +225,23 @@ plot_data <- function(
     pt_size = NULL,
     bg_color = NULL,
     lit = NULL,
-    pan = NULL) {
+    pan = NULL,
+    normalize = NULL) {
   if (!is.null(cylinder)) {
     # Plotting radii -----------------------------------------------------------
     radius <- plotting_radii(cylinder, radius)
 
     # Plotting colors ----------------------------------------------------------
     colors <- plotting_colors(cylinder, color, palette, branch_order)
+
+    # Normalize QSM ------------------------------------------------------------
+    if (normalize == TRUE) {
+      cylinder <- normalize_qsm(
+        cylinder = cylinder, id = id,
+        start_x = start_x, start_y = start_y, start_z = start_z,
+        end_x = end_x, end_y = end_y, end_z = end_z
+      )
+    }
 
     # Plot skeleton ------------------------------------------------------------
     if (skeleton == TRUE) {
@@ -365,7 +378,7 @@ plot_skeleton <- function(
     end_z) {
   message("Plotting Skeleton")
 
-  if(is.null(skeleton_lwd)) {
+  if (is.null(skeleton_lwd)) {
     lwd <- 1
   } else {
     lwd <- skeleton_lwd
@@ -546,6 +559,76 @@ pan_plot <- function(button = 2) {
   }
 
   rgl::rgl.setMouseCallbacks(button, begin, update)
-  #cat("Callbacks set on button", button, "of rgl device", rgl.cur(), "")
+  # cat("Callbacks set on button", button, "of rgl device", rgl.cur(), "")
   cat("Panning plot on rgl device:", rgl.cur())
+}
+
+#' Normalize QSM
+#' @param cylinder QSM cylinder data frame
+#' @param id cylinder id
+#' @param start_x column name of start_x
+#' @param start_y column name of start_y
+#' @param start_z column name of start_z
+#' @param end_x column name of end_x
+#' @param end_y column name of end_y
+#' @param end_z column name of end_z
+#' @param return_base boolean return base
+#' @returns normalized coordinates or tree start
+#' @noRd
+normalize_qsm <- function(
+    cylinder,
+    id = NULL,
+    start_x = NULL,
+    start_y = NULL,
+    start_z = NULL,
+    end_x = NULL,
+    end_y = NULL,
+    end_z = NULL,
+    return_base = NULL) {
+  # Find base cylinder
+  base <- cylinder %>%
+    select(
+      "id" = all_of(id),
+      "start_x" = all_of(start_x),
+      "start_y" = all_of(start_y),
+      "start_z" = all_of(start_z)
+    ) %>%
+    filter(id == 1)
+
+  if (return_base == TRUE) {
+    return(base)
+  }
+
+  # Update cylinder coordinates
+  coords <- cylinder %>%
+    select(
+      "id" = all_of(id),
+      "start_x" = all_of(start_x),
+      "start_y" = all_of(start_y),
+      "start_z" = all_of(start_z),
+      "end_x" = all_of(end_x),
+      "end_y" = all_of(end_y),
+      "end_z" = all_of(end_z)
+    ) %>%
+    mutate(
+      start_x = start_x - !!base$start_x[1],
+      start_y = start_y - !!base$start_y[1],
+      start_z = start_z - !!base$start_z[1],
+      end_x = end_x - !!base$start_x[1],
+      end_y = end_y - !!base$start_y[1],
+      end_z = end_z - !!base$start_z[1]
+    ) %>%
+    rename(
+      !!rlang::sym(id) := "id",
+      !!rlang::sym(start_x) := "start_x",
+      !!rlang::sym(start_y) := "start_y",
+      !!rlang::sym(start_z) := "start_z",
+      !!rlang::sym(end_x) := "end_x",
+      !!rlang::sym(end_y) := "end_y",
+      !!rlang::sym(end_z) := "end_z",
+    )
+
+  cylinder %>%
+    select(-any_of(c(start_x, start_y, start_z, end_x, end_y, end_z))) %>%
+    left_join(coords, by = id)
 }

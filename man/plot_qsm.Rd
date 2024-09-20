@@ -20,7 +20,8 @@ plot_qsm(
   hover = FALSE,
   bg_color = NULL,
   lit = TRUE,
-  pan = TRUE
+  pan = TRUE,
+  normalize = FALSE
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ plot_qsm(
 \item{lit}{Enable light source in plot. Defaults to TRUE. Can be set to FALSE.}
 
 \item{pan}{Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.}
+
+\item{normalize}{Normalize the base of the QSM to 0,0,0. Defaults to FALSE.}
 }
 \value{
 A rgl plot
