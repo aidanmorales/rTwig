@@ -36,7 +36,7 @@ library(rgl)
 
 Or the latest development version from [GitHub](https://github.com/):
 
-```{r, eval=FALSE}
+```{r, message=FALSE, warning=FALSE}
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 

@@ -19,6 +19,10 @@ knitr::opts_chunk$set(
 The first step is to load the rTwig package. Real Twig works well when paired with packages from the [Tidyverse](https://www.tidyverse.org/), so we will also load the dplyr, tidyr, and ggplot packages to help with data manipulation and visualization, ggpubr for multi-panel plots, and rgl for point cloud plotting.
 
 ```{r, message=FALSE, warning=FALSE}
+devtools::install_github("https://github.com/aidanmorales/rTwig")
+```
+
+```{r, message=FALSE, warning=FALSE}
 # Load rTwig
 library(rTwig)
 

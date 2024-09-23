@@ -32,7 +32,7 @@ install.packages("rTwig")
 
 Or the latest development version from [GitHub](https://github.com/):
 
-```{r, eval=FALSE}
+```{r, message=FALSE, warning=FALSE}
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 
@@ -173,14 +173,14 @@ filter(twigs, scientific_name == "Gymnocladus dioicus")
 
 ## Summary Metrics
 
-Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large butress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
+Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large buttress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
 
 ```{r, message = FALSE}
 # QSM summary
-qsm_summary(cylinder, radius = "unmodified")[[1]]
+qsm_summary(cylinder = cylinder, radius = radius)[[1]]
 
 # QSM summary with Triangulation
-qsm_summary(cylinder = cylinder, triangulation = qsm$triangulation, radius = "unmodified")[[1]]
+qsm_summary(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[[1]]
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
@@ -214,7 +214,7 @@ cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 
 ```{r, r, message = FALSE}
 # Corrected QSM summary
-qsm_summary(cylinder, radius = "modified")[[1]]
+qsm_summary(cylinder, radius = radius)[[1]]
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
