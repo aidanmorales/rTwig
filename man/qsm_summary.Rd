@@ -4,42 +4,34 @@
 \alias{qsm_summary}
 \title{QSM Summary}
 \usage{
-qsm_summary(cylinder, radius = "modified", triangulation = FALSE)
+qsm_summary(cylinder, radius = NULL, triangulation = NULL)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
-\item{radius}{Radius type as either "modified", "unmodified", or "old". Defaults to "modified".}
+\item{radius}{Radius column name either quoted or unquoted.}
 
-\item{triangulation}{QSM triangulation list. Defaults to FALSE.}
+\item{triangulation}{QSM triangulation list. Defaults to NULL. Only supports TreeQSM.}
 }
 \value{
 Returns a list
 }
 \description{
-Generates summaries of QSM features (e.g. volume, surface area, dbh, etc.) by totals and branch order
+Generates a simple QSM summary (e.g. volume, surface area, dbh, etc.) by totals and branch order.
 }
 \examples{
 
-## TreeQSM Processing Chain
-file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_qsm(file)
-cylinder <- qsm$cylinder
+## SimpleForest Processing Chain
+file <- system.file("extdata/QSM.csv", package = "rTwig")
+cylinder <- read.csv(file)
 cylinder <- update_cylinders(cylinder)
-qsm_summary(cylinder)
+qsm_summary(cylinder, radius)
 
 # TreeQSM Triangulation
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
-triangulation <- qsm$triangulation
-qsm_summary(cylinder = cylinder, triangulation = triangulation)
-
-## SimpleForest Processing Chain
-file <- system.file("extdata/QSM.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-qsm_summary(cylinder)
+qsm_summary(cylinder, radius, triangulation = qsm$triangulation)
 
 }
