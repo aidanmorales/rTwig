@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">rTwig</a>
 
@@ -54,6 +54,14 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/aidanmorales/rTwig/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
       </ul>
 </div>
 
@@ -363,33 +371,33 @@ twig diameter for Kentucky coffee tree.</p>
 so we can compare the tree volume before and after correction. We can do
 this with the <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> function. If stem triangulation
 was enabled in TreeQSM, we can use it to better represent the main stem
-volume in some cases, especially when there are large butress flares. We
-can also make a plot of the radius versus the growth length to see how
-much overestimation there is in the twig radii.</p>
+volume in some cases, especially when there are large buttress flares.
+We can also make a plot of the radius versus the growth length to see
+how much overestimation there is in the twig radii.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># QSM summary</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="st">"unmodified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0       10.8         0.644  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1        5.80        0.827  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2        3.86        0.732  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3        1.06        0.237  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span>
+<span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0       10.8         0.644  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1        5.80        0.827  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2        3.86        0.732  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3        1.06        0.237  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span>
 <span></span>
 <span><span class="co"># QSM summary with Triangulation</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span>, radius <span class="op">=</span> <span class="st">"unmodified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0       29.0         0.645  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1        5.80        0.827  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2        3.86        0.732  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3        1.06        0.237  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0       29.0         0.645  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1        5.80        0.827  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2        3.86        0.732  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3        1.06        0.237  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Looking at the diagnostic plot on a log log scale, with the measured
 twig radius as the horizontal line, we can see that nearly all of the
@@ -412,16 +420,16 @@ new volume estimates and diagnostic plots.</p>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Corrected QSM summary</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="st">"modified"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   BranchOrder tree_volume_L tree_area_m2</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           0      10.8          0.640  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           1       5.20         0.754  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           2       2.69         0.583  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           3       0.539        0.170  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           4       0.104        0.043<span style="text-decoration: underline;">1</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           5       0.006<span style="text-decoration: underline;">83</span>      0.003<span style="text-decoration: underline;">08</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0      10.8          0.640  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1       5.20         0.754  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2       2.69         0.583  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3       0.539        0.170  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            4       0.104        0.043<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5       0.006<span style="text-decoration: underline;">83</span>      0.003<span style="text-decoration: underline;">08</span></span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Here we can see that we reduced the volume of the QSM by around 3
 liters, which is around a 15% overestimation in volume before
