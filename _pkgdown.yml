@@ -1,4 +1,10 @@
 url: https://aidanmorales.github.io/rTwig/
 template:
   bootstrap: 5
+  light-switch: true
+  bslib:
+    bootswatch: pulse
+    pkgdown-nav-height: 100px
+
+
 

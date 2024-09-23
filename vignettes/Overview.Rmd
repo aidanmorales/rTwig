@@ -32,7 +32,7 @@ install.packages("rTwig")
 
 Or the latest development version from [GitHub](https://github.com/):
 
-```{r, message=FALSE, warning=FALSE}
+```{r, eval=FALSE}
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 

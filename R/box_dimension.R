@@ -118,6 +118,9 @@ box_dimension <- function(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = 
     # Plot Labels & Tick Marks
     title3d(xlab = "X", ylab = "Y", zlab = "Z")
     axes3d(labels = FALSE, tick = TRUE, box = FALSE)
+
+    # Pan plot
+    pan_plot(button = 2)
   }
 
   return(list(data, summary))

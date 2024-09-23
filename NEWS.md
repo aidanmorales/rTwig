@@ -24,8 +24,15 @@
     -   Only required data is now sent to parallel workers, reducing memory usage and overhead.
     -   Fix a bug where parallel workers were not closing properly.
 -   `update_radii()`: Fix a bug in path metrics for SimpleForest QSMs (issue #4).
+-   `qsm_summary()`: Refactored with tidyeval.
+-   `box_dimension()`: The 3D plot now pans on right mouse button.
+-   New website look.
 -   Update vignettes.
 -   Update twig data base.
+
+## Breaking Changes
+
+-   `qsm_summary()`: User can pass *radius* as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error propmting the user for a radius column name.
 
 # rTwig 1.1.0
 
