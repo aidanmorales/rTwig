@@ -15,6 +15,9 @@ plot_qsm(
   cloud = NULL,
   pt_color = NULL,
   pt_size = NULL,
+  triangulation = NULL,
+  tri_color = NULL,
+  tri_palette = NULL,
   axes = TRUE,
   axes_color = NULL,
   hover = FALSE,
@@ -31,7 +34,7 @@ plot_qsm(
 
 \item{color}{Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.}
 
-\item{palette}{Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.}
+\item{palette}{Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.}
 
 \item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
 
@@ -44,6 +47,12 @@ plot_qsm(
 \item{pt_color}{Color of the point cloud. Defaults to black. Can be set to "random".}
 
 \item{pt_size}{Size of the points. Defaults to 0.1.}
+
+\item{triangulation}{Plot the stem triangulation mesh from TreeQSM. Defaults to NULL}
+
+\item{tri_color}{Color of the triangulation mesh. Colors must be a single hex color.}
+
+\item{tri_palette}{Optional triangulation color palette for z values. Supports the same inputs as palettes.}
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
@@ -67,12 +76,15 @@ Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backe
 }
 \examples{
 
-## TreeQSM Processing Chain
+## TreeQSM Processing Chain & Triangulation
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 plot_qsm(cylinder)
+
+triangulation <- qsm$triangulation
+plot_qsm(triangulation = triangulation)
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")

@@ -56,7 +56,8 @@ Real Twig.
 `plot_qsm()` can plot QSMs and point clouds, using `rgl` as the 3D
 display, and C++ via `Rcpp` to efficiently build the cylinders. The
 cylinders, simulated point cloud, and skeleton can all be plotted and
-colored by any variable or user supplied color palette.
+colored by any variable or user supplied color palette. It can also
+visualize stem triangulation meshes from TreeQSM.
 
 |                               |                                   |
 |-------------------------------|-----------------------------------|

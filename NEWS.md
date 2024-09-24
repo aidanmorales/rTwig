@@ -4,10 +4,11 @@
 
 -   aRchi QSMs are now supported in the package.
 
--   Users can now pass column variables either unquoted or quoted to user facing functions like `plot_qsm()` or `qsm_summary()`. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.
+-   Users can now pass radius or color column variables either unquoted or quoted to user facing functions like `plot_qsm()`, `qsm_summary()`, or `export_mesh()`. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.
 
--   `plot_qsm()`: Point clouds can now be plotted independently of a QSM.
+-   `plot_qsm()`: Point clouds and stem triangulation meshes can now be plotted independently of a QSM.
 
+    -   *triangulation*: The user can now plot TreeQSM triangulation meshes by passing in the triangulation list from `import_qsm()`. The user can also control the color and palette with *tri_color* and *tri_palette*.
     -   *pan*: The right mouse button now pans the plot instead of zooming by default. The functionality mimics `pan3d()` from RGL, but rewritten with Rcpp for better responsiveness.
     -   *lit*: Enable or disable plot lighting
     -   *axes_color*: The axes color can now be set by the user.
@@ -24,7 +25,9 @@
     -   Only required data is now sent to parallel workers, reducing memory usage and overhead.
     -   Fix a bug where parallel workers were not closing properly.
 -   `update_radii()`: Fix a bug in path metrics for SimpleForest QSMs (issue #4).
--   `qsm_summary()`: Refactored with tidyeval.
+-   `qsm_summary()`:
+    -   Refactored with tidyeval.
+    -   Fix bug where triangulation was not using the correct ending cylinder.
 -   `box_dimension()`: The 3D plot now pans on right mouse button.
 -   New website look.
 -   Update vignettes.

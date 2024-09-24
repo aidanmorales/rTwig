@@ -167,7 +167,7 @@ data_summary <- function(
   # Triangulation volumes
   if (!is.null(triangulation)) {
     # Finds the triangulation end cylinder
-    cyl_end <- pull(triangulation$cylind - 2)
+    cyl_end <- pull(triangulation$cylind - 1)
 
     # Gets the QSM volumes
     qsm_vol_sa <- cyl_sub %>%

@@ -53,6 +53,10 @@ export_mesh <- function(
     filename <- paste0(filename, ".ply")
   }
 
+  # User selected columns
+  radius <- select_column(rlang::enquo(radius))
+  color <- select_column(rlang::enquo(color))
+
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     plot_mesh(

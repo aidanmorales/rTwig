@@ -5,13 +5,16 @@
 #' @param cylinder QSM cylinder data frame
 #' @param radius Column name of radii as a quoted string. Defaults to the modified radii.
 #' @param color Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.
+#' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.
 #' @param pt_color Color of the point cloud. Defaults to black. Can be set to "random".
 #' @param pt_size Size of the points. Defaults to 0.1.
+#' @param triangulation Plot the stem triangulation mesh from TreeQSM. Defaults to NULL
+#' @param tri_color Color of the triangulation mesh. Colors must be a single hex color.
+#' @param tri_palette Optional triangulation color palette for z values. Supports the same inputs as palettes.
 #' @param axes Show plot axes. Defaults to TRUE.
 #' @param axes_color Set the axes color. Defaults to black.
 #' @param hover Show cylinder and branch id on mouse hover. Defaults to FALSE.
@@ -25,12 +28,15 @@
 #'
 #' @examples
 #'
-#' ## TreeQSM Processing Chain
+#' ## TreeQSM Processing Chain & Triangulation
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' plot_qsm(cylinder)
+#'
+#' triangulation <- qsm$triangulation
+#' plot_qsm(triangulation = triangulation)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
@@ -55,6 +61,9 @@ plot_qsm <- function(
     cloud = NULL,
     pt_color = NULL,
     pt_size = NULL,
+    triangulation = NULL,
+    tri_color = NULL,
+    tri_palette = NULL,
     axes = TRUE,
     axes_color = NULL,
     hover = FALSE,
@@ -84,7 +93,9 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -99,7 +110,9 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -114,7 +127,9 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -129,7 +144,9 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -144,14 +161,20 @@ plot_qsm <- function(
       color = color, palette = palette,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   }
-  # Point Cloud ----------------------------------------------------------------
-  else if (is.null(cylinder) & !is.null(cloud)) {
+  # Point Cloud & Triangulation ------------------------------------------------
+  else if (any(!is.null(cloud) | !is.null(triangulation))) {
     plot_data(
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size, axes = axes,
-      axes_color = axes_color, bg_color = bg_color, hover = hover, pan = pan
+      cylinder = cylinder,
+      axes = axes, axes_color = axes_color, hover = hover,
+      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+      triangulation = triangulation, tri_color = tri_color,
+      tri_palette = tri_palette
     )
   } else {
     message(
@@ -194,6 +217,9 @@ plot_qsm <- function(
 #' @param lit plot lighting
 #' @param pan pan plot on right click
 #' @param normalize normalize QSM
+#' @param triangulation plot triangulation mesh
+#' @param tri_color triangulation mesh color
+#' @param tri_palette triangulation palette
 #' @returns an rgl plot
 #' @noRd
 plot_data <- function(
@@ -226,7 +252,10 @@ plot_data <- function(
     bg_color = NULL,
     lit = NULL,
     pan = NULL,
-    normalize = NULL) {
+    normalize = NULL,
+    triangulation = NULL,
+    tri_color = NULL,
+    tri_palette = NULL) {
   if (!is.null(cylinder)) {
     # Plotting radii -----------------------------------------------------------
     radius <- plotting_radii(cylinder, radius)
@@ -263,6 +292,11 @@ plot_data <- function(
     if (hover == TRUE) {
       hover(cylinder, id, branch, start_x, start_y, start_z)
     }
+  }
+
+  # Plot triangulation ---------------------------------------------------------
+  if (!is.null(triangulation)) {
+    plot_triangulation(triangulation, tri_color, tri_palette, lit)
   }
 
   # Plot cloud -----------------------------------------------------------------
@@ -439,11 +473,11 @@ plot_cylinders <- function(
   length <- pull(cylinder, !!rlang::sym(length))
 
   # Create cylinder mesh
-  vertices <- generate_mesh(start, axis, length, radius, facets)
+  cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
   colors <- rep(colors, each = facets * 6)
 
   # Plot cylinders
-  rgl::triangles3d(vertices, col = colors, lit = lit)
+  rgl::triangles3d(cylinder_mesh, col = colors, lit = lit)
 }
 
 #' Plot cloud
@@ -487,6 +521,39 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
     add = TRUE,
     aspect = FALSE
   )
+}
+
+#' Plot triangulation
+#' @param triangulation triangulation list
+#' @param tri_color triangulation color
+#' @param tri_palette triangulation palette
+#' @param lit plot lighting
+#' @returns NA
+#' @noRd
+plot_triangulation <- function(triangulation, tri_color, tri_palette, lit) {
+  message("Plotting Triangulation")
+
+  # Extract TreeQSM triangulation data
+  v <- as.matrix(triangulation$vert)
+  f <- as.matrix(triangulation$facet)
+
+  # Create triangulation mesh
+  triangulation_mesh <- v[as.vector(t(f)), ]
+
+  # Colors
+  z <- triangulation_mesh[, 3]
+  z_normalized <- (z - min(z)) / (max(z) - min(z))
+
+  if (is.null(tri_color) & is.null(tri_palette)) {
+    colors <- colourvalues::color_values(z_normalized, palette = "rainbow")
+  } else if (is.null(tri_color) & !is.null(tri_palette)) {
+    colors <- colourvalues::color_values(z_normalized, palette = tri_palette)
+  } else {
+    colors <- tri_color
+  }
+
+  # Plot triangulation mesh
+  rgl::triangles3d(triangulation_mesh, color = colors, lit = lit)
 }
 
 #' Plot hover
