@@ -64,6 +64,9 @@
 <span>  cloud <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pt_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pt_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  triangulation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tri_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tri_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  axes_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  hover <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -91,7 +94,7 @@
 
 
 <dt id="arg-palette">palette<a class="anchor" aria-label="anchor" href="#arg-palette"></a></dt>
-<dd><p>Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.</p></dd>
+<dd><p>Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.</p></dd>
 
 
 <dt id="arg-facets">facets<a class="anchor" aria-label="anchor" href="#arg-facets"></a></dt>
@@ -116,6 +119,18 @@
 
 <dt id="arg-pt-size">pt_size<a class="anchor" aria-label="anchor" href="#arg-pt-size"></a></dt>
 <dd><p>Size of the points. Defaults to 0.1.</p></dd>
+
+
+<dt id="arg-triangulation">triangulation<a class="anchor" aria-label="anchor" href="#arg-triangulation"></a></dt>
+<dd><p>Plot the stem triangulation mesh from TreeQSM. Defaults to NULL</p></dd>
+
+
+<dt id="arg-tri-color">tri_color<a class="anchor" aria-label="anchor" href="#arg-tri-color"></a></dt>
+<dd><p>Color of the triangulation mesh. Colors must be a single hex color.</p></dd>
+
+
+<dt id="arg-tri-palette">tri_palette<a class="anchor" aria-label="anchor" href="#arg-tri-palette"></a></dt>
+<dd><p>Optional triangulation color palette for z values. Supports the same inputs as palettes.</p></dd>
 
 
 <dt id="arg-axes">axes<a class="anchor" aria-label="anchor" href="#arg-axes"></a></dt>
@@ -154,7 +169,7 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## TreeQSM Processing Chain</span></span></span>
+<span class="r-in"><span><span class="co">## TreeQSM Processing Chain &amp; Triangulation</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM .mat</span>
@@ -172,6 +187,11 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
 <span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Cylinders</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Panning plot on rgl device: 1</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">triangulation</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span></span></span>
+<span class="r-in"><span><span class="fu">plot_qsm</span><span class="op">(</span>triangulation <span class="op">=</span> <span class="va">triangulation</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Plotting Triangulation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Panning plot on rgl device: 1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>

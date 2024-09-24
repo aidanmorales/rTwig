@@ -51,10 +51,12 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>aRchi QSMs are now supported in the package.</p></li>
-<li><p>Users can now pass column variables either unquoted or quoted to user facing functions like <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> or <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.</p></li>
+<li><p>Users can now pass radius or color column variables either unquoted or quoted to user facing functions like <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>, or <code><a href="../reference/export_mesh.html">export_mesh()</a></code>. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.</p></li>
 <li>
-<p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>: Point clouds can now be plotted independently of a QSM.</p>
+<p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>: Point clouds and stem triangulation meshes can now be plotted independently of a QSM.</p>
 <ul><li>
+<em>triangulation</em>: The user can now plot TreeQSM triangulation meshes by passing in the triangulation list from <code><a href="../reference/import_qsm.html">import_qsm()</a></code>. The user can also control the color and palette with <em>tri_color</em> and <em>tri_palette</em>.</li>
+<li>
 <em>pan</em>: The right mouse button now pans the plot instead of zooming by default. The functionality mimics <code>pan3d()</code> from RGL, but rewritten with Rcpp for better responsiveness.</li>
 <li>
 <em>lit</em>: Enable or disable plot lighting</li>
@@ -78,7 +80,10 @@
 <li>
 <code>update_radii()</code>: Fix a bug in path metrics for SimpleForest QSMs (issue <a href="https://github.com/aidanmorales/rTwig/issues/4" class="external-link">#4</a>).</li>
 <li>
-<code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>: Refactored with tidyeval.</li>
+<code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>:
+<ul><li>Refactored with tidyeval.</li>
+<li>Fix bug where triangulation was not using the correct ending cylinder.</li>
+</ul></li>
 <li>
 <code><a href="../reference/box_dimension.html">box_dimension()</a></code>: The 3D plot now pans on right mouse button.</li>
 <li>New website look.</li>
