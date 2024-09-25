@@ -99,6 +99,8 @@ rTwig currently supports
 - `smooth_qsm()` connects cylinder end-to-end to smooth branch
   visualization
 - `plot_qsm()` plots QSMs and optionally their point clouds
+- `prune_qsm()` prunes a QSM by cylinder attributes, height, or diameter
+  classes
 - `export_mesh()` exports a QSM as a mesh object (.ply)
 - `export_mat()` exports a QSM in a MATLAB format (.mat)
 - `box_dimension()` calculates and visualizes the structural complexity

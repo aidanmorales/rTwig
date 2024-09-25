@@ -46,7 +46,7 @@ qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
       cylinder = cylinder,
       radius = radius, length = "length", branch = "branch",
       branch_order = "branch_order", branch_position = "branch_position",
-      start_z = "start.z", id = "id", triangulation = NULL
+      start_z = "start_z", id = "id", triangulation = NULL
     )
   }
   # TreeQSM --------------------------------------------------------------------

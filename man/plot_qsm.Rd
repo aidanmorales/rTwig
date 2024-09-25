@@ -66,7 +66,7 @@ plot_qsm(
 
 \item{pan}{Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.}
 
-\item{normalize}{Normalize the base of the QSM to 0,0,0. Defaults to FALSE.}
+\item{normalize}{Normalize the QSM to 0,0,0 based on the provided data. Defaults to FALSE.}
 }
 \value{
 A rgl plot

@@ -21,7 +21,7 @@
 #' @param bg_color Set the background color of the plot. Defaults to white.
 #' @param lit Enable light source in plot. Defaults to TRUE. Can be set to FALSE.
 #' @param pan Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.
-#' @param normalize Normalize the base of the QSM to 0,0,0. Defaults to FALSE.
+#' @param normalize Normalize the QSM to 0,0,0 based on the provided data. Defaults to FALSE.
 #'
 #' @return A rgl plot
 #' @export
@@ -650,16 +650,6 @@ normalize_qsm <- function(
     end_x = NULL,
     end_y = NULL,
     end_z = NULL) {
-  # Find base cylinder
-  base <- cylinder %>%
-    select(
-      "id" = all_of(id),
-      "start_x" = all_of(start_x),
-      "start_y" = all_of(start_y),
-      "start_z" = all_of(start_z)
-    ) %>%
-    filter(id == 1)
-
   # Update cylinder coordinates
   coords <- cylinder %>%
     select(
@@ -672,12 +662,12 @@ normalize_qsm <- function(
       "end_z" = all_of(end_z)
     ) %>%
     mutate(
-      start_x = start_x - !!base$start_x[1],
-      start_y = start_y - !!base$start_y[1],
-      start_z = start_z - !!base$start_z[1],
-      end_x = end_x - !!base$start_x[1],
-      end_y = end_y - !!base$start_y[1],
-      end_z = end_z - !!base$start_z[1]
+      start_x = start_x - min(.data$start_x, na.rm = FALSE),
+      start_y = start_y - min(.data$start_y, na.rm = FALSE),
+      start_z = start_z - min(.data$start_z, na.rm = FALSE),
+      end_x = end_x - min(.data$start_x, na.rm = FALSE),
+      end_y = end_y - min(.data$start_y, na.rm = FALSE),
+      end_z = end_z - min(.data$start_z, na.rm = FALSE)
     ) %>%
     rename(
       !!rlang::sym(id) := "id",
@@ -690,6 +680,6 @@ normalize_qsm <- function(
     )
 
   cylinder %>%
-    select(-any_of(c(start_x, start_y, start_z, end_x, end_y, end_z))) %>%
+    select(-all_of(c(start_x, start_y, start_z, end_x, end_y, end_z))) %>%
     left_join(coords, by = id)
 }

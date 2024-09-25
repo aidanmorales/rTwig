@@ -2,6 +2,8 @@
 
 ## New Features
 
+-   `prune_qsm()`: A new function to efficiently and easily prune QSMs using multiple pruning criteria and return options.
+
 -   aRchi QSMs are now supported in the package.
 
 -   Users can now pass radius or color column variables either unquoted or quoted to user facing functions like `plot_qsm()`, `qsm_summary()`, or `export_mesh()`. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.

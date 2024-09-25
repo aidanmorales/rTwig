@@ -542,7 +542,7 @@ combine_paths <- function(
     cylinder = cylinder,
     id = id,
     parent = parent,
-    all_paths = FALSE
+    paths = TRUE
   )
 
   # Extract required variables

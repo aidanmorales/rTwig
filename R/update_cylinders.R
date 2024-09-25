@@ -421,10 +421,16 @@ total_children <- function(cylinder, parent, id) {
 #' @param cylinder QSM cylinder data frame
 #' @param id column name of parent cylinders
 #' @param parent column name of parent cylinders
-#' @param all_paths return all paths or just branching paths
+#' @param paths return only paths
+#' @param pruning return only children
 #' @returns list of cylinder network
 #' @noRd
-build_network <- function(cylinder, id, parent, all_paths = TRUE) {
+build_network <- function(
+    cylinder,
+    id,
+    parent,
+    paths = FALSE,
+    pruning = FALSE) {
   message("Building Cylinder Network")
 
   # Extract cylinder ids
@@ -434,6 +440,19 @@ build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   # Creates QSM cylinder network
   qsm_g <- tidytable(parent = parent, id = id)
   qsm_g <- igraph::graph_from_data_frame(qsm_g)
+
+  # Find supported children
+  child_g <- qsm_g - 1 # remove cylinder 0
+  child_g <- igraph::permute(child_g, match(igraph::V(child_g)$name, id))
+  child_g <- igraph::ego(child_g, order = igraph::vcount(child_g), mode = "out")
+
+  child_id <- as.integer(unlist(child_g, FALSE, FALSE))
+  child_index <- cumsum(duplicated(child_id) & !duplicated(child_id, fromLast = TRUE)) + 1
+  child_df <- tidytable(index = child_index, id = child_id)
+
+  if (pruning == TRUE) {
+    return(child_df)
+  }
 
   # Finds twigs cylinders
   twig_id_g <- igraph::V(qsm_g)[igraph::degree(qsm_g, mode = "out") == 0]
@@ -445,18 +464,9 @@ build_network <- function(cylinder, id, parent, all_paths = TRUE) {
   all_index <- cumsum(all_id == 0)
   all_df <- tidytable(index = all_index, id = all_id)
 
-  if (all_paths == FALSE) {
+  if (paths == TRUE) {
     return(all_df)
   }
-
-  # Find supported children
-  child_g <- qsm_g - 1 # remove cylinder 0
-  child_g <- igraph::permute(child_g, match(igraph::V(child_g)$name, id))
-  child_g <- igraph::ego(child_g, order = igraph::vcount(child_g), mode = "out")
-
-  child_id <- as.integer(unlist(child_g, FALSE, FALSE))
-  child_index <- cumsum(duplicated(child_id) & !duplicated(child_id, fromLast = TRUE)) + 1
-  child_df <- tidytable(index = child_index, id = child_id)
 
   # Find all paths from base to cylinder
   base_g <- igraph::all_simple_paths(qsm_g, from = 1, to = igraph::V(qsm_g))
