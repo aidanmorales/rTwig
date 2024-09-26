@@ -442,7 +442,8 @@ model_paths <- function(
   cyl_radii <- bind_rows(results) %>%
     group_by("id") %>%
     summarize(
-      radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE)
+      radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE),
+      modified = mean(.data$bad_fit)
     ) %>%
     rename(
       !!rlang::sym(id) := "id",

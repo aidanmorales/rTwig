@@ -2,14 +2,9 @@
 #'
 #' @description Updates the QSM cylinder data in preparation for radii correction
 #'
-#' @details Updates parent-child branch and cylinder relationships to fill in any gaps.
-#' Four useful QSM metrics developed by Jan Hackenberg are also calculated.
-#' Growth length is the length of a parent cylinder, plus the lengths of all of
-#' its child cylinders. The segment is a portion of a branch between two branching nodes.
-#' The reverse branch order assigns twigs as order 1 and works backwards at each
-#' branching junction to the base of the stem, which has the largest reverse branch order.
-#' Distance from twig is the average distance to all connected twigs for a given cylinder.
-#' Two new metrics, distance from base, and total children, are also calculated.
+#' @details Updates and verifies parent-child cylinder relationships and
+#' calculates new variables and metrics found throughout the supported QSM software.
+#' This function is required to run the rest of the rTwig functions.
 #'
 #' @param cylinder QSM cylinder data frame
 #'
@@ -212,15 +207,33 @@ update_cylinders <- function(cylinder) {
     cylinder <- path_metrics(network, cylinder, "ID", "length")
 
     # Check for existing path metrics columns
-    if (all(c("distanceToTwig.x", "distanceToTwig.y") %in% colnames(cylinder))) {
-      cylinder %>%
+    if (any(c("distanceToTwig.x", "distanceToTwig.y") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
         rename(
           distanceToTwigSF = "distanceToTwig.x",
           distanceToTwig = "distanceToTwig.y"
         )
-    } else {
-      return(cylinder)
     }
+
+    if (any(c("reversePipeRadiusBranchorder.x", " reversePipeRadiusBranchorder.y") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
+        select(-"reversePipeRadiusBranchorder.x") %>%
+        rename(reversePipeRadiusBranchorder = "reversePipeRadiusBranchorder.y")
+    }
+
+    if (any(c("reversePipeAreaBranchorder.x", " reversePipeAreaBranchorder.y") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
+        select(-"reversePipeAreaBranchorder.x") %>%
+        rename(reversePipeAreaBranchorder = "reversePipeAreaBranchorder.y")
+    }
+
+    if (any(c("vesselVolume.x", " vesselVolume.y") %in% colnames(cylinder))) {
+      cylinder <- cylinder %>%
+        select(-"vesselVolume.x") %>%
+        rename(vesselVolume = "vesselVolume.y")
+    }
+
+    return(cylinder)
   }
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
@@ -409,7 +422,7 @@ total_children <- function(cylinder, parent, id) {
   # Adds supported children for each cylinder
   total_children <- cylinder %>%
     group_by(!!rlang::sym(parent)) %>%
-    summarize(totalChildren = n()) %>%
+    summarize(totalChildren = n(), .groups = "drop") %>%
     rename(!!rlang::sym(id) := !!rlang::sym(parent))
 
   # Joins total children and fill na with 0
@@ -511,7 +524,10 @@ growth_length <- function(network, cylinder, id, length) {
       by = "id"
     ) %>%
     group_by("index") %>%
-    summarize(growthLength = sum(!!rlang::sym(length), na.rm = TRUE)) %>%
+    summarize(
+      growthLength = sum(!!rlang::sym(length), na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
     rename(!!rlang::sym(id) := "index")
 
   # Joins growth length
@@ -532,7 +548,7 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
   breaks <- cylinder %>%
     rename(parent := !!rlang::sym(parent)) %>%
     group_by("parent") %>%
-    summarize(breaks = n())
+    summarize(breaks = n(), .groups = "drop")
 
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
@@ -548,7 +564,10 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
       reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
     ) %>%
     group_by("id") %>%
-    summarize(reverseBranchOrder = max(.data$reverseBranchOrder)) %>%
+    summarize(
+      reverseBranchOrder = max(.data$reverseBranchOrder),
+      .groups = "drop"
+    ) %>%
     rename(!!rlang::sym(id) := "id")
 
   # Joins reverse branch order
@@ -697,7 +716,7 @@ branch_from_order <- function(cylinder, id, parent, branch_order, branch_name) {
 #' @returns cylinder data frame with branch segments
 #' @noRd
 path_metrics <- function(network, cylinder, id, length) {
-  message("Calculating Distance From Base")
+  message("Calculating Path Metrics")
 
   # Calculate distance from base to cylinder
   base_distance <- network$base_df %>%
@@ -706,28 +725,58 @@ path_metrics <- function(network, cylinder, id, length) {
       by = "id"
     ) %>%
     group_by("index") %>%
-    summarize(distanceFromBase = sum(.data$length, na.rm = TRUE)) %>%
+    summarize(
+      distanceFromBase = sum(.data$length, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
     rename(!!rlang::sym(id) := "index")
 
-  # Joins distance from base
-  cylinder <- left_join(cylinder, base_distance, by = id)
-
-  message("Calculating Average Distance To Twigs")
-
-  # Calculate average distance to twigs
-  twig_distance <- left_join(network$child_df, network$cylinder_info, by = "id") %>%
+  # Calculate allometric variables
+  path_df <- network$child_df %>%
+    left_join(network$cylinder_info, by = "id") %>%
     left_join(
       select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
       by = "id"
+    )
+
+  # Calculate path metrics
+  path_metrics <- path_df %>%
+    group_by("index") %>%
+    summarise(
+      twig_sum = sum(.data$twig),
+      length_freq_sum = sum(.data$length * .data$frequency),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      distanceToTwig = .data$length_freq_sum / .data$twig_sum,
+      reversePipeAreaBranchorder = .data$twig_sum,
+      reversePipeRadiusBranchorder = sqrt(.data$twig_sum)
+    ) %>%
+    rename(!!rlang::sym(id) := .data$index) %>%
+    select(-c("twig_sum", "length_freq_sum"))
+
+  # Calculate vessel volume
+  vessel_volume <- path_df %>%
+    left_join(
+      select(
+        path_metrics,
+        id = !!rlang::sym(id),
+        RBOPA = "reversePipeAreaBranchorder"
+      ),
+      by = "id"
     ) %>%
     group_by("index") %>%
-    summarize(
-      distanceToTwig = sum(.data$length * .data$frequency) / sum(.data$twig)
+    summarise(
+      vesselVolume = sum(.data$RBOPA * .data$length), .groups = "drop"
     ) %>%
-    rename(!!rlang::sym(id) := "index")
+    rename(!!rlang::sym(id) := .data$index) %>%
+    select(all_of(id), "vesselVolume")
 
-  # Joins distance from twig
-  left_join(cylinder, twig_distance, by = id)
+  # Joins variables
+  cylinder %>%
+    left_join(base_distance, by = id) %>%
+    left_join(path_metrics, by = id) %>%
+    left_join(vessel_volume, by = id)
 }
 
 #' Verify QSM topology
