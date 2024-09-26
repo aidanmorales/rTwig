@@ -212,8 +212,9 @@ This is calculated by finding all complete simple paths from the given
 cylinder to the supported twigs, summing the lengths, and then dividing
 by the number of paths.</p>
 <p><strong><code>vessel_volume:</code></strong> This is the theoretical
-volume of living vessels supported by a given cylinder based on
-allometric scaling theory.</p>
+cumulative volume of living vessels supported by a given cylinder based
+on allometric scaling theory. It is the sum of <em>pipe_area *
+length</em> for all supported cylinders.</p>
 <p><strong><code>pipe_area:</code></strong> This is the theoretical
 cross-sectional area of a given cylinder based on allometric scaling
 theory. The units and values are the total number of supported

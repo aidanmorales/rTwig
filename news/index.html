@@ -53,6 +53,7 @@
 <ul><li><p><code><a href="../reference/prune_qsm.html">prune_qsm()</a></code>: A new function to efficiently and easily prune QSMs using multiple pruning criteria and return options.</p></li>
 <li><p>aRchi QSMs are now supported in the package.</p></li>
 <li><p>Users can now pass radius or color column variables either unquoted or quoted to user facing functions like <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>, or <code><a href="../reference/export_mesh.html">export_mesh()</a></code>. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.</p></li>
+<li><p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: Three new allometric scaling variables as standard outputs - <em>vessel_volume</em>, <em>pipe_area</em>, <em>pipe_radius</em>.</p></li>
 <li>
 <p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>: Point clouds and stem triangulation meshes can now be plotted independently of a QSM.</p>
 <ul><li>
@@ -68,7 +69,11 @@
 <li>
 <em>normalize</em>: Center the base of the QSM at 0,0,0. Defaults to FALSE.</li>
 </ul></li>
-<li><p><code><a href="../reference/correct_radii.html">correct_radii()</a></code>: The broken branch filter can now be disabled, with <em>broken_branch = FALSE</em></p></li>
+<li>
+<p><code><a href="../reference/correct_radii.html">correct_radii()</a></code>:</p>
+<ul><li><p>The broken branch filter can now be disabled, with <em>broken_branch = FALSE</em></p></li>
+<li><p>Now returns <em>modified</em>, an index of what cylinders were modified by Real Twig.</p></li>
+</ul></li>
 <li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: The broken branch filter can now be disabled, with <em>broken_branch = FALSE</em></p></li>
 </ul></div>
 <div class="section level3">
