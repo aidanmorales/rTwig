@@ -8,6 +8,8 @@
 
 -   Users can now pass radius or color column variables either unquoted or quoted to user facing functions like `plot_qsm()`, `qsm_summary()`, or `export_mesh()`. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.
 
+-   `update_cylinders()`: Three new allometric scaling variables as standard outputs - *vessel_volume*, *pipe_area*, *pipe_radius*.
+
 -   `plot_qsm()`: Point clouds and stem triangulation meshes can now be plotted independently of a QSM.
 
     -   *triangulation*: The user can now plot TreeQSM triangulation meshes by passing in the triangulation list from `import_qsm()`. The user can also control the color and palette with *tri_color* and *tri_palette*.
@@ -17,7 +19,11 @@
     -   *skeleton_lwd*: Set the line width of the skeleton plots.
     -   *normalize*: Center the base of the QSM at 0,0,0. Defaults to FALSE.
 
--   `correct_radii()`: The broken branch filter can now be disabled, with *broken_branch = FALSE*
+-   `correct_radii()`:
+
+    -   The broken branch filter can now be disabled, with *broken_branch = FALSE*
+
+    -   Now returns *modified*, an index of what cylinders were modified by Real Twig.
 
 -   `run_rtwig()`: The broken branch filter can now be disabled, with *broken_branch = FALSE*
 

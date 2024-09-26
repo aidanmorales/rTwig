@@ -68,7 +68,7 @@ Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleFor
 
 **`twig_distance:`** This is the average distance in meters a given cylinder is away from all supported twigs. This is calculated by finding all complete simple paths from the given cylinder to the supported twigs, summing the lengths, and then dividing by the number of paths.
 
-**`vessel_volume:`** This is the theoretical volume of living vessels supported by a given cylinder based on allometric scaling theory.
+**`vessel_volume:`** This is the theoretical cumulative volume of living vessels supported by a given cylinder based on allometric scaling theory. It is the sum of *pipe_area \* length* for all supported cylinders.
 
 **`pipe_area:`** This is the theoretical cross-sectional area of a given cylinder based on allometric scaling theory. The units and values are the total number of supported twigs.
 
