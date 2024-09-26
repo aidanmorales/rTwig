@@ -95,10 +95,9 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  25 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_x        : num  0.768 0.768 0.768 0.769 0.769 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_y        : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_z        : num  254 254 254 254 254 ...</span>
@@ -124,6 +123,9 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ growth_length  : num  32.8 32.7 32.6 32.6 32.6 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ base_distance  : num  0.0939 0.1661 0.2326 0.242 0.31 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ twig_distance  : num  3.4 3.31 3.24 3.17 3.16 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vessel_volume  : num  279 271 266 260 259 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_area      : int  82 82 82 82 82 82 82 82 82 82 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_radius    : num  9.06 9.06 9.06 9.06 9.06 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
@@ -134,10 +136,9 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  25 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_x        : num  0.761 0.759 0.771 0.768 0.765 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_y        : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_z        : num  254 254 254 254 254 ...</span>
@@ -163,6 +164,9 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ growth_length  : num  31.4 31.4 31.3 31.3 31.2 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ base_distance  : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ twig_distance  : num  3.43 3.38 3.33 3.27 3.22 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vessel_volume  : num  237 233 229 226 222 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_area      : int  69 69 69 69 69 69 69 69 69 69 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_radius    : num  8.31 8.31 8.31 8.31 8.31 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

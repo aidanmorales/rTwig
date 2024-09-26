@@ -120,6 +120,12 @@ cylinder before any possible modifications. If using TreeQSM, this is
 always the <em>UnmodRadius</em> column. If using SimpleForest or
 Treegraph, this is a copy of the radius before Real Twig is run. Real
 Twig always uses this radius in its corrections.</p>
+<p><strong><code>modified:</code></strong> This is an average index of
+if the cylinder radius was an outlier and modified with Real Twig across
+the QSM paths. A value of 0 indicates that the cylinder was never
+modified in any path, while a value of 1 indicates that it was modified
+in every path. A value in between 0 and 1 was modified in only some, but
+not all of the paths.</p>
 <p><strong><code>length:</code></strong> This is the length of the
 cylinder in meters.</p>
 </div>
@@ -205,6 +211,17 @@ distance in meters a given cylinder is away from all supported twigs.
 This is calculated by finding all complete simple paths from the given
 cylinder to the supported twigs, summing the lengths, and then dividing
 by the number of paths.</p>
+<p><strong><code>vessel_volume:</code></strong> This is the theoretical
+volume of living vessels supported by a given cylinder based on
+allometric scaling theory.</p>
+<p><strong><code>pipe_area:</code></strong> This is the theoretical
+cross-sectional area of a given cylinder based on allometric scaling
+theory. The units and values are the total number of supported
+twigs.</p>
+<p><strong><code>pipe_radius:</code></strong> This is the theoretical
+radius of a given cylinder based on allometric scaling theory. The units
+and values are the square root of the total number of supported
+twigs.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

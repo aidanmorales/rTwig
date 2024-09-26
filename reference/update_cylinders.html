@@ -70,14 +70,9 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Updates parent-child branch and cylinder relationships to fill in any gaps.
-Four useful QSM metrics developed by Jan Hackenberg are also calculated.
-Growth length is the length of a parent cylinder, plus the lengths of all of
-its child cylinders. The segment is a portion of a branch between two branching nodes.
-The reverse branch order assigns twigs as order 1 and works backwards at each
-branching junction to the base of the stem, which has the largest reverse branch order.
-Distance from twig is the average distance to all connected twigs for a given cylinder.
-Two new metrics, distance from base, and total children, are also calculated.</p>
+    <p>Updates and verifies parent-child cylinder relationships and
+calculates new variables and metrics found throughout the supported QSM software.
+This function is required to run the rest of the rTwig functions.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -102,39 +97,41 @@ Two new metrics, distance from base, and total children, are also calculated.</p
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  29 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius            : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x           : num  0.768 0.768 0.768 0.769 0.769 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.y           : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.z           : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.x            : num  0.00995 -0.0111 0.01364 0.01571 0.01449 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.y            : num  0.0912 0.0391 0.0367 0.0271 0.0267 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.z            : num  0.996 0.999 0.999 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.x             : num  0.769 0.768 0.769 0.769 0.77 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.y             : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.z             : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ added             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ BranchOrder       : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder: num  20 20 20 20 20 20 20 20 20 20 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PositionInBranch  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mad               : num  0.00072 0.000538 0.000523 0.000335 0.000438 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ SurfCov           : num  0.875 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius       : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius         : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength      : num  32.8 32.7 32.6 32.6 32.6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt        : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent            : num  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension         : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase  : num  0.0939 0.1661 0.2326 0.242 0.31 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig    : num  3.4 3.31 3.24 3.17 3.16 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  32 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x                     : num  0.768 0.768 0.768 0.769 0.769 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.y                     : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.z                     : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.x                      : num  0.00995 -0.0111 0.01364 0.01571 0.01449 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.y                      : num  0.0912 0.0391 0.0367 0.0271 0.0267 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis.z                      : num  0.996 0.999 0.999 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.x                       : num  0.769 0.768 0.769 0.769 0.77 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.y                       : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end.z                       : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ added                       : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ BranchOrder                 : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder          : num  20 20 20 20 20 20 20 20 20 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PositionInBranch            : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment                     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment               : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mad                         : num  0.00072 0.000538 0.000523 0.000335 0.000438 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ SurfCov                     : num  0.875 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius                 : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius                   : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  32.8 32.7 32.6 32.6 32.6 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch                      : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt                  : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent                      : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension                   : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren               : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0.0939 0.1661 0.2326 0.242 0.31 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.4 3.31 3.24 3.17 3.16 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  82 82 82 82 82 82 82 82 82 82 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  9.06 9.06 9.06 9.06 9.06 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  279 271 266 260 259 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
@@ -145,37 +142,39 @@ Two new metrics, distance from base, and total children, are also calculated.</p
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  27 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID            : num  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX              : num  0.761 0.759 0.771 0.768 0.765 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ              : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX                : num  0.759 0.771 0.768 0.765 0.769 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY                : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ                : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX               : num  -0.0286 0.2148 -0.0473 -0.0498 0.0678 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY               : num  -0.078889 0.163918 0.03933 -0.011114 -0.000265 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ               : num  0.996 0.963 0.998 0.999 0.998 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius              : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length              : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength        : num  31.4 31.4 31.3 31.3 31.2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ averagePointDistance: num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID           : num  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID     : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOrder         : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder  : int  18 18 18 18 18 18 18 18 18 18 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius         : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius           : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt          : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID            : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch    : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren       : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase    : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig      : num  3.43 3.38 3.33 3.27 3.22 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  30 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                          : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID                    : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX                      : num  0.761 0.759 0.771 0.768 0.765 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY                      : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ                      : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX                        : num  0.759 0.771 0.768 0.765 0.769 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY                        : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ                        : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX                       : num  -0.0286 0.2148 -0.0473 -0.0498 0.0678 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY                       : num  -0.078889 0.163918 0.03933 -0.011114 -0.000265 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ                       : num  0.996 0.963 0.998 0.999 0.998 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  31.4 31.4 31.3 31.3 31.2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ averagePointDistance        : num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID                   : num  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOrder                 : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder          : int  18 18 18 18 18 18 18 18 18 18 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius                 : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius                   : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt                  : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID                    : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch            : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren               : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0.0497 0.1027 0.1562 0.2086 0.2614 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.43 3.38 3.33 3.27 3.22 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  69 69 69 69 69 69 69 69 69 69 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  8.31 8.31 8.31 8.31 8.31 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  237 233 229 226 222 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## aRchi Processing Chain</span></span></span>
@@ -191,40 +190,42 @@ Two new metrics, distance from base, and total children, are also calculated.</p
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Distance From Base</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Average Distance To Twigs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1231 obs. of  30 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX            : num  0.763 0.77 0.77 0.763 0.764 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY            : num  -16.4 -16.4 -16.4 -16.4 -16.3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ            : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX              : num  0.77 0.77 0.763 0.764 0.766 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY              : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ              : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX             : num  0.1307 -0.0172 -0.2653 0.0294 0.1055 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY             : num  0.1531 -0.1311 0.0981 0.1203 -0.2048 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ             : num  0.98 0.991 0.959 0.992 0.973 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension_ID      : int  2 3 4 5 6 7 8 9 10 11 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius_cyl        : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length            : num  0.0579 0.0269 0.0258 0.0245 0.0256 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ volume            : num  0.000333 0.000155 0.000149 0.000141 0.000147 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis_ID           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment_ID        : int  44 44 44 44 44 44 44 44 44 44 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ node_ID           : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branching_order   : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cyl_ID            : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent_ID         : num  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius       : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_ID         : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch  : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength      : num  34.2 34.2 34.2 34.1 34.1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder: num  20 20 20 20 20 20 20 20 20 20 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment           : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt        : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase  : num  0.0579 0.0847 0.1106 0.135 0.1606 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig    : num  3.44 3.38 3.36 3.33 3.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1231 obs. of  33 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX                      : num  0.763 0.77 0.77 0.763 0.764 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY                      : num  -16.4 -16.4 -16.4 -16.4 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ                      : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX                        : num  0.77 0.77 0.763 0.764 0.766 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY                        : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ                        : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX                       : num  0.1307 -0.0172 -0.2653 0.0294 0.1055 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY                       : num  0.1531 -0.1311 0.0981 0.1203 -0.2048 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ                       : num  0.98 0.991 0.959 0.992 0.973 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension_ID                : int  2 3 4 5 6 7 8 9 10 11 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius_cyl                  : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.0579 0.0269 0.0258 0.0245 0.0256 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ volume                      : num  0.000333 0.000155 0.000149 0.000141 0.000147 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis_ID                     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment_ID                  : int  44 44 44 44 44 44 44 44 44 44 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ node_ID                     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branching_order             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cyl_ID                      : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent_ID                   : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius                 : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_ID                   : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch            : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren               : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  34.2 34.2 34.2 34.1 34.1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder          : num  20 20 20 20 20 20 20 20 20 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment                     : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegment               : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt                  : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0.0579 0.0847 0.1106 0.135 0.1606 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.44 3.38 3.36 3.33 3.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  121 121 121 121 121 121 121 121 121 121 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  11 11 11 11 11 11 11 11 11 11 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  416 409 406 403 400 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
