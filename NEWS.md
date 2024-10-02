@@ -37,6 +37,7 @@
     -   Refactored with tidyeval.
     -   Fix bug where triangulation was not using the correct ending cylinder.
 -   `box_dimension()`: The 3D plot now pans on right mouse button.
+-   Add Real Twig Method paper citation in package and readme.
 -   New website look.
 -   Update vignettes.
 -   Update twig data base.

@@ -1,0 +1,23 @@
+bibentry("Manual", other = unlist(citation(auto = meta), recursive = FALSE))
+
+bibentry("Article",
+         title        = "Reducing tree volume overestimation in quantitative structure models using modeled branch topology and direct twig measurements",
+         author       = c(
+                          person(
+                            given = "Aidan",
+                            family = "Morales",
+                            email = "moral169@msu.edu",
+                            comment = c(ORCID = "0009-0000-4513-4908")
+                          ),
+                          person(
+                            given = "David W.",
+                            family = "MacFarlane",
+                            email = "macfar24@msu.edu",
+                          )
+                        ),
+         journal      = "Forestry: An International Journal of Forest Research",
+         year         = "2024",
+         volume       = "",
+         number       = "",
+         pages        = "1-16",
+         doi          = "https://doi.org/10.1093/forestry/cpae046")

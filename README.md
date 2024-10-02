@@ -37,6 +37,16 @@ tools for QSM visualization and analysis that are seamlessly compatible
 with the R ecosystem, and for point cloud fractal analysis and
 visualization using the box-dimension metric.
 
+## Method
+
+A complete description and validation of Real Twig can be read here:
+
+**Aidan Morales**, and **David W. MacFarlane**. “Reducing tree volume
+overestimation in quantitative structure models using modeled branch
+topology and direct twig measurements.” *Forestry: An International
+Journal of Forest Research*, 2024, pp. 1-16.
+<https://doi.org/10.1093/forestry/cpae046>.
+
 ## Features
 
 #### Realistic Trees
