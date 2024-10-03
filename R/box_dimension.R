@@ -32,9 +32,9 @@ box_dimension <- function(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = 
   # Calculates Box Dimension ---------------------------------------------------
 
   # Ensure cloud is a matrix
-  if(!is.matrix(cloud)){
+  if (!is.matrix(cloud)) {
     cloud <- as.matrix(cloud)
-  } else{
+  } else {
     cloud <- cloud
   }
 

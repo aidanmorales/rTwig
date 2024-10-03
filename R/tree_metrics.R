@@ -60,7 +60,7 @@ tree_metrics <- function(cylinder) {
   }
   # TreeQSM --------------------------------------------------------------------
   else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-   calculate_tree_metrics(
+    calculate_tree_metrics(
       cylinder = cylinder, id = "extension", parent = "parent",
       branch = "branch", branch_alt = "branch_alt",
       radius = "radius", raw_radius = "UnmodRadius",
@@ -107,7 +107,7 @@ tree_metrics <- function(cylinder) {
   }
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-   calculate_tree_metrics(
+    calculate_tree_metrics(
       cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
       branch = "branch_ID", branch_alt = "branch_alt",
       radius = "radius_cyl", raw_radius = "UnmodRadius",

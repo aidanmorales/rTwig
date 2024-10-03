@@ -66,6 +66,55 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iqr_filter
+IntegerVector iqr_filter(NumericVector x, int method);
+RcppExport SEXP _rTwig_iqr_filter(SEXP xSEXP, SEXP methodSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type method(methodSEXP);
+    rcpp_result_gen = Rcpp::wrap(iqr_filter(x, method));
+    return rcpp_result_gen;
+END_RCPP
+}
+// taper_filter
+IntegerVector taper_filter(NumericVector radius, int taper);
+RcppExport SEXP _rTwig_taper_filter(SEXP radiusSEXP, SEXP taperSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< int >::type taper(taperSEXP);
+    rcpp_result_gen = Rcpp::wrap(taper_filter(radius, taper));
+    return rcpp_result_gen;
+END_RCPP
+}
+// broken_branch_filter
+List broken_branch_filter(DataFrame path, double twig_radius, bool broken_branch);
+RcppExport SEXP _rTwig_broken_branch_filter(SEXP pathSEXP, SEXP twig_radiusSEXP, SEXP broken_branchSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type path(pathSEXP);
+    Rcpp::traits::input_parameter< double >::type twig_radius(twig_radiusSEXP);
+    Rcpp::traits::input_parameter< bool >::type broken_branch(broken_branchSEXP);
+    rcpp_result_gen = Rcpp::wrap(broken_branch_filter(path, twig_radius, broken_branch));
+    return rcpp_result_gen;
+END_RCPP
+}
+// model_matrix
+NumericMatrix model_matrix(double min_growth_length, double twig_radius);
+RcppExport SEXP _rTwig_model_matrix(SEXP min_growth_lengthSEXP, SEXP twig_radiusSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type min_growth_length(min_growth_lengthSEXP);
+    Rcpp::traits::input_parameter< double >::type twig_radius(twig_radiusSEXP);
+    rcpp_result_gen = Rcpp::wrap(model_matrix(min_growth_length, twig_radius));
+    return rcpp_result_gen;
+END_RCPP
+}
 // generate_circle_points
 NumericMatrix generate_circle_points(NumericVector center, double radius, int facets);
 RcppExport SEXP _rTwig_generate_circle_points(SEXP centerSEXP, SEXP radiusSEXP, SEXP facetsSEXP) {
@@ -216,6 +265,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// which_rcpp
+IntegerVector which_rcpp(LogicalVector condition);
+RcppExport SEXP _rTwig_which_rcpp(SEXP conditionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< LogicalVector >::type condition(conditionSEXP);
+    rcpp_result_gen = Rcpp::wrap(which_rcpp(condition));
+    return rcpp_result_gen;
+END_RCPP
+}
 // normalize_view
 NumericMatrix normalize_view(NumericVector x, NumericVector y, NumericVector z, NumericVector viewport);
 RcppExport SEXP _rTwig_normalize_view(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP viewportSEXP) {
@@ -312,6 +372,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_hex_to_float", (DL_FUNC) &_rTwig_hex_to_float, 1},
     {"_rTwig_convex_hull", (DL_FUNC) &_rTwig_convex_hull, 1},
     {"_rTwig_convex_hull_area", (DL_FUNC) &_rTwig_convex_hull_area, 1},
+    {"_rTwig_iqr_filter", (DL_FUNC) &_rTwig_iqr_filter, 2},
+    {"_rTwig_taper_filter", (DL_FUNC) &_rTwig_taper_filter, 2},
+    {"_rTwig_broken_branch_filter", (DL_FUNC) &_rTwig_broken_branch_filter, 3},
+    {"_rTwig_model_matrix", (DL_FUNC) &_rTwig_model_matrix, 2},
     {"_rTwig_generate_circle_points", (DL_FUNC) &_rTwig_generate_circle_points, 3},
     {"_rTwig_rotate_circle_points", (DL_FUNC) &_rTwig_rotate_circle_points, 3},
     {"_rTwig_generate_mesh", (DL_FUNC) &_rTwig_generate_mesh, 5},
@@ -324,6 +388,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_mat_multiplication", (DL_FUNC) &_rTwig_mat_multiplication, 2},
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
+    {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
     {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},

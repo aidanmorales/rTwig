@@ -10,6 +10,7 @@ NumericVector cross_product(NumericVector a, NumericVector b);
 NumericVector sort_index(NumericVector x, IntegerVector indexes);
 
 IntegerVector index_order(NumericVector x);
+IntegerVector which_rcpp(LogicalVector condition);
 
 NumericMatrix rotation_matrix(NumericVector A, double angle);
 NumericMatrix mat_vec_subtraction(NumericMatrix A, NumericVector v);

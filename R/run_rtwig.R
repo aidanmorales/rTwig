@@ -5,7 +5,6 @@
 #' @param file file path to QSM (.mat, .csv, .json)
 #' @param twig_radius Twig radius in millimeters
 #' @param metrics Calculate tree metrics? Defaults to TRUE.
-#' @param backend Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.
 #' @param version Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).
 #' @param smooth Defaults to TRUE, if using TreeQSM. Can be set to FALSE.
 #' @param standardize Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.
@@ -31,13 +30,11 @@
 run_rtwig <- function(
     file,
     twig_radius,
-    backend = "multisession",
     metrics = TRUE,
     version = NULL,
     smooth = TRUE,
     standardize = FALSE,
     broken_branch = TRUE) {
-
   # Get file extension
   extension <- sub(".*\\.", "", basename(file))
 
@@ -68,7 +65,6 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend,
       broken_branch = broken_branch
     )
 
@@ -97,7 +93,6 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend,
       broken_branch = broken_branch
     )
 
@@ -126,7 +121,6 @@ run_rtwig <- function(
     cylinder <- correct_radii(
       cylinder = cylinder,
       twig_radius = twig_radius,
-      backend = backend,
       broken_branch = broken_branch
     )
 

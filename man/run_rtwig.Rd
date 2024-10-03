@@ -7,7 +7,6 @@
 run_rtwig(
   file,
   twig_radius,
-  backend = "multisession",
   metrics = TRUE,
   version = NULL,
   smooth = TRUE,
@@ -19,8 +18,6 @@ run_rtwig(
 \item{file}{file path to QSM (.mat, .csv, .json)}
 
 \item{twig_radius}{Twig radius in millimeters}
-
-\item{backend}{Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS & Linux), "cluster" (all platforms), or a "package::backend" string.}
 
 \item{metrics}{Calculate tree metrics? Defaults to TRUE.}
 

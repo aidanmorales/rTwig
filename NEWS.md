@@ -29,10 +29,12 @@
 
 ## Improvements
 
--   `correct_radii()`: Refactor with tidyeval for better maintainability.
-    -   Only required data is now sent to parallel workers, reducing memory usage and overhead.
-    -   Fix a bug where parallel workers were not closing properly.
--   `update_radii()`: Fix a bug in path metrics for SimpleForest QSMs (issue #4).
+-   `correct_radii()`: Complete refactor with Rcpp and tidyeval for better maintainability.
+    -   \~ 2 - 3x performance improvement!
+    -   The outlier and broken branch filters are rewritten in Rcpp, for massive performance gains.
+    -   Parallel processing has been removed, eliminating overhead and excessive memory usage.
+    -   Performance is now limited by the model fitting, which is \~ 10 ms per path, resulting in processing times of \~ 1 minute tor 6,000 paths.
+-   `update_cylinders()`: Fix a bug in path metrics for SimpleForest QSMs (issue #4).
 -   `qsm_summary()`:
     -   Refactored with tidyeval.
     -   Fix bug where triangulation was not using the correct ending cylinder.
@@ -41,10 +43,13 @@
 -   New website look.
 -   Update vignettes.
 -   Update twig data base.
+-   Reduced package dependencies.
 
 ## Breaking Changes
 
 -   `qsm_summary()`: User can pass *radius* as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error propmting the user for a radius column name.
+-   `correct_radii()`: parallel processing has been removed, so *backend* is no longer a parameter.
+-   `run_rtwig()`: parallel processing has been removed, so *backend* is no longer a parameter.
 
 # rTwig 1.1.0
 

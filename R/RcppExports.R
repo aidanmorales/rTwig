@@ -57,6 +57,64 @@ convex_hull_area <- function(points) {
     .Call(`_rTwig_convex_hull_area`, points)
 }
 
+#' @title IQR Filter
+#'
+#' @description Filter cylinder outliers
+#'
+#' @param x NumericVector
+#' @param method int
+#' @return IntegerVector
+#'
+#' @noRd
+#'
+iqr_filter <- function(x, method) {
+    .Call(`_rTwig_iqr_filter`, x, method)
+}
+
+#' @title Taper Filter
+#'
+#' @description Taper filter for QSM paths
+#'
+#' @param radius NumericVector cylinder radius
+#' @param taper int taper method
+#' @return IntegerVector
+#'
+#' @noRd
+#'
+taper_filter <- function(radius, taper) {
+    .Call(`_rTwig_taper_filter`, radius, taper)
+}
+
+#' @title Broken Branch Filter
+#'
+#' @description Find broken branches and prepare the paths for modeling.
+#' Broken branches have <= 1 child branch in the 1st order branches.
+#'
+#' @param path a path DataFrame
+#' @param twig_radius the twig radius in meters as a double
+#' @param broken_branch boolean to enable or disable the filter
+#' @return List
+#'
+#' @noRd
+#'
+broken_branch_filter <- function(path, twig_radius, broken_branch) {
+    .Call(`_rTwig_broken_branch_filter`, path, twig_radius, broken_branch)
+}
+
+#' @title Model Matrix
+#'
+#' @description Generate constraint the matrix for the cobs GAM
+#'
+#' @param min_growth_length min growth length as a double
+#' @param twig_radius the twig radius in meters as a double
+#' @return NumericMatrix
+#'
+#' @noRd
+#'
+model_matrix <- function(min_growth_length, twig_radius) {
+    .Call(`_rTwig_model_matrix`, min_growth_length, twig_radius)
+}
+
 #' @title Generate Circle Points
 #'
 #' @description Generate circular points from n facets
@@ -224,12 +282,25 @@ index_order <- function(x) {
 #'
 #' @param v vector with dimensions 1 x n
 #' @param indexes integer vector with desired ordering
-#' @return vector
+#' @return NumericVector
 #'
 #' @noRd
 #'
 sort_index <- function(x, indexes) {
     .Call(`_rTwig_sort_index`, x, indexes)
+}
+
+#' @title Which Rcpp
+#'
+#' @description Find the indices where a condition is true
+#'
+#' @param condition logical vector
+#' @return integer vector
+#'
+#' @noRd
+#'
+which_rcpp <- function(condition) {
+    .Call(`_rTwig_which_rcpp`, condition)
 }
 
 #' @title Normalize View

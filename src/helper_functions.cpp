@@ -187,7 +187,7 @@ IntegerVector index_order(NumericVector x) {
 //'
 //' @param v vector with dimensions 1 x n
 //' @param indexes integer vector with desired ordering
-//' @return vector
+//' @return NumericVector
 //'
 //' @noRd
 //'
@@ -198,4 +198,25 @@ NumericVector sort_index(NumericVector x, IntegerVector indexes) {
     sorted[i] = x[indexes[i]];
   }
   return sorted;
+}
+
+
+//' @title Which Rcpp
+//'
+//' @description Find the indices where a condition is true
+//'
+//' @param condition logical vector
+//' @return integer vector
+//'
+//' @noRd
+//'
+// [[Rcpp::export]]
+IntegerVector which_rcpp(LogicalVector condition) {
+  IntegerVector indices;
+  for (int i = 0; i < condition.size(); i++) {
+    if (condition[i]) {
+      indices.push_back(i);
+    }
+  }
+  return indices;
 }

@@ -42,16 +42,11 @@ Next, let's run Real Twig with `run_rtwig()` and calculate our tree metrics with
 # File path to QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
-# Run Real Twig 
+# Run Real Twig
 cylinder <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
 
 # Calculate detailed tree metrics
 metrics <- tree_metrics(cylinder)
-```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-# Future Package Cleanup
-future::plan("sequential")
 ```
 
 #### Stem Taper
@@ -582,7 +577,7 @@ metrics$tree_diameter_dist %>%
   )) +
   geom_bar(stat = "identity", position = "dodge2") +
   labs(
-     title = "Diameter Distributions",
+    title = "Diameter Distributions",
     x = "",
     y = "",
     fill = "Diameter Class (cm)",

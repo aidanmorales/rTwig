@@ -308,8 +308,3 @@ metrics <- tree_metrics(cylinder)
 # Plot Results
 plot_qsm(cylinder)
 ```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-# Future Package Cleanup
-future::plan("sequential")
-```
