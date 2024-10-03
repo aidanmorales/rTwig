@@ -79,12 +79,14 @@
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
 <ul><li>
-<code><a href="../reference/correct_radii.html">correct_radii()</a></code>: Refactor with tidyeval for better maintainability.
-<ul><li>Only required data is now sent to parallel workers, reducing memory usage and overhead.</li>
-<li>Fix a bug where parallel workers were not closing properly.</li>
+<code><a href="../reference/correct_radii.html">correct_radii()</a></code>: Complete refactor with Rcpp and tidyeval for better maintainability.
+<ul><li>~ 2 - 3x performance improvement!</li>
+<li>The outlier and broken branch filters are rewritten in Rcpp, for massive performance gains.</li>
+<li>Parallel processing has been removed, eliminating overhead and excessive memory usage.</li>
+<li>Performance is now limited by the model fitting, which is ~ 10 ms per path, resulting in processing times of ~ 1 minute tor 6,000 paths.</li>
 </ul></li>
 <li>
-<code>update_radii()</code>: Fix a bug in path metrics for SimpleForest QSMs (issue <a href="https://github.com/aidanmorales/rTwig/issues/4" class="external-link">#4</a>).</li>
+<code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: Fix a bug in path metrics for SimpleForest QSMs (issue <a href="https://github.com/aidanmorales/rTwig/issues/4" class="external-link">#4</a>).</li>
 <li>
 <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>:
 <ul><li>Refactored with tidyeval.</li>
@@ -96,11 +98,16 @@
 <li>New website look.</li>
 <li>Update vignettes.</li>
 <li>Update twig data base.</li>
+<li>Reduced package dependencies.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
 <ul><li>
 <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>: User can pass <em>radius</em> as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error propmting the user for a radius column name.</li>
+<li>
+<code><a href="../reference/correct_radii.html">correct_radii()</a></code>: parallel processing has been removed, so <em>backend</em> is no longer a parameter.</li>
+<li>
+<code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: parallel processing has been removed, so <em>backend</em> is no longer a parameter.</li>
 </ul></div>
 </div>
     <div class="section level2">

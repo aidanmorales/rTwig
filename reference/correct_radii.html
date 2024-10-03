@@ -53,12 +53,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">correct_radii</span><span class="op">(</span></span>
-<span>  <span class="va">cylinder</span>,</span>
-<span>  <span class="va">twig_radius</span>,</span>
-<span>  broken_branch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  backend <span class="op">=</span> <span class="st">"multisession"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">correct_radii</span><span class="op">(</span><span class="va">cylinder</span>, <span class="va">twig_radius</span>, broken_branch <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,10 +70,6 @@
 
 <dt id="arg-broken-branch">broken_branch<a class="anchor" aria-label="anchor" href="#arg-broken-branch"></a></dt>
 <dd><p>Enable or disable the broken branch filter. Defaults to enabled (TRUE).</p></dd>
-
-
-<dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
-<dd><p>Parallel backend for multi-core processing. Defaults to "multisession" (all platforms), but can be set to "multicore" (MacOS &amp; Linux), "cluster" (all platforms), or a "package::backend" string.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -106,11 +97,11 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">correct_radii</span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Correcting Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Closing Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Radii</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Modeling Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Radii</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  33 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
@@ -158,11 +149,11 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">correct_radii</span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Correcting Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Closing Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Radii</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Modeling Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Radii</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  31 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                          : int  1 2 3 4 5 6 7 8 9 10 ...</span>
@@ -194,8 +185,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  69 69 69 69 69 69 69 69 69 69 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  8.31 8.31 8.31 8.31 8.31 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  237 233 229 226 222 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0472 0.047 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 1 0 0 0 0 1 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## aRchi Processing Chain</span></span></span>
@@ -213,11 +204,11 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">correct_radii</span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Correcting Branch Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Closing Workers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Radii</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Modeling Paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Radii</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1231 obs. of  34 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX                      : num  0.763 0.77 0.77 0.763 0.764 ...</span>
