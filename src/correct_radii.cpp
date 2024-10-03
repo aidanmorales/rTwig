@@ -56,7 +56,7 @@ IntegerVector iqr_filter(NumericVector x, int method) {
  for (int i = 0; i < n; ++i) {
    // General or small cylinder pass
    if (method == 1) {
-     if ((lower <= x[i]) & (x[i] >= upper)) {
+     if ((lower <= x[i]) && (x[i] >= upper)) {
        outliers[i] = 1;
      } else {
        outliers[i] = 0;
@@ -65,7 +65,7 @@ IntegerVector iqr_filter(NumericVector x, int method) {
 
    // Large cylinder pass
    if (method == 2) {
-     if ((lower <= x[i]) & (x[i] <= upper)) {
+     if ((lower <= x[i]) && (x[i] <= upper)) {
        outliers[i] = 0;
      } else {
        outliers[i] = 1;
