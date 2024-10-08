@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes 'TreeQSM', 'SimpleForest' and 'Treegraph'. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.
+Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes 'TreeQSM', 'SimpleForest', 'Treegraph', and 'aRchi'. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.
 }
 \seealso{
 Useful links:

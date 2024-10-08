@@ -317,18 +317,12 @@ combine_paths <- function(
     branch_position,
     growth_length,
     total_children) {
-  # Find all paths
-  paths <- build_network(
-    cylinder = cylinder,
-    id = id,
-    parent = parent,
-    paths = TRUE
-  )
 
   # Extract required variables
   path_vars <- cylinder %>%
     select(
       id = !!rlang::sym(id),
+      parent = !!rlang::sym(parent),
       radius = !!rlang::sym(radius),
       branch = !!rlang::sym(branch),
       branch_order = !!rlang::sym(branch_order),
@@ -337,6 +331,9 @@ combine_paths <- function(
       growth_length = !!rlang::sym(growth_length),
       total_children = !!rlang::sym(total_children)
     )
+
+  # Verify Network
+  paths <- verify_network(path_vars, paths = TRUE)
 
   # Combine all path data
   left_join(paths, path_vars) %>%

@@ -17,7 +17,7 @@
     -   *lit*: Enable or disable plot lighting
     -   *axes_color*: The axes color can now be set by the user.
     -   *skeleton_lwd*: Set the line width of the skeleton plots.
-    -   *normalize*: Center the base of the QSM at 0,0,0. Defaults to FALSE.
+    -   *normalize*: Center the cylinders around 0,0,0. Defaults to FALSE.
 
 -   `correct_radii()`:
 
@@ -33,12 +33,12 @@
     -   \~ 2 - 3x performance improvement!
     -   The outlier and broken branch filters are rewritten in Rcpp, for massive performance gains.
     -   Parallel processing has been removed, eliminating overhead and excessive memory usage.
-    -   Performance is now limited by the model fitting, which is \~ 10 ms per path, resulting in processing times of \~ 1 minute tor 6,000 paths.
 -   `update_cylinders()`: Fix a bug in path metrics for SimpleForest QSMs (issue #4).
 -   `qsm_summary()`:
     -   Refactored with tidyeval.
     -   Fix bug where triangulation was not using the correct ending cylinder.
 -   `box_dimension()`: The 3D plot now pans on right mouse button.
+-   The QSM network is now cached in temp to avoid repeat calculations.
 -   Add Real Twig Method paper citation in package and readme.
 -   New website look.
 -   Update vignettes.
@@ -47,7 +47,7 @@
 
 ## Breaking Changes
 
--   `qsm_summary()`: User can pass *radius* as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error propmting the user for a radius column name.
+-   `qsm_summary()`: User can pass *radius* as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error prompting the user for a radius column name.
 -   `correct_radii()`: parallel processing has been removed, so *backend* is no longer a parameter.
 -   `run_rtwig()`: parallel processing has been removed, so *backend* is no longer a parameter.
 

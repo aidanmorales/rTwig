@@ -160,33 +160,8 @@ prune_data <- function(
       radius = all_of(radius),
     )
 
-  # Build network --------------------------------------------------------------
-  temp_file <- file.path(tempdir(), "network.rds")
-
-  # Import network from cache if it exists
-  if (file.exists(temp_file)) {
-    network <- readRDS(temp_file)
-
-    # Check ids
-    net_ids <- unique(network$id)
-    cyl_ids <- unique(pull(cyl_sub, id))
-
-    # If ids mismatch, re-build the network
-    if (length(net_ids) != length(cyl_ids)) {
-      network <- build_network(cyl_sub, "id", "parent", pruning = TRUE)
-
-      # Re-cache the updated network
-      message("Caching Network")
-      saveRDS(network, temp_file)
-    }
-  } else {
-    # If network cache does not exist, build the network
-    network <- build_network(cyl_sub, "id", "parent", pruning = TRUE)
-
-    # Cache the network
-    message("Caching Network")
-    saveRDS(network, temp_file)
-  }
+  # Verify network -------------------------------------------------------------
+  network <- verify_network(cyl_sub, pruning = TRUE)
 
   # Prune QSM  -----------------------------------------------------------------
   message("Pruning QSM")

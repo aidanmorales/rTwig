@@ -77,7 +77,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- total_children(cylinder, "parent", "extension")
 
     # Build QSM Cylinder Network  ----------------------------------------------
-    network <- build_network(cylinder, "extension", "parent")
+    network <- build_network(cylinder, "extension", "parent", cache = TRUE)
 
     # Verify Topology ----------------------------------------------------------
     cylinder <- verify_topology(
@@ -179,7 +179,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- total_children(cylinder, "parentID", "ID")
 
     # Build QSM Cylinder Network  ----------------------------------------------
-    network <- build_network(cylinder, "ID", "parentID")
+    network <- build_network(cylinder, "ID", "parentID", cache = TRUE)
 
     # Verify Topology ----------------------------------------------------------
     cylinder <- verify_topology(
@@ -279,7 +279,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- total_children(cylinder, "p2", "p1")
 
     # Build QSM Cylinder Network  ----------------------------------------------
-    network <- build_network(cylinder, "p1", "p2")
+    network <- build_network(cylinder, "p1", "p2", cache = TRUE)
 
     # Verify Topology ----------------------------------------------------------
     cylinder <- verify_topology(
@@ -337,7 +337,7 @@ update_cylinders <- function(cylinder) {
     cylinder <- total_children(cylinder, "parent_ID", "cyl_ID")
 
     # Build QSM Cylinder Network  ----------------------------------------------
-    network <- build_network(cylinder, "cyl_ID", "parent_ID")
+    network <- build_network(cylinder, "cyl_ID", "parent_ID", cache = TRUE)
 
     # Verify Topology ----------------------------------------------------------
     cylinder <- verify_topology(
@@ -428,83 +428,6 @@ total_children <- function(cylinder, parent, id) {
   # Joins total children and fill na with 0
   left_join(cylinder, total_children, by = id) %>%
     mutate(totalChildren = replace_na(.data$totalChildren, 0))
-}
-
-#' Builds QSM cylinder network with igraph
-#' @param cylinder QSM cylinder data frame
-#' @param id column name of parent cylinders
-#' @param parent column name of parent cylinders
-#' @param paths return only paths
-#' @param pruning return only children
-#' @returns list of cylinder network
-#' @noRd
-build_network <- function(
-    cylinder,
-    id,
-    parent,
-    paths = FALSE,
-    pruning = FALSE) {
-  message("Building Cylinder Network")
-
-  # Extract cylinder ids
-  id <- pull(select(cylinder, !!rlang::sym(id)))
-  parent <- pull(select(cylinder, !!rlang::sym(parent)))
-
-  # Creates QSM cylinder network
-  qsm_g <- tidytable(parent = parent, id = id)
-  qsm_g <- igraph::graph_from_data_frame(qsm_g)
-
-  # Find supported children
-  child_g <- qsm_g - 1 # remove cylinder 0
-  child_g <- igraph::permute(child_g, match(igraph::V(child_g)$name, id))
-  child_g <- igraph::ego(child_g, order = igraph::vcount(child_g), mode = "out")
-
-  child_id <- as.integer(unlist(child_g, FALSE, FALSE))
-  child_index <- cumsum(duplicated(child_id) & !duplicated(child_id, fromLast = TRUE)) + 1
-  child_df <- tidytable(index = child_index, id = child_id)
-
-  if (pruning == TRUE) {
-    return(child_df)
-  }
-
-  # Finds twigs cylinders
-  twig_id_g <- igraph::V(qsm_g)[igraph::degree(qsm_g, mode = "out") == 0]
-  twig_id_v <- as.integer(igraph::as_ids(twig_id_g))
-
-  # Find all paths from base to twigs
-  paths_g <- igraph::all_simple_paths(qsm_g, from = 1, to = twig_id_g)
-  all_id <- as.integer(unlist(sapply(paths_g, igraph::as_ids), FALSE, FALSE))
-  all_index <- cumsum(all_id == 0)
-  all_df <- tidytable(index = all_index, id = all_id)
-
-  if (paths == TRUE) {
-    return(all_df)
-  }
-
-  # Find all paths from base to cylinder
-  base_g <- igraph::all_simple_paths(qsm_g, from = 1, to = igraph::V(qsm_g))
-  base_id <- as.integer(unlist(sapply(base_g, igraph::as_ids), FALSE, FALSE))
-  base_index <- cumsum(base_id == 0)
-  base_df <- tidytable(index = base_index, id = base_id)
-
-  # Find number of paths cylinder occurs in and if it is a twig
-  cylinder_info <- tabulate(all_id)
-  cylinder_info <- tidytable(
-    id = 1:length(cylinder_info),
-    frequency = cylinder_info
-  ) %>%
-    mutate(twig = .data$id %in% !!twig_id_v) %>%
-    select("id", "frequency", "twig")
-
-  return(
-    list(
-      qsm_g = qsm_g,
-      child_df = child_df,
-      all_df = all_df,
-      base_df = base_df,
-      cylinder_info = cylinder_info
-    )
-  )
 }
 
 #' Calculates growth length for each cylinder

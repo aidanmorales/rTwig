@@ -606,7 +606,7 @@ pan_plot <- function(button = 2) {
   start <- list()
 
   begin <- function(x, y) {
-    par <- rgl::par3d()
+    par <- rgl::par3d(no.readonly = TRUE)
 
     start$userMatrix <<- par$userMatrix
     start$viewport <<- par$viewport
