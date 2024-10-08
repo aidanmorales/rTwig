@@ -67,7 +67,7 @@
 <li>
 <em>skeleton_lwd</em>: Set the line width of the skeleton plots.</li>
 <li>
-<em>normalize</em>: Center the base of the QSM at 0,0,0. Defaults to FALSE.</li>
+<em>normalize</em>: Center the cylinders around 0,0,0. Defaults to FALSE.</li>
 </ul></li>
 <li>
 <p><code><a href="../reference/correct_radii.html">correct_radii()</a></code>:</p>
@@ -83,7 +83,6 @@
 <ul><li>~ 2 - 3x performance improvement!</li>
 <li>The outlier and broken branch filters are rewritten in Rcpp, for massive performance gains.</li>
 <li>Parallel processing has been removed, eliminating overhead and excessive memory usage.</li>
-<li>Performance is now limited by the model fitting, which is ~ 10 ms per path, resulting in processing times of ~ 1 minute tor 6,000 paths.</li>
 </ul></li>
 <li>
 <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: Fix a bug in path metrics for SimpleForest QSMs (issue <a href="https://github.com/aidanmorales/rTwig/issues/4" class="external-link">#4</a>).</li>
@@ -94,6 +93,7 @@
 </ul></li>
 <li>
 <code><a href="../reference/box_dimension.html">box_dimension()</a></code>: The 3D plot now pans on right mouse button.</li>
+<li>The QSM network is now cached in temp to avoid repeat calculations.</li>
 <li>Add Real Twig Method paper citation in package and readme.</li>
 <li>New website look.</li>
 <li>Update vignettes.</li>
@@ -103,7 +103,7 @@
 <div class="section level3">
 <h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
 <ul><li>
-<code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>: User can pass <em>radius</em> as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error propmting the user for a radius column name.</li>
+<code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>: User can pass <em>radius</em> as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error prompting the user for a radius column name.</li>
 <li>
 <code><a href="../reference/correct_radii.html">correct_radii()</a></code>: parallel processing has been removed, so <em>backend</em> is no longer a parameter.</li>
 <li>
