@@ -36,7 +36,6 @@ Returns cylinder data frame or list if metrics is true.
 Runs all Real Twig steps
 }
 \examples{
-\donttest{
 
 ## TreeQSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -47,6 +46,5 @@ str(qsm$cylinder)
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 qsm <- run_rtwig(file, twig_radius = 4.23)
 str(qsm)
-}
 
 }

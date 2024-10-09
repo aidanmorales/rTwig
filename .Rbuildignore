@@ -4,6 +4,7 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^\.github$
+^\.git$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$

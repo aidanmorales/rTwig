@@ -14,7 +14,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #'
 #' ## TreeQSM
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -25,7 +24,6 @@
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' qsm <- run_rtwig(file, twig_radius = 4.23)
 #' str(qsm)
-#' }
 #'
 run_rtwig <- function(
     file,

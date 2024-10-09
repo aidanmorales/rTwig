@@ -277,15 +277,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // normalize_view
-NumericMatrix normalize_view(NumericVector x, NumericVector y, NumericVector z, NumericVector viewport);
+NumericMatrix normalize_view(const NumericVector& x, const NumericVector& y, const NumericVector& z, const NumericVector& viewport);
 RcppExport SEXP _rTwig_normalize_view(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP viewportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type viewport(viewportSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type z(zSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type viewport(viewportSEXP);
     rcpp_result_gen = Rcpp::wrap(normalize_view(x, y, z, viewport));
     return rcpp_result_gen;
 END_RCPP
@@ -315,42 +315,42 @@ BEGIN_RCPP
 END_RCPP
 }
 // rtwig_window2user
-NumericMatrix rtwig_window2user(NumericVector x, NumericVector y, NumericVector z, List projection);
+NumericMatrix rtwig_window2user(const NumericVector& x, const NumericVector& y, const NumericVector& z, const List& projection);
 RcppExport SEXP _rTwig_rtwig_window2user(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP projectionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
-    Rcpp::traits::input_parameter< List >::type projection(projectionSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type z(zSEXP);
+    Rcpp::traits::input_parameter< const List& >::type projection(projectionSEXP);
     rcpp_result_gen = Rcpp::wrap(rtwig_window2user(x, y, z, projection));
     return rcpp_result_gen;
 END_RCPP
 }
 // translation_matrix
-NumericMatrix translation_matrix(double x, double y, double z);
+NumericMatrix translation_matrix(const double& x, const double& y, const double& z);
 RcppExport SEXP _rTwig_translation_matrix(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type z(zSEXP);
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type z(zSEXP);
     rcpp_result_gen = Rcpp::wrap(translation_matrix(x, y, z));
     return rcpp_result_gen;
 END_RCPP
 }
 // user_matrix
-NumericMatrix user_matrix(NumericVector x, NumericVector y, NumericVector z, List start);
+NumericMatrix user_matrix(const NumericVector& x, const NumericVector& y, const NumericVector& z, const List& start);
 RcppExport SEXP _rTwig_user_matrix(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP startSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
-    Rcpp::traits::input_parameter< List >::type start(startSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type z(zSEXP);
+    Rcpp::traits::input_parameter< const List& >::type start(startSEXP);
     rcpp_result_gen = Rcpp::wrap(user_matrix(x, y, z, start));
     return rcpp_result_gen;
 END_RCPP

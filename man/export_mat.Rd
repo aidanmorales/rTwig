@@ -18,7 +18,6 @@ Returns a .mat file
 Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function
 }
 \examples{
-\donttest{
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -44,6 +43,5 @@ cylinder <- update_cylinders(cylinder)
 
 filename <- tempfile(pattern = "aRchi_QSM.mat")
 export_mat(cylinder, filename)
-}
 
 }

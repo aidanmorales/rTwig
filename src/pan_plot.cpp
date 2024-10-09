@@ -15,10 +15,10 @@ using namespace Rcpp;
 //'
 // [[Rcpp::export]]
 NumericMatrix normalize_view(
-    NumericVector x,
-    NumericVector y,
-    NumericVector z,
-    NumericVector viewport) {
+    const NumericVector& x,
+    const NumericVector& y,
+    const NumericVector& z,
+    const NumericVector& viewport) {
 
   //////////////////////////////////////////////////////////////////////////////
   ///////// RECYCLE XYZ ////////////////////////////////////////////////////////
@@ -110,7 +110,6 @@ NumericMatrix solve_and_transpose(
   //////////////////////////////////////////////////////////////////////////////
   ///////// MATRIX INVERSION ///////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
-  NumericMatrix mat_copy = clone(proj_model_product);
   NumericMatrix mat_inv(n, n);
 
   // Create identity matrix
@@ -120,19 +119,19 @@ NumericMatrix solve_and_transpose(
 
   // Gaussian elimination
   for (int i = 0; i < n; ++i) {
-    double diag = mat_copy(i, i);
+    double diag = proj_model_product(i, i);
     if (diag == 0) {
       stop("Matrix inversion failed: zero diagonal element.");
     }
     for (int j = 0; j < n; ++j) {
-      mat_copy(i, j) /= diag;
+      proj_model_product(i, j) /= diag;
       mat_inv(i, j) /= diag;
     }
     for (int k = 0; k < n; ++k) {
       if (k != i) {
-        double factor = mat_copy(k, i);
+        double factor = proj_model_product(k, i);
         for (int j = 0; j < n; ++j) {
-          mat_copy(k, j) -= factor * mat_copy(i, j);
+          proj_model_product(k, j) -= factor * proj_model_product(i, j);
           mat_inv(k, j) -= factor * mat_inv(i, j);
         }
       }
@@ -224,15 +223,15 @@ NumericMatrix as_euclidean(const NumericMatrix& x) {
 //'
 // [[Rcpp::export]]
 NumericMatrix rtwig_window2user(
-    NumericVector x,
-    NumericVector y,
-    NumericVector z,
-    List projection) {
+    const NumericVector& x,
+    const NumericVector& y,
+    const NumericVector& z,
+    const List& projection) {
 
   // Extract List Elements
-  NumericMatrix model = projection["model"];
-  NumericMatrix proj = projection["proj"];
-  NumericVector view = projection["view"];
+  NumericMatrix model = projection[0]; // model
+  NumericMatrix proj = projection[1];  // proj
+  NumericVector view = projection[2];  // view
 
   // Normalize Matrix
   NumericMatrix normalized = normalize_view(x, y, z, view);
@@ -256,7 +255,10 @@ NumericMatrix rtwig_window2user(
 //' @noRd
 //'
 // [[Rcpp::export]]
-NumericMatrix translation_matrix(double x, double y, double z) {
+NumericMatrix translation_matrix(
+    const double& x,
+    const double& y,
+    const double& z) {
 
   NumericMatrix result = NumericMatrix::diag(4, 1.0);
   result(3, 0) = x;
@@ -279,17 +281,17 @@ NumericMatrix translation_matrix(double x, double y, double z) {
 //'
 // [[Rcpp::export]]
 NumericMatrix user_matrix(
-    NumericVector x,
-    NumericVector y,
-    NumericVector z,
-    List start) {
+    const NumericVector& x,
+    const NumericVector& y,
+    const NumericVector& z,
+    const List& start) {
 
   // Extract start elements
-  NumericMatrix user_matrix = start["userMatrix"];
-  NumericVector pos = start["pos"];
-  NumericVector viewport = start["viewport"];
-  NumericVector scale = start["scale"];
-  List projection = start["projection"];
+  NumericMatrix user_matrix = start[0];
+  NumericVector viewport = start[1];
+  NumericVector scale = start[2];
+  List projection = start[3];
+  NumericVector pos = start[4];
 
   // Calculate xlat
   NumericVector x_normalized = x / viewport[2];

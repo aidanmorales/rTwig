@@ -9,7 +9,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -35,7 +34,6 @@
 #'
 #' filename <- tempfile(pattern = "aRchi_QSM.mat")
 #' export_mat(cylinder, filename)
-#' }
 #'
 export_mat <- function(cylinder, filename) {
   message("Exporting to .mat")

@@ -6,6 +6,7 @@
 #' @param radius Column name of radii as a quoted string. Defaults to the modified radii.
 #' @param color Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.
 #' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.
+#' @param alpha Set the transparency of the cylinders. Defaults to 1. 0 is invisible while 1 is opaque.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
@@ -55,6 +56,7 @@ plot_qsm <- function(
     radius = NULL,
     color = NULL,
     palette = NULL,
+    alpha = 1,
     facets = 6,
     skeleton = FALSE,
     skeleton_lwd = NULL,
@@ -90,7 +92,7 @@ plot_qsm <- function(
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
       end_x = "end_x", end_y = "end_y", end_z = "end_z",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette,
+      color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
@@ -107,7 +109,7 @@ plot_qsm <- function(
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
       end_x = "end.x", end_y = "end.y", end_z = "end.z",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette,
+      color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
@@ -124,7 +126,7 @@ plot_qsm <- function(
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette,
+      color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
@@ -141,7 +143,7 @@ plot_qsm <- function(
       axis_x = "ax", axis_y = "ay", axis_z = "az",
       end_x = "ex", end_y = "ey", end_z = "ez",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette,
+      color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
@@ -158,7 +160,7 @@ plot_qsm <- function(
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette,
+      color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
@@ -207,6 +209,7 @@ plot_qsm <- function(
 #' @param skeleton_lwd skeleton line width
 #' @param color cylinder color
 #' @param palette color palette
+#' @param alpha cylinder transparency
 #' @param axes axes logical
 #' @param axes_color axes color
 #' @param hover hover logical
@@ -243,6 +246,7 @@ plot_data <- function(
     skeleton_lwd = NULL,
     color = NULL,
     palette = NULL,
+    alpha = NULL,
     axes = NULL,
     axes_color = NULL,
     hover = NULL,
@@ -275,7 +279,7 @@ plot_data <- function(
     # Plot skeleton ------------------------------------------------------------
     if (skeleton == TRUE) {
       plot_skeleton(
-        cylinder, colors, skeleton_lwd,
+        cylinder, colors, alpha, skeleton_lwd,
         start_x, start_y, start_z, end_x, end_y, end_z
       )
     }
@@ -284,7 +288,7 @@ plot_data <- function(
     else {
       plot_cylinders(
         cylinder, radius, length, start_x, start_y, start_z,
-        axis_x, axis_y, axis_z, facets, colors, lit
+        axis_x, axis_y, axis_z, facets, colors, alpha, lit
       )
     }
 
@@ -391,6 +395,7 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
 #' Plot skeleton
 #' @param cylinder QSM cylinder data frame
 #' @param colors cylinder colors
+#' @param alpha cylinder transparency
 #' @param skeleton_lwd skeleton line width
 #' @param start_x column name of start_x
 #' @param start_y column name of start_y
@@ -403,6 +408,7 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
 plot_skeleton <- function(
     cylinder,
     colors,
+    alpha,
     skeleton_lwd,
     start_x,
     start_y,
@@ -423,7 +429,7 @@ plot_skeleton <- function(
     x = as.vector(t(select(cylinder, all_of(c(start_x, end_x))))),
     y = as.vector(t(select(cylinder, all_of(c(start_y, end_y))))),
     z = as.vector(t(select(cylinder, all_of(c(start_z, end_z))))),
-    col = rep(colors, each = 2), lwd = lwd
+    col = rep(colors, each = 2), lwd = lwd, alpha = alpha
   )
 }
 
@@ -439,6 +445,7 @@ plot_skeleton <- function(
 #' @param axis_z column name of axis_z
 #' @param facets cylinder facets
 #' @param colors cylinder colors
+#' @param alpha cylinder transparency
 #' @param lit plot lighting
 #' @returns NA
 #' @noRd
@@ -454,6 +461,7 @@ plot_cylinders <- function(
     axis_z,
     facets,
     colors,
+    alpha,
     lit) {
   message("Plotting Cylinders")
 
@@ -477,7 +485,7 @@ plot_cylinders <- function(
   colors <- rep(colors, each = facets * 6)
 
   # Plot cylinders
-  rgl::triangles3d(cylinder_mesh, col = colors, lit = lit)
+  rgl::triangles3d(cylinder_mesh, col = colors, lit = lit, alpha = alpha)
 }
 
 #' Plot cloud
@@ -603,21 +611,20 @@ background_color <- function(bg_color) {
 #' @returns NA
 #' @noRd
 pan_plot <- function(button = 2) {
-  start <- list()
+  start <- vector(mode = "list", length = 5)
 
   begin <- function(x, y) {
     par <- rgl::par3d(no.readonly = TRUE)
 
-    start$userMatrix <<- par$userMatrix
-    start$viewport <<- par$viewport
-    start$scale <<- par$scale
-    start$projection <<- rgl::rgl.projection()
-
-    start$pos <<- rtwig_window2user(
-      x = x / start$viewport[3],
-      y = 1 - y / start$viewport[4],
+    start[[1]] <<- par$userMatrix
+    start[[2]] <<- par$viewport
+    start[[3]] <<- par$scale
+    start[[4]] <<- rgl::rgl.projection()
+    start[[5]] <<- rtwig_window2user(
+      x = x / start[[2]][3],
+      y = 1 - y / start[[2]][4],
       z = 0.5,
-      projection = start$projection
+      projection = start[[4]]
     )
   }
 

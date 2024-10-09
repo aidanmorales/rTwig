@@ -5,6 +5,7 @@
 #' @import rgl
 #' @import rlang
 #' @import tidytable
+#' @import Rcpp
 #' @importFrom cobs cobs
 #' @importFrom colourvalues color_values
 #' @importFrom geometry convhulln
@@ -19,7 +20,6 @@
 #' @importFrom igraph vcount
 #' @importFrom R.matlab readMat
 #' @importFrom R.matlab writeMat
-#' @importFrom Rcpp sourceCpp
 #' @importFrom RcppSimdJson fload
 #' @importFrom RcppSimdJson fparse
 #' @importFrom Rdpack reprompt

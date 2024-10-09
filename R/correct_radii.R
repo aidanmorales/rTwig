@@ -10,7 +10,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
@@ -33,7 +32,6 @@
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
-#' }
 #'
 correct_radii <- function(
     cylinder,

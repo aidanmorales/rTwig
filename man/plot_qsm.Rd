@@ -9,6 +9,7 @@ plot_qsm(
   radius = NULL,
   color = NULL,
   palette = NULL,
+  alpha = 1,
   facets = 6,
   skeleton = FALSE,
   skeleton_lwd = NULL,
@@ -35,6 +36,8 @@ plot_qsm(
 \item{color}{Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.}
 
 \item{palette}{Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.}
+
+\item{alpha}{Set the transparency of the cylinders. Defaults to 1. 0 is invisible while 1 is opaque.}
 
 \item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
 

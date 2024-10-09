@@ -15,6 +15,7 @@
     -   *triangulation*: The user can now plot TreeQSM triangulation meshes by passing in the triangulation list from `import_qsm()`. The user can also control the color and palette with *tri_color* and *tri_palette*.
     -   *pan*: The right mouse button now pans the plot instead of zooming by default. The functionality mimics `pan3d()` from RGL, but rewritten with Rcpp for better responsiveness.
     -   *lit*: Enable or disable plot lighting
+    -   *alpha*: Set cylinder transparency. Note: can degrade performance with large numbers of cylinders or facets.
     -   *axes_color*: The axes color can now be set by the user.
     -   *skeleton_lwd*: Set the line width of the skeleton plots.
     -   *normalize*: Center the cylinders around 0,0,0. Defaults to FALSE.

@@ -171,7 +171,7 @@ plot_mesh <- function(
   suppressMessages(
     plot_cylinders(
       cylinder, radius, length, start_x, start_y, start_z,
-      axis_x, axis_y, axis_z, facets, colors, lit = TRUE
+      axis_x, axis_y, axis_z, facets, colors, lit = TRUE, alpha = 1
     )
   )
 
