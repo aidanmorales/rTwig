@@ -34,9 +34,10 @@ smooth_qsm <- function(cylinder) {
     return(cylinder)
   } else {
     message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM is supported for smoothing.
+      "Only TreeQSM is supported for smoothing.
       \nMake sure the cylinder data frame and not the QSM list is supplied."
     )
+
+    return(cylinder)
   }
 }
