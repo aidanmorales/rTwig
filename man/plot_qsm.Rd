@@ -21,6 +21,8 @@ plot_qsm(
   tri_palette = NULL,
   axes = TRUE,
   axes_color = NULL,
+  grid = FALSE,
+  grid_color = NULL,
   hover = FALSE,
   bg_color = NULL,
   lit = TRUE,
@@ -29,7 +31,7 @@ plot_qsm(
 )
 }
 \arguments{
-\item{cylinder}{QSM cylinder data frame}
+\item{cylinder}{A QSM cylinder data frame.}
 
 \item{radius}{Column name of radii as a quoted string. Defaults to the modified radii.}
 
@@ -37,7 +39,7 @@ plot_qsm(
 
 \item{palette}{Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.}
 
-\item{alpha}{Set the transparency of the cylinders. Defaults to 1. 0 is invisible while 1 is opaque.}
+\item{alpha}{Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
 
@@ -51,7 +53,7 @@ plot_qsm(
 
 \item{pt_size}{Size of the points. Defaults to 0.1.}
 
-\item{triangulation}{Plot the stem triangulation mesh from TreeQSM. Defaults to NULL}
+\item{triangulation}{Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.}
 
 \item{tri_color}{Color of the triangulation mesh. Colors must be a single hex color.}
 
@@ -60,6 +62,10 @@ plot_qsm(
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
 \item{axes_color}{Set the axes color. Defaults to black.}
+
+\item{grid}{Show plot grid lines. Defaults to FALSE.}
+
+\item{grid_color}{Set grid lines color. Defaults to grey.}
 
 \item{hover}{Show cylinder and branch id on mouse hover. Defaults to FALSE.}
 

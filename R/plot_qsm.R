@@ -2,22 +2,24 @@
 #'
 #' @description Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backends.
 #'
-#' @param cylinder QSM cylinder data frame
+#' @param cylinder A QSM cylinder data frame.
 #' @param radius Column name of radii as a quoted string. Defaults to the modified radii.
 #' @param color Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.
 #' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.
-#' @param alpha Set the transparency of the cylinders. Defaults to 1. 0 is invisible while 1 is opaque.
+#' @param alpha Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.
 #' @param pt_color Color of the point cloud. Defaults to black. Can be set to "random".
 #' @param pt_size Size of the points. Defaults to 0.1.
-#' @param triangulation Plot the stem triangulation mesh from TreeQSM. Defaults to NULL
+#' @param triangulation Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.
 #' @param tri_color Color of the triangulation mesh. Colors must be a single hex color.
 #' @param tri_palette Optional triangulation color palette for z values. Supports the same inputs as palettes.
 #' @param axes Show plot axes. Defaults to TRUE.
 #' @param axes_color Set the axes color. Defaults to black.
+#' @param grid Show plot grid lines. Defaults to FALSE.
+#' @param grid_color Set grid lines color. Defaults to grey.
 #' @param hover Show cylinder and branch id on mouse hover. Defaults to FALSE.
 #' @param bg_color Set the background color of the plot. Defaults to white.
 #' @param lit Enable light source in plot. Defaults to TRUE. Can be set to FALSE.
@@ -68,6 +70,8 @@ plot_qsm <- function(
     tri_palette = NULL,
     axes = TRUE,
     axes_color = NULL,
+    grid = FALSE,
+    grid_color = NULL,
     hover = FALSE,
     bg_color = NULL,
     lit = TRUE,
@@ -93,7 +97,8 @@ plot_qsm <- function(
       end_x = "end_x", end_y = "end_y", end_z = "end_z",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -110,7 +115,8 @@ plot_qsm <- function(
       end_x = "end.x", end_y = "end.y", end_z = "end.z",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -127,7 +133,8 @@ plot_qsm <- function(
       end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -144,7 +151,8 @@ plot_qsm <- function(
       end_x = "ex", end_y = "ey", end_z = "ez",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -161,7 +169,8 @@ plot_qsm <- function(
       end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -172,7 +181,8 @@ plot_qsm <- function(
   else if (any(!is.null(cloud) | !is.null(triangulation))) {
     plot_data(
       cylinder = cylinder,
-      axes = axes, axes_color = axes_color, hover = hover,
+      axes = axes, axes_color = axes_color,
+      grid = grid, grid_color = grid_color, hover = hover,
       cloud = cloud, pt_color = pt_color, pt_size = pt_size,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
@@ -212,6 +222,8 @@ plot_qsm <- function(
 #' @param alpha cylinder transparency
 #' @param axes axes logical
 #' @param axes_color axes color
+#' @param grid grid lines
+#' @param grid_color grid lines color
 #' @param hover hover logical
 #' @param cloud point cloud data frame or matrix
 #' @param pt_color point cloud color
@@ -249,6 +261,8 @@ plot_data <- function(
     alpha = NULL,
     axes = NULL,
     axes_color = NULL,
+    grid = NULL,
+    grid_color = NULL,
     hover = NULL,
     cloud = NULL,
     pt_color = NULL,
@@ -319,6 +333,15 @@ plot_data <- function(
       axes(axes, axes_color = "#000000")
     } else {
       axes(axes, axes_color)
+    }
+  }
+
+  # Plot grid lines ------------------------------------------------------------
+  if (grid == TRUE) {
+    if (is.null(grid_color)) {
+      grid_lines(grid, grid_color = "grey")
+    } else {
+      grid_lines(grid, grid_color)
     }
   }
 
@@ -595,6 +618,17 @@ hover <- function(cylinder, id, branch, start_x, start_y, start_z) {
 axes <- function(axes, axes_color) {
   if (axes == TRUE) {
     rgl::axes3d(edges = c("x", "y", "z"), col = axes_color)
+  }
+}
+
+#' Grid lines
+#' @param grid plot grid lines
+#' @param grid_color axes color
+#' @returns NA
+#' @noRd
+grid_lines <- function(grid, grid_color) {
+  if (grid == TRUE) {
+    rgl::grid3d(side = c("x", "y", "z"), col = grid_color)
   }
 }
 
