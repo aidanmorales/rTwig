@@ -70,6 +70,8 @@
 <span>  tri_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  axes_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  grid_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  hover <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  bg_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -83,7 +85,7 @@
 
 
 <dl><dt id="arg-cylinder">cylinder<a class="anchor" aria-label="anchor" href="#arg-cylinder"></a></dt>
-<dd><p>QSM cylinder data frame</p></dd>
+<dd><p>A QSM cylinder data frame.</p></dd>
 
 
 <dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
@@ -99,7 +101,7 @@
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>Set the transparency of the cylinders. Defaults to 1. 0 is invisible while 1 is opaque.</p></dd>
+<dd><p>Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 
 
 <dt id="arg-facets">facets<a class="anchor" aria-label="anchor" href="#arg-facets"></a></dt>
@@ -127,7 +129,7 @@
 
 
 <dt id="arg-triangulation">triangulation<a class="anchor" aria-label="anchor" href="#arg-triangulation"></a></dt>
-<dd><p>Plot the stem triangulation mesh from TreeQSM. Defaults to NULL</p></dd>
+<dd><p>Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.</p></dd>
 
 
 <dt id="arg-tri-color">tri_color<a class="anchor" aria-label="anchor" href="#arg-tri-color"></a></dt>
@@ -144,6 +146,14 @@
 
 <dt id="arg-axes-color">axes_color<a class="anchor" aria-label="anchor" href="#arg-axes-color"></a></dt>
 <dd><p>Set the axes color. Defaults to black.</p></dd>
+
+
+<dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
+<dd><p>Show plot grid lines. Defaults to FALSE.</p></dd>
+
+
+<dt id="arg-grid-color">grid_color<a class="anchor" aria-label="anchor" href="#arg-grid-color"></a></dt>
+<dd><p>Set grid lines color. Defaults to grey.</p></dd>
 
 
 <dt id="arg-hover">hover<a class="anchor" aria-label="anchor" href="#arg-hover"></a></dt>
