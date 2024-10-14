@@ -204,7 +204,7 @@ model_paths <- function(
   paths <- paths %>%
     group_by("path") %>%
     summarize( # Broken branch filter and required variables
-      data = list(broken_branch_filter(pick(), twig_radius = !!twig_radius, TRUE)),
+      data = list(broken_branch_filter(pick(), twig_radius = !!twig_radius, !!broken_branch)),
       growth_length = list(.data$growth_length),
       raw_radius = list(.data$radius),
       id = list(.data$id),
@@ -364,6 +364,6 @@ path_gam <- function(x, y, growth_length, twig_radius, matrix) {
     )
     stats::predict(model, growth_length)[, 2]
   } else {
-    rep(twig_radius, length(x))
+    rep(twig_radius, length(growth_length))
   }
 }
