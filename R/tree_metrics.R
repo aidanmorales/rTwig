@@ -272,7 +272,9 @@ calculate_tree_metrics <- function(
     tips = tips,
     length = cylinder$length,
     radius = cylinder$radius,
-    branch = cylinder$branch
+    branch = cylinder$branch,
+    metrics = TRUE,
+    spacing = 0
   )
 
   # Crown Diameters ------------------------------------------------------------

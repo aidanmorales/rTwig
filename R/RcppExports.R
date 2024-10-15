@@ -5,6 +5,10 @@ box_counting <- function(cloud, lowercutoff) {
     .Call(`_rTwig_box_counting`, cloud, lowercutoff)
 }
 
+assign_cloud_ids <- function(cloud_ref, cloud) {
+    .Call(`_rTwig_assign_cloud_ids`, cloud_ref, cloud)
+}
+
 #' @title Generate random colors
 #'
 #' @description Generates random hex colors
@@ -176,8 +180,8 @@ generate_mesh <- function(start, axis, length, radius, facets) {
 #'
 #' @noRd
 #'
-generate_cloud <- function(start, axis, tips, length, radius, branch) {
-    .Call(`_rTwig_generate_cloud`, start, axis, tips, length, radius, branch)
+generate_cloud <- function(start, axis, tips, length, radius, branch, metrics, spacing) {
+    .Call(`_rTwig_generate_cloud`, start, axis, tips, length, radius, branch, metrics, spacing)
 }
 
 #' @title Cross Product

@@ -2,6 +2,8 @@
 
 ## New Features
 
+-   `cluster_cloud()`: A New function to transfer QSM variables to the input point cloud or simulate a point cloud from the QSM. Efficient nearest neighbor searching is done with the C++ *nanoflann* library: <https://github.com/jlblancoc/nanoflann>
+
 -   `prune_qsm()`: A new function to efficiently and easily prune QSMs using multiple pruning criteria and return options.
 
 -   aRchi QSMs are now supported in the package.
