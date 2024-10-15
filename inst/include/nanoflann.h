@@ -924,8 +924,10 @@ class PooledAllocator
             void* m = ::malloc(blocksize);
             if (!m)
             {
-                fprintf(stderr, "Failed to allocate memory.\n");
-                throw std::bad_alloc();
+                //fprintf(stderr, "Failed to allocate memory.\n");
+                // throw std::bad_alloc();
+                Rcpp::stop("Failed to allocate memory. \n"); // fix for CRAN checks
+
             }
 
             /* Fill first word of new block with pointer to previous block. */
