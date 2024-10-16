@@ -279,13 +279,13 @@ model_paths <- function(
       modified = mean(.data$index)
     ) %>%
     rename(
-      !!rlang::sym(id) := "id",
-      !!rlang::sym(radius) := "radius"
+      {{ id }} := "id",
+      {{ radius }} := "radius"
     )
 
   # Updates the QSM cylinder data with new radii
   cylinder %>%
-    rename("radius" := !!rlang::sym(radius)) %>%
+    rename("radius" := {{ radius }}) %>%
     select(-"radius") %>%
     left_join(cyl_radii, by = id)
 }
@@ -315,19 +315,18 @@ combine_paths <- function(
     branch_position,
     growth_length,
     total_children) {
-
   # Extract required variables
   path_vars <- cylinder %>%
     select(
-      id = !!rlang::sym(id),
-      parent = !!rlang::sym(parent),
-      radius = !!rlang::sym(radius),
-      branch = !!rlang::sym(branch),
-      branch_order = !!rlang::sym(branch_order),
-      reverse_order = !!rlang::sym(reverse_order),
-      branch_position = !!rlang::sym(branch_position),
-      growth_length = !!rlang::sym(growth_length),
-      total_children = !!rlang::sym(total_children)
+      id = {{ id }},
+      parent = {{ parent }},
+      radius = {{ radius }},
+      branch = {{ branch }},
+      branch_order = {{ branch_order }},
+      reverse_order = {{ reverse_order }},
+      branch_position = {{ branch_position }},
+      growth_length = {{ growth_length }},
+      total_children = {{ total_children }}
     )
 
   # Verify Network

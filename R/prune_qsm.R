@@ -151,13 +151,13 @@ prune_data <- function(
   # Select required variables --------------------------------------------------
   cyl_sub <- cylinder %>%
     select(
-      id = all_of(id),
-      parent = all_of(parent),
-      segment = all_of(segment),
-      branch = all_of(branch),
-      branch_position = all_of(branch_position),
-      start_z = all_of(start_z),
-      radius = all_of(radius),
+      id = {{ id }},
+      parent = {{ parent }},
+      segment = {{ segment }},
+      branch = {{ branch }},
+      branch_position = {{ branch_position }},
+      start_z = {{ start_z }},
+      radius = {{ radius }}
     )
 
   # Verify network -------------------------------------------------------------
@@ -237,18 +237,18 @@ prune_data <- function(
   # Prune QSM
   if (invert == FALSE & index == FALSE) {
     cylinder %>%
-      rename("id" = !!rlang::sym(id)) %>%
+      rename("id" = {{ id }}) %>%
       filter(!.data$id %in% !!prune_ids) %>%
-      rename(!!rlang::sym(id) := "id")
+      rename({{ id }} := "id")
   } else if (invert == TRUE & index == FALSE) {
     cylinder %>%
-      rename("id" = !!rlang::sym(id)) %>%
+      rename("id" = {{ id }}) %>%
       filter(.data$id %in% !!prune_ids) %>%
-      rename(!!rlang::sym(id) := "id")
+      rename({{ id }} := "id")
   } else if (index == TRUE) {
     cylinder %>%
-      rename("id" = !!rlang::sym(id)) %>%
+      rename("id" = {{ id }}) %>%
       mutate(pruning = if_else(.data$id %in% !!prune_ids, 1, 0)) %>%
-      rename(!!rlang::sym(id) := "id")
+      rename({{ id }} := "id")
   }
 }

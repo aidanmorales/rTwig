@@ -115,7 +115,7 @@ standardize_qsm <- function(cylinder) {
       cylinder <- update_cylinders(cylinder)
     }
 
-    # Standardize SimpleForest variable names ----------------------------------
+    # Standardize aRchi variable names -----------------------------------------
     select(cylinder,
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",

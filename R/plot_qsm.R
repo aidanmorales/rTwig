@@ -359,9 +359,9 @@ plot_data <- function(
 plotting_radii <- function(cylinder, radius) {
   # Initialize cylinder radii
   if (is.null(radius)) {
-    radius <- cylinder$radius
+    radius <- cylinder$radius # Note: partial matching includes aRchi radius_cyl
   } else {
-    radius <- pull(cylinder, !!rlang::sym(radius))
+    radius <- pull(cylinder, {{ radius }})
   }
 
   return(radius)
@@ -377,7 +377,7 @@ plotting_radii <- function(cylinder, radius) {
 plotting_colors <- function(cylinder, color, palette, branch_order) {
   if (is.null(color)) {
     default_color <- colourvalues::color_values(
-      pull(cylinder, !!rlang::sym(branch_order)),
+      pull(cylinder, {{ branch_order }}),
       palette = "rainbow"
     )
   } else if (color == "random") {
@@ -395,7 +395,7 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
       stop("Invalid color or column name supplied!")
     }
   } else if (color %in% colnames(cylinder)) {
-    color <- pull(cylinder, !!rlang::sym(color))
+    color <- pull(cylinder, {{ color }})
   } else {
     stop("Invalid color or column name supplied!")
   }
@@ -490,18 +490,18 @@ plot_cylinders <- function(
 
   # Extract required variables
   start <- cbind(
-    pull(cylinder, !!rlang::sym(start_x)),
-    pull(cylinder, !!rlang::sym(start_y)),
-    pull(cylinder, !!rlang::sym(start_z))
+    pull(cylinder, {{ start_x }}),
+    pull(cylinder, {{ start_y }}),
+    pull(cylinder, {{ start_z }})
   )
 
   axis <- cbind(
-    pull(cylinder, !!rlang::sym(axis_x)),
-    pull(cylinder, !!rlang::sym(axis_y)),
-    pull(cylinder, !!rlang::sym(axis_z))
+    pull(cylinder, {{ axis_x }}),
+    pull(cylinder, {{ axis_y }}),
+    pull(cylinder, {{ axis_z }})
   )
 
-  length <- pull(cylinder, !!rlang::sym(length))
+  length <- pull(cylinder, {{ length }})
 
   # Create cylinder mesh
   cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
@@ -598,14 +598,14 @@ plot_triangulation <- function(triangulation, tri_color, tri_palette, lit) {
 #' @noRd
 hover <- function(cylinder, id, branch, start_x, start_y, start_z) {
   rgl::hover3d(
-    x = pull(cylinder, !!rlang::sym(start_x)),
-    y = pull(cylinder, !!rlang::sym(start_y)),
-    z = pull(cylinder, !!rlang::sym(start_z)),
+    x = pull(cylinder, {{ start_x }}),
+    y = pull(cylinder, {{ start_y }}),
+    z = pull(cylinder, {{ start_z }}),
     labels = paste0(
       "ID:",
-      pull(cylinder, !!rlang::sym(id)),
+      pull(cylinder, {{ id }}),
       " - Branch:",
-      pull(cylinder, !!rlang::sym(branch))
+      pull(cylinder, {{ branch }})
     )
   )
 }
@@ -694,13 +694,13 @@ normalize_qsm <- function(
   # Update cylinder coordinates
   coords <- cylinder %>%
     select(
-      "id" = all_of(id),
-      "start_x" = all_of(start_x),
-      "start_y" = all_of(start_y),
-      "start_z" = all_of(start_z),
-      "end_x" = all_of(end_x),
-      "end_y" = all_of(end_y),
-      "end_z" = all_of(end_z)
+      "id" = {{ id }},
+      "start_x" = {{ start_x }},
+      "start_y" = {{ start_y }},
+      "start_z" = {{ start_z }},
+      "end_x" = {{ end_x }},
+      "end_y" = {{ end_y }},
+      "end_z" = {{ end_z }}
     ) %>%
     mutate(
       start_x = start_x - min(.data$start_x, na.rm = FALSE),
@@ -711,13 +711,13 @@ normalize_qsm <- function(
       end_z = end_z - min(.data$start_z, na.rm = FALSE)
     ) %>%
     rename(
-      !!rlang::sym(id) := "id",
-      !!rlang::sym(start_x) := "start_x",
-      !!rlang::sym(start_y) := "start_y",
-      !!rlang::sym(start_z) := "start_z",
-      !!rlang::sym(end_x) := "end_x",
-      !!rlang::sym(end_y) := "end_y",
-      !!rlang::sym(end_z) := "end_z",
+      {{ id }} := "id",
+      {{ start_x }} := "start_x",
+      {{ start_y }} := "start_y",
+      {{ start_z }} := "start_z",
+      {{ end_x }} := "end_x",
+      {{ end_y }} := "end_y",
+      {{ end_z }} := "end_z",
     )
 
   cylinder %>%

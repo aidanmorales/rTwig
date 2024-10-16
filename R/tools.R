@@ -41,8 +41,8 @@ build_network <- function(
   message("Building Cylinder Network")
 
   # Extract cylinder ids
-  id <- pull(select(cylinder, !!rlang::sym(id)))
-  parent <- pull(select(cylinder, !!rlang::sym(parent)))
+  id <- pull(select(cylinder, {{ id }}))
+  parent <- pull(select(cylinder, {{ parent }}))
 
   # Creates QSM cylinder network
   qsm_g <- tidytable(parent = parent, id = id)

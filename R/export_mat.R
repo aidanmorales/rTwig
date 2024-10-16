@@ -16,7 +16,7 @@
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
-#' filename <- tempfile(pattern = "TreeQSM_QSM.mat")
+#' filename <- tempfile(pattern = "TreeQSM_QSM", fileext = ".mat")
 #' export_mat(cylinder, filename)
 #'
 #' ## SimpleForest Processing Chain
@@ -24,7 +24,7 @@
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
 #'
-#' filename <- tempfile(pattern = "SimpleForest_QSM.mat")
+#' filename <- tempfile(pattern = "SimpleForest_QSM", fileext = ".mat")
 #' export_mat(cylinder, filename)
 #'
 #' ## aRchi Processing Chain
@@ -32,7 +32,7 @@
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
 #'
-#' filename <- tempfile(pattern = "aRchi_QSM.mat")
+#' filename <- tempfile(pattern = "aRchi_QSM", fileext = ".mat")
 #' export_mat(cylinder, filename)
 #'
 export_mat <- function(cylinder, filename) {

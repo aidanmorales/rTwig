@@ -215,6 +215,34 @@ calculate_tree_metrics <- function(
       end_z = !!rlang::sym(end_z)
     )
 
+  # cylinder <- cylinder %>%
+  #   select(
+  #     id = {{ id }},
+  #     parent = {{ parent }},
+  #     branch = {{ branch }},
+  #     branch_alt = {{ branch_alt }},
+  #     radius = {{ radius }},
+  #     raw_radius = {{ raw_radius }},
+  #     length = {{ length }},
+  #     segment = {{ segment }},
+  #     branch_position = {{ branch_position }},
+  #     growth_length = {{ growth_length }},
+  #     branch_order = {{ branch_order }},
+  #     reverse_order = {{ reverse_order }},
+  #     total_children = {{ total_children }},
+  #     base_distance = {{ base_distance }},
+  #     twig_distance = {{ twig_distance }},
+  #     start_x = {{ start_x }},
+  #     start_y = {{ start_y }},
+  #     start_z = {{ start_z }},
+  #     axis_x = {{ axis_x }},
+  #     axis_y = {{ axis_y }},
+  #     axis_z = {{ axis_z }},
+  #     end_x = {{ end_x }},
+  #     end_y = {{ end_y }},
+  #     end_z = {{ end_z }}
+  #   )
+
   # Extract required matrix variables ------------------------------------------
   axis <- cbind(cylinder$axis_x, cylinder$axis_y, cylinder$axis_z)
   start <- cbind(cylinder$start_x, cylinder$start_y, cylinder$start_z)

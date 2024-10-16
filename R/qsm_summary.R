@@ -130,24 +130,24 @@ data_summary <- function(
     id,
     triangulation) {
   # Subset cylinder data
-  cyl_sub <- cylinder %>%
+  cylinder <- cylinder %>%
     select(
       all_of(
         c(length, branch, branch_order, branch_position, start_z, id)
       )
     ) %>%
     rename(
-      "length" = !!rlang::sym(length),
-      "branch" = !!rlang::sym(branch),
-      "branch_order" = !!rlang::sym(branch_order),
-      "branch_position" = !!rlang::sym(branch_position),
-      "start_z" = !!rlang::sym(start_z),
-      "id" = !!rlang::sym(id)
+      "length" = {{ length }},
+      "branch" = {{ branch }},
+      "branch_order" = {{ branch_order }},
+      "branch_position" = {{ branch_position }},
+      "start_z" = {{ start_z }},
+      "id" = {{ id }}
     ) %>%
-    mutate(radius := radius)
+    mutate(radius := {{ radius }})
 
   # Diameter at breast height (DBH)
-  dbh <- cyl_sub %>%
+  dbh <- cylinder %>%
     filter(.data$branch_order == 0 & .data$branch == 1) %>%
     arrange(.data$branch_position) %>%
     select("length", "radius")
@@ -162,7 +162,7 @@ data_summary <- function(
   dbh_qsm_cm <- dbh$radius[as.numeric(i)] * 200
 
   # Tree height
-  tree_height_m <- max(cyl_sub$start_z) - min(cyl_sub$start_z)
+  tree_height_m <- max(cylinder$start_z) - min(cylinder$start_z)
 
   # Triangulation volumes
   if (!is.null(triangulation)) {
@@ -170,7 +170,7 @@ data_summary <- function(
     cyl_end <- pull(triangulation$cylind - 1)
 
     # Gets the QSM volumes
-    qsm_vol_sa <- cyl_sub %>%
+    qsm_vol_sa <- cylinder %>%
       filter(.data$id %in% c(1:cyl_end)) %>%
       mutate(
         volume = pi * .data$radius^2 * .data$length * 1e3,
@@ -187,7 +187,7 @@ data_summary <- function(
   }
 
   # Branch order summary
-  summary <- cyl_sub %>%
+  summary <- cylinder %>%
     mutate(
       volume = pi * .data$radius^2 * .data$length,
       surface_area = 2 * pi * .data$radius * .data$length

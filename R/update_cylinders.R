@@ -384,12 +384,12 @@ update_ordering <- function(cylinder, id, parent) {
   parent_old <- cylinder %>%
     select({{ parent }}, {{ id }}) %>%
     mutate(id_new = 1:n()) %>%
-    rename(parent_old = !!rlang::sym(parent))
+    rename(parent_old = {{ parent }})
 
   # Creates new parent and child ids
   new_id <- parent_old %>%
     left_join(
-      select(parent_old, parent_old = !!rlang::sym(id), parent_new = "id_new"),
+      select(parent_old, parent_old = {{ id }}, parent_new = "id_new"),
       by = "parent_old"
     ) %>%
     select(parent = "parent_new", id = "id_new") %>%
@@ -405,9 +405,9 @@ update_ordering <- function(cylinder, id, parent) {
 
   # Join new ids
   cylinder %>%
-    select(-c(!!rlang::sym(id), !!rlang::sym(parent))) %>%
+    select(-c({{ id }}, {{ parent }})) %>%
     bind_cols(new_id) %>%
-    rename(!!rlang::sym(parent) := "parent", !!rlang::sym(id) := "id")
+    rename({{ parent }} := "parent", {{ id }} := "id")
 }
 
 #' Finds total children for each cylinder
@@ -421,9 +421,9 @@ total_children <- function(cylinder, parent, id) {
 
   # Adds supported children for each cylinder
   total_children <- cylinder %>%
-    group_by(!!rlang::sym(parent)) %>%
+    group_by({{ parent }}) %>%
     summarize(totalChildren = n(), .groups = "drop") %>%
-    rename(!!rlang::sym(id) := !!rlang::sym(parent))
+    rename({{ id }} := {{ parent }})
 
   # Joins total children and fill na with 0
   left_join(cylinder, total_children, by = id) %>%
@@ -443,7 +443,7 @@ growth_length <- function(network, cylinder, id, length) {
   # Calculate growth length
   growth_length <- network$child_df %>%
     left_join(
-      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      select(cylinder, id = {{ id }}, length = {{ length }}),
       by = "id"
     ) %>%
     group_by("index") %>%
@@ -451,7 +451,7 @@ growth_length <- function(network, cylinder, id, length) {
       growthLength = sum(!!rlang::sym(length), na.rm = TRUE),
       .groups = "drop"
     ) %>%
-    rename(!!rlang::sym(id) := "index")
+    rename({{ id }} := "index")
 
   # Joins growth length
   left_join(cylinder, growth_length, by = id)
@@ -469,14 +469,14 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
 
   # Find branch break points
   breaks <- cylinder %>%
-    rename(parent := !!rlang::sym(parent)) %>%
+    rename(parent := {{ parent }}) %>%
     group_by("parent") %>%
     summarize(breaks = n(), .groups = "drop")
 
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
     left_join(
-      select(cylinder, id = !!rlang::sym(id), parent = !!rlang::sym(parent)),
+      select(cylinder, id = {{ id }}, parent = {{ parent }}),
       by = "id"
     ) %>%
     left_join(breaks, by = "parent") %>%
@@ -491,7 +491,7 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
       reverseBranchOrder = max(.data$reverseBranchOrder),
       .groups = "drop"
     ) %>%
-    rename(!!rlang::sym(id) := "id")
+    rename({{ id }} := "id")
 
   # Joins reverse branch order
   left_join(cylinder, reverse_branch_order, by = id) %>%
@@ -510,7 +510,7 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 
   # Calculates Branch Segments
   branch_segments <- cylinder %>%
-    distinct(!!rlang::sym(branch), !!rlang::sym(rbo)) %>%
+    distinct({{ branch }}, {{ rbo }}) %>%
     mutate(segment = 1:n())
 
   # Joins branch segments
@@ -518,11 +518,11 @@ branch_segments <- function(cylinder, id, parent, branch, rbo) {
 
   # Calculates Parent Segments
   child_segments <- cylinder %>%
-    select(id = !!rlang::sym(parent), childSegment = "segment") %>%
+    select(id = {{ parent }}, childSegment = "segment") %>%
     distinct("childSegment", .keep_all = TRUE)
 
   parent_segments <- left_join(
-    select(cylinder, id = !!rlang::sym(id), "segment"),
+    select(cylinder, id = {{ id }}, "segment"),
     child_segments,
     by = "id"
   ) %>%
@@ -555,19 +555,19 @@ branch_alt <- function(
   # Find first order branch bases
   first_branch <- cylinder %>%
     filter(!!rlang::sym(branch_order) == 1) %>%
-    group_by(!!rlang::sym(branch)) %>%
+    group_by({{ branch }}) %>%
     slice_head(n = 1) %>%
     ungroup() %>%
     mutate(branch_alt = 1:n()) %>%
-    select(index = !!rlang::sym(id), "branch_alt")
+    select(index = {{ id }}, "branch_alt")
 
   # Find cylinder
   filter(network$child_df, .data$index %in% first_branch$index) %>%
-    rename(!!rlang::sym(id) := "id") %>%
+    rename({{ id }} := "id") %>%
     right_join(cylinder, by = id) %>%
     left_join(first_branch, by = "index") %>%
     select(-"index") %>%
-    relocate(!!rlang::sym(id), .before = !!rlang::sym(parent)) %>%
+    relocate({{ id }}, .before = {{ parent }}) %>%
     mutate(branch_alt = replace_na(.data$branch_alt, 0))
 }
 
@@ -623,8 +623,8 @@ branch_from_order <- function(cylinder, id, parent, branch_order, branch_name) {
   branch <- left_join(data, branch, by = "branch") %>%
     select("id", "branch_new", "positionInBranch") %>%
     rename(
-      !!rlang::sym(id) := "id",
-      !!rlang::sym(branch_name) := "branch_new"
+      {{ id }} := "id",
+      {{ branch_name }} := "branch_new"
     )
 
   # Joins branches
@@ -644,7 +644,7 @@ path_metrics <- function(network, cylinder, id, length) {
   # Calculate distance from base to cylinder
   base_distance <- network$base_df %>%
     left_join(
-      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      select(cylinder, id = {{ id }}, length = {{ length }}),
       by = "id"
     ) %>%
     group_by("index") %>%
@@ -652,13 +652,13 @@ path_metrics <- function(network, cylinder, id, length) {
       distanceFromBase = sum(.data$length, na.rm = TRUE),
       .groups = "drop"
     ) %>%
-    rename(!!rlang::sym(id) := "index")
+    rename({{ id }} := "index")
 
   # Calculate allometric variables
   path_df <- network$child_df %>%
     left_join(network$cylinder_info, by = "id") %>%
     left_join(
-      select(cylinder, id = !!rlang::sym(id), length = !!rlang::sym(length)),
+      select(cylinder, id = {{ id }}, length = {{ length }}),
       by = "id"
     )
 
@@ -675,7 +675,7 @@ path_metrics <- function(network, cylinder, id, length) {
       reversePipeAreaBranchorder = .data$twig_sum,
       reversePipeRadiusBranchorder = sqrt(.data$twig_sum)
     ) %>%
-    rename(!!rlang::sym(id) := .data$index) %>%
+    rename({{ id }} := .data$index) %>%
     select(-c("twig_sum", "length_freq_sum"))
 
   # Calculate vessel volume
@@ -683,7 +683,7 @@ path_metrics <- function(network, cylinder, id, length) {
     left_join(
       select(
         path_metrics,
-        id = !!rlang::sym(id),
+        id = {{ id }},
         RBOPA = "reversePipeAreaBranchorder"
       ),
       by = "id"
@@ -692,8 +692,8 @@ path_metrics <- function(network, cylinder, id, length) {
     summarise(
       vesselVolume = sum(.data$RBOPA * .data$length), .groups = "drop"
     ) %>%
-    rename(!!rlang::sym(id) := .data$index) %>%
-    select(all_of(id), "vesselVolume")
+    rename({{ id }} := .data$index) %>%
+    select({{ id }}, "vesselVolume")
 
   # Joins variables
   cylinder %>%
@@ -725,15 +725,15 @@ verify_topology <- function(
   # Generate branch order topology
   topology <- cylinder %>%
     select(
-      id = !!rlang::sym(id),
-      parent = !!rlang::sym(parent),
-      branch_order = !!rlang::sym(branch_order)
+      id = {{ id }},
+      parent = {{ parent }},
+      branch_order = {{ branch_order }}
     ) %>%
     left_join(
       select(
         cylinder,
-        parent = !!rlang::sym(id),
-        parent_order = !!rlang::sym(branch_order)
+        parent = {{ id }},
+        parent_order = {{ branch_order }}
       ),
       by = "parent"
     )
@@ -763,14 +763,14 @@ verify_topology <- function(
       select(id, branch_order) %>%
       group_by("id") %>%
       filter(branch_order == max(.data$branch_order)) %>%
-      rename(!!rlang::sym(id) := "id")
+      rename({{ id }} := "id")
 
     # Update QSM topology
     cylinder %>%
-      rename(branch_order = !!rlang::sym(branch_order)) %>%
+      rename(branch_order = {{ branch_order }}) %>%
       left_join(corrected_topology, by = id) %>%
       mutate(
-        !!rlang::sym(branch_order) := coalesce(.data$branch_order.y, .data$branch_order.x)
+        {{ branch_order }} := coalesce(.data$branch_order.y, .data$branch_order.x)
       ) %>%
       select(-c("branch_order.x", "branch_order.y"))
   } else {
