@@ -84,19 +84,12 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-in"><span><span class="co">## TreeQSM Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM .mat</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM</span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">standardize_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Ordering</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Caching Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Growth Length</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Reverse Branch Order</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Branch Segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Cylinders</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Please run `update_cylinders()` before using rTwig functions.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running `update_cylinders()' will suppress this message.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_x        : num  0.768 0.768 0.768 0.769 0.769 ...</span>
@@ -133,12 +126,9 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">standardize_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finding Branches</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Caching Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Cylinders</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Please run `update_cylinders()` before using rTwig functions.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running `update_cylinders()' will suppress this message.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  28 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_x        : num  0.761 0.759 0.771 0.768 0.765 ...</span>
@@ -169,6 +159,45 @@ update_cylinders function has been run, or at any stage.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ vessel_volume  : num  237 233 229 226 222 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_area      : int  69 69 69 69 69 69 69 69 69 69 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_radius    : num  8.31 8.31 8.31 8.31 8.31 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## aRchi Processing Chain</span></span></span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM2.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">standardize_qsm</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Cylinders</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Please run `update_cylinders()` before using rTwig functions.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running `update_cylinders()' will suppress this message.</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1231 obs. of  28 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_x        : num  0.763 0.77 0.77 0.763 0.764 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_y        : num  -16.4 -16.4 -16.4 -16.4 -16.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ start_z        : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis_x         : num  0.1307 -0.0172 -0.2653 0.0294 0.1055 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis_y         : num  0.1531 -0.1311 0.0981 0.1203 -0.2048 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axis_z         : num  0.98 0.991 0.959 0.992 0.973 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end_x          : num  0.77 0.77 0.763 0.764 0.766 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end_y          : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ end_z          : num  254 254 254 254 254 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ id             : int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent         : num  0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius         : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ raw_radius     : num  0.0428 0.0428 0.0428 0.0428 0.0428 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length         : num  0.0579 0.0269 0.0258 0.0245 0.0256 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch         : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_position: int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_order   : num  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverse_order  : num  20 20 20 20 20 20 20 20 20 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt     : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segment        : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent_segment : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ total_children : int  1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growth_length  : num  34.2 34.2 34.2 34.1 34.1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ base_distance  : num  0.0579 0.0847 0.1106 0.135 0.1606 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ twig_distance  : num  3.44 3.38 3.36 3.33 3.3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vessel_volume  : num  416 409 406 403 400 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_area      : int  121 121 121 121 121 121 121 121 121 121 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pipe_radius    : num  11 11 11 11 11 11 11 11 11 11 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
