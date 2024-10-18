@@ -42,6 +42,7 @@
     -   Fix bug where triangulation was not using the correct ending cylinder.
 -   `box_dimension()`: The 3D plot now pans on right mouse button.
 -   The QSM network is now cached in temp to avoid repeat calculations.
+-   Data checking and helpful error messages are incuded for every function.
 -   Add Real Twig Method paper citation in package and readme.
 -   New website look.
 -   Update vignettes.
@@ -52,7 +53,8 @@
 
 -   `qsm_summary()`: User can pass *radius* as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error prompting the user for a radius column name.
 -   `correct_radii()`: parallel processing has been removed, so *backend* is no longer a parameter.
--   `run_rtwig()`: parallel processing has been removed, so *backend* is no longer a parameter.
+-   `run_rtwig()`:parallel processing has been removed, so *backend* is no longer a parameter.
+-   *file* has been changed to *filename* in `run_rtwig()`, `import_qsm()`, and `import_treegraph()` to be consistent with other functions.
 
 # rTwig 1.1.0
 

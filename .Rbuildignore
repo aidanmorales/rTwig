@@ -13,3 +13,5 @@
 ^dev$
 ^man/figures$
 ^revdep$
+^doc$
+^Meta$

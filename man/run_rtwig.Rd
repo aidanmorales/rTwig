@@ -5,7 +5,7 @@
 \title{Run Real Twig}
 \usage{
 run_rtwig(
-  file,
+  filename,
   twig_radius,
   metrics = TRUE,
   version = NULL,
@@ -15,7 +15,7 @@ run_rtwig(
 )
 }
 \arguments{
-\item{file}{file path to QSM (.mat, .csv, .json)}
+\item{filename}{file path to QSM (.mat, .csv, .json)}
 
 \item{twig_radius}{Twig radius in millimeters}
 

@@ -26,17 +26,49 @@
 #' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
 #'
-#' ## aRchi Processing Chain
-#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
-#' str(cylinder)
-#'
 correct_radii <- function(
     cylinder,
     twig_radius,
     broken_branch = TRUE) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (is_missing(twig_radius)) {
+    message <- "argument `twig_radius` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is_null(twig_radius)) {
+    if (!is_scalar_double(twig_radius)) {
+      message <- paste0(
+        "`twig_radius` must be double, not ", class(twig_radius), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is_logical(broken_branch)) {
+    message <- paste0(
+      "`broken_branch` must be logical, not ", class(broken_branch), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
+
   # Converts twig radius to meters
   twig_radius <- twig_radius / 1000
 
@@ -103,11 +135,12 @@ correct_radii <- function(
       twig_radius = twig_radius, taper = 2, broken_branch = broken_branch
     )
   } else {
-    message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -144,7 +177,7 @@ model_paths <- function(
     taper = 1,
     broken_branch = TRUE) {
   # Build Paths ----------------------------------------------------------------
-  message("Generating Paths")
+  inform("Generating Paths")
 
   paths <- combine_paths(
     cylinder = cylinder,
@@ -160,7 +193,7 @@ model_paths <- function(
   )
 
   # Filter Cylinder Outliers ---------------------------------------------------
-  message("Filtering Paths")
+  inform("Filtering Paths")
 
   stem <- paths[paths$branch == 1, ]
   stem <- min(which(stem$total_children > 1))
@@ -200,10 +233,10 @@ model_paths <- function(
     )
 
   # Model Paths ----------------------------------------------------------------
-  message("Modeling Paths")
+  inform("Modeling Paths")
   paths <- paths %>%
     group_by("path") %>%
-    summarize( # Broken branch filter and required variables
+    summarise( # Broken branch filter and required variables
       data = list(broken_branch_filter(pick(), twig_radius = !!twig_radius, !!broken_branch)),
       growth_length = list(.data$growth_length),
       raw_radius = list(.data$radius),
@@ -215,7 +248,7 @@ model_paths <- function(
     mutate( # Matrix to constrain GAM with twig diameter
       matrix = list(model_matrix(.data$data[[1]]$min_gl, twig_radius = !!twig_radius))
     ) %>%
-    summarize( # Model paths with gam
+    summarise( # Model paths with gam
       radius = list(
         path_gam(
           x = .data$data[[1]]$x,
@@ -258,12 +291,12 @@ model_paths <- function(
   #   theme_classic()
 
   # Update Radii ---------------------------------------------------------------
-  message("Updating Radii")
+  inform("Updating Radii")
 
   # Combines all paths and calculates weighted mean for each cylinder
   cyl_radii <- unnest(paths) %>%
     group_by("path") %>%
-    summarize( # Remove tapering on good main stem cylinders and broken branches
+    summarise( # Remove tapering on good main stem cylinders and broken branches
       radius = case_when(
         .data$index == 0 & .data$branch_order == 0 ~ .data$raw_radius,
         TRUE ~ .data$radius,
@@ -274,7 +307,7 @@ model_paths <- function(
       index = .data$index
     ) %>%
     group_by("id") %>%
-    summarize( # Weighted radius mean across paths and modified index
+    summarise( # Weighted radius mean across paths and modified index
       radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE),
       modified = mean(.data$index)
     ) %>%

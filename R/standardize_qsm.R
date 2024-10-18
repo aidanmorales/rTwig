@@ -29,15 +29,33 @@
 #' cylinder <- standardize_qsm(cylinder)
 #' str(cylinder)
 #'
+#' ## aRchi Processing Chain
+#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
+#' cylinder <- read.csv(file)
+#' cylinder <- standardize_qsm(cylinder)
+#' str(cylinder)
+#'
 standardize_qsm <- function(cylinder) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
+
   # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    # Check if update_cylinders() has already been run
-    if (!all(c("segment", "parentSegment", "totalChildren") %in% colnames(cylinder))) {
-      cylinder <- update_cylinders(cylinder)
-    }
-
-    # Standardize TreeQSM variable names ---------------------------------------
     select(cylinder,
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
@@ -58,12 +76,6 @@ standardize_qsm <- function(cylinder) {
   }
   # SimpleForest ---------------------------------------------------------------
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    # Check if update_cylinders() has already been run
-    if (!all(c("distanceFromBase", "distanceToTwig", "totalChildren") %in% colnames(cylinder))) {
-      cylinder <- update_cylinders(cylinder)
-    }
-
-    # Standardize SimpleForest variable names ----------------------------------
     select(cylinder,
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
@@ -84,12 +96,6 @@ standardize_qsm <- function(cylinder) {
   }
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    # Check if update_cylinders() has already been run
-    if (!all(c("distanceFromBase", "distanceToTwig", "totalChildren") %in% colnames(cylinder))) {
-      cylinder <- update_cylinders(cylinder)
-    }
-
-    # Standardize TreeGraph variable names -------------------------------------
     select(cylinder,
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
@@ -110,12 +116,6 @@ standardize_qsm <- function(cylinder) {
   }
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    # Check if update_cylinders() has already been run
-    if (!all(c("distanceFromBase", "distanceToTwig", "totalChildren") %in% colnames(cylinder))) {
-      cylinder <- update_cylinders(cylinder)
-    }
-
-    # Standardize aRchi variable names -----------------------------------------
     select(cylinder,
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
@@ -134,10 +134,11 @@ standardize_qsm <- function(cylinder) {
       pipe_radius = "reversePipeRadiusBranchorder"
     )
   } else {
-    message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }

@@ -22,21 +22,39 @@
 #' plot_qsm(cylinder)
 #'
 smooth_qsm <- function(cylinder) {
-  message("Smoothing QSM")
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
 
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  # TreeQSM --------------------------------------------------------------------
   if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    # Error message if cylinders have not been updated
-    stopifnot("Cylinder indexes have not been updated! Please run update_cylinders() before proceeding." = pull(slice_head(cylinder, n = 1), .data$extension) == 1)
+    # Verify cylinders
+    cylinder <- verify_cylinders(cylinder)
+
+    inform("Smoothing QSM")
 
     # Connect cylinder endpoints
     connect_cylinders(cylinder)
 
     return(cylinder)
   } else {
-    message(
-      "Only TreeQSM is supported for smoothing.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "Only TreeQSM is supported in `smooth_qsm()`.",
+      sep = "\n"
     )
+    warn(message, class = "data_format_error")
 
     return(cylinder)
   }

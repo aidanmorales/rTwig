@@ -502,7 +502,7 @@ spreads %>%
 ```{r, fig.width=6, fig.height=3, fig.align='center', out.width="100%", echo=FALSE}
 metrics$spreads %>%
   group_by(height_class) %>%
-  summarize(
+  summarise(
     max = max(spread_m),
     mean = mean(spread_m),
     min = min(spread_m)
@@ -938,7 +938,7 @@ spreads %>%
 # Vertical profile -------------------------------------------------------------
 metrics$spreads %>%
   group_by(height_class) %>%
-  summarize(
+  summarise(
     max = max(spread_m),
     mean = mean(spread_m),
     min = min(spread_m)

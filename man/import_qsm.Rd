@@ -4,10 +4,10 @@
 \alias{import_qsm}
 \title{Import TreeQSM}
 \usage{
-import_qsm(file, version = "2.x.x")
+import_qsm(filename, version = "2.x.x")
 }
 \arguments{
-\item{file}{a TreeQSM .mat MATLAB file}
+\item{filename}{a TreeQSM .mat MATLAB file}
 
 \item{version}{TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.}
 }

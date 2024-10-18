@@ -27,16 +27,43 @@
 #' filename <- tempfile(pattern = "SimpleForest_QSM", fileext = ".mat")
 #' export_mat(cylinder, filename)
 #'
-#' ## aRchi Processing Chain
-#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#'
-#' filename <- tempfile(pattern = "aRchi_QSM", fileext = ".mat")
-#' export_mat(cylinder, filename)
-#'
 export_mat <- function(cylinder, filename) {
-  message("Exporting to .mat")
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (is_missing(filename)) {
+    message <- "argument `filename` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is_string(filename)) {
+    message <- paste0(
+      "`filename` must be a string, not ", class(filename), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Ensure filename ends with correct extension
+  if (substr(filename, nchar(filename) - 3, nchar(filename)) != ".mat") {
+    filename <- paste0(filename, ".mat")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
+
+  inform("Exporting to .mat")
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
@@ -268,10 +295,11 @@ export_mat <- function(cylinder, filename) {
 
     R.matlab::writeMat(filename, cylinder = output)
   } else {
-    message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }

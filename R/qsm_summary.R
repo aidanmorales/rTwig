@@ -24,22 +24,46 @@
 #' cylinder <- update_cylinders(cylinder)
 #' qsm_summary(cylinder, radius, triangulation = qsm$triangulation)
 #'
-qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
-  message("Creating QSM Summary")
-
-  # User selected radius
-  radius <- select_column(rlang::enquo(radius))
-
-  if (is.null(radius)) {
-    stop("Please supply a radius column, either quoted or unquoted!")
-  } else {
-    radius <- pull(cylinder, !!radius)
+qsm_summary <- function(cylinder, radius, triangulation = NULL) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
   }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      "`cylinder` must be a data frame.",
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (missing(radius)) { # Use base::missing to support unquoted columns
+    message <- "argument `radius` is missing, with no default."
+    abort(message, class = "missing_argument")
+  } else {
+    radius <- select_column(rlang::enquo(radius))
+
+    if (!any(radius %in% colnames(cylinder))) {
+      abort(paste(
+        "Can't select columns that don't exist.",
+        paste0("X Column `", radius, "' doesn't exist."),
+        "i Did you mistype your `radius` column name?`.",
+        sep = "\n"
+      ))
+    } else {
+      radius <- pull(cylinder, !!radius)
+    }
+  }
+
+  inform("Creating QSM Summary")
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     if (!is.null(triangulation)) {
-      message("rTwig does not support triangulation of the main stem!")
+      inform("Main stem triangulation not supported.")
     }
 
     data_summary(
@@ -61,7 +85,7 @@ qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
   # SimpleForest ---------------------------------------------------------------
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     if (!is.null(triangulation)) {
-      message("SimpleForest does not support triangulation of the main stem!")
+      inform("Main stem triangulation not supported.")
     }
 
     data_summary(
@@ -74,7 +98,7 @@ qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     if (!is.null(triangulation)) {
-      message("Treegraph does not support triangulation of the main stem!")
+      inform("Main stem triangulation not supported.")
     }
 
     data_summary(
@@ -87,7 +111,7 @@ qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
     if (!is.null(triangulation)) {
-      message("aRchi does not support triangulation of the main stem!")
+      inform("Main stem triangulation not supported.")
     }
 
     data_summary(
@@ -97,11 +121,12 @@ qsm_summary <- function(cylinder, radius = NULL, triangulation = NULL) {
       start_z = "startZ", id = "cyl_ID", triangulation = NULL
     )
   } else {
-    message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -166,6 +191,15 @@ data_summary <- function(
 
   # Triangulation volumes
   if (!is.null(triangulation)) {
+    if (!is_list(triangulation)) {
+      message <- paste(
+        paste0("`triangulation` must be a list, not ", class(triangulation), "."),
+        "i `triangulation` must be created by `import_qsm()`.",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
+
     # Finds the triangulation end cylinder
     cyl_end <- pull(triangulation$cylind - 1)
 
@@ -176,7 +210,7 @@ data_summary <- function(
         volume = pi * .data$radius^2 * .data$length * 1e3,
         surface_area = 2 * pi * .data$radius * .data$length
       ) %>%
-      summarize(
+      summarise(
         cyl_volume = sum(.data$volume),
         cyl_surface_area = sum(.data$surface_area)
       )
@@ -193,7 +227,7 @@ data_summary <- function(
       surface_area = 2 * pi * .data$radius * .data$length
     ) %>%
     group_by("branch_order") %>%
-    summarize(
+    summarise(
       tree_volume_L = sum(.data$volume, na.rm = TRUE) * 1e3,
       tree_area_m2 = sum(.data$surface_area, na.rm = TRUE)
     )
@@ -206,26 +240,26 @@ data_summary <- function(
 
   # Tree summary
   tree_volume_L <- summary %>%
-    summarize(tree_volume_L = sum(.data$tree_volume_L))
+    summarise(tree_volume_L = sum(.data$tree_volume_L))
 
   stem_volume_L <- summary %>%
     filter(.data$branch_order == 0) %>%
-    summarize(stem_volume_L = sum(.data$tree_volume_L))
+    summarise(stem_volume_L = sum(.data$tree_volume_L))
 
   branch_volume_L <- summary %>%
     filter(.data$branch_order != 0) %>%
-    summarize(branch_volume_L = sum(.data$tree_volume_L))
+    summarise(branch_volume_L = sum(.data$tree_volume_L))
 
   tree_area_m2 <- summary %>%
-    summarize(tree_area_m2 = sum(.data$tree_area_m2))
+    summarise(tree_area_m2 = sum(.data$tree_area_m2))
 
   stem_area_m2 <- summary %>%
     filter(.data$branch_order == 0) %>%
-    summarize(stem_area_m2 = sum(.data$tree_area_m2))
+    summarise(stem_area_m2 = sum(.data$tree_area_m2))
 
   branch_area_m2 <- summary %>%
     filter(.data$branch_order != 0) %>%
-    summarize(branch_area_m2 = sum(.data$tree_area_m2))
+    summarise(branch_area_m2 = sum(.data$tree_area_m2))
 
   summary2 <- bind_cols(
     "dbh_qsm_cm" = dbh_qsm_cm,

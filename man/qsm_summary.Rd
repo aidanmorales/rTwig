@@ -4,7 +4,7 @@
 \alias{qsm_summary}
 \title{QSM Summary}
 \usage{
-qsm_summary(cylinder, radius = NULL, triangulation = NULL)
+qsm_summary(cylinder, radius, triangulation = NULL)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}

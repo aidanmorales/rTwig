@@ -38,4 +38,10 @@ cylinder <- read.csv(file)
 cylinder <- standardize_qsm(cylinder)
 str(cylinder)
 
+## aRchi Processing Chain
+file <- system.file("extdata/QSM2.csv", package = "rTwig")
+cylinder <- read.csv(file)
+cylinder <- standardize_qsm(cylinder)
+str(cylinder)
+
 }

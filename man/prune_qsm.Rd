@@ -5,7 +5,7 @@
 \title{Prune QSM}
 \usage{
 prune_qsm(
-  cylinder = NULL,
+  cylinder,
   cylinder_ids = NULL,
   branch_ids = NULL,
   segment_ids = NULL,

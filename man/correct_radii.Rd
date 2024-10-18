@@ -36,11 +36,4 @@ cylinder <- update_cylinders(cylinder)
 cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 str(cylinder)
 
-## aRchi Processing Chain
-file <- system.file("extdata/QSM2.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-cylinder <- correct_radii(cylinder, twig_radius = 4.23)
-str(cylinder)
-
 }

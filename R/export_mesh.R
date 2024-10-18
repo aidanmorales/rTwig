@@ -4,9 +4,9 @@
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param filename File name and path for exporting. The .ply extension is automatically added if not present.
-#' @param radius Vector of cylinder radii. Defaults to modified cylinders from the cylinder data frame.
-#' @param color Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data. Palettes include: viridis, inferno, plasma, magma, cividis, and rainbow.
+#' @param radius Radius column name either quoted or unquoted. Defaults to modified cylinders from the cylinder data frame.
+#' @param color Optional cylinder color parameter. Colors must be a single hex color string, a grDevices::colors(), a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
+#' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or a user supplied RGB palette matrix with the length of cylinder.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param normals Option to export normals. Defaults to FALSE, but can be set to TRUE.
 #'
@@ -32,14 +32,6 @@
 #' filename <- tempfile(pattern = "SimpleForest_mesh")
 #' export_mesh(cylinder, filename)
 #'
-#' ## aRchi Processing Chain
-#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#'
-#' filename <- tempfile(pattern = "aRchi_mesh")
-#' export_mesh(cylinder, filename)
-#'
 export_mesh <- function(
     cylinder,
     filename,
@@ -48,7 +40,34 @@ export_mesh <- function(
     palette = NULL,
     facets = 6,
     normals = FALSE) {
-  # Ensure filename ends in .ply
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (is_missing(filename)) {
+    message <- "argument `filename` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is_string(filename)) {
+    message <- paste0(
+      "`filename` must be a string, not ", class(filename), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Ensure filename ends with correct extension
   if (substr(filename, nchar(filename) - 3, nchar(filename)) != ".ply") {
     filename <- paste0(filename, ".ply")
   }
@@ -56,6 +75,48 @@ export_mesh <- function(
   # User selected columns
   radius <- select_column(rlang::enquo(radius))
   color <- select_column(rlang::enquo(color))
+
+  if (!is_null(radius) & !any(radius %in% colnames(cylinder))) {
+    abort(paste(
+      "Can't select columns that don't exist.",
+      paste0("X Column `", radius, "' doesn't exist."),
+      "i Did you mistype your `radius` column name?`.",
+      sep = "\n"
+    ))
+  }
+
+  if (!is_null(color)) {
+    if (color %in% grDevices::colors()) {
+      message <- paste(
+        "Hex colors (e.g. `#FF0000`) are preferred for plotting solid colors.",
+        "Colors from `grDevices::colors()` (e.g. `red`) slow down plotting",
+        "because 'grDevices::col2rgb()` must convert the color string into an RGB",
+        "matrix for every cylinder times the number of facets per cylinder."
+      )
+      warn(message)
+    }
+  }
+
+  if (!is_integerish(facets)) {
+    message <- paste0(
+      "`facets` must be an integer, not ", class(facets), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (facets > 50) {
+    warn("A large number of `facets` can quickly degrade plot performance.")
+  }
+
+  if (!is_logical(normals)) {
+    message <- paste0(
+      "`normals` must be a logical, not ", class(normals), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
@@ -107,12 +168,12 @@ export_mesh <- function(
       facets = facets, color = color, palette = palette, normals = normals
     )
   } else {
-    message(
-      "Invalid QSM Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied.
-      \nMake sure the point cloud is a data frame with the first three columns as the x, y, and z coordinates."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -150,7 +211,7 @@ plot_mesh <- function(
     color,
     palette,
     normals) {
-  message("Exporting Mesh")
+  inform("Exporting Mesh")
 
   # Plotting radii -------------------------------------------------------------
   radius <- plotting_radii(cylinder, radius)
@@ -171,7 +232,8 @@ plot_mesh <- function(
   suppressMessages(
     plot_cylinders(
       cylinder, radius, length, start_x, start_y, start_z,
-      axis_x, axis_y, axis_z, facets, colors, lit = TRUE, alpha = 1
+      axis_x, axis_y, axis_z, facets, colors,
+      lit = TRUE, alpha = 1
     )
   )
 

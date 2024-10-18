@@ -38,7 +38,7 @@
 #' plot_qsm(prune3)
 #'
 prune_qsm <- function(
-    cylinder = NULL,
+    cylinder,
     cylinder_ids = NULL,
     branch_ids = NULL,
     segment_ids = NULL,
@@ -46,9 +46,93 @@ prune_qsm <- function(
     diameter_cm = NULL,
     invert = FALSE,
     index = FALSE) {
-  if (is.null(cylinder)) {
-    stop("Please supply cylinder data!")
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
   }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (!missing(cylinder) & is.null(cylinder_ids) & is.null(branch_ids) &
+    is.null(segment_ids) & is.null(height_m) & is.null(diameter_cm)) {
+    abort(
+      "Pruning parameters empty. Please provide at least one parameter.",
+      class = "missing_argument"
+    )
+  }
+
+  if (!is.null(cylinder_ids)) {
+    if (!is_integerish(cylinder_ids)) {
+      message <- paste0(
+        "`cylinder_ids` must be an integer or integer vector, not ",
+        class(cylinder_ids), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is.null(branch_ids)) {
+    if (!is_integerish(branch_ids)) {
+      message <- paste0(
+        "`branch_ids` must be an integer or integer vector, not ",
+        class(branch_ids), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is.null(segment_ids)) {
+    if (!is_integerish(segment_ids)) {
+      message <- paste0(
+        "`segment_ids` must be an integer or integer vector, not ",
+        class(segment_ids), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is.null(height_m)) {
+    if (!is_double(height_m)) {
+      message <- paste0(
+        "`height_m` must be numeric, not ", class(height_m), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is.null(diameter_cm)) {
+    if (!is_double(diameter_cm)) {
+      message <- paste0(
+        "`diameter_cm` must be numeric, not ", class(diameter_cm), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is_logical(invert)) {
+    message <- paste0(
+      "`invert` must be logical, not ", class(invert), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(index)) {
+    message <- paste0(
+      "`index` must be logical, not ", class(index), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
@@ -105,12 +189,12 @@ prune_qsm <- function(
       invert = invert, index = index
     )
   } else {
-    message(
-      "Invalid QSM Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied.
-      \nMake sure the point cloud is a data frame or matrix with the first three columns as the x, y, and z coordinates."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -164,7 +248,7 @@ prune_data <- function(
   network <- verify_network(cyl_sub, pruning = TRUE)
 
   # Prune QSM  -----------------------------------------------------------------
-  message("Pruning QSM")
+  inform("Pruning QSM")
 
   # Cylinders
   if (!is.null(cylinder_ids)) {

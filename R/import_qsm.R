@@ -2,7 +2,7 @@
 #'
 #' @description Imports a QSM created by TreeQSM
 #'
-#' @param file a TreeQSM .mat MATLAB file
+#' @param filename a TreeQSM .mat MATLAB file
 #' @param version TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.
 #'
 #' @return Returns a list
@@ -23,16 +23,62 @@
 #' qsm <- import_qsm(file, version = "2.0")
 #' names(qsm)
 #'
-import_qsm <- function(file, version = "2.x.x") {
-  message("Importing TreeQSM .mat")
+import_qsm <- function(filename, version = "2.x.x") {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(filename)) {
+    message <- "argument `filename` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is_string(filename)) {
+    message <- paste0(
+      "`filename` must be a string, not ", class(filename), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!file.exists(filename)) {
+    message <- paste(
+      "The file in `filename` does not exist.",
+      "i Did you enter the correct path to your QSM?",
+      sep = "\n"
+    )
+    abort(message, class = "file_error")
+  }
+
+  if (!is_string(version)) {
+    message <- paste0(
+      "`filename` must be a string, not ", class(version), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Get file extension
+  extension <- sub(".*\\.", "", basename(filename))
+
+  # Ensure filename ends with correct extension
+  if (extension != "mat") {
+    abort("`filename` must end in `.mat`.", class = "data_format_error")
+  }
+
+  inform("Importing TreeQSM")
 
   ##############################################################################
   ###### TreeQSM 2.3.x - 2.4.x Structure #######################################
   ##############################################################################
 
   if (version %in% c("2.x.x", "2.3.0", "2.3.1", "2.3.2", "2.4.0", "2.4.1")) {
-    # Imports QSM mat file
-    qsm <- suppressWarnings(rmatio::read.mat(file)[[1]])
+    # Imports QSM mat filename
+    qsm <- suppressWarnings(rmatio::read.mat(filename)[[1]])
+
+    if (length(qsm) != 6) {
+      message <- paste(
+        paste("The QSM must be a list of length 6, not ", length(qsm), "."),
+        "i Did you specify `version` correctly?",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
 
     # Cylinder Data ------------------------------------------------------------
     cylinder <- list()
@@ -245,7 +291,16 @@ import_qsm <- function(file, version = "2.x.x") {
     ###### TreeQSM 2.0 Structure ###############################################
     ############################################################################
   } else if (version == "2.0") {
-    qsm <- R.matlab::readMat(file)
+    qsm <- R.matlab::readMat(filename)
+
+    if (length(qsm) <= 6) {
+      message <- paste(
+        paste("The QSM must be a list of length > 6, not ", length(qsm), "."),
+        "i Did you specify `version` correctly?",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
 
     # Cylinder Data ------------------------------------------------------------
     radius <- as.vector(qsm$Rad)
@@ -342,7 +397,12 @@ import_qsm <- function(file, version = "2.x.x") {
     qsm <- list(cylinder, treedata)
     names(qsm) <- c("cylinder", "treedata")
   } else {
-    message("Invalid TreeQSM Version or .mat file supplied!")
+    message <- paste(
+      "`version` is invalid.",
+      "i Only TreeQSM v2.0 - v2.4.1 are supported in `import_qsm()`.",
+      sep = "\n"
+    )
+    abort(message, class = "invalid_argument")
   }
 
   return(qsm)

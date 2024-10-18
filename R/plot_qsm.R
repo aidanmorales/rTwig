@@ -3,15 +3,15 @@
 #' @description Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backends.
 #'
 #' @param cylinder A QSM cylinder data frame.
-#' @param radius Column name of radii as a quoted string. Defaults to the modified radii.
-#' @param color Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.
+#' @param radius Radius column name either quoted or unquoted. Defaults to the modified radii.
+#' @param color Optional cylinder color parameter. Colors must be a single hex color string, a grDevices::colors(), a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
+#' @param palette Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or a user supplied RGB palette matrix with the length of cylinder.
 #' @param alpha Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.
-#' @param pt_color Color of the point cloud. Defaults to black. Can be set to "random".
+#' @param pt_color Color of the point cloud. Accepts hex colors, grDevices::colors(), or "random". Defaults to black.
 #' @param pt_size Size of the points. Defaults to 0.1.
 #' @param triangulation Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.
 #' @param tri_color Color of the triangulation mesh. Colors must be a single hex color.
@@ -21,7 +21,7 @@
 #' @param grid Show plot grid lines. Defaults to FALSE.
 #' @param grid_color Set grid lines color. Defaults to grey.
 #' @param hover Show cylinder and branch id on mouse hover. Defaults to FALSE.
-#' @param bg_color Set the background color of the plot. Defaults to white.
+#' @param bg_color Set the background color of the plot. Accepts hex colors or grDevices::colors(). Defaults to white.
 #' @param lit Enable light source in plot. Defaults to TRUE. Can be set to FALSE.
 #' @param pan Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.
 #' @param normalize Normalize the QSM to 0,0,0 based on the provided data. Defaults to FALSE.
@@ -40,18 +40,6 @@
 #'
 #' triangulation <- qsm$triangulation
 #' plot_qsm(triangulation = triangulation)
-#'
-#' ## SimpleForest Processing Chain
-#' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#' plot_qsm(cylinder)
-#'
-#' ## aRchi Processing Chain
-#' file <- system.file("extdata/QSM2.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#' plot_qsm(cylinder)
 #'
 plot_qsm <- function(
     cylinder = NULL,
@@ -77,15 +65,174 @@ plot_qsm <- function(
     lit = TRUE,
     pan = TRUE,
     normalize = FALSE) {
-  if (!is.null(cylinder)) {
-    if (nrow(cylinder) == 0) {
-      stop("Cylinder data frame empty!")
+  # Check inputs ---------------------------------------------------------------
+  if (!is_null(cylinder)) {
+    if (!is.data.frame(cylinder)) {
+      message <- paste(
+        paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+        "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
     }
+
+    if (nrow(cylinder) == 0) {
+      abort("'cylinder' data frame empty!")
+    }
+
+    cylinder <- verify_cylinders(cylinder)
   }
 
   # User selected columns
   radius <- select_column(rlang::enquo(radius))
   color <- select_column(rlang::enquo(color))
+
+  if (!is_null(radius) & !any(radius %in% colnames(cylinder))) {
+    abort(paste(
+      "Can't select columns that don't exist.",
+      paste0("X Column `", radius, "' doesn't exist."),
+      "i Did you mistype your `radius` column name?`.",
+      sep = "\n"
+    ))
+  }
+
+  if (!is_null(color)) {
+    if (color %in% grDevices::colors()) {
+      message <- paste(
+        paste(
+          "Warning: Hex colors (e.g. `#FF0000`) are preferred for plotting",
+          "solid colors."
+        ),
+        paste(
+          "Colors from `grDevices::colors()` (e.g. `red`) slow down plotting",
+          "because `grDevices::col2rgb()` must convert the color string into",
+          "an RGB matrix for every vertex in the cylinder mesh."
+        ),
+        sep = "\n"
+      )
+      inform(message)
+    }
+  }
+
+  if (!is_null(alpha)) {
+    if (!is_double(alpha)) {
+      message <- paste0(
+        "`alpha` must be a double, not ", class(alpha), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+
+    if (alpha != 1) {
+      message <- paste0(
+        "Warning: alpha transparency signifcantly degrades plot performance ",
+        "for a large number of cylinders."
+      )
+      inform(message)
+    }
+  }
+
+  if (!is_integerish(facets)) {
+    message <- paste0(
+      "`facets` must be an integer, not ", class(facets), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (facets > 50) {
+    message <- paste0(
+      "Warning: A large value of `facets` signifcantly degrades plot ",
+      "performance for a large number of cylinders."
+    )
+    inform(message)
+  }
+
+  if (!is_logical(skeleton)) {
+    message <- paste0(
+      "`skeleton` must be logical, not ", class(skeleton), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_null(skeleton_lwd)) {
+    if (!is_double(skeleton_lwd)) {
+      message <- paste0(
+        "`skeleton_lwd` must be a double, not ", class(skeleton_lwd), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is_null(cloud)) {
+    if (all(!is.data.frame(cloud), !is.matrix(cloud))) {
+      message <- paste0(
+        "`cloud` must be a data frame or matrix, not a ", class(cloud), "."
+      )
+      abort(message, class = "data_format_error")
+    }
+  }
+
+  if (!is_null(pt_size) & !is_double(pt_size)) {
+    message <- paste0(
+      "`pt_size` must be a double, not ", class(pt_size), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is.null(triangulation)) {
+    if (!is_list(triangulation)) {
+      message <- paste(
+        paste0("`triangulation` must be a list, not ", class(triangulation), "."),
+        "i `triangulation` must be created by `import_qsm()`.",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
+    if (is_list(triangulation) & length(triangulation) == 0) {
+      abort("`triangulation` is an empty list!")
+    }
+  }
+
+  if (!is_logical(axes)) {
+    message <- paste0(
+      "`axes` must be logical, not ", class(axes), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(grid)) {
+    message <- paste0(
+      "`grid` must be logical, not ", class(grid), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(hover)) {
+    message <- paste0(
+      "`hover` must be logical, not ", class(hover), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(lit)) {
+    message <- paste0(
+      "`lit` must be logical, not ", class(lit), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(pan)) {
+    message <- paste0(
+      "`pan` must be logical, not ", class(pan), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(normalize)) {
+    message <- paste0(
+      "`normalize` must be logical, not ", class(normalize), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
@@ -189,12 +336,12 @@ plot_qsm <- function(
       tri_palette = tri_palette
     )
   } else {
-    message(
-      "Invalid QSM or Cloud Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied.
-      \nMake sure the point cloud is a data frame or matrix with the first three columns as the x, y, and z coordinates."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -375,6 +522,16 @@ plotting_radii <- function(cylinder, radius) {
 #' @returns a vector of hex colors
 #' @noRd
 plotting_colors <- function(cylinder, color, palette, branch_order) {
+  message <- paste(
+    "`color` is invalid.",
+    "! `color` vectors must have length == nrow(cylinder).",
+    paste0(
+      "i Valid inputs for `color` include: hex colors, grDevices::colors(), ",
+      "colnames(cylinder), or `random`."
+    ),
+    sep = "\n"
+  )
+
   if (is.null(color)) {
     default_color <- colourvalues::color_values(
       pull(cylinder, {{ branch_order }}),
@@ -384,7 +541,7 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
     color <- generate_random_colors(1)
   } else if (is.vector(color) & length(color) > 1) {
     if (length(color) != nrow(cylinder)) {
-      stop("Supplied cylinder colors vector is not equal to the number of cylinders!")
+      abort(message)
     }
   } else if (is.vector(color) & length(color) == 1 & !(color %in% colnames(cylinder))) {
     err_test <- try(grDevices::col2rgb(color), silent = TRUE)
@@ -392,12 +549,12 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
     if (is.matrix(err_test)) {
       color <- color
     } else {
-      stop("Invalid color or column name supplied!")
+      abort(message)
     }
   } else if (color %in% colnames(cylinder)) {
     color <- pull(cylinder, {{ color }})
   } else {
-    stop("Invalid color or column name supplied!")
+    abort(message)
   }
 
   if (length(color) == 1) {
@@ -439,7 +596,7 @@ plot_skeleton <- function(
     end_x,
     end_y,
     end_z) {
-  message("Plotting Skeleton")
+  inform("Plotting Skeleton")
 
   if (is.null(skeleton_lwd)) {
     lwd <- 1
@@ -486,7 +643,7 @@ plot_cylinders <- function(
     colors,
     alpha,
     lit) {
-  message("Plotting Cylinders")
+  inform("Plotting Cylinders")
 
   # Extract required variables
   start <- cbind(
@@ -519,13 +676,20 @@ plot_cylinders <- function(
 #' @returns NA
 #' @noRd
 plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
-  message("Plotting Cloud")
+  inform("Plotting Cloud")
 
-  if (is.matrix(cloud)) {
-    cloud <- as_tidytable(cloud)
+  if (!is.matrix(cloud)) {
+    cloud <- as.matrix(cloud[, 1:3])
+  } else {
+    cloud <- cloud[, 1:3]
   }
 
-  cloud <- rename(cloud, x = 1, y = 2, z = 3)
+  if (!is.numeric(cloud)) {
+    message <- paste0(
+      "The first three columns of `cloud` must be x, y, z."
+    )
+    abort(message, class = "data_format_error")
+  }
 
   # Initialize cloud inputs
   if (is.null(pt_color)) {
@@ -544,9 +708,7 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
 
   # Plot cloud
   rgl::plot3d(
-    x = cloud$x,
-    y = cloud$y,
-    z = cloud$z,
+    x = cloud,
     col = pt_color,
     size = pt_size,
     add = TRUE,
@@ -562,7 +724,7 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
 #' @returns NA
 #' @noRd
 plot_triangulation <- function(triangulation, tri_color, tri_palette, lit) {
-  message("Plotting Triangulation")
+  inform("Plotting Triangulation")
 
   # Extract TreeQSM triangulation data
   v <- as.matrix(triangulation$vert)
@@ -684,13 +846,13 @@ pan_plot <- function(button = 2) {
 #' @noRd
 normalize_qsm <- function(
     cylinder,
-    id = NULL,
-    start_x = NULL,
-    start_y = NULL,
-    start_z = NULL,
-    end_x = NULL,
-    end_y = NULL,
-    end_z = NULL) {
+    id,
+    start_x,
+    start_y,
+    start_z,
+    end_x,
+    end_y,
+    end_z) {
   # Update cylinder coordinates
   coords <- cylinder %>%
     select(
@@ -711,13 +873,13 @@ normalize_qsm <- function(
       end_z = end_z - min(.data$start_z, na.rm = FALSE)
     ) %>%
     rename(
-      {{ id }} := "id",
-      {{ start_x }} := "start_x",
-      {{ start_y }} := "start_y",
-      {{ start_z }} := "start_z",
-      {{ end_x }} := "end_x",
-      {{ end_y }} := "end_y",
-      {{ end_z }} := "end_z",
+      !!rlang::sym(id) := "id",
+      !!rlang::sym(start_x) := "start_x",
+      !!rlang::sym(start_y) := "start_y",
+      !!rlang::sym(start_z) := "start_z",
+      !!rlang::sym(end_x) := "end_x",
+      !!rlang::sym(end_y) := "end_y",
+      !!rlang::sym(end_z) := "end_z",
     )
 
   cylinder %>%

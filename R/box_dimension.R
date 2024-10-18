@@ -29,13 +29,54 @@
 #' output
 #'
 box_dimension <- function(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE) {
-  # Calculates Box Dimension ---------------------------------------------------
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cloud)) {
+    message <- "argument `cloud` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
 
-  # Ensure cloud is a matrix
+  if (!is_scalar_double(lowercutoff)) {
+    message <- paste0(
+      "`lowercutoff` must be numeric, not ", class(lowercutoff), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(rm_int_box)) {
+    message <- paste0(
+      "`lowercutoff` must be logical, not ", class(rm_int_box), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+
+  if (!any(plot %in% c(FALSE, "2D", "3D", "ALL"))) {
+    message <- paste0(
+      "`plot` must be `FALSE`, `2D`, `3D`, or `ALL`, not ", plot, "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (all(!is.data.frame(cloud), !is.matrix(cloud))) {
+    message <- paste0(
+      "`cloud` must be a data frame or matrix, not a ", class(cloud), "."
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  # Calculates Box Dimension ---------------------------------------------------
+  # Ensure cloud is a matrix with x, y, z as the first columns
   if (!is.matrix(cloud)) {
-    cloud <- as.matrix(cloud)
+    cloud <- as.matrix(cloud[, 1:3])
   } else {
-    cloud <- cloud
+    cloud <- cloud[, 1:3]
+  }
+
+  if (!is.numeric(cloud)) {
+    message <- paste0(
+      "The first three columns of `cloud` must be x, y, z."
+    )
+    abort(message, class = "data_format_error")
   }
 
   # Calculate box sizes and count

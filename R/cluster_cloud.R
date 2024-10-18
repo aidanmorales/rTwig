@@ -48,6 +48,42 @@
 #' #   fwrite(file = filename2)
 #'
 cluster_cloud <- function(cylinder, cloud = NULL, spacing = NULL) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  if (!is_null(spacing)) {
+    if (!is_scalar_double(spacing)) {
+      message <- paste0(
+        "`spacing` must be double, not ", class(spacing), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is_null(cloud)) {
+    if (all(!is.data.frame(cloud), !is.matrix(cloud))) {
+      message <- paste0(
+        "`cloud` must be a data frame or matrix, not a ", class(cloud), "."
+      )
+      abort(message, class = "data_format_error")
+    }
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
+
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     cluster_data(
@@ -93,13 +129,12 @@ cluster_cloud <- function(cylinder, cloud = NULL, spacing = NULL) {
       cloud = cloud, spacing = spacing
     )
   } else {
-    message(
-      "Invalid QSM or Cloud Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied.
-      \nPlease supply either the input cloud, or spacing for a simulated cloud.
-      \nMake sure the point cloud is a data frame or matrix with the first three columns as the x, y, and z coordinates."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -150,7 +185,7 @@ cluster_data <- function(
 
   # Simulated Cloud ------------------------------------------------------------
   if (is.null(cloud)) {
-    message("Simulating Point Cloud")
+    inform("Simulating Point Cloud")
 
     if (is.null(spacing)) {
       spacing <- 0.02
@@ -165,7 +200,7 @@ cluster_data <- function(
   }
   # Clustered Cloud ------------------------------------------------------------
   else {
-    message("Clustering Point Cloud")
+    inform("Clustering Point Cloud")
 
     cloud_ref <- generate_cloud(
       start = start, axis = axis, tips = mat, length = cylinder$length,
@@ -175,7 +210,16 @@ cluster_data <- function(
     if (!is.null(cloud)) {
       if (!is.matrix(cloud)) {
         cloud <- as.matrix(cloud[, 1:3])
+      } else {
+        cloud <- cloud[, 1:3]
       }
+    }
+
+    if (!is.numeric(cloud)) {
+      message <- paste0(
+        "The first three columns of `cloud` must be x, y, z."
+      )
+      abort(message, class = "data_format_error")
     }
 
     cbind(cloud, assign_cloud_ids(cloud_ref, cloud)) %>%

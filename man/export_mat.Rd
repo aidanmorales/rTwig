@@ -36,12 +36,4 @@ cylinder <- update_cylinders(cylinder)
 filename <- tempfile(pattern = "SimpleForest_QSM", fileext = ".mat")
 export_mat(cylinder, filename)
 
-## aRchi Processing Chain
-file <- system.file("extdata/QSM2.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-
-filename <- tempfile(pattern = "aRchi_QSM", fileext = ".mat")
-export_mat(cylinder, filename)
-
 }

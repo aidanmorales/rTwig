@@ -38,7 +38,7 @@ build_network <- function(
     paths = FALSE,
     pruning = FALSE,
     cache = TRUE) {
-  message("Building Cylinder Network")
+  inform("Building Cylinder Network")
 
   # Extract cylinder ids
   id <- pull(select(cylinder, {{ id }}))
@@ -62,7 +62,7 @@ build_network <- function(
       temp_file <- file.path(tempdir(), "network.rds")
 
       # Cache Network
-      message("Caching Network")
+      inform("Caching Network")
       saveRDS(child_df, temp_file)
     }
 
@@ -110,7 +110,7 @@ build_network <- function(
     temp_file <- file.path(tempdir(), "network.rds")
 
     # Cache Network
-    message("Caching Network")
+    inform("Caching Network")
     saveRDS(network, temp_file)
   }
 
@@ -163,4 +163,34 @@ verify_network <- function(cylinder, pruning = FALSE, paths = FALSE) {
       build_network(cylinder, "id", "parent", paths = TRUE)
     }
   }
+}
+
+#' Verify Cylinders
+#' Checks if `update_cylinders()` has been run
+#' @param cylinder QSM cylinder data frame
+#' @param paths return only paths
+#' @returns cylinder data frame
+#' @noRd
+verify_cylinders <- function(cylinder) {
+  if (!all(c(
+    "id", "parent", "branch_order", "reverse_order", "total_children",
+    "vessel_volume", "branch_alt", "twig_distance", "base_distance"
+  ) %in% colnames(cylinder))) {
+    if (!all(c(
+      "distanceFromBase",
+      "distanceToTwig",
+      "totalChildren"
+    ) %in% colnames(cylinder))) {
+      inform("Verifying Cylinders")
+
+      cylinder <- suppressMessages(update_cylinders(cylinder))
+
+      message <- paste(
+        "Please run `update_cylinders()` before using rTwig functions.",
+        "Running `update_cylinders()' will suppress this message.", sep = "\n"
+      )
+      inform(message)
+    }
+  }
+  return(cylinder)
 }

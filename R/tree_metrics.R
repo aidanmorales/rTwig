@@ -42,6 +42,24 @@
 #' names(metrics)
 #'
 tree_metrics <- function(cylinder) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
+
+  # Verify cylinders
+  cylinder <- verify_cylinders(cylinder)
+
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     calculate_tree_metrics(
@@ -121,11 +139,12 @@ tree_metrics <- function(cylinder) {
       end_x = "endX", end_y = "endY", end_z = "endZ"
     )
   } else {
-    message(
-      "Invalid Dataframe Supplied!!!
-      \nOnly TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.
-      \nMake sure the cylinder data frame and not the QSM list is supplied."
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
   }
 }
 
@@ -221,18 +240,18 @@ calculate_tree_metrics <- function(
   tips <- cbind(cylinder$end_x, cylinder$end_y, cylinder$end_z)
 
   # Calculate branch metrics ---------------------------------------------------
-  message("Calculating Branch Metrics")
+  inform("Calculating Branch Metrics")
   metrics$branch <- branch_metrics(cylinder)
 
   # Calculate segment metrics --------------------------------------------------
-  message("Calculating Segment Metrics")
+  inform("Calculating Segment Metrics")
   metrics$segment <- segment_metrics(cylinder)
 
   # List to store tree metrics -------------------------------------------------
   tree <- tidytable()
 
   # Extract Cylinder Variables -------------------------------------------------
-  message("Calculating Tree Metrics")
+  inform("Calculating Tree Metrics")
   trunk_cyl <- filter(cylinder, branch == 1)
   branch_cyl <- filter(cylinder, !branch == 1)
   twig_cyl <- filter(cylinder, reverse_order == 1)
@@ -265,7 +284,7 @@ calculate_tree_metrics <- function(
   tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
 
   # Generate Point Cloud -------------------------------------------------------
-  message("Generating Point Cloud")
+  inform("Generating Point Cloud")
   metrics$cloud <- generate_cloud(
     start = start,
     axis = axis,
@@ -278,7 +297,7 @@ calculate_tree_metrics <- function(
   )
 
   # Crown Diameters ------------------------------------------------------------
-  message("Calculating Crown Metrics")
+  inform("Calculating Crown Metrics")
   diameters <- crown_diameters(metrics$cloud, tips)
   tree$crown_diameter_mean_m <- mean(diameters)
   tree$crown_diameter_max_m <- max(diameters)
@@ -312,14 +331,14 @@ calculate_tree_metrics <- function(
   metrics$tree <- tree
 
   # Tree Distribution Metrics --------------------------------------------------
-  message("Calculating Tree Distributions")
+  inform("Calculating Tree Distributions")
   metrics$tree_height_dist <- tree_distributions(cylinder, "height")
   metrics$tree_diameter_dist <- tree_distributions(cylinder, "diameter")
   metrics$tree_zenith_dist <- tree_distributions(cylinder, "zenith")
   metrics$tree_azimuth_dist <- tree_distributions(cylinder, "azimuth")
 
   # Branch Distribution Metrics ------------------------------------------------
-  message("Calculating Branch Distributions")
+  inform("Calculating Branch Distributions")
   metrics$branch_diameter_dist <- branch_distributions(metrics$branch, tree, "diameter")
   metrics$branch_height_dist <- branch_distributions(metrics$branch, tree, "height")
   metrics$branch_angle_dist <- branch_distributions(metrics$branch, tree, "angle")
@@ -328,7 +347,7 @@ calculate_tree_metrics <- function(
   metrics$branch_order_dist <- branch_order_distributions(metrics$branch)
 
   # Segment Distribution Metrics -----------------------------------------------
-  message("Calculating Segment Distributions")
+  inform("Calculating Segment Distributions")
   metrics$segment_diameter_dist <- segment_distributions(metrics$segment, tree, "diameter")
   metrics$segment_height_dist <- segment_distributions(metrics$segment, tree, "height")
   metrics$segment_angle_dist <- segment_distributions(metrics$segment, tree, "angle")
@@ -337,7 +356,7 @@ calculate_tree_metrics <- function(
   metrics$segment_order_dist <- segment_order_distributions(metrics$segment)
 
   # Stem Taper -----------------------------------------------------------------
-  message("Calculating Stem Taper")
+  inform("Calculating Stem Taper")
   n <- nrow(trunk_cyl)
   stem_taper <- tidytable(height_m = as.double(0:n), diameter_cm = na_dbl)
   stem_taper[1, 1] <- 0
@@ -348,7 +367,7 @@ calculate_tree_metrics <- function(
   metrics$stem_taper$diameter_cm <- metrics$stem_taper$diameter_cm * 100
 
   # Calculate Spreads ----------------------------------------------------------
-  message("Calculating Spreads")
+  inform("Calculating Spreads")
   metrics$spreads <- calculate_spreads(metrics$cloud)
   metrics$spreads <- as_tidytable(t(metrics$spreads)) %>%
     mutate(azimuth_deg = seq(20, 360, by = 20)) %>%
@@ -359,10 +378,10 @@ calculate_tree_metrics <- function(
   # Vertical Profile -----------------------------------------------------------
   metrics$vertical_profile <- metrics$spreads %>%
     group_by("height_class") %>%
-    summarize(avg_spread_m = mean(.data$spread_m))
+    summarise(avg_spread_m = mean(.data$spread_m))
 
   # Alternate Branch Metrics ---------------------------------------------------
-  message("Calculating Alternate Branch Metrics")
+  inform("Calculating Alternate Branch Metrics")
   metrics$branch_alt <- branch_alt_metrics(cylinder)
 
   return(metrics)
@@ -414,7 +433,7 @@ branch_metrics <- function(cylinder) {
   # Calculate Branch Metrics
   cylinder %>%
     group_by("branch") %>%
-    summarize(
+    summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
       axis_y = first(.data$axis_y),
@@ -477,7 +496,7 @@ branch_alt_metrics <- function(cylinder) {
   cylinder %>%
     filter(!.data$branch_alt == 0) %>%
     group_by("branch_alt") %>%
-    summarize(
+    summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
       axis_y = first(.data$axis_y),
@@ -546,7 +565,7 @@ segment_metrics <- function(cylinder) {
   # Calculate Segment Metrics
   cylinder %>%
     group_by("segment") %>%
-    summarize(
+    summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
       axis_y = first(.data$axis_y),
@@ -1017,7 +1036,7 @@ branch_order_distributions <- function(branch) {
   branch %>%
     filter(!.data$branch_order == 0) %>%
     group_by("branch_order") %>%
-    summarize(
+    summarise(
       branches = n(),
       volume_m3 = sum(.data$volume_m3),
       area_m2 = sum(.data$area_m2),
@@ -1033,7 +1052,7 @@ branch_order_distributions <- function(branch) {
 segment_order_distributions <- function(segment) {
   segment %>%
     group_by("reverse_order") %>%
-    summarize(
+    summarise(
       segments = n(),
       volume_m3 = sum(.data$volume_m3),
       area_m2 = sum(.data$area_m2),

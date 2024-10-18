@@ -4,10 +4,10 @@
 \alias{import_treegraph}
 \title{Import Treegraph}
 \usage{
-import_treegraph(file)
+import_treegraph(filename)
 }
 \arguments{
-\item{file}{a treegraph .json file}
+\item{filename}{a treegraph .json file}
 }
 \value{
 Returns a list

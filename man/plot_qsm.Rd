@@ -33,11 +33,11 @@ plot_qsm(
 \arguments{
 \item{cylinder}{A QSM cylinder data frame.}
 
-\item{radius}{Column name of radii as a quoted string. Defaults to the modified radii.}
+\item{radius}{Radius column name either quoted or unquoted. Defaults to the modified radii.}
 
-\item{color}{Optional cylinder color parameter. Colors must be a single hex color, a vector of hex colors, or a quoted column name. It can also be set to "random" to generate a random solid color. Vectors must have the same length as the cylinder data frame.}
+\item{color}{Optional cylinder color parameter. Colors must be a single hex color string, a grDevices::colors(), a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.}
 
-\item{palette}{Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or any user supplied palette.}
+\item{palette}{Optional color palette for numerical data. Palettes include colourvalues::color_palettes() or a user supplied RGB palette matrix with the length of cylinder.}
 
 \item{alpha}{Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
@@ -49,7 +49,7 @@ plot_qsm(
 
 \item{cloud}{Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.}
 
-\item{pt_color}{Color of the point cloud. Defaults to black. Can be set to "random".}
+\item{pt_color}{Color of the point cloud. Accepts hex colors, grDevices::colors(), or "random". Defaults to black.}
 
 \item{pt_size}{Size of the points. Defaults to 0.1.}
 
@@ -69,7 +69,7 @@ plot_qsm(
 
 \item{hover}{Show cylinder and branch id on mouse hover. Defaults to FALSE.}
 
-\item{bg_color}{Set the background color of the plot. Defaults to white.}
+\item{bg_color}{Set the background color of the plot. Accepts hex colors or grDevices::colors(). Defaults to white.}
 
 \item{lit}{Enable light source in plot. Defaults to TRUE. Can be set to FALSE.}
 
@@ -94,17 +94,5 @@ plot_qsm(cylinder)
 
 triangulation <- qsm$triangulation
 plot_qsm(triangulation = triangulation)
-
-## SimpleForest Processing Chain
-file <- system.file("extdata/QSM.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-plot_qsm(cylinder)
-
-## aRchi Processing Chain
-file <- system.file("extdata/QSM2.csv", package = "rTwig")
-cylinder <- read.csv(file)
-cylinder <- update_cylinders(cylinder)
-plot_qsm(cylinder)
 
 }
