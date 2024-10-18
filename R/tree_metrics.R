@@ -112,7 +112,8 @@ tree_metrics <- function(cylinder) {
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     calculate_tree_metrics(
       cylinder = cylinder, id = "p1", parent = "p2",
-      branch = "nbranch", radius = "radius", raw_radius = "UnmodRadius",
+      branch = "nbranch", branch_alt = "branch_alt",
+      radius = "radius", raw_radius = "UnmodRadius",
       length = "length", segment = "segment",
       branch_position = "positionInBranch",
       growth_length = "growthLength", branch_order = "branch_order",
