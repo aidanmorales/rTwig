@@ -174,20 +174,26 @@ verify_network <- function(cylinder, pruning = FALSE, paths = FALSE) {
 verify_cylinders <- function(cylinder) {
   if (!all(c(
     "id", "parent", "branch_order", "reverse_order", "total_children",
-    "vessel_volume", "branch_alt", "twig_distance", "base_distance"
+    "growth_length"
   ) %in% colnames(cylinder))) {
-    if (!all(c(
-      "distanceFromBase",
-      "distanceToTwig",
-      "totalChildren"
-    ) %in% colnames(cylinder))) {
+    if (!("totalChildren" %in% colnames(cylinder))) {
       inform("Verifying Cylinders")
 
       cylinder <- suppressMessages(update_cylinders(cylinder))
 
       message <- paste(
         "Please run `update_cylinders()` before using rTwig functions.",
-        "Running `update_cylinders()' will suppress this message.", sep = "\n"
+        "Running `update_cylinders()' will suppress this message.",
+        sep = "\n"
+      )
+      inform(message)
+    } else if ("GrowthLength" %in% colnames(cylinder)) {
+      cylinder <- rename(cylinder, "growthLength" = "GrowthLength")
+
+      message <- paste(
+        "A legacy version of rTwig was detected (v1.0.x).",
+        "Updating column names for compatibility.",
+        sep = "\n"
       )
       inform(message)
     }
