@@ -324,9 +324,9 @@ calculate_tree_metrics <- function(
   tree$crown_volume_m3 <- crown_hull_3d$vol / 1000
 
   # Tree Location --------------------------------------------------------------
-  tree$start_x <- axis[1, 1]
-  tree$start_y <- axis[1, 2]
-  tree$start_z <- axis[1, 3]
+  tree$start_x <- start[1, 1]
+  tree$start_y <- start[1, 2]
+  tree$start_z <- start[1, 3]
 
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree
