@@ -53,11 +53,11 @@ Journal of Forest Research*, 2024, pp. 1-16.
 
 The main goal of Real Twig was to correct volume overestimation in QSMs
 caused by the limitations of LiDAR sensors for better non-destructive
-aboveground biomass estimates. Real Twig incorporates direct measurement
-into the QSM, resulting in models that not only have accurate volume
-metrics, but are also visually realistic, independent of tree species or
-size. Shown below is a 300+ year old white oak tree, with and without
-Real Twig.
+above ground biomass (AGB) estimates. Real Twig incorporates direct twig
+measurement into the QSM, resulting in models that not only have
+accurate volume metrics, but are also visually realistic, independent of
+tree species or size. For example, shown below is a 300+ year old white
+oak tree (*Quercus alba*), with and without Real Twig.
 
 <img src="man/figures/WO18_comparison.png"/>
 
@@ -78,11 +78,14 @@ visualize stem triangulation meshes from TreeQSM.
 
 The goal of rTwig was to provide users with tools to visualize and
 analyze QSM metrics without being tied to any particular QSM software.
-To that end, `tree_metrics()` calculates all of the major QSM metrics
-between all supported software. Additionally, `standardize_qsm()`
-provides a consistent naming convention between supported QSMs, making
-it easy to combine and analyze QSMs from different sources. See the
-Dictionary and Metrics vignettes for more details.
+To that end, `standardize_qsm()` provides a consistent naming convention
+between supported QSMs, making it easy to combine and analyze QSMs from
+different sources. `tree_metrics()` calculates all of the major QSM
+metrics between all supported software. `prune_qsm()` can virtually
+prune a tree using multiple input parameters. `cluster_cloud()` can
+transfer all QSM metrics directly onto an unorganized point cloud, or
+simulate a virtual point cloud. See the vignettes or function reference
+pages for more details.
 
 #### Supported Software
 
@@ -168,6 +171,25 @@ general workflow and best practices.
  
  # File path to QSM
  file <- system.file("extdata/QSM.csv", package = "rTwig")
+ 
+ # Correct QSM cylinders
+ qsm <- run_rtwig(file, twig_radius = 4.23)
+ 
+ # Plot the result
+ plot_qsm(qsm$cylinder)
+ 
+ # View detailed tree metrics
+ qsm$metrics
+```
+
+#### Treegraph
+
+``` r
+ # Load the Real Twig library
+ library(rTwig)
+ 
+ # File path to QSM
+ file <- "path_to_treegraph_json"
  
  # Correct QSM cylinders
  qsm <- run_rtwig(file, twig_radius = 4.23)

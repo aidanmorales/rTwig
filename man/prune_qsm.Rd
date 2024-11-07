@@ -30,7 +30,7 @@ prune_qsm(
 
 \item{invert}{Return the remaining or pruned data. Defaults to TRUE (the remaining data), but can be set to FALSE.}
 
-\item{index}{Returns a column index indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.}
+\item{index}{Returns a column index called \code{pruning} indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.}
 }
 \value{
 a data frame

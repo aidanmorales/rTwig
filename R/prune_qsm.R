@@ -12,7 +12,7 @@
 #' @param height_m Height class in meters below which all cylinders are pruned. Valid inputs are numeric to one decimal.
 #' @param diameter_cm Branch diameter class in centimeters below which all cylinders are pruned. Valid inputs are numeric to one decimal.
 #' @param invert Return the remaining or pruned data. Defaults to TRUE (the remaining data), but can be set to FALSE.
-#' @param index Returns a column index indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.
+#' @param index Returns a column index called `pruning` indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.
 #'
 #' @return a data frame
 #' @export

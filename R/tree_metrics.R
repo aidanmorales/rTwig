@@ -235,6 +235,19 @@ calculate_tree_metrics <- function(
       end_z = {{ end_z }}
     )
 
+  # Check for missing values ---------------------------------------------------
+  if(anyNA(cylinder)) {
+    message <- paste(
+      "NA values detected!",
+      "Removing NA values to ensure compatibility.",
+      "Please verify the QSM data is correct.",
+      sep = "\n"
+    )
+    warn(message)
+
+    cylinder <- drop_na(cylinder)
+  }
+
   # Extract required matrix variables ------------------------------------------
   axis <- cbind(cylinder$axis_x, cylinder$axis_y, cylinder$axis_z)
   start <- cbind(cylinder$start_x, cylinder$start_y, cylinder$start_z)
