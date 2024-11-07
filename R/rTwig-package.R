@@ -7,7 +7,6 @@
 #' @import tidytable
 #' @import Rdpack
 #' @import Rcpp
-#' @import RcppArmadillo
 #' @importFrom cobs cobs
 #' @importFrom colourvalues color_values
 #' @importFrom geometry convhulln

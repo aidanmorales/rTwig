@@ -20,11 +20,6 @@
 #' qsm <- run_rtwig(file, twig_radius = 4.23)
 #' str(qsm$cylinder)
 #'
-#' ## SimpleForest
-#' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' qsm <- run_rtwig(file, twig_radius = 4.23)
-#' str(qsm)
-#'
 run_rtwig <- function(
     filename,
     twig_radius,
