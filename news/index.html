@@ -47,9 +47,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.2.0" id="rtwig-120">rTwig 1.2.0<a class="anchor" aria-label="anchor" href="#rtwig-120"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-1-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-2-0"></a></h3>
 <ul><li><p><code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code>: A New function to transfer QSM variables to the input point cloud or simulate a point cloud from the QSM. Efficient nearest neighbor searching is done with the C++ <em>nanoflann</em> library: <a href="https://github.com/jlblancoc/nanoflann" class="external-link uri">https://github.com/jlblancoc/nanoflann</a></p></li>
 <li><p><code><a href="../reference/prune_qsm.html">prune_qsm()</a></code>: A new function to efficiently and easily prune QSMs using multiple pruning criteria and return options.</p></li>
 <li><p>aRchi QSMs are now supported in the package.</p></li>
@@ -80,7 +80,7 @@
 <li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: The broken branch filter can now be disabled, with <em>broken_branch = FALSE</em></p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-1-2-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-2-0"></a></h3>
 <ul><li>
 <code><a href="../reference/correct_radii.html">correct_radii()</a></code>: Complete refactor with Rcpp and tidyeval for better maintainability.
 <ul><li>~ 2 - 3x performance improvement!</li>
@@ -99,17 +99,21 @@
 <li>
 <code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: Fix missing Treegraph parameter (issue <a href="https://github.com/aidanmorales/rTwig/issues/5" class="external-link">#5</a>).</li>
 <li>
-<code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: Fix a bug where the start x,y,z values were incorrect.</li>
-<li>The QSM network is now cached in temp to avoid repeat calculations.</li>
-<li>Data checking and helpful error messages are included for every function.</li>
-<li>Add Real Twig Method paper citation in package and readme.</li>
+<code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:
+<ul><li>Fix a bug where the start x,y,z values were incorrect.</li>
+<li>Fix a bug where NA cylinder orientation values would cause the calculations to fail.</li>
+<li>NA values are removed and the user sees a warning promoting them to check the QSM.</li>
+</ul></li>
+<li>The QSM network is now cached in the temp folder to avoid repeat calculations.</li>
+<li>Data checking and helpful error messages are now included for every function.</li>
+<li>Add the Real Twig Method paper citation in the package and readme.</li>
 <li>New website look.</li>
 <li>Update vignettes.</li>
 <li>Update twig data base.</li>
 <li>Reduced package dependencies.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-1-2-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-2-0"></a></h3>
 <ul><li>
 <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>: User can pass <em>radius</em> as either a quoted or unquoted column name, so there is no longer any default value. Failing to provide a radius will throw an error prompting the user for a radius column name.</li>
 <li>

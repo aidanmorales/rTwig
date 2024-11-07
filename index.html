@@ -98,7 +98,7 @@
 <div class="section level4">
 <h4 id="realistic-trees">Realistic Trees<a class="anchor" aria-label="anchor" href="#realistic-trees"></a>
 </h4>
-<p>The main goal of Real Twig was to correct volume overestimation in QSMs caused by the limitations of LiDAR sensors for better non-destructive aboveground biomass estimates. Real Twig incorporates direct measurement into the QSM, resulting in models that not only have accurate volume metrics, but are also visually realistic, independent of tree species or size. Shown below is a 300+ year old white oak tree, with and without Real Twig.</p>
+<p>The main goal of Real Twig was to correct volume overestimation in QSMs caused by the limitations of LiDAR sensors for better non-destructive above ground biomass (AGB) estimates. Real Twig incorporates direct twig measurement into the QSM, resulting in models that not only have accurate volume metrics, but are also visually realistic, independent of tree species or size. For example, shown below is a 300+ year old white oak tree (<em>Quercus alba</em>), with and without Real Twig.</p>
 <p><img src="reference/figures/WO18_comparison.png"></p>
 </div>
 <div class="section level4">
@@ -119,7 +119,7 @@
 <div class="section level4">
 <h4 id="detailed-tree-metrics">Detailed Tree Metrics<a class="anchor" aria-label="anchor" href="#detailed-tree-metrics"></a>
 </h4>
-<p>The goal of rTwig was to provide users with tools to visualize and analyze QSM metrics without being tied to any particular QSM software. To that end, <code><a href="reference/tree_metrics.html">tree_metrics()</a></code> calculates all of the major QSM metrics between all supported software. Additionally, <code><a href="reference/standardize_qsm.html">standardize_qsm()</a></code> provides a consistent naming convention between supported QSMs, making it easy to combine and analyze QSMs from different sources. See the Dictionary and Metrics vignettes for more details.</p>
+<p>The goal of rTwig was to provide users with tools to visualize and analyze QSM metrics without being tied to any particular QSM software. To that end, <code><a href="reference/standardize_qsm.html">standardize_qsm()</a></code> provides a consistent naming convention between supported QSMs, making it easy to combine and analyze QSMs from different sources. <code><a href="reference/tree_metrics.html">tree_metrics()</a></code> calculates all of the major QSM metrics between all supported software. <code><a href="reference/prune_qsm.html">prune_qsm()</a></code> can virtually prune a tree using multiple input parameters. <code><a href="reference/cluster_cloud.html">cluster_cloud()</a></code> can transfer all QSM metrics directly onto an unorganized point cloud, or simulate a virtual point cloud. See the vignettes or function reference pages for more details.</p>
 </div>
 <div class="section level4">
 <h4 id="supported-software">Supported Software<a class="anchor" aria-label="anchor" href="#supported-software"></a>
@@ -216,9 +216,28 @@
 <span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="archi">aRchi<a class="anchor" aria-label="anchor" href="#archi"></a>
+<h4 id="treegraph">Treegraph<a class="anchor" aria-label="anchor" href="#treegraph"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
+<span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># File path to QSM</span></span>
+<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_treegraph_json"</span></span>
+<span> </span>
+<span> <span class="co"># Correct QSM cylinders</span></span>
+<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Plot the result</span></span>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># View detailed tree metrics</span></span>
+<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="archi">aRchi<a class="anchor" aria-label="anchor" href="#archi"></a>
+</h4>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
 <span> </span>
@@ -239,7 +258,7 @@
 <h3 id="quick-start-fractal-analysis">Quick Start: Fractal Analysis<a class="anchor" aria-label="anchor" href="#quick-start-fractal-analysis"></a>
 </h3>
 <p>rTwig also includes an efficient function written in C++ via <code>Rcpp</code> for fractal analysis using the voxel-counting method. Below is an example of how to quickly calculate box-dimension on a point cloud using example data from the package. See the vignette for more details and explanation.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load a point cloud</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
