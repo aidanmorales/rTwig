@@ -532,21 +532,27 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
     sep = "\n"
   )
 
+  eval_check <- try(eval(rlang::parse_expr(color)), silent = TRUE)
+
+  if (!inherits(eval_check, "try-error")) {
+    color <- eval_check
+  }
+
   if (is.null(color)) {
     default_color <- colourvalues::color_values(
       pull(cylinder, {{ branch_order }}),
       palette = "rainbow"
     )
-  } else if (color == "random") {
-    color <- generate_random_colors(1)
   } else if (is.vector(color) & length(color) > 1) {
     if (length(color) != nrow(cylinder)) {
       abort(message)
     }
+  } else if (color == "random") {
+    color <- generate_random_colors(1)
   } else if (is.vector(color) & length(color) == 1 & !(color %in% colnames(cylinder))) {
-    err_test <- try(grDevices::col2rgb(color), silent = TRUE)
+    rgb_check <- try(grDevices::col2rgb(color), silent = TRUE)
 
-    if (is.matrix(err_test)) {
+    if (is.matrix(rgb_check)) {
       color <- color
     } else {
       abort(message)
