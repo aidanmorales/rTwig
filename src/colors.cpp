@@ -21,7 +21,7 @@ CharacterVector generate_random_colors(int n) {
 
     // Generate random values for each component (RR, GG, BB)
     for (int j = 0; j < 3; ++j) {
-      int component = trunc(R::runif(0, 255)); // Generate random number between 0 and 255
+      int component = trunc(R::runif(128, 255)); // Generate random number between 0 and 255
       colorStream << std::hex << std::setw(2) << std::setfill('0') << component;
     }
 
