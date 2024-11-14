@@ -50,6 +50,7 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<p><code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> is now dynamic and can accept filtered data. If the filtered QSM data is a connected structure (e.g. a branch), the lowest order will be considered as the main stem, and the standard summary will be calculated. If the QSM data is disconnected (e.g. several pruned branches), only total volume and surface area will be calculated, and the user will be notified. Additionally, DBH calculations are also dynamic. If the main stem of a tree or branch is shorter than DBH (1.37 m), DBH will be NA, and the user will be notified. Previously, trying to summarize any filtered data would throw an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/7" class="external-link">#7</a>).</p>
 <p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> where color vectors or a vector element would throw an unintended error (issue <a href="https://github.com/aidanmorales/rTwig/issues/9" class="external-link">#9</a>).</p>
 <p>Random colors are now consistently brighter.</p>
 </div>
