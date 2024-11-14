@@ -28,6 +28,7 @@ select_column <- function(...) {
 #' @param parent column name of parent cylinders
 #' @param paths return only paths
 #' @param pruning return only children
+#' @param graph return only graph
 #' @param cache cache the network TRUE or FALSE
 #' @returns cylinder network
 #' @noRd
@@ -37,6 +38,7 @@ build_network <- function(
     parent,
     paths = FALSE,
     pruning = FALSE,
+    graph = FALSE,
     cache = TRUE) {
   inform("Building Cylinder Network")
 
@@ -47,6 +49,10 @@ build_network <- function(
   # Creates QSM cylinder network
   qsm_g <- tidytable(parent = parent, id = id)
   qsm_g <- igraph::graph_from_data_frame(qsm_g)
+
+  if (graph == TRUE) {
+    return(qsm_g)
+  }
 
   # Find supported children
   child_g <- qsm_g - 1 # remove cylinder 0
@@ -121,9 +127,14 @@ build_network <- function(
 #' @param cylinder QSM cylinder data frame
 #' @param paths return only paths
 #' @param pruning return only children
+#' @param graph return only graph
 #' @returns cylinder network
 #' @noRd
-verify_network <- function(cylinder, pruning = FALSE, paths = FALSE) {
+verify_network <- function(
+    cylinder,
+    pruning = FALSE,
+    paths = FALSE,
+    graph = FALSE) {
   temp_file <- file.path(tempdir(), "network.rds")
 
   if (pruning == TRUE) {
@@ -161,6 +172,24 @@ verify_network <- function(cylinder, pruning = FALSE, paths = FALSE) {
       }
     } else {
       build_network(cylinder, "id", "parent", paths = TRUE)
+    }
+  } else if (graph == TRUE) {
+    if (file.exists(temp_file)) {
+      network <- readRDS(temp_file)
+
+      if (length(network) == 5) {
+        network <- network$qsm_g
+
+        if (length(network) - 1 == nrow(cylinder)) {
+          return(network)
+        } else {
+          build_network(cylinder, "id", "parent", graph = TRUE)
+        }
+      } else {
+        build_network(cylinder, "id", "parent", graph = TRUE)
+      }
+    } else {
+      build_network(cylinder, "id", "parent", graph = TRUE)
     }
   }
 }

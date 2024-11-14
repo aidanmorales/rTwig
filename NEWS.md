@@ -2,6 +2,8 @@
 
 ## Improvements
 
+`qsm_summary()` is now dynamic and can accept filtered data. If the filtered QSM data is a connected structure (e.g. a branch), the lowest order will be considered as the main stem, and the standard summary will be calculated. If the QSM data is disconnected (e.g. several pruned branches), only total volume and surface area will be calculated, and the user will be notified. Additionally, DBH calculations are also dynamic. If the main stem of a tree or branch is shorter than DBH (1.37 m), DBH will be NA, and the user will be notified. Previously, trying to summarize any filtered data would throw an error (issue #7).
+
 Fixed a bug in `plot_qsm()` where color vectors or a vector element would throw an unintended error (issue #9).
 
 Random colors are now consistently brighter.
