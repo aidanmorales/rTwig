@@ -100,7 +100,7 @@ plot_qsm <- function(
     if (color %in% grDevices::colors()) {
       message <- paste(
         paste(
-          "Warning: Hex colors (e.g. `#FF0000`) are preferred for plotting",
+          "Hex colors (e.g. `#FF0000`) are preferred for plotting",
           "solid colors."
         ),
         paste(
@@ -110,7 +110,7 @@ plot_qsm <- function(
         ),
         sep = "\n"
       )
-      inform(message)
+      warn(message)
     }
   }
 
@@ -124,10 +124,10 @@ plot_qsm <- function(
 
     if (alpha != 1) {
       message <- paste0(
-        "Warning: alpha transparency signifcantly degrades plot performance ",
+        "Alpha transparency signifcantly degrades plot performance ",
         "for a large number of cylinders."
       )
-      inform(message)
+      warn(message)
     }
   }
 
@@ -140,10 +140,10 @@ plot_qsm <- function(
 
   if (facets > 50) {
     message <- paste0(
-      "Warning: A large value of `facets` signifcantly degrades plot ",
+      "A large value of `facets` signifcantly degrades plot ",
       "performance for a large number of cylinders."
     )
-    inform(message)
+    warn(message)
   }
 
   if (!is_logical(skeleton)) {
