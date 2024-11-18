@@ -84,19 +84,24 @@
     
     
 <p>How do we know if Real Twig returns accurate volume estimates? We
-rigorously tested our method against a high quality reference data set
-that were both laser scanner and destructively sampled. The laser
-scanning was done in leaf-off conditions with a Riegl VZ-400. The
-destructive sampling contains total branch and main stem dry mass, and
-also basic density for both the main stem and the branches. We used
-different versions of TreeQSM with the same input parameters per tree to
-test our model.</p>
-<div class="section level2">
-<h2 id="treeqsm-v2-4-1">TreeQSM v2.4.1<a class="anchor" aria-label="anchor" href="#treeqsm-v2-4-1"></a>
-</h2>
-<p>Below are the mass estimates and statistics using TreeQSM v2.4.1 with
-its built in tapering and Real Twig applied to the same QSMs.</p>
-<p><img src="Validation_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;"></p>
+rigorously tested our method against multiple high quality reference
+data sets that were both laser scanner and destructively sampled. The
+laser scanning was done in leaf-off conditions with a Riegl VZ-400. We
+used different versions of TreeQSM with the same input parameters per
+tree and different data sets to test our method. A detailed discussion
+of the results and implications can be found in <em>Morales &amp;
+MacFarlane (2024)</em>: <a href="https://doi.org/10.1093/forestry/cpae046" class="external-link uri">https://doi.org/10.1093/forestry/cpae046</a></p>
+<p>The graph and table below contain destructive sampling with total
+mass and basic density (wood + bark) across four data sets, three of
+which are publicly available and are linked below. The mass estimates
+and statistics use TreeQSM v2.4.1 with its built in tapering compared to
+Real Twig on the same QSMs.</p>
+<ul>
+<li><p>Burt et al. (2021): <a href="https://zenodo.org/records/4056899" class="external-link uri">https://zenodo.org/records/4056899</a>, <a href="https://zenodo.org/records/4056903" class="external-link uri">https://zenodo.org/records/4056903</a></p></li>
+<li><p>Demol et al. (2021): <a href="https://zenodo.org/records/4557401" class="external-link uri">https://zenodo.org/records/4557401</a></p></li>
+<li><p>Hackenberg et al. (2015b): <a href="https://www.simpleforest.org/pages/dataQuercusPetraea.html" class="external-link uri">https://www.simpleforest.org/pages/dataQuercusPetraea.html</a></p></li>
+</ul>
+<p><img src="Validation_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -547,45 +552,42 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_heading">
-<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>TreeQSM v2.4.1</td>
-    </tr>
-<tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="total">Total Woody AGB</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stem">Main Stem Biomass</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="branch">Branch Biomass</th>
-    </tr>
-</thead>
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="version">Method</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Mean-Relative-Error-(%)">Mean Relative Error (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="RMSE-(kg)">RMSE (kg)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Relative-RMSE-(%)">Relative RMSE (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="CCC">CCC</th>
+    </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
-<td headers="total" class="gt_row gt_center">126.428</td>
-<td headers="stem" class="gt_row gt_center">4.581</td>
-<td headers="branch" class="gt_row gt_center">949.317</td>
+<td headers="version" class="gt_row gt_center">Real Twig (TreeQSM v2.4.1)</td>
+<td headers="Mean Relative Error (%)" class="gt_row gt_center">-1.190</td>
+<td headers="RMSE (kg)" class="gt_row gt_center">138.783</td>
+<td headers="Relative RMSE (%)" class="gt_row gt_center">10.528</td>
+<td headers="CCC" class="gt_row gt_center">0.999</td>
 </tr>
 <tr>
-<td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
-<td headers="total" class="gt_row gt_center">325.973</td>
-<td headers="stem" class="gt_row gt_center">22.217</td>
-<td headers="branch" class="gt_row gt_center">317.471</td>
-</tr>
-<tr>
-<td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
-<td headers="total" class="gt_row gt_center">77.672</td>
-<td headers="stem" class="gt_row gt_center">6.773</td>
-<td headers="branch" class="gt_row gt_center">346.454</td>
-</tr>
-<tr>
-<td headers="metric" class="gt_row gt_center">CCC</td>
-<td headers="total" class="gt_row gt_center">0.831</td>
-<td headers="stem" class="gt_row gt_center">0.998</td>
-<td headers="branch" class="gt_row gt_center">0.381</td>
+<td headers="version" class="gt_row gt_center">TreeQSM v2.4.1</td>
+<td headers="Mean Relative Error (%)" class="gt_row gt_center">76.754</td>
+<td headers="RMSE (kg)" class="gt_row gt_center">641.746</td>
+<td headers="Relative RMSE (%)" class="gt_row gt_center">48.683</td>
+<td headers="CCC" class="gt_row gt_center">0.982</td>
 </tr>
 </tbody>
 </table>
 </div>
+<div class="section level2">
+<h2 id="treeqsm-v2-4-1">TreeQSM v2.4.1<a class="anchor" aria-label="anchor" href="#treeqsm-v2-4-1"></a>
+</h2>
+<p>The following figures look at the Harvard Forest data set using
+different versions of TreeQSM. The destructive sampling data contains
+total branch and main stem dry mass, and also basic density for both the
+main stem and the branches. This allows us to test for compensating
+errors, and look at the true differences between TreeQSM versions. We
+used the same input parameters per tree and TreeQSM version to test our
+model.</p>
+<p><img src="Validation_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;"></p>
 <div id="eexombwkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#eexombwkke table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1038,7 +1040,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading">
-<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Real Twig (TreeQSM v2.4.1)</td>
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>TreeQSM v2.4.1</td>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
@@ -1050,38 +1052,31 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <tbody class="gt_table_body">
 <tr>
 <td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
-<td headers="total" class="gt_row gt_center">0.019</td>
-<td headers="stem" class="gt_row gt_center">0.493</td>
-<td headers="branch" class="gt_row gt_center">-0.691</td>
+<td headers="total" class="gt_row gt_center">126.428</td>
+<td headers="stem" class="gt_row gt_center">4.581</td>
+<td headers="branch" class="gt_row gt_center">949.317</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
-<td headers="total" class="gt_row gt_center">27.187</td>
-<td headers="stem" class="gt_row gt_center">23.653</td>
-<td headers="branch" class="gt_row gt_center">7.736</td>
+<td headers="total" class="gt_row gt_center">325.973</td>
+<td headers="stem" class="gt_row gt_center">22.217</td>
+<td headers="branch" class="gt_row gt_center">317.471</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
-<td headers="total" class="gt_row gt_center">6.478</td>
-<td headers="stem" class="gt_row gt_center">7.210</td>
-<td headers="branch" class="gt_row gt_center">8.442</td>
+<td headers="total" class="gt_row gt_center">77.672</td>
+<td headers="stem" class="gt_row gt_center">6.773</td>
+<td headers="branch" class="gt_row gt_center">346.454</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">CCC</td>
-<td headers="total" class="gt_row gt_center">0.998</td>
-<td headers="stem" class="gt_row gt_center">0.997</td>
-<td headers="branch" class="gt_row gt_center">0.997</td>
+<td headers="total" class="gt_row gt_center">0.831</td>
+<td headers="stem" class="gt_row gt_center">0.998</td>
+<td headers="branch" class="gt_row gt_center">0.381</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section level2">
-<h2 id="treeqsm-v2-3-0">TreeQSM v2.3.0<a class="anchor" aria-label="anchor" href="#treeqsm-v2-3-0"></a>
-</h2>
-<p>Below are the mass estimates and statistics using TreeQSM v2.3.0 with
-its built in tapering and Real Twig applied to the same QSMs.</p>
-<p><img src="Validation_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;"></p>
 <div id="ulbfdpbcyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ulbfdpbcyv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1534,7 +1529,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading">
-<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>TreeQSM v2.3.0</td>
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Real Twig (TreeQSM v2.4.1)</td>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
@@ -1546,31 +1541,38 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <tbody class="gt_table_body">
 <tr>
 <td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
-<td headers="total" class="gt_row gt_center">50.529</td>
-<td headers="stem" class="gt_row gt_center">1.204</td>
-<td headers="branch" class="gt_row gt_center">363.772</td>
+<td headers="total" class="gt_row gt_center">0.019</td>
+<td headers="stem" class="gt_row gt_center">0.493</td>
+<td headers="branch" class="gt_row gt_center">-0.691</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
-<td headers="total" class="gt_row gt_center">156.127</td>
-<td headers="stem" class="gt_row gt_center">23.138</td>
-<td headers="branch" class="gt_row gt_center">146.843</td>
+<td headers="total" class="gt_row gt_center">27.187</td>
+<td headers="stem" class="gt_row gt_center">23.653</td>
+<td headers="branch" class="gt_row gt_center">7.736</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
-<td headers="total" class="gt_row gt_center">37.202</td>
-<td headers="stem" class="gt_row gt_center">7.053</td>
-<td headers="branch" class="gt_row gt_center">160.249</td>
+<td headers="total" class="gt_row gt_center">6.478</td>
+<td headers="stem" class="gt_row gt_center">7.210</td>
+<td headers="branch" class="gt_row gt_center">8.442</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">CCC</td>
-<td headers="total" class="gt_row gt_center">0.947</td>
+<td headers="total" class="gt_row gt_center">0.998</td>
 <td headers="stem" class="gt_row gt_center">0.997</td>
-<td headers="branch" class="gt_row gt_center">0.654</td>
+<td headers="branch" class="gt_row gt_center">0.997</td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<div class="section level2">
+<h2 id="treeqsm-v2-3-0">TreeQSM v2.3.0<a class="anchor" aria-label="anchor" href="#treeqsm-v2-3-0"></a>
+</h2>
+<p>Below are the mass estimates and statistics using TreeQSM v2.3.0 with
+its built in tapering and Real Twig applied to the same QSMs.</p>
+<p><img src="Validation_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;"></p>
 <div id="kgufivjubq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#kgufivjubq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2023,7 +2025,7 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading">
-<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Real Twig (TreeQSM v2.3.0)</td>
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>TreeQSM v2.3.0</td>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
@@ -2035,45 +2037,31 @@ its built in tapering and Real Twig applied to the same QSMs.</p>
 <tbody class="gt_table_body">
 <tr>
 <td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
-<td headers="total" class="gt_row gt_center">2.198</td>
-<td headers="stem" class="gt_row gt_center">4.700</td>
-<td headers="branch" class="gt_row gt_center">-9.095</td>
+<td headers="total" class="gt_row gt_center">50.529</td>
+<td headers="stem" class="gt_row gt_center">1.204</td>
+<td headers="branch" class="gt_row gt_center">363.772</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
-<td headers="total" class="gt_row gt_center">24.101</td>
-<td headers="stem" class="gt_row gt_center">22.747</td>
-<td headers="branch" class="gt_row gt_center">15.081</td>
+<td headers="total" class="gt_row gt_center">156.127</td>
+<td headers="stem" class="gt_row gt_center">23.138</td>
+<td headers="branch" class="gt_row gt_center">146.843</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
-<td headers="total" class="gt_row gt_center">5.743</td>
-<td headers="stem" class="gt_row gt_center">6.934</td>
-<td headers="branch" class="gt_row gt_center">16.457</td>
+<td headers="total" class="gt_row gt_center">37.202</td>
+<td headers="stem" class="gt_row gt_center">7.053</td>
+<td headers="branch" class="gt_row gt_center">160.249</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">CCC</td>
-<td headers="total" class="gt_row gt_center">0.998</td>
+<td headers="total" class="gt_row gt_center">0.947</td>
 <td headers="stem" class="gt_row gt_center">0.997</td>
-<td headers="branch" class="gt_row gt_center">0.989</td>
+<td headers="branch" class="gt_row gt_center">0.654</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section level2">
-<h2 id="simpleforest">SimpleForest<a class="anchor" aria-label="anchor" href="#simpleforest"></a>
-</h2>
-<p>It is important to note that Real Twig was not tested with
-SimpleForest during its development. While Real Twig does improve volume
-estimates for SimpleForest versus its built in allometric corrections,
-there are still improvements to be made, as SimpleForest QSM cylinders
-are generally much more overestimated than TreeQSM cylinders, making the
-identification of “good” cylinders difficult.</p>
-<p>Below are the mass estimates and statistics using SimpleForest v5.3.2
-with its built in vessel volume correction, and Real Twig applied to the
-same QSMs.</p>
-<p><img src="Validation_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;"></p>
 <div id="txvafbsnay" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#txvafbsnay table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2526,7 +2514,7 @@ same QSMs.</p>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading">
-<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>SimpleForest</td>
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Real Twig (TreeQSM v2.3.0)</td>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
@@ -2538,31 +2526,45 @@ same QSMs.</p>
 <tbody class="gt_table_body">
 <tr>
 <td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
-<td headers="total" class="gt_row gt_center">51.031</td>
-<td headers="stem" class="gt_row gt_center">27.775</td>
-<td headers="branch" class="gt_row gt_center">174.363</td>
+<td headers="total" class="gt_row gt_center">2.198</td>
+<td headers="stem" class="gt_row gt_center">4.700</td>
+<td headers="branch" class="gt_row gt_center">-9.095</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
-<td headers="total" class="gt_row gt_center">177.462</td>
-<td headers="stem" class="gt_row gt_center">48.287</td>
-<td headers="branch" class="gt_row gt_center">141.470</td>
+<td headers="total" class="gt_row gt_center">24.101</td>
+<td headers="stem" class="gt_row gt_center">22.747</td>
+<td headers="branch" class="gt_row gt_center">15.081</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
-<td headers="total" class="gt_row gt_center">42.285</td>
-<td headers="stem" class="gt_row gt_center">14.720</td>
-<td headers="branch" class="gt_row gt_center">154.385</td>
+<td headers="total" class="gt_row gt_center">5.743</td>
+<td headers="stem" class="gt_row gt_center">6.934</td>
+<td headers="branch" class="gt_row gt_center">16.457</td>
 </tr>
 <tr>
 <td headers="metric" class="gt_row gt_center">CCC</td>
-<td headers="total" class="gt_row gt_center">0.934</td>
-<td headers="stem" class="gt_row gt_center">0.990</td>
-<td headers="branch" class="gt_row gt_center">0.669</td>
+<td headers="total" class="gt_row gt_center">0.998</td>
+<td headers="stem" class="gt_row gt_center">0.997</td>
+<td headers="branch" class="gt_row gt_center">0.989</td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<div class="section level2">
+<h2 id="simpleforest">SimpleForest<a class="anchor" aria-label="anchor" href="#simpleforest"></a>
+</h2>
+<p>Real Twig was not tested with SimpleForest during its development.
+While Real Twig does improve volume estimates for SimpleForest versus
+its built in allometric corrections, there are still improvements to be
+made, as SimpleForest QSM cylinders are generally much more
+overestimated than TreeQSM cylinders, making the identification of
+“good” cylinders difficult.</p>
+<p>Below are the mass estimates and statistics using SimpleForest v5.3.2
+with its built in vessel volume correction, and Real Twig applied to the
+same QSMs.</p>
+<p><img src="Validation_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;"><img src="Validation_files/figure-html/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;"></p>
 <div id="orehalspkz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#orehalspkz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3009,6 +3011,495 @@ same QSMs.</p>
 }
 
 #orehalspkz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading">
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>SimpleForest</td>
+    </tr>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="metric">Metric</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="total">Total Woody AGB</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stem">Main Stem Biomass</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="branch">Branch Biomass</th>
+    </tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="metric" class="gt_row gt_center">Mean Relative Error (%)</td>
+<td headers="total" class="gt_row gt_center">51.031</td>
+<td headers="stem" class="gt_row gt_center">27.775</td>
+<td headers="branch" class="gt_row gt_center">174.363</td>
+</tr>
+<tr>
+<td headers="metric" class="gt_row gt_center">RMSE (kg)</td>
+<td headers="total" class="gt_row gt_center">177.462</td>
+<td headers="stem" class="gt_row gt_center">48.287</td>
+<td headers="branch" class="gt_row gt_center">141.470</td>
+</tr>
+<tr>
+<td headers="metric" class="gt_row gt_center">Relative RMSE (%)</td>
+<td headers="total" class="gt_row gt_center">42.285</td>
+<td headers="stem" class="gt_row gt_center">14.720</td>
+<td headers="branch" class="gt_row gt_center">154.385</td>
+</tr>
+<tr>
+<td headers="metric" class="gt_row gt_center">CCC</td>
+<td headers="total" class="gt_row gt_center">0.934</td>
+<td headers="stem" class="gt_row gt_center">0.990</td>
+<td headers="branch" class="gt_row gt_center">0.669</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="cbwjcfdjag" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cbwjcfdjag table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#cbwjcfdjag thead, #cbwjcfdjag tbody, #cbwjcfdjag tfoot, #cbwjcfdjag tr, #cbwjcfdjag td, #cbwjcfdjag th {
+  border-style: none;
+}
+
+#cbwjcfdjag p {
+  margin: 0;
+  padding: 0;
+}
+
+#cbwjcfdjag .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #000000;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: hidden;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: hidden;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#cbwjcfdjag .gt_title {
+  color: #000000;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cbwjcfdjag .gt_subtitle {
+  color: #000000;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cbwjcfdjag .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+}
+
+#cbwjcfdjag .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_col_heading {
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cbwjcfdjag .gt_column_spanner_outer {
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cbwjcfdjag .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cbwjcfdjag .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cbwjcfdjag .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cbwjcfdjag .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#cbwjcfdjag .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#cbwjcfdjag .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cbwjcfdjag .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#cbwjcfdjag .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#cbwjcfdjag .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cbwjcfdjag .gt_stub {
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cbwjcfdjag .gt_stub_row_group {
+  color: #000000;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#cbwjcfdjag .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#cbwjcfdjag .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#cbwjcfdjag .gt_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cbwjcfdjag .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#cbwjcfdjag .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_grand_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cbwjcfdjag .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cbwjcfdjag .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+}
+
+#cbwjcfdjag .gt_footnotes {
+  color: #000000;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cbwjcfdjag .gt_sourcenotes {
+  color: #000000;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cbwjcfdjag .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cbwjcfdjag .gt_left {
+  text-align: left;
+}
+
+#cbwjcfdjag .gt_center {
+  text-align: center;
+}
+
+#cbwjcfdjag .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cbwjcfdjag .gt_font_normal {
+  font-weight: normal;
+}
+
+#cbwjcfdjag .gt_font_bold {
+  font-weight: bold;
+}
+
+#cbwjcfdjag .gt_font_italic {
+  font-style: italic;
+}
+
+#cbwjcfdjag .gt_super {
+  font-size: 65%;
+}
+
+#cbwjcfdjag .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#cbwjcfdjag .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#cbwjcfdjag .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#cbwjcfdjag .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#cbwjcfdjag .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#cbwjcfdjag .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#cbwjcfdjag .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#cbwjcfdjag .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#cbwjcfdjag div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
