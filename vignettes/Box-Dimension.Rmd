@@ -58,7 +58,7 @@ cloud <- read.table(file, header = FALSE)
 ```
 
 ## Box Dimension
-Now we can calculate the box dimension of our point cloud with the `box_dimension` function. We need to specify the location of the x, y, and z coordinates, but it defaults to the first three columns in the point cloud data frame. We can also set the lower cutoff, or the smallest box size. Since our point cloud resolution is 1 cm, we set the `lowercutoff` parameter to 0.01 m, which is also the default. Let's take a look at the summary data and extract the box dimension (slope). 
+Now we can calculate the box dimension of our point cloud with the `box_dimension()` function. We need to specify the location of the x, y, and z coordinates, but it defaults to the first three columns in the point cloud data frame. We can also set the lower cutoff, or the smallest box size. Since our point cloud resolution is 1 cm, we set the `lowercutoff` parameter to 0.01 m, which is also the default. Let's take a look at the summary data and extract the box dimension (slope). 
 
 ```{r}
 # Box Dimension Summary

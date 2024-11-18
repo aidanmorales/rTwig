@@ -104,7 +104,7 @@ rTwig currently supports
   software
 - `update_cylinders()` updates cylinder relationships and adds new QSM
   variables
-- `correct_radii` models QSM paths and corrects cylinder radii
+- `correct_radii()` models QSM paths and corrects cylinder radii
 - `tree_metrics()` generates detailed tree metrics and a simulated point
   cloud
 - `cluster_cloud()` transfers QSM variables to a point cloud or

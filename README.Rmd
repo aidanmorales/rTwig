@@ -64,7 +64,7 @@ rTwig currently supports [TreeQSM](https://github.com/InverseTampere/TreeQSM), [
 -   `import_treegraph()` imports a QSM created by Treegraph (.json)
 -   `standardize_qsm()` standardizes QSM variable names across supported software
 -   `update_cylinders()` updates cylinder relationships and adds new QSM variables
--   `correct_radii` models QSM paths and corrects cylinder radii
+-   `correct_radii()` models QSM paths and corrects cylinder radii
 -   `tree_metrics()` generates detailed tree metrics and a simulated point cloud
 -   `cluster_cloud()` transfers QSM variables to a point cloud or simulates a point cloud
 -   `qsm_summary()` summarises QSM diameter, height, volume, and surface area

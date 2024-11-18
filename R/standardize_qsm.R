@@ -6,8 +6,8 @@
 #' All names are lower case and underscore delimited. See the dictionary
 #' vignette for a detailed description of column names. A consistent QSM format
 #' ensures maximum compatibility when analyzing QSMs made with different
-#' software. This function can be run either before or after the
-#' update_cylinders function has been run, or at any stage.
+#' software. This function can be run either before or after
+#' `update_cylinders()` has been run, or at any stage.
 #'
 #' @param cylinder QSM cylinder data frame
 #'

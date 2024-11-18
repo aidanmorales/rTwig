@@ -1,6 +1,6 @@
 #' Export MAT
 #'
-#' @description Exports the cylinder data to be visualized with TreeQSM's plot_cylinder_model() function
+#' @description Exports the cylinder data to be visualized with TreeQSM's `plot_cylinder_model()`.
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param filename Desired name of file

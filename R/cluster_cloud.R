@@ -1,7 +1,7 @@
 #' Cluster Cloud
 #'
 #' @description Cluster a point cloud or simulate a point cloud based on its QSM.
-#' If using the input point cloud, the the cylinder ids are transferred to the
+#' If using the input point cloud, the cylinder ids are transferred to the
 #' cloud using the nearest neighbors. If simulating a cloud, the points are built
 #' directly from the cylinders with user controlled spacing. The cylinder id can
 #' be used to easily join the desired variables from the QSM to the cloud.

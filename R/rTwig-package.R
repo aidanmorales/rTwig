@@ -33,3 +33,24 @@
 NULL
 
 .datatable.aware <- TRUE
+
+rTwigStartupMessage <- function() {
+  msg <- c(
+    paste0(
+      "rTwig version ",
+      utils::packageVersion("rTwig")
+    ),
+    "\nType 'citation(\"rTwig\")' for citing this R package in publications."
+  )
+  return(msg)
+}
+
+.onAttach <- function(lib, pkg) {
+  # startup message
+  msg <- rTwigStartupMessage()
+  if (!interactive()) {
+    msg[1] <- paste("Package 'rTwig' version", utils::packageVersion("rTwig"))
+  }
+  packageStartupMessage(msg)
+  invisible()
+}
