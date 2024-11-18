@@ -8,6 +8,10 @@ Fixed a bug in `plot_qsm()` where color vectors or a vector element would throw 
 
 Random colors are now consistently brighter.
 
+Update Validation vignette with more data.
+
+Polish up documentation.
+
 # rTwig 1.2.0
 
 ## New Features

@@ -25,12 +25,110 @@ library(yardstick)
 library(gt)
 ```
 
+How do we know if Real Twig returns accurate volume estimates? We rigorously tested our method against multiple high quality reference data sets that were both laser scanner and destructively sampled. The laser scanning was done in leaf-off conditions with a Riegl VZ-400. We used different versions of TreeQSM with the same input parameters per tree and different data sets to test our method. A detailed discussion of the results and implications can be found in *Morales & MacFarlane (2024)*: <https://doi.org/10.1093/forestry/cpae046>
 
-How do we know if Real Twig returns accurate volume estimates? We rigorously tested our method against a high quality reference data set that were both laser scanner and destructively sampled. The laser scanning was done in leaf-off conditions with a Riegl VZ-400. The destructive sampling contains total branch and main stem dry mass, and also basic density for both the main stem and the branches. We used different versions of TreeQSM with the same input parameters per tree to test our model.
+The graph and table below contain destructive sampling with total mass and basic density (wood + bark) across four data sets, three of which are publicly available and are linked below. The mass estimates and statistics use TreeQSM v2.4.1 with its built in tapering compared to Real Twig on the same QSMs.
+
+-   Burt et al. (2021): <https://zenodo.org/records/4056899>, <https://zenodo.org/records/4056903>
+
+-   Demol et al. (2021): <https://zenodo.org/records/4557401>
+
+-   Hackenberg et al. (2015b): <https://www.simpleforest.org/pages/dataQuercusPetraea.html>
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+# Import all data
+file <- system.file("extdata/validation2.csv", package = "rTwig")
+data_comp <- read.csv(file)
+
+p_all <- ggplot(data = data_comp, aes(x = dbh.cm, y = tperr, color = version, fill = version)) +
+  geom_point(aes(shape = Dataset, color = version, fill = version)) +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs")) +
+  geom_hline(yintercept = 0) +
+  labs(
+    x = "DBH (cm)",
+    y = "Total Mass Error (%)",
+    color = "Method",
+    fill = "Method",
+    shape = "Dataset"
+  ) +
+  theme_classic() +
+  scale_color_manual(values = c("#D41159", "#1A85FF")) + 
+  scale_fill_manual(values = c("#D41159", "#1A85FF")) +
+  geom_hline(
+    yintercept = 10,
+    linetype = "dashed",
+    color = "black",
+    linewidth = 0.25
+  ) +
+  geom_hline(
+    yintercept = -10,
+    linetype = "dashed",
+    color = "black",
+    linewidth = 0.25,
+    show.legend = TRUE
+  )
+```
+
+```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center', warning=FALSE}
+p_all
+```
+
+```{r, echo=FALSE, warning=FALSE}
+### ALL TREES ##################################################################
+total_stats <- data_comp %>%
+  ungroup() %>%
+  group_by(version) %>%
+  summarize(
+    MRE.pct = mean(tperr, na.rm = TRUE),
+    RMSE.kg = sqrt(mean(tdiff^2, na.rm = TRUE)),
+    RRMSE.pct = RMSE.kg / mean(Mt.DS, na.rm = TRUE) * 100
+  )
+
+CCC_total <- data_comp %>%
+  ungroup() %>%
+  group_by(version) %>%
+  yardstick::ccc(Mt.TLS, Mt.DS) %>%
+  select(.estimate) %>%
+  rename(CCC = 1)
+
+total_stats <- bind_cols(total_stats, CCC_total) %>%
+  mutate(type = "total") %>%
+  relocate(type, .before = MRE.pct) %>%
+  select(-type)
+
+data <- total_stats %>%
+  mutate_if(is.numeric, round, 3) %>%
+  rename(
+    "Mean Relative Error (%)" = MRE.pct,
+    "RMSE (kg)" = RMSE.kg,
+    "Relative RMSE (%)" = RRMSE.pct
+  )
+
+data %>%
+  gt() %>%
+  # tab_header(title = unique(.$`_data`$version)) %>%
+  # cols_hide(version) %>%
+  cols_label(
+    version = "Method",
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = everything()
+  ) %>%
+  tab_options(
+    table.border.top.style = "hidden",
+    table.border.bottom.style = "hidden",
+    table_body.hlines.color = "white",
+    table.font.color = "black",
+    heading.border.bottom.color = "black",
+    column_labels.border.bottom.color = "black",
+    table_body.border.bottom.color = "black"
+  )
+```
 
 ## TreeQSM v2.4.1
 
-Below are the mass estimates and statistics using TreeQSM v2.4.1 with its built in tapering and Real Twig applied to the same QSMs.
+The following figures look at the Harvard Forest data set using different versions of TreeQSM. The destructive sampling data contains total branch and main stem dry mass, and also basic density for both the main stem and the branches. This allows us to test for compensating errors, and look at the true differences between TreeQSM versions. We used the same input parameters per tree and TreeQSM version to test our model.
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 # Import Data
@@ -552,9 +650,9 @@ data[[1]] %>%
 
 ## SimpleForest
 
-It is important to note that Real Twig was not tested with SimpleForest during its development. While Real Twig does improve volume estimates for SimpleForest versus its built in allometric corrections, there are still improvements to be made, as SimpleForest QSM cylinders are generally much more overestimated than TreeQSM cylinders, making the identification of "good" cylinders difficult. 
+Real Twig was not tested with SimpleForest during its development. While Real Twig does improve volume estimates for SimpleForest versus its built in allometric corrections, there are still improvements to be made, as SimpleForest QSM cylinders are generally much more overestimated than TreeQSM cylinders, making the identification of "good" cylinders difficult.
 
-Below are the mass estimates and statistics using SimpleForest v5.3.2 with its built in vessel volume correction, and Real Twig applied to the same QSMs. 
+Below are the mass estimates and statistics using SimpleForest v5.3.2 with its built in vessel volume correction, and Real Twig applied to the same QSMs.
 
 ```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 # Import Data
