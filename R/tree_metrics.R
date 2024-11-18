@@ -57,8 +57,22 @@ tree_metrics <- function(cylinder) {
     abort(message, class = "data_format_error")
   }
 
-  # Verify cylinders
+  # Verify cylinders -----------------------------------------------------------
   cylinder <- verify_cylinders(cylinder)
+
+  # Verify connectivity --------------------------------------------------------
+  qsm_g <- verify_network(cylinder, graph = TRUE)
+  qsm_connectivity <- igraph::is_connected(qsm_g)
+
+  if (qsm_connectivity == FALSE) {
+    message <- paste(
+      "The QSM is not a connected structure!",
+      "x Tree metrics can not be calculated!",
+      "i Please use `qsm_summary()` to calculate metrics for disconnected structures.",
+      sep = "\n"
+    )
+    abort(message)
+  }
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
@@ -236,7 +250,7 @@ calculate_tree_metrics <- function(
     )
 
   # Check for missing values ---------------------------------------------------
-  if(anyNA(cylinder)) {
+  if (anyNA(cylinder)) {
     message <- paste(
       "NA values detected!",
       "Removing NA values to ensure compatibility.",
