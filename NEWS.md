@@ -6,6 +6,8 @@
 
 Fixed a bug in `plot_qsm()` where color vectors or a vector element would throw an unintended error (issue #9).
 
+Fixed a bug in `update_cylinders()` where `distanceFromBase` was being joined with the wrong index values (issue #10).
+
 Random colors are now consistently brighter.
 
 Update Validation vignette with more data.

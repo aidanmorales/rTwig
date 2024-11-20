@@ -662,12 +662,17 @@ path_metrics <- function(network, cylinder, id, length) {
       select(cylinder, id = {{ id }}, length = {{ length }}),
       by = "id"
     ) %>%
+    drop_na() %>%
     group_by("index") %>%
     summarise(
-      distanceFromBase = sum(.data$length, na.rm = TRUE),
+      id = max(.data$id),
+      distanceFromBase = sum(.data$length),
       .groups = "drop"
     ) %>%
-    rename({{ id }} := "index")
+    rename({{ id }} := "id") %>%
+    mutate(
+      distanceFromBase = .data$distanceFromBase - min(.data$distanceFromBase)
+    )
 
   # Calculate allometric variables
   path_df <- network$child_df %>%
