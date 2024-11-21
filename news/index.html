@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rTwig</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,14 +47,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.3.0" id="rtwig-130">rTwig 1.3.0<a class="anchor" aria-label="anchor" href="#rtwig-130"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-1-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h3>
 <ul><li>
 <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> now outputs the base diameters as a standard output in the <code>tree</code> data frame. The new variables are <code>d_base_qsm_cm</code> and <code>d_base_raw_cm</code>, which are the modified and unmodified diameter of the base of the tree or branch.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-1-3-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-3-0"></a></h3>
 <ul><li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> is now dynamic and can accept filtered data. The QSM must be a connected structure (e.g. a whole tree or single branch). If the main stem is shorter than DBH (1.37 m), DBH will be NA, and the user will be notified. If DBH is NA, the base diameter will be used in calculations instead. If a branch is provided, the lowest order will be considered as the main stem, and the standard summary will be calculated. Previously, trying to summarize any filtered data would throw an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/8" class="external-link">#8</a>).</p></li>
 <li><p><code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> is now dynamic and can accept filtered data. If the filtered QSM data is a connected structure (e.g. a branch), the lowest order will be considered as the main stem, and the standard summary will be calculated. If the QSM data is disconnected (e.g. several pruned branches), only total volume and surface area will be calculated, and the user will be notified. Additionally, DBH calculations are also dynamic. If the main stem of a tree or branch is shorter than DBH (1.37 m), DBH will be NA, and the user will be notified. Previously, trying to summarize any filtered data would throw an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/7" class="external-link">#7</a>).</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> where color vectors or a vector element would throw an unintended error (issue <a href="https://github.com/aidanmorales/rTwig/issues/9" class="external-link">#9</a>).</p></li>
