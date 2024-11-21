@@ -17,13 +17,15 @@ Calculates tree metrics from a QSM
 }
 \details{
 Calculates detailed tree, branch, and segment metrics from a QSM.
-The outputs include all of the standard outputs from TreeQSM, and also
-additional variables, including, but not limited to, growth length,
-reverse branch order, branch segment or node relationships, and distances
-from twigs and the base of the tree, across various distribution metrics.
-Also included is a simulated point cloud of the tree, based on the QSM
-cylinder radii. When corrected with Real Twig, this allow for the testing and
-validation of point cloud diameter overestimation throughout the tree.
+Valid inputs require a connected QSM, which can be a whole tree or an
+individual branch. The outputs include all of the standard outputs from
+TreeQSM, and also additional variables, including, but not limited to,
+growth length, reverse branch order, branch segment or node relationships,
+and distances from twigs and the base of the tree, across various
+distribution metrics. Also included is a simulated point cloud of the tree,
+based on the QSM cylinder radii. When corrected with Real Twig, this allows
+for the testing and validation of point cloud diameter overestimation
+throughout the tree.
 }
 \examples{
 

@@ -3,13 +3,15 @@
 #' @description Calculates tree metrics from a QSM
 #'
 #' @details Calculates detailed tree, branch, and segment metrics from a QSM.
-#' The outputs include all of the standard outputs from TreeQSM, and also
-#' additional variables, including, but not limited to, growth length,
-#' reverse branch order, branch segment or node relationships, and distances
-#' from twigs and the base of the tree, across various distribution metrics.
-#' Also included is a simulated point cloud of the tree, based on the QSM
-#' cylinder radii. When corrected with Real Twig, this allow for the testing and
-#' validation of point cloud diameter overestimation throughout the tree.
+#' Valid inputs require a connected QSM, which can be a whole tree or an
+#' individual branch. The outputs include all of the standard outputs from
+#' TreeQSM, and also additional variables, including, but not limited to,
+#' growth length, reverse branch order, branch segment or node relationships,
+#' and distances from twigs and the base of the tree, across various
+#' distribution metrics. Also included is a simulated point cloud of the tree,
+#' based on the QSM cylinder radii. When corrected with Real Twig, this allows
+#' for the testing and validation of point cloud diameter overestimation
+#' throughout the tree.
 #'
 #' @param cylinder QSM cylinder data frame
 #'
@@ -72,6 +74,8 @@ tree_metrics <- function(cylinder) {
       sep = "\n"
     )
     abort(message)
+  } else {
+    base <- as.numeric(igraph::ends(qsm_g, 1)[2])
   }
 
   # rTwig ----------------------------------------------------------------------
@@ -87,7 +91,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "base_distance", twig_distance = "twig_distance",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z"
+      end_x = "end_x", end_y = "end_y", end_z = "end_z", base = base
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -103,7 +107,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z"
+      end_x = "end.x", end_y = "end.y", end_z = "end.z", base = base
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -119,7 +123,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ"
+      end_x = "endX", end_y = "endY", end_z = "endZ", base = base
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -135,7 +139,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez"
+      end_x = "ex", end_y = "ey", end_z = "ez", base = base
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -151,7 +155,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ"
+      end_x = "endX", end_y = "endY", end_z = "endZ", base = base
     )
   } else {
     message <- paste(
@@ -189,6 +193,7 @@ tree_metrics <- function(cylinder) {
 #' @param end_x cylinder end x position
 #' @param end_y cylinder end y position
 #' @param end_z cylinder end z position
+#' @param base cylinder id of the stem base
 #' @returns list of tree metrics
 #' @noRd
 calculate_tree_metrics <- function(
@@ -216,10 +221,8 @@ calculate_tree_metrics <- function(
     axis_z,
     end_x,
     end_y,
-    end_z) {
-  # List to store metrics ------------------------------------------------------
-  metrics <- list()
-
+    end_z,
+    base) {
   # Dynamically select cylinder variables --------------------------------------
   cylinder <- cylinder %>%
     select(
@@ -249,6 +252,10 @@ calculate_tree_metrics <- function(
       end_z = {{ end_z }}
     )
 
+  stem_info <- cylinder %>%
+    filter(.data$id == !!base) %>%
+    select("branch", "branch_order")
+
   # Check for missing values ---------------------------------------------------
   if (anyNA(cylinder)) {
     message <- paste(
@@ -262,6 +269,49 @@ calculate_tree_metrics <- function(
     cylinder <- drop_na(cylinder)
   }
 
+  # Update variables for individual branches -----------------------------------
+  if (base != 1 & stem_info$branch != 1) {
+    message <- paste(
+      "Branch detected!",
+      "The branch will be treated like an individual tree.",
+      sep = "\n"
+    )
+    inform(message)
+
+    # Re-scale branch order and base distance
+    cylinder <- cylinder %>%
+      mutate(
+        branch_order = .data$branch_order - min(.data$branch_order),
+        base_distance = .data$base_distance - min(.data$base_distance),
+        index = row_number()
+      )
+
+    network <- list()
+    network$child_df <- build_network(
+      cylinder, "id", "parent",
+      pruning = TRUE, cache = FALSE
+    ) %>%
+      rename(id2 = "id") %>%
+      suppressMessages()
+
+    cyl_id <- select(cylinder, "id", "index")
+
+    network$child_df <- network$child_df %>%
+      left_join(cyl_id, by = "index") %>%
+      select(index2 = "id", index = "id2") %>%
+      left_join(cyl_id, by = "index") %>%
+      select(index = "index2", "id")
+
+    cylinder <- branch_alt(
+      network = network, cylinder = select(cylinder, -"index", -"branch_alt"),
+      "id", "parent", "branch", "branch_order"
+    ) %>%
+      suppressMessages()
+  }
+
+  # List to store metrics ------------------------------------------------------
+  metrics <- list()
+
   # Extract required matrix variables ------------------------------------------
   axis <- cbind(cylinder$axis_x, cylinder$axis_y, cylinder$axis_z)
   start <- cbind(cylinder$start_x, cylinder$start_y, cylinder$start_z)
@@ -269,19 +319,19 @@ calculate_tree_metrics <- function(
 
   # Calculate branch metrics ---------------------------------------------------
   inform("Calculating Branch Metrics")
-  metrics$branch <- branch_metrics(cylinder)
+  metrics$branch <- branch_metrics(cylinder, base)
 
   # Calculate segment metrics --------------------------------------------------
   inform("Calculating Segment Metrics")
-  metrics$segment <- segment_metrics(cylinder)
+  metrics$segment <- segment_metrics(cylinder, base)
 
   # List to store tree metrics -------------------------------------------------
   tree <- tidytable()
 
   # Extract Cylinder Variables -------------------------------------------------
   inform("Calculating Tree Metrics")
-  trunk_cyl <- filter(cylinder, branch == 1)
-  branch_cyl <- filter(cylinder, !branch == 1)
+  trunk_cyl <- filter(cylinder, branch == !!stem_info$branch)
+  branch_cyl <- filter(cylinder, !branch == !!stem_info$branch)
   twig_cyl <- filter(cylinder, reverse_order == 1)
 
   # Tree Attributes from Cylinders ---------------------------------------------
@@ -308,8 +358,12 @@ calculate_tree_metrics <- function(
   tree$branch_area_m2 <- 2 * pi * sum(branch_cyl$radius * branch_cyl$length)
 
   # Diameter at Breast Height --------------------------------------------------
-  tree$dbh_qsm_cm <- dbh_cylinder(trunk_cyl, "radius") * 100
+  tree$dbh_qsm_cm <- suppressWarnings(dbh_cylinder(trunk_cyl, "radius") * 100)
   tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
+
+  # Diameter at Base (Tree or Branch) ------------------------------------------
+  tree$d_base_qsm_cm <- pull(filter(trunk_cyl, id == !!base), "radius") * 200
+  tree$d_base_raw_cm <- pull(filter(trunk_cyl, id == !!base), "raw_radius") * 200
 
   # Generate Point Cloud -------------------------------------------------------
   inform("Generating Point Cloud")
@@ -336,7 +390,9 @@ calculate_tree_metrics <- function(
 
   # Crown Base Height ----------------------------------------------------------
   tree$crown_base_height_m <- crown_base_height(
-    cylinder, metrics$branch, tree$dbh_qsm_cm / 100, start, axis, tips
+    cylinder = cylinder, branch = metrics$branch, base = base,
+    dbh = tree$dbh_qsm_cm, d_base = tree$d_base_qsm_cm,
+    start = start, axis = axis, tips = tips
   )
 
   # Crown Length and Crown Ratio -----------------------------------------------
@@ -344,11 +400,16 @@ calculate_tree_metrics <- function(
   tree$crown_ratio <- tree$crown_length_m / tree$tree_height_m
 
   # Crown 3D Convex Hull -------------------------------------------------------
-  base_height <- min(metrics$cloud[, 3]) + tree$crown_base_height_m
-  crown_cloud <- metrics$cloud[metrics$cloud[, 3] >= base_height, ]
-  crown_hull_3d <- geometry::convhulln(crown_cloud, "FA")
-  tree$crown_area_m2 <- crown_hull_3d$area
-  tree$crown_volume_m3 <- crown_hull_3d$vol / 1000
+  if (is.na(tree$crown_base_height_m)) {
+    tree$crown_area_m2 <- NA
+    tree$crown_volume_m3 <- NA
+  } else {
+    base_height <- min(metrics$cloud[, 3]) + tree$crown_base_height_m
+    crown_cloud <- metrics$cloud[metrics$cloud[, 3] >= base_height, ]
+    crown_hull_3d <- geometry::convhulln(crown_cloud, "FA")
+    tree$crown_area_m2 <- crown_hull_3d$area
+    tree$crown_volume_m3 <- crown_hull_3d$vol / 1000
+  }
 
   # Tree Location --------------------------------------------------------------
   tree$start_x <- start[1, 1]
@@ -410,7 +471,7 @@ calculate_tree_metrics <- function(
 
   # Alternate Branch Metrics ---------------------------------------------------
   inform("Calculating Alternate Branch Metrics")
-  metrics$branch_alt <- branch_alt_metrics(cylinder)
+  metrics$branch_alt <- branch_alt_metrics(cylinder, base)
 
   return(metrics)
 }
@@ -425,22 +486,33 @@ dbh_cylinder <- function(trunk, radius) {
     arrange(.data$branch_position) %>%
     select(length = "length", radius = !!rlang::sym(radius))
 
-  # Finds the DBH cylinder
-  for (i in 1:nrow(dbh)) {
-    dbh_cyl <- sum(dbh$length[1:i])
-    if (dbh_cyl >= 1.37) {
-      break
-    }
-  }
+  if (sum(dbh$length) < 1.37) {
+    message <- paste(
+      "The main stem is shorter than 1.37 meters.",
+      "DBH cannot be calculated!",
+      sep = " "
+    )
+    warn(message)
 
-  return(dbh[i, radius] * 2)
+    return(NA)
+  } else {
+    # Finds the DBH cylinder
+    for (i in 1:nrow(dbh)) {
+      dbh_cyl <- sum(dbh$length[1:i])
+      if (dbh_cyl >= 1.37) {
+        break
+      }
+    }
+    return(dbh[i, radius] * 2)
+  }
 }
 
 #' Calculates branch metrics
 #' @param cylinder QSM cylinder data frame
+#' @param base cylinder id of the stem base
 #' @returns data frame with per branch summary metrics
 #' @noRd
-branch_metrics <- function(cylinder) {
+branch_metrics <- function(cylinder, base) {
   # Get Parent Axis IDs
   parent_axis <- cylinder %>%
     select(
@@ -453,7 +525,7 @@ branch_metrics <- function(cylinder) {
 
   # Base Cylinder
   base <- cylinder %>%
-    filter(.data$branch == 1) %>%
+    filter(.data$id == !!base) %>%
     select(start_z = "start_z") %>%
     slice_head(1) %>%
     pull()
@@ -500,9 +572,10 @@ branch_metrics <- function(cylinder) {
 
 #' Calculates alternate branch metrics
 #' @param cylinder QSM cylinder data frame
+#' @param base cylinder id of the stem base
 #' @returns data frame with per branch summary metrics
 #' @noRd
-branch_alt_metrics <- function(cylinder) {
+branch_alt_metrics <- function(cylinder, base) {
   # Get Parent Axis IDs
   parent_axis <- cylinder %>%
     select(
@@ -515,7 +588,7 @@ branch_alt_metrics <- function(cylinder) {
 
   # Base Cylinder
   base <- cylinder %>%
-    filter(.data$branch == 1) %>%
+    filter(.data$id == !!base) %>%
     select(start_z = "start_z") %>%
     slice_head(1) %>%
     pull()
@@ -570,9 +643,10 @@ branch_alt_metrics <- function(cylinder) {
 
 #' Calculates segment metrics
 #' @param cylinder QSM cylinder data frame
+#' @param base cylinder id of the stem base
 #' @returns data frame with segment summary metrics
 #' @noRd
-segment_metrics <- function(cylinder) {
+segment_metrics <- function(cylinder, base) {
   # Get Parent Axis IDs
   parent_axis <- cylinder %>%
     select(
@@ -585,7 +659,7 @@ segment_metrics <- function(cylinder) {
 
   # Base Cylinder
   base <- cylinder %>%
-    filter(.data$segment == 1) %>%
+    filter(.data$id == !!base) %>%
     select(start_z = "start_z") %>%
     slice_head(1) %>%
     pull()
@@ -720,13 +794,66 @@ crown_diameters <- function(cloud, tips) {
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param branch branch metrics data frame
+#' @param base cylinder id of the stem base
 #' @param dbh diameter at breast height of the tree
+#' @param d_base diameter at the base of the tree
 #' @param start matrix of cylinder start points
 #' @param axis matrix of cylinder axes
 #' @param tips matrix of cylinder end points
 #' @returns double of the base height of the tree
 #' @noRd
-crown_base_height <- function(cylinder, branch, dbh, start, axis, tips) {
+crown_base_height <- function(
+    cylinder,
+    branch,
+    base,
+    dbh,
+    d_base,
+    start,
+    axis,
+    tips) {
+  if (length(unique(cylinder$branch)) == 1) {
+    message <- paste(
+      "No branches are present!",
+      "Crown base height cannot be calculated!",
+      sep = " "
+    )
+    warn(message)
+
+    return(NA)
+  }
+
+  if (is.na(dbh)) {
+    message <- paste(
+      "DBH is missing!",
+      "Crown base height will be calculated with base diameter!",
+      sep = " "
+    )
+    warn(message)
+
+    dbh <- d_base
+  }
+
+  if (base != 1) {
+    message <- paste(
+      "Branch detected!",
+      "Crown base height will use the first bifurcation!",
+      sep = " "
+    )
+    warn(message)
+
+    # Get base start z value
+    base_z <- pull(filter(cylinder, .data$id == !!base), "start_z")
+    f_branch_z <- cylinder %>%
+      filter(.data$branch_order == 1 & .data$branch_position == 1) %>%
+      arrange("start_z") %>%
+      pull("start_z")
+
+    base_height <- f_branch_z - base_z
+
+    return(base_height)
+  }
+
+  dbh <- dbh / 100
   nb <- nrow(filter(branch, .data$branch_order == 1))
   if (nb > 1) {
     nc <- nrow(start)
