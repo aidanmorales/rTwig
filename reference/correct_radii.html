@@ -139,56 +139,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
-<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="update_cylinders.html">update_cylinders</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finding Branches</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Building Cylinder Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Caching Network</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Verifying Topology</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
-<span class="r-in"><span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu">correct_radii</span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Modeling Paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Radii</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1149 obs. of  31 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ID                          : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentID                    : num  0 1 2 3 4 5 6 7 8 9 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startX                      : num  0.761 0.759 0.771 0.768 0.765 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startY                      : num  -16.4 -16.4 -16.4 -16.3 -16.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ startZ                      : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endX                        : num  0.759 0.771 0.768 0.765 0.769 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endY                        : num  -16.4 -16.4 -16.3 -16.4 -16.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ endZ                        : num  254 254 254 254 254 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisX                       : num  -0.0286 0.2148 -0.0473 -0.0498 0.0678 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisY                       : num  -0.078889 0.163918 0.03933 -0.011114 -0.000265 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ axisZ                       : num  0.996 0.963 0.998 0.999 0.998 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.0497 0.0529 0.0535 0.0525 0.0528 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  31.4 31.4 31.3 31.3 31.2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ averagePointDistance        : num  0.00589 0.00378 0.00205 0.00246 0.00251 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ segmentID                   : num  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ parentSegmentID             : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchOrder                 : int  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reverseBranchOrder          : int  18 18 18 18 18 18 18 18 18 18 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius                 : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt                  : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ branchID                    : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ positionInBranch            : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren               : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ index                       : int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0 0.0529 0.1065 0.1589 0.2117 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.43 3.38 3.33 3.27 3.22 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  69 69 69 69 69 69 69 69 69 69 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  8.31 8.31 8.31 8.31 8.31 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  237 233 229 226 222 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0472 0.0479 0.0469 0.0467 0.0453 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
