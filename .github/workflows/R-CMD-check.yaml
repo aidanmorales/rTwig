@@ -21,7 +21,6 @@ jobs:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest, r: 'devel', clang: true}  # Set for Clang setup
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}

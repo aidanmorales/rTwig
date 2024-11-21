@@ -19,13 +19,6 @@
 #' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 #' str(cylinder)
 #'
-#' ## SimpleForest Processing Chain
-#' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
-#' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
-#' str(cylinder)
-#'
 correct_radii <- function(
     cylinder,
     twig_radius,
