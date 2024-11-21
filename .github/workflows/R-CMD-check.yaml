@@ -20,9 +20,8 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'release'}
-          - {os: ubuntu-latest,  r: 'devel', version: 'r-devel'}
-          - {os: r-devel-linux-x86_64-fedora-clang, r: 'devel'}
+          - {os: ubuntu-latest,   r: 'release'}
+           - {os: ubuntu-latest, r: 'devel', clang: true}  # Set for Clang setup
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
