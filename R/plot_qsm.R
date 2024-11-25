@@ -532,13 +532,17 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
     sep = "\n"
   )
 
-  if (color %in% colnames(cylinder)) {
-    color <- color
+  if (is.null(color)) {
+    color <- NULL
   } else {
-    eval_check <- try(eval(rlang::parse_expr(color)), silent = TRUE)
+    if (color %in% colnames(cylinder)) {
+      color <- color
+    } else {
+      eval_check <- try(eval(rlang::parse_expr(color)), silent = TRUE)
 
-    if (!inherits(eval_check, "try-error")) {
-      color <- eval_check
+      if (!inherits(eval_check, "try-error")) {
+        color <- eval_check
+      }
     }
   }
 
