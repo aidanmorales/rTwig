@@ -37,7 +37,7 @@ plot_qsm(
 
 \item{color}{Optional cylinder color parameter. Colors must be a single hex color string, a \code{grDevices::colors()}, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.}
 
-\item{palette}{Optional color palette for numerical data. Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB palette matrix with the length of cylinder.}
+\item{palette}{Optional color palette for numerical data. Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.}
 
 \item{alpha}{Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 

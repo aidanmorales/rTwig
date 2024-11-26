@@ -5,7 +5,7 @@
 #' @param cylinder A QSM cylinder data frame.
 #' @param radius Radius column name either quoted or unquoted. Defaults to the modified radii.
 #' @param color Optional cylinder color parameter. Colors must be a single hex color string, a `grDevices::colors()`, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data. Palettes include `colourvalues::color_palettes()` or a user supplied RGB palette matrix with the length of cylinder.
+#' @param palette Optional color palette for numerical data. Palettes include `colourvalues::color_palettes()` or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.
 #' @param alpha Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
@@ -557,6 +557,11 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
     }
   } else if (color == "random") {
     color <- generate_random_colors(1)
+
+    if (!is.null(palette) && palette == "random") {
+      plot_colors <- generate_random_colors(nrow(cylinder))
+      return(plot_colors)
+    }
   } else if (is.vector(color) & length(color) == 1 & !(color %in% colnames(cylinder))) {
     rgb_check <- try(grDevices::col2rgb(color), silent = TRUE)
 
@@ -576,6 +581,12 @@ plotting_colors <- function(cylinder, color, palette, branch_order) {
   } else if (is.null(palette) & length(color) > 1 & !is.character(color)) {
     plot_colors <- colourvalues::color_values(color, palette = "rainbow")
   } else if (!is.null(palette) & length(color) > 1 & !is.character(color)) {
+    if (palette == "random") {
+      n <- length(colourvalues::color_palettes())
+      palettes <- colourvalues::color_palettes()
+      palette <- palettes[sample(1:n, 1)]
+    }
+
     plot_colors <- colourvalues::color_values(color, palette = palette)
   } else if (length(color) > 1 & is.character(color)) {
     plot_colors <- color

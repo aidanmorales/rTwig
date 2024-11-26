@@ -1,5 +1,13 @@
 # rTwig (development version)
 
+## New Features
+
+-   `plot_qsm()`can now accept random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
+
+## Improvements
+
+-   Fixed a bug in `plot_qsm()`, where certain variable names conflicted with internal functions, resulting in an error (issue #12).
+
 # rTwig 1.3.0
 
 ## New Features
