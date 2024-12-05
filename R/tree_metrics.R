@@ -249,7 +249,8 @@ calculate_tree_metrics <- function(
       axis_z = {{ axis_z }},
       end_x = {{ end_x }},
       end_y = {{ end_y }},
-      end_z = {{ end_z }}
+      end_z = {{ end_z }},
+      modified = "modified"
     )
 
   stem_info <- cylinder %>%
@@ -415,6 +416,9 @@ calculate_tree_metrics <- function(
   tree$start_x <- start[1, 1]
   tree$start_y <- start[1, 2]
   tree$start_z <- start[1, 3]
+
+  # Modification Index ---------------------------------------------------------
+  tree$modified <- mean(cylinder$modified)
 
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree

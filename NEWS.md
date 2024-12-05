@@ -2,7 +2,9 @@
 
 ## New Features
 
--   `plot_qsm()`can now accept random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
+-   `plot_qsm()` can now accept random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
+
+-   `tree_metrics()` now has `modified` as a standard output. This is an average of the binary index of the cylinders modified by Real Twig. 
 
 ## Improvements
 
