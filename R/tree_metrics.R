@@ -250,7 +250,7 @@ calculate_tree_metrics <- function(
       end_x = {{ end_x }},
       end_y = {{ end_y }},
       end_z = {{ end_z }},
-      modified = "modified"
+      modified = any_of("modified")
     )
 
   stem_info <- cylinder %>%
@@ -418,7 +418,11 @@ calculate_tree_metrics <- function(
   tree$start_z <- start[1, 3]
 
   # Modification Index ---------------------------------------------------------
-  tree$modified <- mean(cylinder$modified)
+  if ("modified" %in% colnames(cylinder)) {
+    tree$modified <- mean(cylinder$modified)
+  } else {
+    tree$modified <- NA
+  }
 
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree
