@@ -29,7 +29,7 @@ LazyData: true
 Suggests: knitr, rmarkdown, ggplot2, ggpmisc, ggpubr, gt, yardstick, dplyr, tidyr
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2023-12-14 23:03:09 UTC; moral169
+Packaged: 2024-12-10 21:42:47 UTC; moral169
 Maintainer: Aidan Morales <moral169@msu.edu>
 URL: https://aidanmorales.github.io/rTwig/, https://github.com/aidanmorales/rTwig
 BugReports: https://github.com/aidanmorales/rTwig/issues

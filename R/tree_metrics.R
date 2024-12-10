@@ -62,22 +62,6 @@ tree_metrics <- function(cylinder) {
   # Verify cylinders -----------------------------------------------------------
   cylinder <- verify_cylinders(cylinder)
 
-  # Verify connectivity --------------------------------------------------------
-  qsm_g <- verify_network(cylinder, graph = TRUE)
-  qsm_connectivity <- igraph::is_connected(qsm_g)
-
-  if (qsm_connectivity == FALSE) {
-    message <- paste(
-      "The QSM is not a connected structure!",
-      "x Tree metrics can not be calculated!",
-      "i Please use `qsm_summary()` to calculate metrics for disconnected structures.",
-      sep = "\n"
-    )
-    abort(message)
-  } else {
-    base <- as.numeric(igraph::ends(qsm_g, 1)[2])
-  }
-
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     calculate_tree_metrics(
@@ -91,7 +75,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "base_distance", twig_distance = "twig_distance",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z", base = base
+      end_x = "end_x", end_y = "end_y", end_z = "end_z"
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -107,7 +91,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z", base = base
+      end_x = "end.x", end_y = "end.y", end_z = "end.z"
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -123,7 +107,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", base = base
+      end_x = "endX", end_y = "endY", end_z = "endZ"
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -139,7 +123,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez", base = base
+      end_x = "ex", end_y = "ey", end_z = "ez"
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -155,7 +139,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", base = base
+      end_x = "endX", end_y = "endY", end_z = "endZ"
     )
   } else {
     message <- paste(
@@ -193,7 +177,6 @@ tree_metrics <- function(cylinder) {
 #' @param end_x cylinder end x position
 #' @param end_y cylinder end y position
 #' @param end_z cylinder end z position
-#' @param base cylinder id of the stem base
 #' @returns list of tree metrics
 #' @noRd
 calculate_tree_metrics <- function(
@@ -221,8 +204,7 @@ calculate_tree_metrics <- function(
     axis_z,
     end_x,
     end_y,
-    end_z,
-    base) {
+    end_z) {
   # Dynamically select cylinder variables --------------------------------------
   cylinder <- cylinder %>%
     select(
@@ -253,6 +235,22 @@ calculate_tree_metrics <- function(
       modified = any_of("modified")
     )
 
+  # Verify connectivity --------------------------------------------------------
+  qsm_g <- verify_network(cylinder, graph = TRUE)
+  qsm_connectivity <- igraph::is_connected(qsm_g)
+
+  if (qsm_connectivity == FALSE) {
+    message <- paste(
+      "The QSM is not a connected structure!",
+      "x Tree metrics can not be calculated!",
+      "i Please use `qsm_summary()` to calculate metrics for disconnected structures.",
+      sep = "\n"
+    )
+    abort(message)
+  } else {
+    base <- as.numeric(igraph::ends(qsm_g, 1)[2])
+  }
+
   stem_info <- cylinder %>%
     filter(.data$id == !!base) %>%
     select("branch", "branch_order")
@@ -275,9 +273,9 @@ calculate_tree_metrics <- function(
     message <- paste(
       "Branch detected!",
       "The branch will be treated like an individual tree.",
-      sep = "\n"
+      sep = " "
     )
-    inform(message)
+    warn(message)
 
     # Re-scale branch order and base distance
     cylinder <- cylinder %>%
@@ -322,9 +320,33 @@ calculate_tree_metrics <- function(
   inform("Calculating Branch Metrics")
   metrics$branch <- branch_metrics(cylinder, base)
 
+  if (length(unique(metrics$branch$branch)) == 1) {
+    branch_check <- FALSE
+    message <- paste(
+      "No branches are present!",
+      "Branch metrics cannot be calculated!",
+      sep = " "
+    )
+    warn(message)
+  } else {
+    branch_check <- TRUE
+  }
+
   # Calculate segment metrics --------------------------------------------------
   inform("Calculating Segment Metrics")
   metrics$segment <- segment_metrics(cylinder, base)
+
+  if (length(unique(metrics$segment$segment)) == 1) {
+    segment_check <- FALSE
+    message <- paste(
+      "Only one segment is present!",
+      "Segment metrics cannot be calculated!",
+      sep = " "
+    )
+    warn(message)
+  } else {
+    segment_check <- TRUE
+  }
 
   # List to store tree metrics -------------------------------------------------
   tree <- tidytable()
@@ -435,22 +457,26 @@ calculate_tree_metrics <- function(
   metrics$tree_azimuth_dist <- tree_distributions(cylinder, "azimuth")
 
   # Branch Distribution Metrics ------------------------------------------------
-  inform("Calculating Branch Distributions")
-  metrics$branch_diameter_dist <- branch_distributions(metrics$branch, tree, "diameter")
-  metrics$branch_height_dist <- branch_distributions(metrics$branch, tree, "height")
-  metrics$branch_angle_dist <- branch_distributions(metrics$branch, tree, "angle")
-  metrics$branch_zenith_dist <- branch_distributions(metrics$branch, tree, "zenith")
-  metrics$branch_azimuth_dist <- branch_distributions(metrics$branch, tree, "azimuth")
-  metrics$branch_order_dist <- branch_order_distributions(metrics$branch)
+  if (branch_check == TRUE) {
+    inform("Calculating Branch Distributions")
+    metrics$branch_diameter_dist <- branch_distributions(metrics$branch, tree, "diameter")
+    metrics$branch_height_dist <- branch_distributions(metrics$branch, tree, "height")
+    metrics$branch_angle_dist <- branch_distributions(metrics$branch, tree, "angle")
+    metrics$branch_zenith_dist <- branch_distributions(metrics$branch, tree, "zenith")
+    metrics$branch_azimuth_dist <- branch_distributions(metrics$branch, tree, "azimuth")
+    metrics$branch_order_dist <- branch_order_distributions(metrics$branch)
+  }
 
   # Segment Distribution Metrics -----------------------------------------------
-  inform("Calculating Segment Distributions")
-  metrics$segment_diameter_dist <- segment_distributions(metrics$segment, tree, "diameter")
-  metrics$segment_height_dist <- segment_distributions(metrics$segment, tree, "height")
-  metrics$segment_angle_dist <- segment_distributions(metrics$segment, tree, "angle")
-  metrics$segment_zenith_dist <- segment_distributions(metrics$segment, tree, "zenith")
-  metrics$segment_azimuth_dist <- segment_distributions(metrics$segment, tree, "azimuth")
-  metrics$segment_order_dist <- segment_order_distributions(metrics$segment)
+  if (segment_check == TRUE) {
+    inform("Calculating Segment Distributions")
+    metrics$segment_diameter_dist <- segment_distributions(metrics$segment, tree, "diameter")
+    metrics$segment_height_dist <- segment_distributions(metrics$segment, tree, "height")
+    metrics$segment_angle_dist <- segment_distributions(metrics$segment, tree, "angle")
+    metrics$segment_zenith_dist <- segment_distributions(metrics$segment, tree, "zenith")
+    metrics$segment_azimuth_dist <- segment_distributions(metrics$segment, tree, "azimuth")
+    metrics$segment_order_dist <- segment_order_distributions(metrics$segment)
+  }
 
   # Stem Taper -----------------------------------------------------------------
   inform("Calculating Stem Taper")
@@ -478,8 +504,14 @@ calculate_tree_metrics <- function(
     summarise(avg_spread_m = mean(.data$spread_m))
 
   # Alternate Branch Metrics ---------------------------------------------------
-  inform("Calculating Alternate Branch Metrics")
-  metrics$branch_alt <- branch_alt_metrics(cylinder, base)
+  if (branch_check == TRUE) {
+    inform("Calculating Alternate Branch Metrics")
+    metrics$branch_alt <- branch_alt_metrics(cylinder, base)
+  }
+
+  # rTwig Version & Run Date ---------------------------------------------------
+  metrics$version <- paste0("rTwig v", utils::packageVersion("rTwig"))
+  metrics$run_date <- Sys.time()
 
   return(metrics)
 }
@@ -1051,7 +1083,8 @@ tree_distributions <- function(cylinder, distribution) {
 #' Zenith: 10 degree classes
 #' Azimuth: 10 degree classes
 #'
-#' @param cylinder QSM cylinder data frame
+#' @param branch branch summary data frame
+#' @param tree tree summary data frame
 #' @param distribution string: height, angle, diameter, zenith, or azimuth
 #' @returns data frame of branch metrics by distribution type
 #' @noRd
@@ -1129,7 +1162,8 @@ branch_distributions <- function(branch, tree, distribution) {
 #' Zenith: 10 degree classes
 #' Azimuth: 10 degree classes
 #'
-#' @param cylinder QSM cylinder data frame
+#' @param segment segment summary data frame
+#' @param tree tree summary data frame
 #' @param distribution string: height, angle, diameter, zenith, or azimuth
 #' @returns data frame of segment metrics by distribution type
 #' @noRd
