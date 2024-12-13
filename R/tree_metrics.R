@@ -14,6 +14,12 @@
 #' throughout the tree.
 #'
 #' @param cylinder QSM cylinder data frame
+#' @param verify Verify QSM topology. If TRUE (default and recommended),
+#' only topologically connected structures (a whole a tree or an individual
+#' branch) are eligible to run. This ensures all metrics are correct and
+#' verified. If FALSE, the metrics are 'brute forced' and not verified.
+#' This is strongly discouraged, but can enable the calculation of tree metrics
+#' on topologically disconnected structures.
 #'
 #' @return Returns a list of tree metric data frames and synthetic point cloud
 #' @export
@@ -43,7 +49,7 @@
 #' metrics <- tree_metrics(cylinder)
 #' names(metrics)
 #'
-tree_metrics <- function(cylinder) {
+tree_metrics <- function(cylinder, verify = TRUE) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -75,7 +81,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "base_distance", twig_distance = "twig_distance",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z"
+      end_x = "end_x", end_y = "end_y", end_z = "end_z", verify
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -91,7 +97,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z"
+      end_x = "end.x", end_y = "end.y", end_z = "end.z", verify
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -107,7 +113,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ"
+      end_x = "endX", end_y = "endY", end_z = "endZ", verify
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -123,7 +129,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez"
+      end_x = "ex", end_y = "ey", end_z = "ez", verify
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -139,7 +145,7 @@ tree_metrics <- function(cylinder) {
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ"
+      end_x = "endX", end_y = "endY", end_z = "endZ", verify
     )
   } else {
     message <- paste(
@@ -176,7 +182,8 @@ tree_metrics <- function(cylinder) {
 #' @param axis_z cylinder z axis
 #' @param end_x cylinder end x position
 #' @param end_y cylinder end y position
-#' @param end_z cylinder end z position
+#' @param end_z cylinder end z position'
+#' @param verify verify connectivity
 #' @returns list of tree metrics
 #' @noRd
 calculate_tree_metrics <- function(
@@ -204,7 +211,8 @@ calculate_tree_metrics <- function(
     axis_z,
     end_x,
     end_y,
-    end_z) {
+    end_z,
+    verify) {
   # Dynamically select cylinder variables --------------------------------------
   cylinder <- cylinder %>%
     select(
@@ -236,8 +244,19 @@ calculate_tree_metrics <- function(
     )
 
   # Verify connectivity --------------------------------------------------------
-  qsm_g <- verify_network(cylinder, graph = TRUE)
-  qsm_connectivity <- igraph::is_connected(qsm_g)
+  if (verify == TRUE) {
+    qsm_g <- verify_network(cylinder, graph = TRUE)
+    qsm_connectivity <- igraph::is_connected(qsm_g)
+  } else {
+    qsm_connectivity <- TRUE # bypass connectivity checks
+    message <- paste(
+      "`verify` is not TRUE!",
+      "QSM topology will not be verified!",
+      "Please set `verify = TRUE` unless you have a specific reason not to.",
+      sep = "\n"
+    )
+    warn(message)
+  }
 
   if (qsm_connectivity == FALSE) {
     message <- paste(
@@ -248,7 +267,11 @@ calculate_tree_metrics <- function(
     )
     abort(message)
   } else {
-    base <- as.numeric(igraph::ends(qsm_g, 1)[2])
+    if (verify == TRUE) {
+      base <- as.numeric(igraph::ends(qsm_g, 1)[2])
+    } else {
+      base <- cylinder$id[1]
+    }
   }
 
   stem_info <- cylinder %>%

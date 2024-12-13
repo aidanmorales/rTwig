@@ -4,10 +4,17 @@
 \alias{tree_metrics}
 \title{Tree Metrics}
 \usage{
-tree_metrics(cylinder)
+tree_metrics(cylinder, verify = TRUE)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
+
+\item{verify}{Verify QSM topology. If TRUE (default and recommended),
+only topologically connected structures (a whole a tree or an individual
+branch) are eligible to run. This ensures all metrics are correct and
+verified. If FALSE, the metrics are 'brute forced' and not verified.
+This is strongly discouraged, but can enable the calculation of tree metrics
+on topologically disconnected structures.}
 }
 \value{
 Returns a list of tree metric data frames and synthetic point cloud
