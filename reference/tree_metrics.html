@@ -53,7 +53,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tree_metrics</span><span class="op">(</span><span class="va">cylinder</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tree_metrics</span><span class="op">(</span><span class="va">cylinder</span>, verify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,6 +62,15 @@
 
 <dl><dt id="arg-cylinder">cylinder<a class="anchor" aria-label="anchor" href="#arg-cylinder"></a></dt>
 <dd><p>QSM cylinder data frame</p></dd>
+
+
+<dt id="arg-verify">verify<a class="anchor" aria-label="anchor" href="#arg-verify"></a></dt>
+<dd><p>Verify QSM topology. If TRUE (default and recommended),
+only topologically connected structures (a whole a tree or an individual
+branch) are eligible to run. This ensures all metrics are correct and
+verified. If FALSE, the metrics are 'brute forced' and not verified.
+This is strongly discouraged, but can enable the calculation of tree metrics
+on topologically disconnected structures.</p></dd>
 
 </dl></div>
     <div class="section level2">
