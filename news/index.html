@@ -57,7 +57,12 @@
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
 <ul><li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
-<li><p>Fixed multiple bugs in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>. The first (issue <a href="https://github.com/aidanmorales/rTwig/issues/15" class="external-link">#15</a>) occured because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met. The other issues occurred when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.</p></li>
+<li>
+<p>Fixed multiple bugs in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:</p>
+<ul><li><p>Issue <a href="https://github.com/aidanmorales/rTwig/issues/15" class="external-link">#15</a> occurred because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met.</p></li>
+<li><p>Fixed an issue when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.</p></li>
+<li><p>Fixed an issue where crown base height calculations would fail if there was only one first order branch present.</p></li>
+</ul></li>
 <li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
 </ul></div>
 </div>
