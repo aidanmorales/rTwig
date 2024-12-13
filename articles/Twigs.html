@@ -91,7 +91,33 @@ are responsible for supporting the delicate tissues needed to grow
 leaves and protect the buds during the dormant season. Because twig
 measurements are the basis for the Real Twig method, and publicly
 available databases of twigs are limited, we present a database of twig
-measurements for a wide range of tree genera and species.</p>
+measurements for a wide range of tree genera, species, and qualitative
+indices.</p>
+</div>
+<div class="section level2">
+<h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
+</h2>
+<p>The twig radius is the most important part of Real Twig. We recommend
+the following process of selecting a twig radius:</p>
+<ol style="list-style-type: decimal">
+<li><p>Directly measure a twig on the focal tree whenever
+possible.</p></li>
+<li><p>If direct measurements are not possible, use a species specific
+measurement from the <code>twigs</code> database.</p></li>
+<li><p>If the species is not present in the database but the species is
+known, use a qualitative index describing the twig, such as
+<em>slender</em>, or <em>stout</em> (often found in many botanical
+manuals) to pick a radius from the <code>twigs_index</code>
+database.</p></li>
+<li><p>If none of the above are possible, use the genus average value
+from the <code>twigs</code> database.</p></li>
+</ol>
+<p>The reason we advocate for a qualitative index over the genus
+average, is that genera with many species can have a wide range of twig
+radii. The qualitative index ensures the measurement is closer to the
+true value than a potentially biased average. However, if the species in
+the genera are similar the genus average can be used with good results
+<span class="citation">(Morales and MacFarlane 2024)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -203,29 +229,41 @@ deviation, and <em>cv</em> is the coefficient of variation.</p>
 <span><span class="co">#&gt;  [99] "Tsuga canadensis"             "Tsuga spp."                  </span></span>
 <span><span class="co">#&gt; [101] "Ulmus americana"              "Ulmus pumila"                </span></span>
 <span><span class="co">#&gt; [103] "Ulmus rubra"                  "Ulmus spp."</span></span></code></pre></div>
+<p>Similarly, we also provide the same data base broken down by twig
+size index. The size classes were adapted from <span class="citation">(Coder 2021)</span>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">twigs_index</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 7</span></span></span>
+<span><span class="co">#&gt;   size_index         radius_mm     n   min   max   std    cv</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> slender                 0.74    24  0.5   0.97  0.14  0.19</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> moderately slender      1.42    60  1.03  1.93  0.23  0.16</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> moderately stout        2.36    10  2.08  2.49  0.13  0.05</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> stout                   3.19    10  2.51  4.23  0.71  0.22</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h2>
-<p>Let’s visualize some of the twig data!</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Lets look at a subset of oak species</span></span>
-<span><span class="va">twigs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Quercus"</span>, <span class="va">scientific_name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">scientific_name</span>, y <span class="op">=</span> <span class="va">radius_mm</span>, color <span class="op">=</span> <span class="va">scientific_name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_errorbar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymax <span class="op">=</span> <span class="va">max</span>, ymin <span class="op">=</span> <span class="va">min</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Quercus Twig Radii"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">""</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Twig Radius (mm)"</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"Species"</span>,</span>
-<span>    size <span class="op">=</span> <span class="st">"Sample Size"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="va">rev</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Twigs_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p>Let’s visualize some of the twig data by oak species, and then by
+size index.</p>
+<p><img src="Twigs_files/figure-html/unnamed-chunk-9-1.png" width="672"><img src="Twigs_files/figure-html/unnamed-chunk-9-2.png" width="672"></p>
+</div>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-coder2021" class="csl-entry">
+Coder, Kim D. 2021. <em>Tree Anatomy Manual: Twigs</em>. Athens, GA:
+University of Georgia Warnell School of Forestry &amp; Natural
+Resources.
+</div>
+<div id="ref-real_twig_forestry" class="csl-entry">
+Morales, Aidan, and David W MacFarlane. 2024. <span>“Reducing Tree
+Volume Overestimation in Quantitative Structure Models Using Modeled
+Branch Topology and Direct Twig Measurements.”</span> <em>Forestry: An
+International Journal of Forest Research</em>, October, cpae046. <a href="https://doi.org/10.1093/forestry/cpae046" class="external-link">https://doi.org/10.1093/forestry/cpae046</a>.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

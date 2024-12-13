@@ -50,13 +50,15 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> can now accept random color palettes by setting <code>palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</p></li>
+<ul><li><p>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</p></li>
+<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> can now accept random color palettes by setting <code>palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</p></li>
 <li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> now has <code>modified</code> as a standard output in the <code>tree</code> data frame. This is an average of the binary index of the cylinders modified by Real Twig. The <code>rTwig</code> version and run date are now also saved as <code>version</code> and <code>run_date</code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
 <ul><li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
 <li><p>Fixed multiple bugs in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>. The first (issue <a href="https://github.com/aidanmorales/rTwig/issues/15" class="external-link">#15</a>) occured because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met. The other issues occurred when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.</p></li>
+<li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
