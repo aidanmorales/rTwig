@@ -12,7 +12,13 @@
 
 -   Fixed a bug in `plot_qsm()`, where certain variable names conflicted with internal functions, resulting in an error (issue #12).
 
--   Fixed multiple bugs in `tree_metrics()`. The first (issue #15) occured because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met. The other issues occurred when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.
+-   Fixed multiple bugs in `tree_metrics()`:
+
+    -   Issue #15 occurred because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met.
+
+    -   Fixed an issue when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.
+
+    -   Fixed an issue where crown base height calculations would fail if there was only one first order branch present.
 
 -   Update `Twigs` vignette with new info and plots.
 

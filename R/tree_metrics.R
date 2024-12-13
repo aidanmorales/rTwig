@@ -927,6 +927,10 @@ crown_base_height <- function(
     if (i == nb && nb > 1) {
       b <- order[1]
     }
+  } else {
+    nc <- nrow(start)
+    index1 <- 1:nc
+    b <- pull(filter(branch, .data$branch_order == 1), "branch")
   }
 
   # Search all the children of the first major branch
