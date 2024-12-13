@@ -1,6 +1,7 @@
 ---
 title: "Twigs"
 output: rmarkdown::html_vignette
+bibliography: ../inst/REFERENCES.bib
 vignette: >
   %\VignetteIndexEntry{Twigs}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,7 +17,21 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Twigs are the smallest above ground woody component of a tree. Twigs are responsible for supporting the delicate tissues needed to grow leaves and protect the buds during the dormant season. Because twig measurements are the basis for the Real Twig method, and publicly available databases of twigs are limited, we present a database of twig measurements for a wide range of tree genera and species.
+Twigs are the smallest above ground woody component of a tree. Twigs are responsible for supporting the delicate tissues needed to grow leaves and protect the buds during the dormant season. Because twig measurements are the basis for the Real Twig method, and publicly available databases of twigs are limited, we present a database of twig measurements for a wide range of tree genera, species, and qualitative indices.
+
+## Recommendations
+
+The twig radius is the most important part of Real Twig. We recommend the following process of selecting a twig radius:
+
+1.  Directly measure a twig on the focal tree whenever possible.
+
+2.  If direct measurements are not possible, use a species specific measurement from the `twigs` database.
+
+3.  If the species is not present in the database but the species is known, use a qualitative index describing the twig, such as *slender*, or *stout* (often found in many botanical manuals) to pick a radius from the `twigs_index` database.
+
+4.  If none of the above are possible, use the genus average value from the `twigs` database.
+
+The reason we advocate for a qualitative index over the genus average, is that genera with many species can have a wide range of twig radii. The qualitative index ensures the measurement is closer to the true value than a potentially biased average. However, if the species in the genera are similar the genus average can be used with good results [@real_twig_forestry].
 
 ## Installation
 
@@ -66,11 +81,17 @@ Let's see the breakdown of species.
 unique(twigs$scientific_name)
 ```
 
+Similarly, we also provide the same data base broken down by twig size index. The size classes were adapted from [@coder2021].
+
+```{r}
+twigs_index
+```
+
 ## Visualization
 
-Let's visualize some of the twig data!
+Let's visualize some of the twig data by oak species, and then by size index.
 
-```{r fig.height=6, fig.width=7}
+```{r fig.height=6, fig.width=7, echo = FALSE}
 # Lets look at a subset of oak species
 twigs %>%
   filter(grepl("Quercus", scientific_name)) %>%
@@ -87,4 +108,50 @@ twigs %>%
   ) +
   scale_x_discrete(limits = rev) +
   theme_classic()
+
+twigs %>%
+  mutate(
+    size_index = case_when(
+      radius_mm <= 1 ~ "slender",
+      radius_mm > 1 & radius_mm <= 2 ~ "moderately slender",
+      radius_mm > 2 & radius_mm <= 2.5 ~ "moderately stout",
+      radius_mm > 2.5 ~ "stout"
+    ),
+    size_index = factor(
+      size_index, 
+      levels = c("slender", "moderately slender", "moderately stout", "stout")
+    ),
+    index = case_when(
+      size_index == "slender" ~ 1,
+      size_index == "moderately slender" ~ 2,
+      size_index == "moderately stout" ~ 3,
+      size_index == "stout" ~ 4
+    )
+  ) %>%
+  ggplot(
+    aes(
+      y = radius_mm,
+      x = index,
+      color = size_index,
+      fill = size_index
+    )
+  ) +
+  geom_boxplot() +
+  stat_summary(
+    fun = "mean",
+    geom = "crossbar",
+    width = 0.75,
+    colour = "black",
+    show.legend = FALSE
+  ) +
+  labs(
+    x = "",
+    y = "Twig Radius (mm)",
+    color = "Twig Size Index",
+    fill = "Twig Size Index"
+  ) +
+  theme_classic()
+
 ```
+
+## References

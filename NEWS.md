@@ -2,6 +2,8 @@
 
 ## New Features
 
+-   New database called `twigs_index`. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the `Twigs` vignette.
+
 -   `plot_qsm()` can now accept random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
 
 -   `tree_metrics()` now has `modified` as a standard output in the `tree` data frame. This is an average of the binary index of the cylinders modified by Real Twig. The `rTwig` version and run date are now also saved as `version` and `run_date`.
@@ -11,6 +13,8 @@
 -   Fixed a bug in `plot_qsm()`, where certain variable names conflicted with internal functions, resulting in an error (issue #12).
 
 -   Fixed multiple bugs in `tree_metrics()`. The first (issue #15) occured because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met. The other issues occurred when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.
+
+-   Update `Twigs` vignette with new info and plots.
 
 # rTwig 1.3.0
 
