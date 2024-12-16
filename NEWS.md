@@ -6,7 +6,11 @@
 
 -   `plot_qsm()` can now accept random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
 
--   `tree_metrics()` now has `modified` as a standard output in the `tree` data frame. This is an average of the binary index of the cylinders modified by Real Twig. The `rTwig` version and run date are now also saved as `version` and `run_date`.
+-   `tree_metrics()`:
+
+    -   `modified` is a standard output in the `tree` data frame. This is an average of the binary index of the cylinders modified by Real Twig. The `rTwig` version and run date are now also saved as `version` and `run_date`.
+
+    -   `volume_change_pct` and `area_change_pct` are standard outputs of the `tree` data frame. These represent the percent change using `radius` and `raw_radius`.
 
 ## Improvements
 

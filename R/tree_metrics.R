@@ -462,12 +462,18 @@ calculate_tree_metrics <- function(
   tree$start_y <- start[1, 2]
   tree$start_z <- start[1, 3]
 
-  # Modification Index ---------------------------------------------------------
+  # Modification Indices -------------------------------------------------------
   if ("modified" %in% colnames(cylinder)) {
     tree$modified <- mean(cylinder$modified)
   } else {
     tree$modified <- NA
   }
+
+  volume_old <- sum(pi * cylinder$raw_radius^2 * cylinder$length)
+  area_old <- 2 * pi * sum(cylinder$raw_radius * cylinder$length)
+
+  tree$volume_change_pct <- (tree$tree_volume_m3 - volume_old) / volume_old * 100
+  tree$area_change_pct <- (tree$tree_area_m2 - area_old) / area_old * 100
 
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree
