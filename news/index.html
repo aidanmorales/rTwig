@@ -52,7 +52,11 @@
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</p></li>
 <li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> can now accept random color palettes by setting <code>palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</p></li>
-<li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> now has <code>modified</code> as a standard output in the <code>tree</code> data frame. This is an average of the binary index of the cylinders modified by Real Twig. The <code>rTwig</code> version and run date are now also saved as <code>version</code> and <code>run_date</code>.</p></li>
+<li>
+<p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:</p>
+<ul><li><p><code>modified</code> is a standard output in the <code>tree</code> data frame. This is an average of the binary index of the cylinders modified by Real Twig. The <code>rTwig</code> version and run date are now also saved as <code>version</code> and <code>run_date</code>.</p></li>
+<li><p><code>volume_change_pct</code> and <code>area_change_pct</code> are standard outputs of the <code>tree</code> data frame. These represent the percent change using <code>radius</code> and <code>raw_radius</code>.</p></li>
+</ul></li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
