@@ -79,6 +79,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       growth_length = "growth_length", branch_order = "branch_order",
       reverse_order = "reverse_order", total_children = "total_children",
       base_distance = "base_distance", twig_distance = "twig_distance",
+      vessel_volume = "vessel_volume", pipe_area = "pipe_area",
+      pipe_radius = "pipe_radius",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
       end_x = "end_x", end_y = "end_y", end_z = "end_z", verify
@@ -95,6 +97,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       growth_length = "growthLength", branch_order = "BranchOrder",
       reverse_order = "reverseBranchOrder", total_children = "totalChildren",
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
       end_x = "end.x", end_y = "end.y", end_z = "end.z", verify
@@ -111,6 +115,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       growth_length = "growthLength", branch_order = "branchOrder",
       reverse_order = "reverseBranchOrder", total_children = "totalChildren",
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ", verify
@@ -127,6 +133,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       growth_length = "growthLength", branch_order = "branch_order",
       reverse_order = "reverseBranchOrder", total_children = "totalChildren",
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
       end_x = "ex", end_y = "ey", end_z = "ez", verify
@@ -143,6 +151,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       growth_length = "growthLength", branch_order = "branching_order",
       reverse_order = "reverseBranchOrder", total_children = "totalChildren",
       base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ", verify
@@ -174,6 +184,9 @@ tree_metrics <- function(cylinder, verify = TRUE) {
 #' @param total_children cylinder total children
 #' @param base_distance cylinder distance from base of the tree
 #' @param twig_distance cylinder average distance from the twigs
+#' @param vessel_volume cylinder vessel volume
+#' @param pipe_area cylinder pipe area
+#' @param pipe_radius cylinder pipe radius
 #' @param start_x cylinder start x position
 #' @param start_y cylinder start y position
 #' @param start_z cylinder start z position
@@ -182,7 +195,7 @@ tree_metrics <- function(cylinder, verify = TRUE) {
 #' @param axis_z cylinder z axis
 #' @param end_x cylinder end x position
 #' @param end_y cylinder end y position
-#' @param end_z cylinder end z position'
+#' @param end_z cylinder end z position
 #' @param verify verify connectivity
 #' @returns list of tree metrics
 #' @noRd
@@ -203,6 +216,9 @@ calculate_tree_metrics <- function(
     total_children,
     base_distance,
     twig_distance,
+    vessel_volume,
+    pipe_area,
+    pipe_radius,
     start_x,
     start_y,
     start_z,
@@ -231,6 +247,9 @@ calculate_tree_metrics <- function(
       total_children = {{ total_children }},
       base_distance = {{ base_distance }},
       twig_distance = {{ twig_distance }},
+      vessel_volume = {{ vessel_volume }},
+      pipe_area = {{ pipe_area }},
+      pipe_radius = {{ pipe_radius }},
       start_x = {{ start_x }},
       start_y = {{ start_y }},
       start_z = {{ start_z }},
@@ -398,6 +417,7 @@ calculate_tree_metrics <- function(
 
   tree$twigs <- length(unique(twig_cyl$branch))
   tree$twig_length_m <- sum(twig_cyl$length)
+  tree$twig_distance_m <- cylinder$twig_distance[base]
 
   tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
   tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)
@@ -408,8 +428,8 @@ calculate_tree_metrics <- function(
   tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
 
   # Diameter at Base (Tree or Branch) ------------------------------------------
-  tree$d_base_qsm_cm <- pull(filter(trunk_cyl, id == !!base), "radius") * 200
-  tree$d_base_raw_cm <- pull(filter(trunk_cyl, id == !!base), "raw_radius") * 200
+  tree$d_base_qsm_cm <- cylinder$radius[base] * 200
+  tree$d_base_raw_cm <- cylinder$raw_radius[base] * 200
 
   # Generate Point Cloud -------------------------------------------------------
   inform("Generating Point Cloud")
@@ -456,6 +476,11 @@ calculate_tree_metrics <- function(
     tree$crown_area_m2 <- crown_hull_3d$area
     tree$crown_volume_m3 <- crown_hull_3d$vol / 1000
   }
+
+  # Allometric Variables -------------------------------------------------------
+  tree$vessel_volume <- cylinder$vessel_volume[base]
+  tree$pipe_area <- cylinder$pipe_area[base]
+  tree$pipe_radius <- cylinder$pipe_radius[base]
 
   # Tree Location --------------------------------------------------------------
   tree$start_x <- start[1, 1]

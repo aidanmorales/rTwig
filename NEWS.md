@@ -10,7 +10,9 @@
 
     -   `modified` is a standard output in the `tree` data frame. This is an average of the binary index of the cylinders modified by Real Twig. The `rTwig` version and run date are now also saved as `version` and `run_date`.
 
-    -   `volume_change_pct` and `area_change_pct` are standard outputs of the `tree` data frame. These represent the percent change using `radius` and `raw_radius`.
+    -   `volume_change_pct` and `area_change_pct` are standard outputs of the `tree` data frame. These represent the percent change in total tree volume and surface area using `radius` and `raw_radius`.
+
+    -   `vessel_volume`, `pipe_area`, `pipe_radius`, and `twig_distance_m` are standard outputs. These values are taken from the base of the QSM.
 
 ## Improvements
 
