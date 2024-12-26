@@ -3,6 +3,7 @@
 export(box_dimension)
 export(cluster_cloud)
 export(correct_radii)
+export(export_blender)
 export(export_mat)
 export(export_mesh)
 export(import_qsm)
