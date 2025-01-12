@@ -50,13 +50,17 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li><p>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</p></li>
-<li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> can now accept random color palettes by setting <code>palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</p></li>
+<ul><li>
+<code><a href="../reference/export_blender.html">export_blender()</a></code>: a new function to export a QSM to <a href="https://www.blender.org/" class="external-link">Blender</a> using the <a href="https://github.com/InverseTampere/qsm-blender-addons" class="external-link">QSM Blender Addons</a> format.</li>
+<li>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</li>
 <li>
-<p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:</p>
+<code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>: now accepts random color palettes by setting <code>palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</li>
+<li>
+<code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:
 <ul><li><p><code>modified</code> is a standard output in the <code>tree</code> data frame. This is an average of the binary index of the cylinders modified by Real Twig. The <code>rTwig</code> version and run date are now also saved as <code>version</code> and <code>run_date</code>.</p></li>
 <li><p><code>volume_change_pct</code> and <code>area_change_pct</code> are standard outputs of the <code>tree</code> data frame. These represent the percent change in total tree volume and surface area using <code>radius</code> and <code>raw_radius</code>.</p></li>
-<li><p><code>vessel_volume</code>, <code>pipe_area</code>, <code>pipe_radius</code>, and <code>twig_distance_m</code> are standard outputs. These values are taken from the base of the QSM.</p></li>
+<li><p><code>vessel_volume</code>, <code>pipe_area</code>, <code>pipe_radius</code>, and <code>twig_distance_m</code> are standard outputs taken from the base of the QSM.</p></li>
+<li><p>Added first order branches to the branch distribution metrics to better match the output of TreeQSM. These columns include <code>_1</code> in their column names.</p></li>
 </ul></li>
 </ul></div>
 <div class="section level3">
@@ -64,9 +68,11 @@
 <ul><li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
 <li>
 <p>Fixed multiple bugs in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:</p>
-<ul><li><p>Issue <a href="https://github.com/aidanmorales/rTwig/issues/15" class="external-link">#15</a> occurred because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met.</p></li>
+<ul><li><p>Empty azimuth and zenith factors are now filled with 0, instead of being missing.</p></li>
+<li><p>Issue <a href="https://github.com/aidanmorales/rTwig/issues/15" class="external-link">#15</a> occurred because the cylinder verification was at too high a level and could not properly create the cylinder network when an error condition was met.</p></li>
 <li><p>Fixed an issue when only a single branch or segment was provided as filtered data, causing the calculations to fail. The user is now show a warning when these edge cases occur.</p></li>
 <li><p>Fixed an issue where crown base height calculations would fail if there was only one first order branch present.</p></li>
+<li><p>Fixed an issue where disconnected data using <code>verify = FALSE</code> would fail crown base calculations due to missing branches (issue <a href="https://github.com/aidanmorales/rTwig/issues/18" class="external-link">#18</a>).</p></li>
 </ul></li>
 <li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
 </ul></div>
@@ -95,7 +101,7 @@
 <h2 class="pkg-version" data-toc-text="1.2.0" id="rtwig-120">rTwig 1.2.0<a class="anchor" aria-label="anchor" href="#rtwig-120"></a></h2><p class="text-muted">CRAN release: 2024-11-08</p>
 <div class="section level3">
 <h3 id="new-features-1-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-2-0"></a></h3>
-<ul><li><p><code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code>: A New function to transfer QSM variables to the input point cloud or simulate a point cloud from the QSM. Efficient nearest neighbor searching is done with the C++ <em>nanoflann</em> library: <a href="https://github.com/jlblancoc/nanoflann" class="external-link uri">https://github.com/jlblancoc/nanoflann</a></p></li>
+<ul><li><p><code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code>: A new function to transfer QSM variables to the input point cloud or simulate a point cloud from the QSM. Efficient nearest neighbor searching is done with the C++ <em>nanoflann</em> library: <a href="https://github.com/jlblancoc/nanoflann" class="external-link uri">https://github.com/jlblancoc/nanoflann</a></p></li>
 <li><p><code><a href="../reference/prune_qsm.html">prune_qsm()</a></code>: A new function to efficiently and easily prune QSMs using multiple pruning criteria and return options.</p></li>
 <li><p>aRchi QSMs are now supported in the package.</p></li>
 <li><p>Users can now pass radius or color column variables either unquoted or quoted to user facing functions like <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code>, or <code><a href="../reference/export_mesh.html">export_mesh()</a></code>. Piping the QSM cylinders into these functions allows the user to easily select unquoted columns.</p></li>
