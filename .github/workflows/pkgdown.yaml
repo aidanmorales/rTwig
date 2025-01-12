@@ -37,7 +37,7 @@ jobs:
 
       - name: Set rgl.useNULL = TRUE
         run: |
-          Rscript -e 'options(rgl.useNULL = TRUE)'
+          Rscript -e "options(rgl.useNULL = TRUE)"
         shell: Rscript {0}
 
       - name: Build site
