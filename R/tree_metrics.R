@@ -963,7 +963,7 @@ crown_base_height <- function(
       HL[i] <- sqrt(sum(V * V)) / dbh * 2
       NC[i] <- sum(branch$parent_branch == i)
     }
-    M <- min(10, stats::median(HL))
+    M <- min(10, stats::median(HL, na.rm = TRUE))
 
     # Sort the branches according to their heights
     height <- branch$height_m[1:nb]
@@ -1007,11 +1007,13 @@ crown_base_height <- function(
   base_height <- max(start[, 3])
   for (i in 1:length(B)) {
     C <- index1[cylinder$branch == B[i]]
-    ht <- min(tips[C, 3])
-    hb <- min(start[C, 3])
-    h <- min(hb, ht)
-    if (h < base_height) {
-      base_height <- h
+    if (length(C) > 0) {
+      ht <- min(tips[C, 3])
+      hb <- min(start[C, 3])
+      h <- min(hb, ht)
+      if (h < base_height) {
+        base_height <- h
+      }
     }
   }
 
@@ -1116,13 +1118,24 @@ tree_distributions <- function(cylinder, distribution) {
 
     # Calculate volume, area, and length for each class
     results <- tidytable(Par, radius = cylinder$radius, length = cylinder$length) %>%
-      mutate(class = cut(.data$Par, breaks = seq(0, n * a, by = a), labels = !!index, include.lowest = TRUE)) %>%
+      mutate(
+        class = cut(
+          .data$Par,
+          breaks = seq(0, n * a, by = a),
+          labels = !!index, include.lowest = TRUE
+        ),
+        class = factor(class, levels = index)
+      ) %>%
       group_by("class") %>%
       summarise(
         volume_m3 = pi * sum(.data$radius^2 * .data$length, na.rm = TRUE),
         area_m2 = 2 * pi * sum(.data$radius * .data$length, na.rm = TRUE),
         length_m = sum(.data$length, na.rm = TRUE),
         .groups = "drop"
+      ) %>%
+      complete(
+        class = factor(index, levels = index),
+        fill = list(volume_m3 = 0, area_m2 = 0, length_m = 0)
       ) %>%
       mutate(class = as.numeric(as.character(.data$class))) %>%
       arrange(.data$class) %>%
@@ -1187,25 +1200,25 @@ branch_distributions <- function(branch, tree, distribution) {
   results <- tidytable(
     !!name := index,
     volume_m3 = na_dbl,
-    # volume_1_m3 = na_dbl,
     area_m2 = na_dbl,
-    # area_1_m2 = na_dbl,
     length_m = na_dbl,
-    # length_1_m = na_dbl,
     branches = na_int,
-    # branches_1 = na_int
+    volume_1_m3 = na_dbl,
+    area_1_m2 = na_dbl,
+    length_1_m = na_dbl,
+    branches_1 = na_int
   )
 
   for (i in 1:n) {
     I <- Par >= (i - 1) * a & Par < i * a
     results[i, 2] <- sum(branch$volume_m3[-1][I]) # volume (all branches)
-    # results[i, 3] <- sum(branch$volume_m3[-1][I & branch$branch_order[-1] == 1]) # volume (1st-branches)
     results[i, 3] <- sum(branch$area_m2[-1][I]) # area (all branches)
-    # results[i, 5] <- sum(branch$area_m2[-1][I & branch$branch_order[-1] == 1]) # area (1st-branches)
     results[i, 4] <- sum(branch$length_m[-1][I]) # length (all branches)
-    # results[i, 7] <- sum(branch$length_m[-1][I & branch$branch_order[-1] == 1]) # length (1st-branches)
     results[i, 5] <- sum(I) # number (all branches)
-    # results[i, 9] <- sum(I & branch$branch_order[-1] == 1) # number (1st-branches)
+    results[i, 6] <- sum(branch$volume_m3[-1][I & branch$branch_order[-1] == 1]) # volume (1st-branches)
+    results[i, 7] <- sum(branch$area_m2[-1][I & branch$branch_order[-1] == 1]) # area (1st-branches)
+    results[i, 8] <- sum(branch$length_m[-1][I & branch$branch_order[-1] == 1]) # length (1st-branches)
+    results[i, 9] <- sum(I & branch$branch_order[-1] == 1) # number (1st-branches)
   }
 
   return(results)
