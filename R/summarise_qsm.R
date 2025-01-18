@@ -1,4 +1,4 @@
-#' QSM Summary
+#' Summarise QSM
 #'
 #' @description Generates a simple QSM summary (e.g. volume, surface area, dbh, etc.) by totals and branch order.
 #'
@@ -15,16 +15,16 @@
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
 #' cylinder <- update_cylinders(cylinder)
-#' qsm_summary(cylinder, radius)
+#' summarise_qsm(cylinder, radius)
 #'
 #' # TreeQSM Triangulation
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_qsm(file)
+#' qsm <- import_treeqsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
-#' qsm_summary(cylinder, radius, triangulation = qsm$triangulation)
+#' summarise_qsm(cylinder, radius, triangulation = qsm$triangulation)
 #'
-qsm_summary <- function(cylinder, radius, triangulation = NULL) {
+summarise_qsm <- function(cylinder, radius, triangulation = NULL) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -234,7 +234,7 @@ data_summary <- function(
     if (!is_list(triangulation)) {
       message <- paste(
         paste0("`triangulation` must be a list, not ", class(triangulation), "."),
-        "i `triangulation` must be created by `import_qsm()`.",
+        "i `triangulation` must be created by `import_treeqsm()`.",
         sep = "\n"
       )
       abort(message, class = "data_format_error")
@@ -330,4 +330,24 @@ data_summary <- function(
   }
 
   return(list(summary, summary2))
+}
+
+#' @rdname summarise_qsm
+#' @export
+summarize_qsm <- summarise_qsm
+
+
+#' @title QSM Summary
+#'
+#' @description `qsm_summary` is deprecated and will be removed in a future version. Use `summarise_qsm()` instead.
+#' @param ... function inputs
+#' @return Returns a list
+#' @export
+qsm_summary <- function(...) {
+  warn(paste(
+    "`qsm_summary()` was deprecated in rTwig 1.4.0.",
+    "i Please use `summarise_qsm()` instead.",
+    sep = "\n"
+  ))
+  suppressMessages(summarise_qsm(...))
 }

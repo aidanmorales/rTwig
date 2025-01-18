@@ -37,7 +37,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' cylinder <- import_qsm(file)$cylinder
+#' cylinder <- import_treeqsm(file)$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' metrics <- tree_metrics(cylinder)
 #' names(metrics)
@@ -281,7 +281,7 @@ calculate_tree_metrics <- function(
     message <- paste(
       "The QSM is not a connected structure!",
       "x Tree metrics can not be calculated!",
-      "i Please use `qsm_summary()` to calculate metrics for disconnected structures.",
+      "i Please use `summarise_qsm()` to calculate metrics for disconnected structures.",
       sep = "\n"
     )
     abort(message)

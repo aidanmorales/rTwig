@@ -24,7 +24,7 @@ This function is required to run the rest of the rTwig functions.
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_qsm(file)
+qsm <- import_treeqsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 str(cylinder)

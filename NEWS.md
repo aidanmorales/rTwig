@@ -16,6 +16,10 @@
 
 ## Improvements
 
+-   Function names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. `standardize_qsm()` vs `standardise_qsm()`.
+
+-   Some functions have been renamed to follow tidy guidelines and have consistency within rTwig and other R packages (e.g. `qsm_summary()` -\> `summarise_qsm()`).
+
 -   Fixed a bug in `plot_qsm()`, where certain variable names conflicted with internal functions, resulting in an error (issue #12).
 
 -   Fixed multiple bugs in `tree_metrics()`:
@@ -31,6 +35,12 @@
     -   Fixed an issue where disconnected data using `verify = FALSE` would fail crown base calculations due to missing branches (issue #18).
 
 -   Update `Twigs` vignette with new info and plots.
+
+## Breaking Changes
+
+-   `import_qsm()` is deprecated and has been replaced with `import_treeqsm()`. The functionality is unchanged, but the name changed to be explicit about its use. `import_qsm()` still functions, but will be removed in a future rTwig release.
+
+-   `qsm_summary()` is deprecated and has been replaced with `summarise_qsm()`. The functionality is unchanged, but the name changed to be consistent with tidy guidelines. `qsm_summary()` still functions, but will be removed in a future rTwig release.
 
 # rTwig 1.3.0
 

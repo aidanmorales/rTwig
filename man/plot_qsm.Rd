@@ -87,7 +87,7 @@ Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backe
 
 ## TreeQSM Processing Chain & Triangulation
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_qsm(file)
+qsm <- import_treeqsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 plot_qsm(cylinder)

@@ -33,7 +33,7 @@
 #'
 #' ## TreeQSM Processing Chain & Triangulation
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_qsm(file)
+#' qsm <- import_treeqsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' plot_qsm(cylinder)
@@ -182,7 +182,7 @@ plot_qsm <- function(
     if (!is_list(triangulation)) {
       message <- paste(
         paste0("`triangulation` must be a list, not ", class(triangulation), "."),
-        "i `triangulation` must be created by `import_qsm()`.",
+        "i `triangulation` must be created by `import_treeqsm()`.",
         sep = "\n"
       )
       abort(message, class = "data_format_error")

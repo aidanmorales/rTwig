@@ -38,7 +38,7 @@ throughout the tree.
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-cylinder <- import_qsm(file)$cylinder
+cylinder <- import_treeqsm(file)$cylinder
 cylinder <- update_cylinders(cylinder)
 metrics <- tree_metrics(cylinder)
 names(metrics)

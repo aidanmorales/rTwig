@@ -1,6 +1,6 @@
-#' Standardize QSM
+#' Standardise QSM
 #'
-#' @description Standardizes QSM variable names and ordering across different QSM software
+#' @description Standardises QSM variable names and ordering across different QSM software
 #'
 #' @details Renames supported QSM software output columns to be consistent.
 #' All names are lower case and underscore delimited. See the dictionary
@@ -8,6 +8,8 @@
 #' ensures maximum compatibility when analyzing QSMs made with different
 #' software. This function can be run either before or after
 #' `update_cylinders()` has been run, or at any stage.
+#'
+#' `standardise_qsm()` and `standardise_qsm()` are synonyms.
 #'
 #' @param cylinder QSM cylinder data frame
 #'
@@ -18,24 +20,24 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_qsm(file)
+#' qsm <- import_treeqsm(file)
 #' cylinder <- qsm$cylinder
-#' cylinder <- standardize_qsm(cylinder)
+#' cylinder <- standardise_qsm(cylinder)
 #' str(cylinder)
 #'
 #' ## SimpleForest Processing Chain
 #' file <- system.file("extdata/QSM.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
-#' cylinder <- standardize_qsm(cylinder)
+#' cylinder <- standardise_qsm(cylinder)
 #' str(cylinder)
 #'
 #' ## aRchi Processing Chain
 #' file <- system.file("extdata/QSM2.csv", package = "rTwig")
 #' cylinder <- read.csv(file)
-#' cylinder <- standardize_qsm(cylinder)
+#' cylinder <- standardise_qsm(cylinder)
 #' str(cylinder)
 #'
-standardize_qsm <- function(cylinder) {
+standardise_qsm <- function(cylinder) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -142,3 +144,7 @@ standardize_qsm <- function(cylinder) {
     abort(message, class = "data_format_error")
   }
 }
+
+#' @rdname standardise_qsm
+#' @export
+standardize_qsm <- standardise_qsm

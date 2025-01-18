@@ -16,9 +16,11 @@ knitr::opts_chunk$set(
 
 ## Background
 
-Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with the `standardize_qsm()` function, and creates a more consistent experience when working with QSMs. Below are detailed definitions of the variable names using the rTwig QSM format.
+Real Twig allows QSM variable names and metrics to be standardized across TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with the `standardise_qsm()` and `tree_metrics()` functions, creating a consistent experience when working with QSMs. Below are detailed definitions of the standard variable names in rTwig.
 
-## Dictionary
+## Cylinder
+
+All of the variables shown here are created with the `update_cylinders()` function, which should be run as soon as a QSM is imported with rTwig. Unless, `standardise_qsm()` is run, the variable names will vary depending on the particular QSM software used.
 
 #### Cylinder Attributes
 
@@ -73,3 +75,7 @@ Real Twig allows QSM variable names to be standardized across TreeQSM, SimpleFor
 **`pipe_area:`** This is the theoretical cross-sectional area of a given cylinder based on allometric scaling theory. The units and values are the total number of supported twigs.
 
 **`pipe_radius:`** This is the theoretical radius of a given cylinder based on allometric scaling theory. The units and values are the square root of the total number of supported twigs.
+
+## Metrics
+
+The

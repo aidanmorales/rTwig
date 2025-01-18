@@ -101,9 +101,9 @@ run_rtwig <- function(
     # Import QSM ---------------------------------------------------------------
     if (!is.null(version)) {
       version <- version
-      cylinder <- import_qsm(file, version)$cylinder
+      cylinder <- import_treeqsm(file, version)$cylinder
     } else {
-      cylinder <- import_qsm(file)$cylinder
+      cylinder <- import_treeqsm(file)$cylinder
     }
 
     # Update Cylinders ---------------------------------------------------------
@@ -116,7 +116,7 @@ run_rtwig <- function(
 
     # Standardize QSM ----------------------------------------------------------
     if (standardize == TRUE) {
-      cylinder <- standardize_qsm(cylinder)
+      cylinder <- standardise_qsm(cylinder)
     }
 
     # Correct Radii ------------------------------------------------------------
@@ -144,7 +144,7 @@ run_rtwig <- function(
 
     # Standardize QSM ----------------------------------------------------------
     if (standardize == TRUE) {
-      cylinder <- standardize_qsm(cylinder)
+      cylinder <- standardise_qsm(cylinder)
     }
 
     # Correct Radii ------------------------------------------------------------
@@ -172,7 +172,7 @@ run_rtwig <- function(
 
     # Standardize QSM ----------------------------------------------------------
     if (standardize == TRUE) {
-      cylinder <- standardize_qsm(cylinder)
+      cylinder <- standardise_qsm(cylinder)
     }
 
     # Correct Radii ------------------------------------------------------------

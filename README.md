@@ -78,7 +78,7 @@ visualize stem triangulation meshes from TreeQSM.
 
 The goal of rTwig was to provide users with tools to visualize and
 analyze QSM metrics without being tied to any particular QSM software.
-To that end, `standardize_qsm()` provides a consistent naming convention
+To that end, `standardise_qsm()` provides a consistent naming convention
 between supported QSMs, making it easy to combine and analyze QSMs from
 different sources. `tree_metrics()` calculates all of the major QSM
 metrics between all supported software. `prune_qsm()` can virtually
@@ -98,9 +98,9 @@ rTwig currently supports
 ## Functions
 
 - `run_rtwig()` runs the Real Twig method on a QSM
-- `import_qsm()` imports a QSM created by TreeQSM (.mat)
+- `import_treeqsm()` imports a QSM created by TreeQSM (.mat)
 - `import_treegraph()` imports a QSM created by Treegraph (.json)
-- `standardize_qsm()` standardizes QSM variable names across supported
+- `standardise_qsm()` standardises QSM variable names across supported
   software
 - `update_cylinders()` updates cylinder relationships and adds new QSM
   variables
@@ -109,7 +109,7 @@ rTwig currently supports
   cloud
 - `cluster_cloud()` transfers QSM variables to a point cloud or
   simulates a point cloud
-- `qsm_summary()` summarises QSM diameter, height, volume, and surface
+- `summarise_qsm()` summarises QSM diameter, height, volume, and surface
   area
 - `smooth_qsm()` connects cylinder end-to-end to smooth branch
   visualization

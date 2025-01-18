@@ -15,15 +15,15 @@
 #'
 #' ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_qsm(file, version = "2.x.x")
+#' qsm <- import_treeqsm(file, version = "2.x.x")
 #' summary(qsm)
 #'
 #' ## Read a TreeQSM MATLAB file in the 2.0 format
 #' file <- system.file("extdata/QSM_2.mat", package = "rTwig")
-#' qsm <- import_qsm(file, version = "2.0")
+#' qsm <- import_treeqsm(file, version = "2.0")
 #' names(qsm)
 #'
-import_qsm <- function(filename, version = "2.x.x") {
+import_treeqsm <- function(filename, version = "2.x.x") {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(filename)) {
     message <- "argument `filename` is missing, with no default."
@@ -399,11 +399,26 @@ import_qsm <- function(filename, version = "2.x.x") {
   } else {
     message <- paste(
       "`version` is invalid.",
-      "i Only TreeQSM v2.0 - v2.4.1 are supported in `import_qsm()`.",
+      "i Only TreeQSM v2.0 - v2.4.1 are supported in `import_treeqsm()`.",
       sep = "\n"
     )
     abort(message, class = "invalid_argument")
   }
 
   return(qsm)
+}
+
+#' @title Import TreeQSM
+#'
+#' @description `import_qsm()` is deprecated and will be removed in a future version. Use `import_treeqsm()` instead.
+#' @param ... function inputs
+#' @return Returns a list
+#' @export
+import_qsm <- function(...) {
+  warn(paste(
+    "`import_qsm()` was deprecated in rTwig 1.4.0.",
+    "i Please use `import_treeqsm()` instead.",
+    sep = "\n"
+  ))
+  suppressMessages(import_treeqsm(...))
 }

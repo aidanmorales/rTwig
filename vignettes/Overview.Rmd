@@ -62,7 +62,7 @@ library(gt)
 
 rTwig supports all available versions of TreeQSM, from *v2.0* to *v2.4.1* at the time of writing. It is important to note that legacy versions of TreeQSM (*v2.0*) store data in a much different format than modern versions (*v2.3.0-2.4.1*). It is strongly advised to use the latest version of TreeQSM with rTwig for the best QSM topology and volume estimates. Older versions can be used, but the QSM topology is poor, and volume underestimation is almost guaranteed.
 
-Regardless of the version of TreeQSM or MATLAB used, the `import_qsm()` function will import a QSM (.mat extension) and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_qsm()` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
+Regardless of the version of TreeQSM or MATLAB used, the `import_treeqsm()` function will import a QSM (.mat extension) and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_treeqsm()` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
 
 SimpleForest exports its QSMs as .csv files, so they are easy to load into R using the built in `read.csv()` function. If the QSM contains thousands of cylinders, it is much faster to use the `fread()` function from the `data.table` package to take advantage of multi-threaded support.
 
@@ -72,14 +72,14 @@ aRchi is built in R, so there is no provided function to import the data. Users 
 
 #### Example 1: TreeQSM v2.3.0 - 2.4.1
 
-We can import a QSM by supplying the `import_qsm()` function the directory to our QSM.
+We can import a QSM by supplying the `import_treeqsm()` function the directory to our QSM.
 
 ```{r, message=FALSE}
 # QSM directory
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
 # Import and save QSM
-qsm <- import_qsm(file)
+qsm <- import_treeqsm(file)
 ```
 
 The QSM should be a list with six elements. We can check it as follows:
@@ -108,7 +108,7 @@ Let's try importing an old QSM and check its structure.
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 
 # Import and save QSM
-qsm2 <- import_qsm(file, version = "2.0")
+qsm2 <- import_treeqsm(file, version = "2.0")
 
 # QSM Info
 summary(qsm2)
@@ -173,14 +173,14 @@ filter(twigs, scientific_name == "Gymnocladus dioicus")
 
 ## Summary Metrics
 
-Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `qsm_summary()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large buttress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
+Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `summarise_qsm()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large buttress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
 
 ```{r, message = FALSE}
 # QSM summary
-qsm_summary(cylinder = cylinder, radius = radius)[[1]]
+summarise_qsm(cylinder = cylinder, radius = radius)[[1]]
 
 # QSM summary with Triangulation
-qsm_summary(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[[1]]
+summarise_qsm(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[[1]]
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
@@ -214,7 +214,7 @@ cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 
 ```{r, r, message = FALSE}
 # Corrected QSM summary
-qsm_summary(cylinder, radius = radius)[[1]]
+summarise_qsm(cylinder, radius = radius)[[1]]
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
