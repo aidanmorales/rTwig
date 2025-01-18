@@ -973,9 +973,11 @@ crown_base_height <- function(
     i <- 1
     while (i < nb) {
       i <- i + 1
-      if (branch$diameter_base_cm[order[i]] / 100 > d && HL[order[i]] > M) {
-        b <- order[i]
-        i <- nb + 2
+      if (!is.na(HL[i])) {
+        if (branch$diameter_base_cm[order[i]] / 100 > d && HL[order[i]] > M) {
+          b <- order[i]
+          i <- nb + 2
+        }
       }
     }
     if (i == nb && nb > 1) {
