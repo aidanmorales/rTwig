@@ -65,7 +65,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
-<ul><li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
+<ul><li><p>Function names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. <code><a href="../reference/standardise_qsm.html">standardize_qsm()</a></code> vs <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code>.</p></li>
+<li><p>Some functions have been renamed to follow tidy guidelines and have consistency within rTwig and other R packages (e.g. <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> -&gt; <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code>).</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
 <li>
 <p>Fixed multiple bugs in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:</p>
 <ul><li><p>Empty azimuth and zenith factors are now filled with 0, instead of being missing.</p></li>
@@ -75,6 +77,11 @@
 <li><p>Fixed an issue where disconnected data using <code>verify = FALSE</code> would fail crown base calculations due to missing branches (issue <a href="https://github.com/aidanmorales/rTwig/issues/18" class="external-link">#18</a>).</p></li>
 </ul></li>
 <li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/import_qsm.html">import_qsm()</a></code> is deprecated and has been replaced with <code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code>. The functionality is unchanged, but the name changed to be explicit about its use. <code><a href="../reference/import_qsm.html">import_qsm()</a></code> still functions, but will be removed in a future rTwig release.</p></li>
+<li><p><code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> is deprecated and has been replaced with <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code>. The functionality is unchanged, but the name changed to be consistent with tidy guidelines. <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> still functions, but will be removed in a future rTwig release.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -180,7 +187,7 @@
 <div class="section level3">
 <h3 id="new-features-1-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: New function to run the Real Twig method and calculate tree metrics in one simple function.</p></li>
-<li><p><code><a href="../reference/standardize_qsm.html">standardize_qsm()</a></code>: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.</p></li>
+<li><p><code><a href="../reference/standardise_qsm.html">standardize_qsm()</a></code>: New function to standardize variable names across all supported QSM software. See the dictionary vignette for more details on the variable names.</p></li>
 <li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>: New function to calculate all the standard outputs of TreeQSM, plus new variables, metrics, and simulated point clouds reconstructed entirely from the QSM. Computationally expensive tasks are implemented with Rcpp for maximum performance.</p></li>
 <li><p><code><a href="../reference/import_treegraph.html">import_treegraph()</a></code>: New function to import Treegraph QSM. Treegraph support is implemented throughout the package!</p></li>
 <li><p><code><a href="../reference/update_cylinders.html">update_cylinders()</a></code>: New variables: <em>distanceFromBase</em>, <em>distanceToTwig</em>, <em>branch_alt.</em> QSM topology is now verified and corrected if there are any topological errors.</p></li>

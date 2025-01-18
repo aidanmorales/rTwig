@@ -86,15 +86,21 @@
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p>Real Twig allows QSM variable names to be standardized across
-TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with the
-<code><a href="../reference/standardize_qsm.html">standardize_qsm()</a></code> function, and creates a more consistent
-experience when working with QSMs. Below are detailed definitions of the
-variable names using the rTwig QSM format.</p>
+<p>Real Twig allows QSM variable names and metrics to be standardized
+across TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with
+the <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code> and <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>
+functions, creating a consistent experience when working with QSMs.
+Below are detailed definitions of the standard variable names in
+rTwig.</p>
 </div>
 <div class="section level2">
-<h2 id="dictionary">Dictionary<a class="anchor" aria-label="anchor" href="#dictionary"></a>
+<h2 id="cylinder">Cylinder<a class="anchor" aria-label="anchor" href="#cylinder"></a>
 </h2>
+<p>All of the variables shown here are created with the
+<code><a href="../reference/update_cylinders.html">update_cylinders()</a></code> function, which should be run as soon as
+a QSM is imported with rTwig. Unless, <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code> is
+run, the variable names will vary depending on the particular QSM
+software used.</p>
 <div class="section level4">
 <h4 id="cylinder-attributes">Cylinder Attributes<a class="anchor" aria-label="anchor" href="#cylinder-attributes"></a>
 </h4>
@@ -224,6 +230,11 @@ radius of a given cylinder based on allometric scaling theory. The units
 and values are the square root of the total number of supported
 twigs.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="metrics">Metrics<a class="anchor" aria-label="anchor" href="#metrics"></a>
+</h2>
+<p>The</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

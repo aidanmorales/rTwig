@@ -142,14 +142,15 @@ best QSM topology and volume estimates. Older versions can be used, but
 the QSM topology is poor, and volume underestimation is almost
 guaranteed.</p>
 <p>Regardless of the version of TreeQSM or MATLAB used, the
-<code><a href="../reference/import_qsm.html">import_qsm()</a></code> function will import a QSM (.mat extension)
-and convert the data to a format usable by R. The user must specify
-which version of TreeQSM they are using with the <code>version</code>
-parameter. rTwig automatically defaults to use the new TreeQSM format,
-so the older format can be imported with <code>version = "2.0"</code>.
-<code><a href="../reference/import_qsm.html">import_qsm()</a></code> also imports all QSM information, including
-cylinder, branch, treedata, rundata, pmdistance, and triangulation data,
-which are stored together as a list.</p>
+<code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code> function will import a QSM (.mat
+extension) and convert the data to a format usable by R. The user must
+specify which version of TreeQSM they are using with the
+<code>version</code> parameter. rTwig automatically defaults to use the
+new TreeQSM format, so the older format can be imported with
+<code>version = "2.0"</code>. <code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code> also imports
+all QSM information, including cylinder, branch, treedata, rundata,
+pmdistance, and triangulation data, which are stored together as a
+list.</p>
 <p>SimpleForest exports its QSMs as .csv files, so they are easy to load
 into R using the built in <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code> function. If the QSM
 contains thousands of cylinders, it is much faster to use the
@@ -164,14 +165,14 @@ data. Users can extract the aRchi cylinder data with
 <div class="section level4">
 <h4 id="example-1-treeqsm-v2-3-0---2-4-1">Example 1: TreeQSM v2.3.0 - 2.4.1<a class="anchor" aria-label="anchor" href="#example-1-treeqsm-v2-3-0---2-4-1"></a>
 </h4>
-<p>We can import a QSM by supplying the <code><a href="../reference/import_qsm.html">import_qsm()</a></code>
+<p>We can import a QSM by supplying the <code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code>
 function the directory to our QSM.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># QSM directory</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import and save QSM</span></span>
-<span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
 <p>The QSM should be a list with six elements. We can check it as
 follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -222,7 +223,7 @@ made, and take a look at the cylinder data.</p>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM_2.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import and save QSM</span></span>
-<span><span class="va">qsm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span>, version <span class="op">=</span> <span class="st">"2.0"</span><span class="op">)</span></span>
+<span><span class="va">qsm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span>, version <span class="op">=</span> <span class="st">"2.0"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># QSM Info</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">qsm2</span><span class="op">)</span></span>
@@ -369,14 +370,14 @@ twig diameter for Kentucky coffee tree.</p>
 </h2>
 <p>Before we correct the QSM, Let’s take a look at the current metrics,
 so we can compare the tree volume before and after correction. We can do
-this with the <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> function. If stem triangulation
-was enabled in TreeQSM, we can use it to better represent the main stem
-volume in some cases, especially when there are large buttress flares.
-We can also make a plot of the radius versus the growth length to see
-how much overestimation there is in the twig radii.</p>
+this with the <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code> function. If stem
+triangulation was enabled in TreeQSM, we can use it to better represent
+the main stem volume in some cases, especially when there are large
+buttress flares. We can also make a plot of the radius versus the growth
+length to see how much overestimation there is in the twig radii.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># QSM summary</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
 <span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -388,7 +389,7 @@ how much overestimation there is in the twig radii.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span>
 <span></span>
 <span><span class="co"># QSM summary with Triangulation</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
 <span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -420,7 +421,7 @@ new volume estimates and diagnostic plots.</p>
 <span><span class="va">cylinder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_radii.html">correct_radii</a></span><span class="op">(</span><span class="va">cylinder</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Corrected QSM summary</span></span>
-<span><span class="fu"><a href="../reference/qsm_summary.html">qsm_summary</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span><span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
 <span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
