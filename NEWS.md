@@ -4,7 +4,10 @@
 
 -   `export_blender()`: a new function to export a QSM to [Blender](https://www.blender.org/) using the [QSM Blender Addons](https://github.com/InverseTampere/qsm-blender-addons) format.
 -   New database called `twigs_index`. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the `Twigs` vignette.
--   `plot_qsm()`: now accepts random color palettes by setting `palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
+-   `plot_qsm()`:
+    -   Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the `*_palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
+    -   Transparency options added for point clouds and main stem triangulation mesh with `pt_alpha` and `tri_alpha`.
+    -   Added an option to color the point cloud z-axis with a custom palette with `pt_palette`.
 -   `tree_metrics()`:
     -   `modified` is a standard output in the `tree` data frame. This is an average of the binary index of the cylinders modified by Real Twig. The `rTwig` version and run date are now also saved as `version` and `run_date`.
 

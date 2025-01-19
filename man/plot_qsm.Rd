@@ -15,10 +15,13 @@ plot_qsm(
   skeleton_lwd = NULL,
   cloud = NULL,
   pt_color = NULL,
+  pt_palette = NULL,
   pt_size = NULL,
+  pt_alpha = NULL,
   triangulation = NULL,
   tri_color = NULL,
   tri_palette = NULL,
+  tri_alpha = NULL,
   axes = TRUE,
   axes_color = NULL,
   grid = FALSE,
@@ -51,13 +54,19 @@ plot_qsm(
 
 \item{pt_color}{Color of the point cloud. Accepts hex colors, \code{grDevices::colors()}, or "random". Defaults to black.}
 
+\item{pt_palette}{Optional point cloud color palette for z values. Supports the same inputs as palette.}
+
 \item{pt_size}{Size of the points. Defaults to 0.1.}
+
+\item{pt_alpha}{Set the transparency of the point cloud. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{triangulation}{Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.}
 
-\item{tri_color}{Color of the triangulation mesh. Colors must be a single hex color.}
+\item{tri_color}{Color of the point cloud. Accepts hex colors, \code{grDevices::colors()}, or "random". Defaults to rainbow z-axis.}
 
-\item{tri_palette}{Optional triangulation color palette for z values. Supports the same inputs as palettes.}
+\item{tri_palette}{Optional triangulation color palette for z values. Supports the same inputs as palette.}
+
+\item{tri_alpha}{Set the transparency of the triangulation mesh. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 

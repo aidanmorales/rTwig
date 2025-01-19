@@ -12,10 +12,13 @@
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
 #' @param cloud Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.
 #' @param pt_color Color of the point cloud. Accepts hex colors, `grDevices::colors()`, or "random". Defaults to black.
+#' @param pt_palette Optional point cloud color palette for z values. Supports the same inputs as palette.
 #' @param pt_size Size of the points. Defaults to 0.1.
+#' @param pt_alpha Set the transparency of the point cloud. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #' @param triangulation Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.
-#' @param tri_color Color of the triangulation mesh. Colors must be a single hex color.
-#' @param tri_palette Optional triangulation color palette for z values. Supports the same inputs as palettes.
+#' @param tri_color Color of the point cloud. Accepts hex colors, `grDevices::colors()`, or "random". Defaults to rainbow z-axis.
+#' @param tri_palette Optional triangulation color palette for z values. Supports the same inputs as palette.
+#' @param tri_alpha Set the transparency of the triangulation mesh. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #' @param axes Show plot axes. Defaults to TRUE.
 #' @param axes_color Set the axes color. Defaults to black.
 #' @param grid Show plot grid lines. Defaults to FALSE.
@@ -52,10 +55,13 @@ plot_qsm <- function(
     skeleton_lwd = NULL,
     cloud = NULL,
     pt_color = NULL,
+    pt_palette = NULL,
     pt_size = NULL,
+    pt_alpha = NULL,
     triangulation = NULL,
     tri_color = NULL,
     tri_palette = NULL,
+    tri_alpha = NULL,
     axes = TRUE,
     axes_color = NULL,
     grid = FALSE,
@@ -178,6 +184,23 @@ plot_qsm <- function(
     abort(message, class = "invalid_argument")
   }
 
+  if (!is_null(pt_alpha)) {
+    if (!is_double(pt_alpha)) {
+      message <- paste0(
+        "`pt_alpha` must be a double, not ", class(pt_alpha), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+
+    if (pt_alpha != 1) {
+      message <- paste0(
+        "Alpha transparency signifcantly degrades plot performance ",
+        "for a large number of points."
+      )
+      warn(message)
+    }
+  }
+
   if (!is.null(triangulation)) {
     if (!is_list(triangulation)) {
       message <- paste(
@@ -189,6 +212,23 @@ plot_qsm <- function(
     }
     if (is_list(triangulation) & length(triangulation) == 0) {
       abort("`triangulation` is an empty list!")
+    }
+  }
+
+  if (!is_null(tri_alpha)) {
+    if (!is_double(tri_alpha)) {
+      message <- paste0(
+        "`tri_alpha` must be a double, not ", class(tri_alpha), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+
+    if (tri_alpha != 1) {
+      message <- paste0(
+        "Alpha transparency signifcantly degrades plot performance ",
+        "for a large number of triangles."
+      )
+      warn(message)
     }
   }
 
@@ -246,10 +286,11 @@ plot_qsm <- function(
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -264,10 +305,11 @@ plot_qsm <- function(
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   }
   # SimpleForest ---------------------------------------------------------------
@@ -282,10 +324,11 @@ plot_qsm <- function(
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   }
   # Treegraph ------------------------------------------------------------------
@@ -300,10 +343,11 @@ plot_qsm <- function(
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   }
   # aRchi ----------------------------------------------------------------------
@@ -318,10 +362,11 @@ plot_qsm <- function(
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   }
   # Point Cloud & Triangulation ------------------------------------------------
@@ -330,10 +375,11 @@ plot_qsm <- function(
       cylinder = cylinder,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_size = pt_size,
+      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+      pt_size = pt_size, pt_alpha = pt_alpha,
       bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
       triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette
+      tri_palette = tri_palette, tri_alpha = tri_alpha
     )
   } else {
     message <- paste(
@@ -374,7 +420,9 @@ plot_qsm <- function(
 #' @param hover hover logical
 #' @param cloud point cloud data frame or matrix
 #' @param pt_color point cloud color
+#' @param pt_palette point cloud palette
 #' @param pt_size point cloud point size
+#' @param pt_alpha point cloud alpha
 #' @param bg_color plot background color
 #' @param lit plot lighting
 #' @param pan pan plot on right click
@@ -382,6 +430,7 @@ plot_qsm <- function(
 #' @param triangulation plot triangulation mesh
 #' @param tri_color triangulation mesh color
 #' @param tri_palette triangulation palette
+#' @param tri_alpha triangulation alpha
 #' @returns an rgl plot
 #' @noRd
 plot_data <- function(
@@ -413,14 +462,17 @@ plot_data <- function(
     hover = NULL,
     cloud = NULL,
     pt_color = NULL,
+    pt_palette = NULL,
     pt_size = NULL,
+    pt_alpha = NULL,
     bg_color = NULL,
     lit = NULL,
     pan = NULL,
     normalize = NULL,
     triangulation = NULL,
     tri_color = NULL,
-    tri_palette = NULL) {
+    tri_palette = NULL,
+    tri_alpha = NULL) {
   if (!is.null(cylinder)) {
     # Plotting radii -----------------------------------------------------------
     radius <- plotting_radii(cylinder, radius)
@@ -461,12 +513,12 @@ plot_data <- function(
 
   # Plot triangulation ---------------------------------------------------------
   if (!is.null(triangulation)) {
-    plot_triangulation(triangulation, tri_color, tri_palette, lit)
+    plot_triangulation(triangulation, tri_color, tri_palette, tri_alpha, lit)
   }
 
   # Plot cloud -----------------------------------------------------------------
   if (!is.null(cloud)) {
-    plot_cloud(cloud, cylinder, pt_size, pt_color)
+    plot_cloud(cloud, pt_size, pt_color, pt_palette, pt_alpha)
   }
 
   # Background color -----------------------------------------------------------
@@ -695,12 +747,13 @@ plot_cylinders <- function(
 
 #' Plot cloud
 #' @param cloud point cloud data frame or matrix
-#' @param cylinder cylinder data frame to check for existing axes
 #' @param pt_size point size
 #' @param pt_color point cloud color
+#' @param pt_palette point cloud palette
+#' @param pt_alpha point cloud alpha
 #' @returns NA
 #' @noRd
-plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
+plot_cloud <- function(cloud, pt_size, pt_color, pt_palette, pt_alpha) {
   inform("Plotting Cloud")
 
   if (!is.matrix(cloud)) {
@@ -717,12 +770,21 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
   }
 
   # Initialize cloud inputs
-  if (is.null(pt_color)) {
+  if (is.null(pt_color) & is.null(pt_palette)) {
     pt_color <- "#000000"
-  } else if (pt_color == "random") {
-    pt_color <- generate_random_colors(1)
-  } else {
-    pt_color <- pt_color
+  } else if (!is.null(pt_color) & is.null(pt_palette)) {
+    if (pt_color == "random") {
+      pt_color <- generate_random_colors(1)
+    } else {
+      pt_color <- pt_color
+    }
+  }
+
+  if (!is.null(pt_palette)) {
+    # Colors
+    z <- cloud[, 3]
+    z_normalized <- (z - min(z)) / (max(z) - min(z))
+    pt_color <- colourvalues::color_values(z_normalized, palette = pt_palette)
   }
 
   if (is.null(pt_size)) {
@@ -731,11 +793,18 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
     pt_size <- pt_size
   }
 
+  if (is.null(pt_alpha)) {
+    pt_alpha <- 1
+  } else {
+    pt_alpha <- pt_alpha
+  }
+
   # Plot cloud
   rgl::plot3d(
     x = cloud,
     col = pt_color,
     size = pt_size,
+    alpha = pt_alpha,
     add = TRUE,
     aspect = FALSE
   )
@@ -745,10 +814,16 @@ plot_cloud <- function(cloud, cylinder, pt_size, pt_color) {
 #' @param triangulation triangulation list
 #' @param tri_color triangulation color
 #' @param tri_palette triangulation palette
+#' @param tri_alpha triangulation alpha
 #' @param lit plot lighting
 #' @returns NA
 #' @noRd
-plot_triangulation <- function(triangulation, tri_color, tri_palette, lit) {
+plot_triangulation <- function(
+    triangulation,
+    tri_color,
+    tri_palette,
+    tri_alpha,
+    lit) {
   inform("Plotting Triangulation")
 
   # Extract TreeQSM triangulation data
@@ -763,15 +838,33 @@ plot_triangulation <- function(triangulation, tri_color, tri_palette, lit) {
   z_normalized <- (z - min(z)) / (max(z) - min(z))
 
   if (is.null(tri_color) & is.null(tri_palette)) {
-    colors <- colourvalues::color_values(z_normalized, palette = "rainbow")
-  } else if (is.null(tri_color) & !is.null(tri_palette)) {
-    colors <- colourvalues::color_values(z_normalized, palette = tri_palette)
+    tri_color <- colourvalues::color_values(z_normalized, palette = "rainbow")
+  } else if (!is.null(tri_color) & is.null(tri_palette)) {
+    if (tri_color == "random") {
+      tri_color <- generate_random_colors(1)
+    } else {
+      tri_color <- tri_color
+    }
+  }
+
+  if (!is.null(tri_palette)) {
+    tri_color <- colourvalues::color_values(z_normalized, palette = tri_palette)
+  }
+
+  # Alpha transparency
+  if (is.null(tri_alpha)) {
+    tri_alpha <- 1
   } else {
-    colors <- tri_color
+    tri_alpha <- tri_alpha
   }
 
   # Plot triangulation mesh
-  rgl::triangles3d(triangulation_mesh, color = colors, lit = lit)
+  rgl::triangles3d(
+    triangulation_mesh,
+    color = tri_color,
+    alpha = tri_alpha,
+    lit = lit
+  )
 }
 
 #' Plot hover
