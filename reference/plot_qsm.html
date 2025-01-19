@@ -64,10 +64,13 @@
 <span>  skeleton_lwd <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cloud <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pt_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pt_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pt_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pt_alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  triangulation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tri_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tri_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tri_alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  axes_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -124,8 +127,16 @@
 <dd><p>Color of the point cloud. Accepts hex colors, <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, or "random". Defaults to black.</p></dd>
 
 
+<dt id="arg-pt-palette">pt_palette<a class="anchor" aria-label="anchor" href="#arg-pt-palette"></a></dt>
+<dd><p>Optional point cloud color palette for z values. Supports the same inputs as palette.</p></dd>
+
+
 <dt id="arg-pt-size">pt_size<a class="anchor" aria-label="anchor" href="#arg-pt-size"></a></dt>
 <dd><p>Size of the points. Defaults to 0.1.</p></dd>
+
+
+<dt id="arg-pt-alpha">pt_alpha<a class="anchor" aria-label="anchor" href="#arg-pt-alpha"></a></dt>
+<dd><p>Set the transparency of the point cloud. Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 
 
 <dt id="arg-triangulation">triangulation<a class="anchor" aria-label="anchor" href="#arg-triangulation"></a></dt>
@@ -133,11 +144,15 @@
 
 
 <dt id="arg-tri-color">tri_color<a class="anchor" aria-label="anchor" href="#arg-tri-color"></a></dt>
-<dd><p>Color of the triangulation mesh. Colors must be a single hex color.</p></dd>
+<dd><p>Color of the point cloud. Accepts hex colors, <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, or "random". Defaults to rainbow z-axis.</p></dd>
 
 
 <dt id="arg-tri-palette">tri_palette<a class="anchor" aria-label="anchor" href="#arg-tri-palette"></a></dt>
-<dd><p>Optional triangulation color palette for z values. Supports the same inputs as palettes.</p></dd>
+<dd><p>Optional triangulation color palette for z values. Supports the same inputs as palette.</p></dd>
+
+
+<dt id="arg-tri-alpha">tri_alpha<a class="anchor" aria-label="anchor" href="#arg-tri-alpha"></a></dt>
+<dd><p>Set the transparency of the triangulation mesh. Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 
 
 <dt id="arg-axes">axes<a class="anchor" aria-label="anchor" href="#arg-axes"></a></dt>
