@@ -535,11 +535,24 @@ calculate_tree_metrics <- function(
   # Stem Taper -----------------------------------------------------------------
   inform("Calculating Stem Taper")
   n <- nrow(trunk_cyl)
-  stem_taper <- tidytable(height_m = as.double(0:n), diameter_cm = na_dbl)
-  stem_taper[1, 1] <- 0
-  stem_taper[1, 2] <- 2 * trunk_cyl$radius[1]
-  stem_taper[2:(n + 1), 1] <- cumsum(trunk_cyl$length)
-  stem_taper[2:(n + 1), 2] <- c(2 * trunk_cyl$radius[2:n], 2 * trunk_cyl$radius[n])
+
+  if (n == 1) {
+    message <- paste(
+      "Only one main stem cylinder is present!",
+      "Stem taper cannot be calculated!",
+      sep = " "
+    )
+    warn(message)
+
+    stem_taper <- tidytable(height_m = na_dbl, diameter_cm = na_dbl)
+  } else {
+    stem_taper <- tidytable(height_m = as.double(0:n), diameter_cm = na_dbl)
+    stem_taper[1, 1] <- 0
+    stem_taper[1, 2] <- 2 * trunk_cyl$radius[1]
+    stem_taper[2:(n + 1), 1] <- cumsum(trunk_cyl$length)
+    stem_taper[2:(n + 1), 2] <- c(2 * trunk_cyl$radius[2:n], 2 * trunk_cyl$radius[n])
+  }
+
   metrics$stem_taper <- stem_taper
   metrics$stem_taper$diameter_cm <- metrics$stem_taper$diameter_cm * 100
 

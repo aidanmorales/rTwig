@@ -22,6 +22,9 @@ Returns a list
 \description{
 Generates a simple QSM summary (e.g. volume, surface area, dbh, etc.) by totals and branch order.
 }
+\details{
+\code{summarise_qsm()} and \code{summarize_qsm()} are synonyms.
+}
 \examples{
 
 ## SimpleForest Processing Chain
