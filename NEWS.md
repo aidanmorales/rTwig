@@ -2,9 +2,11 @@
 
 ## New Features
 
+-   `import_leaves()`: a new function to import leaves from [QSM-FaNNI](https://github.com/InverseTampere/qsm-fanni-matlab). The leaves are stored as an `rgl` `mesh3d()` object.
 -   `export_blender()`: a new function to export a QSM to [Blender](https://www.blender.org/) using the [QSM Blender Addons](https://github.com/InverseTampere/qsm-blender-addons) format.
 -   New database called `twigs_index`. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the `Twigs` vignette.
 -   `plot_qsm()`:
+    -   Leaf meshes from `import_leaves()` or `aRchi::add_leaves()` can now be plotted with the `leaves` parameter. Leaf color and transparency can be controlled with `lf_color` and `lf_alpha` respectively.
     -   Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the `*_palette = "random"`. Additionally, the user can set a random color for each cylinder by setting `color` and `palette` to `"random"` at the same time.
     -   Transparency options added for point clouds and main stem triangulation mesh with `pt_alpha` and `tri_alpha`.
     -   Added an option to color the point cloud z-axis with a custom palette with `pt_palette`.

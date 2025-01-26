@@ -307,6 +307,10 @@ which_rcpp <- function(condition) {
     .Call(`_rTwig_which_rcpp`, condition)
 }
 
+read_obj_cpp <- function(file_path) {
+    .Call(`_rTwig_read_obj_cpp`, file_path)
+}
+
 #' @title Normalize View
 #'
 #' @description Normalizes RGL plot view

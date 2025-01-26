@@ -42,7 +42,7 @@ The main goal of Real Twig was to correct volume overestimation in QSMs caused b
 
 #### Efficient Visualization
 
-`plot_qsm()` can plot QSMs and point clouds, using `rgl` as the 3D display, and C++ via `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette. It can also visualize stem triangulation meshes from TreeQSM.
+`plot_qsm()` can plot QSMs and point clouds, using `rgl` as the 3D display, and C++ via `Rcpp` to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette. It can also visualize stem triangulation meshes from TreeQSM, and leaves created by either QSM-FaNNI or aRchi.
 
 |                               |                                   |
 |-------------------------------|-----------------------------------|
@@ -71,6 +71,7 @@ rTwig currently supports [TreeQSM](https://github.com/InverseTampere/TreeQSM), [
 -   `smooth_qsm()` connects cylinder end-to-end to smooth branch visualization
 -   `plot_qsm()` plots QSMs and optionally their point clouds
 -   `prune_qsm()` prunes a QSM by cylinder attributes, height, or diameter classes
+-   `import_leaves()` imports leaves created by the FaNNI algorithm (.obj)
 -   `export_mesh()` exports a QSM as a mesh object (.ply)
 -   `export_mat()` exports a QSM in a MATLAB format (.mat)
 -   `export_blender()` exports a QSM in the QSM Blender Addons format (.txt)

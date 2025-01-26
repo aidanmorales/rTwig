@@ -291,6 +291,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// read_obj_cpp
+NumericMatrix read_obj_cpp(std::string file_path);
+RcppExport SEXP _rTwig_read_obj_cpp(SEXP file_pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type file_path(file_pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_obj_cpp(file_path));
+    return rcpp_result_gen;
+END_RCPP
+}
 // normalize_view
 NumericMatrix normalize_view(const NumericVector& x, const NumericVector& y, const NumericVector& z, const NumericVector& viewport);
 RcppExport SEXP _rTwig_normalize_view(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP viewportSEXP) {
@@ -405,6 +416,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
+    {"_rTwig_read_obj_cpp", (DL_FUNC) &_rTwig_read_obj_cpp, 1},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
     {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},

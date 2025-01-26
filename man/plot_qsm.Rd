@@ -22,6 +22,9 @@ plot_qsm(
   tri_color = NULL,
   tri_palette = NULL,
   tri_alpha = NULL,
+  leaves = NULL,
+  lf_color = NULL,
+  lf_alpha = NULL,
   axes = TRUE,
   axes_color = NULL,
   grid = FALSE,
@@ -34,7 +37,7 @@ plot_qsm(
 )
 }
 \arguments{
-\item{cylinder}{A QSM cylinder data frame.}
+\item{cylinder}{QSM cylinder data frame.}
 
 \item{radius}{Radius column name either quoted or unquoted. Defaults to the modified radii.}
 
@@ -60,13 +63,19 @@ plot_qsm(
 
 \item{pt_alpha}{Set the transparency of the point cloud. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
-\item{triangulation}{Plot the stem triangulation mesh from TreeQSM. Defaults to NULL.}
+\item{triangulation}{Stem triangulation mesh from TreeQSM. Defaults to NULL.}
 
 \item{tri_color}{Color of the point cloud. Accepts hex colors, \code{grDevices::colors()}, or "random". Defaults to rainbow z-axis.}
 
 \item{tri_palette}{Optional triangulation color palette for z values. Supports the same inputs as palette.}
 
 \item{tri_alpha}{Set the transparency of the triangulation mesh. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+
+\item{leaves}{Leaf mesh in the rgl mesh3d format. Defaults to NULL.}
+
+\item{lf_color}{Color of the leaves. Accepts hex colors, \code{grDevices::colors()},"random", or "random_vertex", which assigns a unique color to each vertex, while "random" will assign a random color for all leaves.}
+
+\item{lf_alpha}{Set the transparency of the leaves. Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
@@ -87,14 +96,14 @@ plot_qsm(
 \item{normalize}{Normalize the QSM to 0,0,0 based on the provided data. Defaults to FALSE.}
 }
 \value{
-A rgl plot
+An rgl plot
 }
 \description{
-Efficiently plot QSMs and point clouds. Uses the Rcpp and RGL libraries as backends.
+Efficiently plot QSMs, point clouds, leaves, and stem triangulation meshes.
 }
 \examples{
 
-## TreeQSM Processing Chain & Triangulation
+## TreeQSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)
 cylinder <- qsm$cylinder
