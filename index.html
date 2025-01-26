@@ -104,7 +104,7 @@
 <div class="section level4">
 <h4 id="efficient-visualization">Efficient Visualization<a class="anchor" aria-label="anchor" href="#efficient-visualization"></a>
 </h4>
-<p><code><a href="reference/plot_qsm.html">plot_qsm()</a></code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and C++ via <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette. It can also visualize stem triangulation meshes from TreeQSM.</p>
+<p><code><a href="reference/plot_qsm.html">plot_qsm()</a></code> can plot QSMs and point clouds, using <code>rgl</code> as the 3D display, and C++ via <code>Rcpp</code> to efficiently build the cylinders. The cylinders, simulated point cloud, and skeleton can all be plotted and colored by any variable or user supplied color palette. It can also visualize stem triangulation meshes from TreeQSM, and leaves created by either QSM-FaNNI or aRchi.</p>
 <table class="table"><tbody>
 <tr class="odd">
 <td><img src="reference/figures/plot.gif" alt="Plot"></td>
@@ -155,6 +155,8 @@
 <code><a href="reference/plot_qsm.html">plot_qsm()</a></code> plots QSMs and optionally their point clouds</li>
 <li>
 <code><a href="reference/prune_qsm.html">prune_qsm()</a></code> prunes a QSM by cylinder attributes, height, or diameter classes</li>
+<li>
+<code><a href="reference/import_leaves.html">import_leaves()</a></code> imports leaves created by the FaNNI algorithm (.obj)</li>
 <li>
 <code><a href="reference/export_mesh.html">export_mesh()</a></code> exports a QSM as a mesh object (.ply)</li>
 <li>

@@ -51,11 +51,14 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>
+<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code>rgl</code> <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d()</a></code> object.</li>
+<li>
 <code><a href="../reference/export_blender.html">export_blender()</a></code>: a new function to export a QSM to <a href="https://www.blender.org/" class="external-link">Blender</a> using the <a href="https://github.com/InverseTampere/qsm-blender-addons" class="external-link">QSM Blender Addons</a> format.</li>
 <li>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</li>
 <li>
 <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>:
-<ul><li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</li>
+<ul><li>Leaf meshes from <code><a href="../reference/import_leaves.html">import_leaves()</a></code> or <code>aRchi::add_leaves()</code> can now be plotted with the <code>leaves</code> parameter. Leaf color and transparency can be controlled with <code>lf_color</code> and <code>lf_alpha</code> respectively.</li>
+<li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</li>
 <li>Transparency options added for point clouds and main stem triangulation mesh with <code>pt_alpha</code> and <code>tri_alpha</code>.</li>
 <li>Added an option to color the point cloud z-axis with a custom palette with <code>pt_palette</code>.</li>
 </ul></li>
