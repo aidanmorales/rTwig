@@ -118,10 +118,9 @@ rTwig currently supports
 - `prune_qsm()` prunes a QSM by cylinder attributes, height, or diameter
   classes
 - `import_leaves()` imports leaves created by the FaNNI algorithm (.obj)
-- `export_mesh()` exports a QSM as a mesh object (.ply)
+- `export_mesh()` exports a QSM as to multiple mesh formats (.ply, .obj,
+  .stl, .txt)
 - `export_mat()` exports a QSM in a MATLAB format (.mat)
-- `export_blender()` exports a QSM in the QSM Blender Addons format
-  (.txt)
 - `box_dimension()` calculates and visualizes the structural complexity
   of a point cloud
 

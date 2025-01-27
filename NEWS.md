@@ -3,7 +3,7 @@
 ## New Features
 
 -   `import_leaves()`: a new function to import leaves from [QSM-FaNNI](https://github.com/InverseTampere/qsm-fanni-matlab). The leaves are stored as an `rgl` `mesh3d()` object.
--   `export_blender()`: a new function to export a QSM to [Blender](https://www.blender.org/) using the [QSM Blender Addons](https://github.com/InverseTampere/qsm-blender-addons) format.
+-   `export_mesh()`: The function now supports multiple 3d mesh formats including, `.ply`, `.obj` and `.stl`. It also supports exporting a QSM to [Blender](https://www.blender.org/) using the [QSM Blender Addons](https://github.com/InverseTampere/qsm-blender-addons) format `.txt`.
 -   New database called `twigs_index`. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the `Twigs` vignette.
 -   `plot_qsm()`:
     -   Leaf meshes from `import_leaves()` or `aRchi::add_leaves()` can now be plotted with the `leaves` parameter. Leaf color and transparency can be controlled with `lf_color` and `lf_alpha` respectively.
@@ -21,7 +21,9 @@
 
 ## Improvements
 
--   Function names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. `standardize_qsm()` vs `standardise_qsm()`.
+-   `export_mesh()`: The function was entirely reworked using `Rcpp` for fast and efficient mesh export. All functionality that was dependent on `rgl` has been implemented in custom C++ functions.
+
+-   unction names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. `standardize_qsm()` vs `standardise_qsm()`.
 
 -   Some functions have been renamed to follow tidy guidelines and have consistency within rTwig and other R packages (e.g. `qsm_summary()` -\> `summarise_qsm()`).
 

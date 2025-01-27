@@ -68,7 +68,7 @@ import_leaves <- function(filename, simplify = FALSE) {
   inform("Importing Leaves")
 
   as.mesh3d(
-    read_obj_cpp(filename),
+    read_obj(filename),
     type = "triangles",
     smooth = FALSE,
     merge = simplify

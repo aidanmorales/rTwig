@@ -291,14 +291,62 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// read_obj_cpp
-NumericMatrix read_obj_cpp(std::string file_path);
-RcppExport SEXP _rTwig_read_obj_cpp(SEXP file_pathSEXP) {
+// calculate_normals
+NumericMatrix calculate_normals(NumericMatrix vertices);
+RcppExport SEXP _rTwig_calculate_normals(SEXP verticesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type file_path(file_pathSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_obj_cpp(file_path));
+    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_normals(vertices));
+    return rcpp_result_gen;
+END_RCPP
+}
+// write_ply
+void write_ply(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> colors, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
+RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP colorsSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_ply(vertices, colors, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// write_obj
+void write_obj(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
+RcppExport SEXP _rTwig_write_obj(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_obj(vertices, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// write_stl
+void write_stl(NumericMatrix vertices, NumericMatrix normals, std::string filename);
+RcppExport SEXP _rTwig_write_stl(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_stl(vertices, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// read_obj
+NumericMatrix read_obj(std::string filename);
+RcppExport SEXP _rTwig_read_obj(SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_obj(filename));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -416,7 +464,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
-    {"_rTwig_read_obj_cpp", (DL_FUNC) &_rTwig_read_obj_cpp, 1},
+    {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 1},
+    {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
+    {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
+    {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},
+    {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 1},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
     {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},

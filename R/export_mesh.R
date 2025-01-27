@@ -1,45 +1,76 @@
 #' Export Mesh
 #'
-#' @description Exports QSM cylinder mesh using the rgl library
+#' @description Exports a QSM cylinder mesh in various formats
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param filename File name and path for exporting. The .ply extension is automatically added if not present.
+#' @param filename File name and path for exporting. The file extension is automatically added if not present.
+#' @param format Mesh file format. Defaults to "ply". Supported formats include "ply", "obj", "stl", and "blender". "blender" exports the mesh in the qsm-blender-addons format.
 #' @param radius Radius column name either quoted or unquoted. Defaults to modified cylinders from the cylinder data frame.
-#' @param color Optional cylinder color parameter. Colors must be a single hex color string, a `grDevices::colors()`, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data. Palettes include `colourvalues::color_palettes()` or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.
+#' @param color Optional cylinder color parameter used in the "ply" format. Colors are disabled by default. Colors must be a single hex color string, a `grDevices::colors()`, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
+#' @param palette Optional color palette for numerical data used in the "ply" format. Palettes include `colourvalues::color_palettes()` or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.
 #' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
-#' @param normals Option to export normals. Defaults to FALSE, but can be set to TRUE.
+#' @param normals Export surface normals on a per vertex basis. Defaults to FALSE, but can be set to TRUE.
+#' @param alpha Set the transparency of the cylinders used in the "ply" format. Defaults to 1. 1 is opaque and 0 is fully transparent.
 #'
-#' @return A mesh .ply file
+#' @return A mesh file
 #' @export
 #'
 #' @examples
 #'
-#' ## TreeQSM Processing Chain
+#' ## Load QSM
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
 #' qsm <- import_treeqsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
-#' filename <- tempfile(pattern = "TreeQSM_mesh")
-#' export_mesh(cylinder, filename)
+#' # PLY
+#' filename <- tempfile(pattern = "QSM_ply")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename,
+#'   format = "ply",
+#'   color = "distanceToTwig",
+#'   palette = "viridis",
+#'   normals = TRUE
+#' )
 #'
-#' ## SimpleForest Processing Chain
-#' file <- system.file("extdata/QSM.csv", package = "rTwig")
-#' cylinder <- read.csv(file)
-#' cylinder <- update_cylinders(cylinder)
+#' # OBJ
+#' filename <- tempfile(pattern = "QSM_obj")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename,
+#'   format = "obj",
+#'   normals = TRUE
+#' )
 #'
-#' filename <- tempfile(pattern = "SimpleForest_mesh")
-#' export_mesh(cylinder, filename)
+#' # STL
+#' filename <- tempfile(pattern = "QSM_stl")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename,
+#'   format = "stl",
+#'   normals = TRUE
+#' )
+#'
+#' # QSM Blender Addons
+#' filename <- tempfile(pattern = "QSM_blender")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename,
+#'   format = "blender",
+#'   normals = TRUE
+#' )
 #'
 export_mesh <- function(
     cylinder,
     filename,
+    format = "ply",
     radius = NULL,
     color = NULL,
     palette = NULL,
     facets = 6,
-    normals = FALSE) {
+    normals = FALSE,
+    alpha = NULL) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -55,9 +86,22 @@ export_mesh <- function(
     abort(message, class = "data_format_error")
   }
 
-  if (is_missing(filename)) {
-    message <- "argument `filename` is missing, with no default."
-    abort(message, class = "missing_argument")
+  if (!is_null(format)) {
+    if (!format %in% c("ply", "obj", "stl", "blender")) {
+      message <- paste(
+        "`format` is invalid!",
+        "i supported formats include: `ply`, `obj`, `stl`, `blender`",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
+  }
+
+  if (!is_null(format) & !is_string(format)) {
+    message <- paste0(
+      "`format` must be a string, not ", class(format), "."
+    )
+    abort(message, class = "invalid_argument")
   }
 
   if (!is_string(filename)) {
@@ -67,9 +111,19 @@ export_mesh <- function(
     abort(message, class = "invalid_argument")
   }
 
-  # Ensure filename ends with correct extension
-  if (substr(filename, nchar(filename) - 3, nchar(filename)) != ".ply") {
-    filename <- paste0(filename, ".ply")
+  # Ensure correct file extension
+  base_name <- basename(filename)
+  new_name <- sub("\\.[^.]*$", "", base_name)
+  filename <- file.path(dirname(filename), new_name)
+
+  if (format == "ply") {
+    filename <- paste(filename, format, sep = ".")
+  } else if (format == "obj") {
+    filename <- paste(filename, format, sep = ".")
+  } else if (format == "stl") {
+    filename <- paste(filename, format, sep = ".")
+  } else if (format == "blender") {
+    filename <- paste0(filename, ".txt")
   }
 
   # User selected columns
@@ -115,57 +169,71 @@ export_mesh <- function(
     abort(message, class = "invalid_argument")
   }
 
+  if (!is_null(alpha)) {
+    if (!is_double(alpha)) {
+      message <- paste0(
+        "`alpha` must be a double, not ", class(alpha), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+  }
+
   # Verify cylinders
   cylinder <- verify_cylinders(cylinder)
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
-    plot_mesh(
-      filename = filename, cylinder = cylinder, radius = radius,
-      length = "length", branch_order = "branch_order",
+    format_mesh(
+      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      length = "length", branch = "branch", branch_order = "branch_order",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      facets = facets, color = color, palette = palette, normals = normals
+      facets = facets, color = color, palette = palette,
+      normals = normals, alpha = alpha
     )
   }
   # TreeQSM --------------------------------------------------------------------
   else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    plot_mesh(
-      filename = filename, cylinder = cylinder, radius = radius,
-      length = "length", branch_order = "BranchOrder",
+    format_mesh(
+      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      length = "length", branch = "branch", branch_order = "BranchOrder",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      facets = facets, color = color, palette = palette, normals = normals
+      facets = facets, color = color, palette = palette,
+      normals = normals, alpha = alpha
     )
   }
   # SimpleForest ---------------------------------------------------------------
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    plot_mesh(
-      filename = filename, cylinder = cylinder, radius = radius,
-      length = "length", branch_order = "branchOrder",
+    format_mesh(
+      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      length = "length", branch = "branchID", branch_order = "branchOrder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      facets = facets, color = color, palette = palette, normals = normals
+      facets = facets, color = color, palette = palette,
+      normals = normals, alpha = alpha
     )
   }
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    plot_mesh(
-      filename = filename, cylinder = cylinder, radius = radius,
-      length = "length", branch_order = "branch_order",
+    format_mesh(
+      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      length = "length", branch = "nbranch", branch_order = "branch_order",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      facets = facets, color = color, palette = palette, normals = normals
+      facets = facets, color = color, palette = palette,
+      normals = normals, alpha = alpha
     )
   }
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    plot_mesh(
-      filename = filename, cylinder = cylinder, radius = radius,
-      length = "length", branch_order = "branching_order",
+    format_mesh(
+      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      length = "length", branch = "n_branch", branch_order = "branching_order",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      facets = facets, color = color, palette = palette, normals = normals
+      facets = facets, color = color, palette = palette,
+      normals = normals, alpha = alpha
     )
   } else {
     message <- paste(
@@ -177,11 +245,13 @@ export_mesh <- function(
   }
 }
 
-#' Plot mesh
+#' Format mesh
 #' @param filename name of file to export
+#' @param format export format
 #' @param cylinder QSM cylinder data frame
 #' @param radius cylinder radii
 #' @param length cylinder length
+#' @param branch cylinder branch id
 #' @param branch_order cylinder branch order
 #' @param start_x cylinder start x
 #' @param start_y cylinder start y
@@ -193,13 +263,16 @@ export_mesh <- function(
 #' @param color cylinder color
 #' @param palette color palette
 #' @param normals normals logical
-#' @returns a .ply file
+#' @param alpha cylinder alpha
+#' @returns a mesh file
 #' @noRd
-plot_mesh <- function(
+format_mesh <- function(
     filename,
+    format,
     cylinder,
     radius,
     length,
+    branch,
     branch_order,
     start_x,
     start_y,
@@ -210,36 +283,142 @@ plot_mesh <- function(
     facets,
     color,
     palette,
-    normals) {
+    normals,
+    alpha) {
   inform("Exporting Mesh")
 
-  # Plotting radii -------------------------------------------------------------
-  radius <- plotting_radii(cylinder, radius)
-
-  # Plotting colors ------------------------------------------------------------
-  if (!is.null(color) && color == FALSE) {
-    colors <- NA
-    c_check <- FALSE
-  } else {
-    colors <- plotting_colors(cylinder, color, palette, branch_order)
-    c_check <- TRUE
-  }
-
-  # Open connection ------------------------------------------------------------
-  rgl::open3d()
-
-  # Plot cylinders -------------------------------------------------------------
-  suppressMessages(
-    plot_cylinders(
-      cylinder, radius, length, start_x, start_y, start_z,
-      axis_x, axis_y, axis_z, facets, colors,
-      lit = TRUE, alpha = 1
+  if (format == "ply") {
+    # Create cylinder vertices
+    start <- cbind(
+      pull(cylinder, {{ start_x }}),
+      pull(cylinder, {{ start_y }}),
+      pull(cylinder, {{ start_z }})
     )
-  )
 
-  # Export mesh ----------------------------------------------------------------
-  rgl::writePLY(filename, withNormals = normals, withColors = c_check)
+    axis <- cbind(
+      pull(cylinder, {{ axis_x }}),
+      pull(cylinder, {{ axis_y }}),
+      pull(cylinder, {{ axis_z }})
+    )
 
-  # Close connection -----------------------------------------------------------
-  rgl::close3d()
+    length <- pull(cylinder, {{ length }})
+    radius <- plotting_radii(cylinder, radius)
+
+    cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
+
+    # Plotting colors and transparency
+    if (is.null(color)) {
+      colors <- NULL
+    } else {
+      if (!is.null(color) && color == FALSE) {
+        colors <- NULL
+      } else {
+        colors <- plotting_colors(cylinder, color, palette, branch_order)
+        colors <- rep(colors, each = facets * 6)
+
+        if (!is.null(alpha)) {
+          colors <- cbind(t(grDevices::col2rgb(colors, alpha = FALSE)), alpha)
+        } else {
+          colors <- cbind(t(grDevices::col2rgb(colors, alpha = FALSE)), 1)
+        }
+      }
+    }
+
+    # Surface normals
+    if (normals == TRUE) {
+      normals <- calculate_normals(cylinder_mesh)
+    } else {
+      normals <- NULL
+    }
+
+    # Export cylinder mesh
+    write_ply(
+      vertices = cylinder_mesh,
+      colors = colors,
+      normals = normals,
+      filename = filename
+    )
+  } else if (format == "obj") {
+    # Create cylinder vertices
+    start <- cbind(
+      pull(cylinder, {{ start_x }}),
+      pull(cylinder, {{ start_y }}),
+      pull(cylinder, {{ start_z }})
+    )
+
+    axis <- cbind(
+      pull(cylinder, {{ axis_x }}),
+      pull(cylinder, {{ axis_y }}),
+      pull(cylinder, {{ axis_z }})
+    )
+
+    length <- pull(cylinder, {{ length }})
+    radius <- plotting_radii(cylinder, radius)
+
+    cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
+
+    # Surface normals
+    if (normals == TRUE) {
+      normals <- calculate_normals(cylinder_mesh)
+    } else {
+      normals <- NULL
+    }
+
+    # Export cylinder mesh
+    write_obj(
+      vertices = cylinder_mesh,
+      normals = normals,
+      filename = filename
+    )
+  } else if (format == "stl") {
+    # Create cylinder vertices
+    start <- cbind(
+      pull(cylinder, {{ start_x }}),
+      pull(cylinder, {{ start_y }}),
+      pull(cylinder, {{ start_z }})
+    )
+
+    axis <- cbind(
+      pull(cylinder, {{ axis_x }}),
+      pull(cylinder, {{ axis_y }}),
+      pull(cylinder, {{ axis_z }})
+    )
+
+    length <- pull(cylinder, {{ length }})
+    radius <- plotting_radii(cylinder, radius)
+
+    cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
+
+    # Surface normals
+    normals <- calculate_normals(cylinder_mesh)
+
+    # Export cylinder mesh
+    write_stl(
+      vertices = cylinder_mesh,
+      normals = normals,
+      filename = filename
+    )
+  } else if (format == "blender") {
+    select(
+      cylinder,
+      branch = {{ branch }},
+      start_x = {{ start_x }}, start_y = {{ start_y }}, start_z = {{ start_z }},
+      axis_x = {{ axis_x }}, axis_y = {{ axis_y }}, axis_z = {{ axis_z }},
+      length = {{ length }},
+      radius = {{ radius }}
+    ) %>%
+      fwrite(
+        file = filename,
+        col.names = FALSE,
+        row.names = FALSE,
+        sep = " "
+      )
+  } else {
+    message <- paste(
+      "Unsupported QSM format provided.",
+      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      sep = "\n"
+    )
+    abort(message, class = "data_format_error")
+  }
 }

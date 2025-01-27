@@ -15,6 +15,7 @@ IntegerVector which_rcpp(LogicalVector condition);
 NumericMatrix rotation_matrix(NumericVector A, double angle);
 NumericMatrix mat_vec_subtraction(NumericMatrix A, NumericVector v);
 NumericMatrix mat_multiplication(NumericMatrix A, NumericMatrix B);
+NumericMatrix calculate_normals(NumericMatrix vertices);
 
 List orthonormal_vectors(NumericVector U);
 

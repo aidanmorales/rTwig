@@ -220,3 +220,70 @@ IntegerVector which_rcpp(LogicalVector condition) {
   }
   return indices;
 }
+
+//' @title Calculate Normals
+//'
+//' @description Calculate normals per cylinder vertex
+//'
+//' @param vertices NumericMatrix
+//' @return NumericMatrix
+//'
+//' @noRd
+//'
+// [[Rcpp::export]]
+NumericMatrix calculate_normals(NumericMatrix vertices) {
+  int n_triangles = vertices.nrow() / 3;
+  NumericMatrix normals(vertices.nrow(), 3);
+
+  // Loop through each triangle
+  for (int i = 0; i < n_triangles; ++i) {
+    // Get the triangle vertics
+    double x0 = vertices(i * 3, 0);
+    double y0 = vertices(i * 3, 1);
+    double z0 = vertices(i * 3, 2);
+
+    double x1 = vertices(i * 3 + 1, 0);
+    double y1 = vertices(i * 3 + 1, 1);
+    double z1 = vertices(i * 3 + 1, 2);
+
+    double x2 = vertices(i * 3 + 2, 0);
+    double y2 = vertices(i * 3 + 2, 1);
+    double z2 = vertices(i * 3 + 2, 2);
+
+    // Calculate the two edge vectors
+    double e1_x = x1 - x0;
+    double e1_y = y1 - y0;
+    double e1_z = z1 - z0;
+
+    double e2_x = x2 - x0;
+    double e2_y = y2 - y0;
+    double e2_z = z2 - z0;
+
+    // Compute the cross product (normal)
+    double normal_x = e1_y * e2_z - e1_z * e2_y;
+    double normal_y = e1_z * e2_x - e1_x * e2_z;
+    double normal_z = e1_x * e2_y - e1_y * e2_x;
+
+    // Normalize the normal vector
+    double length = std::sqrt(normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
+
+    normal_x /= length;
+    normal_y /= length;
+    normal_z /= length;
+
+    // Store the normals for each triangle vertex
+    normals(i * 3, 0) = normal_x;
+    normals(i * 3, 1) = normal_y;
+    normals(i * 3, 2) = normal_z;
+
+    normals(i * 3 + 1, 0) = normal_x;
+    normals(i * 3 + 1, 1) = normal_y;
+    normals(i * 3 + 1, 2) = normal_z;
+
+    normals(i * 3 + 2, 0) = normal_x;
+    normals(i * 3 + 2, 1) = normal_y;
+    normals(i * 3 + 2, 2) = normal_z;
+  }
+
+  return normals;
+}

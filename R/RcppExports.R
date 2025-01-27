@@ -307,8 +307,76 @@ which_rcpp <- function(condition) {
     .Call(`_rTwig_which_rcpp`, condition)
 }
 
-read_obj_cpp <- function(file_path) {
-    .Call(`_rTwig_read_obj_cpp`, file_path)
+#' @title Calculate Normals
+#'
+#' @description Calculate normals per cylinder vertex
+#'
+#' @param vertices NumericMatrix
+#' @return NumericMatrix
+#'
+#' @noRd
+#'
+calculate_normals <- function(vertices) {
+    .Call(`_rTwig_calculate_normals`, vertices)
+}
+
+#' @title Write PLY
+#'
+#' @description Export a QSM cylinder mesh to .ply
+#'
+#' @param vertices NumericMatrix
+#' @param colors NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return ply
+#'
+#' @noRd
+#'
+write_ply <- function(vertices, colors, normals, filename) {
+    invisible(.Call(`_rTwig_write_ply`, vertices, colors, normals, filename))
+}
+
+#' @title Write OBJ
+#'
+#' @description Export a QSM cylinder mesh to .obj
+#'
+#' @param vertices NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return obj
+#'
+#' @noRd
+#'
+write_obj <- function(vertices, normals, filename) {
+    invisible(.Call(`_rTwig_write_obj`, vertices, normals, filename))
+}
+
+#' @title Write STL
+#'
+#' @description Export a QSM cylinder mesh to .stl
+#'
+#' @param vertices NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return stl
+#'
+#' @noRd
+#'
+write_stl <- function(vertices, normals, filename) {
+    invisible(.Call(`_rTwig_write_stl`, vertices, normals, filename))
+}
+
+#' @title Read OBJ
+#'
+#' @description Import leaf meshes from QSM-FaNNI
+#'
+#' @param filename string
+#' @return ply
+#'
+#' @noRd
+#'
+read_obj <- function(filename) {
+    .Call(`_rTwig_read_obj`, filename)
 }
 
 #' @title Normalize View
