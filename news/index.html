@@ -51,16 +51,17 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>
-<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code>rgl</code> <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d()</a></code> object.</li>
+<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
 <li>
 <code><a href="../reference/export_mesh.html">export_mesh()</a></code>: The function now supports multiple 3d mesh formats including, <code>.ply</code>, <code>.obj</code> and <code>.stl</code>. It also supports exporting a QSM to <a href="https://www.blender.org/" class="external-link">Blender</a> using the <a href="https://github.com/InverseTampere/qsm-blender-addons" class="external-link">QSM Blender Addons</a> format <code>.txt</code>.</li>
 <li>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</li>
 <li>
 <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>:
 <ul><li>Leaf meshes from <code><a href="../reference/import_leaves.html">import_leaves()</a></code> or <code>aRchi::add_leaves()</code> can now be plotted with the <code>leaves</code> parameter. Leaf color and transparency can be controlled with <code>lf_color</code> and <code>lf_alpha</code> respectively.</li>
-<li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting <code>color</code> and <code>palette</code> to <code>"random"</code> at the same time.</li>
+<li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting both <code>color</code> and <code>palette</code> to <code>"random"</code>.</li>
 <li>Transparency options added for point clouds and main stem triangulation mesh with <code>pt_alpha</code> and <code>tri_alpha</code>.</li>
-<li>Added an option to color the point cloud z-axis with a custom palette with <code>pt_palette</code>.</li>
+<li>Point clouds can now be colored by any variable or palette using <code>pt_color</code> and <code>pt_palette</code>. The user can set a random color for each point by setting both <code>pt_color</code> and <code>pt_palette</code> to <code>random</code>.</li>
+<li>Any <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> objects can now be passed to <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> with the <code>mesh</code> parameter.</li>
 </ul></li>
 <li>
 <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:
@@ -73,7 +74,7 @@
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
 <ul><li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code>: The function was entirely reworked using <code>Rcpp</code> for fast and efficient mesh export. All functionality that was dependent on <code>rgl</code> has been implemented in custom C++ functions.</p></li>
-<li><p>unction names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. <code><a href="../reference/standardise_qsm.html">standardize_qsm()</a></code> vs <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code>.</p></li>
+<li><p>Function names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. <code><a href="../reference/standardise_qsm.html">standardize_qsm()</a></code> vs <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code>.</p></li>
 <li><p>Some functions have been renamed to follow tidy guidelines and have consistency within rTwig and other R packages (e.g. <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> -&gt; <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code>).</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code>, where certain variable names conflicted with internal functions, resulting in an error (issue <a href="https://github.com/aidanmorales/rTwig/issues/12" class="external-link">#12</a>).</p></li>
 <li>
@@ -84,6 +85,7 @@
 <li><p>Fixed an issue where crown base height calculations would fail if there was only one first order branch present.</p></li>
 <li><p>Fixed an issue where disconnected data using <code>verify = FALSE</code> would fail crown base calculations due to missing branches (issue <a href="https://github.com/aidanmorales/rTwig/issues/18" class="external-link">#18</a>).</p></li>
 </ul></li>
+<li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: The user can now use <code>standardize</code> and <code>standardise</code> interchangeably.</p></li>
 <li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
 </ul></div>
 <div class="section level3">

@@ -65,17 +65,17 @@
 
 
 <dt id="arg-verify">verify<a class="anchor" aria-label="anchor" href="#arg-verify"></a></dt>
-<dd><p>Verify QSM topology. If TRUE (default and recommended),
-only topologically connected structures (e.g. a whole a tree or an individual
-branch) are eligible to run. This ensures all metrics are correct and
-verified. If FALSE, the metrics are 'brute forced' and not verified.
+<dd><p>Verify QSM topology. Defaults to TRUE. If <code>verify = TRUE</code>,
+only topologically connected structures (e.g. a whole a tree or an
+individual branch) are eligible to run. This ensures all metrics are correct
+and verified. If <code>verify = FALSE</code>, the metrics are  run, but not verified.
 This is strongly discouraged, but can enable the calculation of tree metrics
 on topologically disconnected structures.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns a list of tree metric data frames and synthetic point cloud</p>
+    <p>Returns a list of tree metric data frames and a synthetic point cloud</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
