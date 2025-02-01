@@ -1,13 +1,15 @@
 #' Standardise QSM
 #'
-#' @description Standardises QSM variable names and ordering across different QSM software
+#' @description All QSM variables are renamed and reordered a standardised
+#'  format across the supported QSM software for a consistent experience.
+#'  All internal rTwig functions use these standardised names for consistency.
 #'
 #' @details Renames supported QSM software output columns to be consistent.
-#' All names are lower case and underscore delimited. See the dictionary
-#' vignette for a detailed description of column names. A consistent QSM format
-#' ensures maximum compatibility when analyzing QSMs made with different
-#' software. This function can be run either before or after
-#' `update_cylinders()` has been run, or at any stage.
+#'  All names are lower case and underscore delimited. See the dictionary
+#'  vignette for a detailed description of column names. A consistent QSM format
+#'  ensures maximum compatibility when analyzing QSMs made with different
+#'  software. This function can be run either before or after
+#'  `update_cylinders()` has been run, or at any stage.
 #'
 #' `standardise_qsm()` and `standardise_qsm()` are synonyms.
 #'

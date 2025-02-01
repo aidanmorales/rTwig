@@ -10,8 +10,9 @@ run_rtwig(
   metrics = TRUE,
   version = NULL,
   smooth = TRUE,
-  standardize = FALSE,
-  broken_branch = TRUE
+  standardise = FALSE,
+  broken_branch = TRUE,
+  ...
 )
 }
 \arguments{
@@ -19,21 +20,28 @@ run_rtwig(
 
 \item{twig_radius}{Twig radius in millimeters}
 
-\item{metrics}{Calculate tree metrics? Defaults to TRUE.}
+\item{metrics}{Calculate tree metrics. Defaults to TRUE.}
 
-\item{version}{Defaults to NULL. If using a specific version of TreeQSM, the user can specify the version (e.g. 2.4.1, 2.0, etc.).}
+\item{version}{If using a specific version of TreeQSM, the user can specify
+the version (e.g. 2.4.1, 2.0, etc.).}
 
-\item{smooth}{Defaults to TRUE, if using TreeQSM. Can be set to FALSE.}
+\item{smooth}{Defaults to TRUE if using TreeQSM. Can be set to FALSE.}
 
-\item{standardize}{Standardize QSM cylinder data? Defaults to FALSE. Can be set to TRUE.}
+\item{standardise}{Standardise QSM cylinder data.
+Defaults to FALSE, but can be set to TRUE.}
 
-\item{broken_branch}{Enable or disable the broken branch filter. Defaults to TRUE.}
+\item{broken_branch}{Enable or disable the broken branch filter.
+Defaults to TRUE.}
+
+\item{...}{Additional arguments allowing standardise and standardize to be
+used as synonyms.}
 }
 \value{
 Returns cylinder data frame or list if metrics is true.
 }
 \description{
-Runs all Real Twig steps
+Run the Real Twig correction and calculate tree metrics for
+supported QSM formats.
 }
 \examples{
 

@@ -1,15 +1,19 @@
 #' Cluster Cloud
 #'
 #' @description Cluster a point cloud or simulate a point cloud based on its QSM.
-#' If using the input point cloud, the cylinder ids are transferred to the
-#' cloud using the nearest neighbors. If simulating a cloud, the points are built
-#' directly from the cylinders with user controlled spacing. The cylinder id can
-#' be used to easily join the desired variables from the QSM to the cloud.
-#' The nearest neighbor search uses the C++ nanoflann library.
+#'  If using the input point cloud, the cylinder ids are transferred to the
+#'  cloud using the nearest neighbors. If simulating a cloud, the points are built
+#'  directly from the cylinders with user controlled spacing. The cylinder id can
+#'  be used to easily join the desired variables from the QSM to the cloud.
+#'  The nearest neighbor search uses the C++ nanoflann library.
 #'
 #' @param cylinder A QSM cylinder data frame.
-#' @param cloud The input point cloud for the QSM to cluster. If NULL (default), the simulated cloud is returned.
-#' @param spacing The point spacing in meters for the simulated cloud. Defaults to 0.02 meters.
+#'
+#' @param cloud The input point cloud for the QSM to cluster.
+#'  If NULL (default), the simulated cloud is returned.
+#'
+#' @param spacing The point spacing in meters for the simulated cloud.
+#'  Defaults to 0.02 meters.
 #'
 #' @return A point cloud data frame
 #' @export

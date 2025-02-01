@@ -16,7 +16,9 @@ standardize_qsm(cylinder)
 Returns a data frame
 }
 \description{
-Standardises QSM variable names and ordering across different QSM software
+All QSM variables are renamed and reordered a standardised
+format across the supported QSM software for a consistent experience.
+All internal rTwig functions use these standardised names for consistency.
 }
 \details{
 Renames supported QSM software output columns to be consistent.

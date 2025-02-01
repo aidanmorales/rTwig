@@ -1,18 +1,33 @@
 #' Prune QSM
 #'
 #' @description Efficiently prune a QSM. The user can prune by cylinder, branch,
-#' and segment ids, or by height or diameter classes, individually, or all at
-#' the same time, and return either the pruned data, the remaining data, or a
-#' binary index of which cylinders are pruned.
+#'  and segment ids, or by height or diameter classes, individually, or all at
+#'  the same time, and return either the pruned data, the remaining data, or a
+#'  binary index of which cylinders are pruned.
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param cylinder_ids A single or vector of cylinder ids. Everything connected above the cylinder is pruned.
-#' @param branch_ids A single or vector of branch ids. Everything connected to the branch is pruned.
-#' @param segment_ids A single or vector of segment ids. Everything connected above the segment is pruned.
-#' @param height_m Height class in meters below which all cylinders are pruned. Valid inputs are numeric to one decimal.
-#' @param diameter_cm Branch diameter class in centimeters below which all cylinders are pruned. Valid inputs are numeric to one decimal.
-#' @param invert Return the remaining or pruned data. Defaults to TRUE (the remaining data), but can be set to FALSE.
-#' @param index Returns a column index called `pruning` indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.
+#'
+#' @param cylinder_ids A single or vector of cylinder ids.
+#'  Everything connected above the cylinder is pruned.
+#'
+#' @param branch_ids A single or vector of branch ids.
+#'  Everything connected to the branch is pruned.
+#'
+#' @param segment_ids A single or vector of segment ids.
+#'  Everything connected above the segment is pruned.
+#'
+#' @param height_m Height class in meters below which all cylinders are pruned.
+#'  Valid inputs are numeric to one decimal.
+#'
+#' @param diameter_cm Branch diameter class in centimeters below which all
+#'  cylinders are pruned. Valid inputs are numeric to one decimal.
+#'
+#' @param invert Return the remaining or pruned data.
+#'  Defaults to TRUE (the remaining data), but can be set to FALSE.
+#'
+#' @param index Returns a column index called `pruning` indicating if the
+#'  cylinder is pruned (1) or un-pruned (0).
+#'  Defaults to FALSE, but can be set to TRUE.
 #'
 #' @return a data frame
 #' @export

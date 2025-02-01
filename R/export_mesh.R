@@ -2,15 +2,39 @@
 #'
 #' @description Exports a QSM cylinder mesh in various formats
 #'
-#' @param cylinder QSM cylinder data frame
-#' @param filename File name and path for exporting. The file extension is automatically added if not present.
-#' @param format Mesh file format. Defaults to "ply". Supported formats include "ply", "obj", "stl", and "blender". "blender" exports the mesh in the qsm-blender-addons format.
-#' @param radius Radius column name either quoted or unquoted. Defaults to modified cylinders from the cylinder data frame.
-#' @param color Optional cylinder color parameter used in the "ply" format. Colors are disabled by default. Colors must be a single hex color string, a `grDevices::colors()`, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.
-#' @param palette Optional color palette for numerical data used in the "ply" format. Palettes include `colourvalues::color_palettes()` or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.
-#' @param facets The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.
-#' @param normals Export surface normals on a per vertex basis. Defaults to FALSE, but can be set to TRUE.
-#' @param alpha Set the transparency of the cylinders used in the "ply" format. Defaults to 1. 1 is opaque and 0 is fully transparent.
+#' @param cylinder QSM cylinder data frame.
+#'
+#' @param filename File name and path for exporting.
+#'  The file extension is automatically added if not present.
+#'
+#' @param format Mesh file format. Defaults to `ply`.
+#'  Supported formats include `ply`, `obj`, `stl`, and `blender`.
+#'  `format = "blender"` exports the mesh in the qsm-blender-addons format.
+#'
+#' @param radius Radius column name either quoted or unquoted.
+#'  Defaults to the modified radii.
+#'
+#' @param color Optional cylinder color parameter.
+#'  `color` must be a single hex color string, a `grDevices::colors()`, a vector
+#'  of hex colors, or a quoted/unquoted column name.
+#'  Vectors must have the same length as the cylinder data frame.
+#'  `color = "random"` will generate a random color applied to all cylinders.
+#'  Defaults to branching order.
+#'
+#' @param palette Optional cylinder color palette for numerical data.
+#'  Palettes include `colourvalues::color_palettes()` or a user supplied RGB
+#'  palette matrix with the length of cylinder. It can also be set to "random"
+#'  to generate a random palette. If combined with `color = "random"`, each
+#'  cylinder will have a random, distinct color.
+#'
+#' @param facets The number of facets in the polygon cross section.
+#'  Defaults to 6. A higher number of facets improves visual smoothness at the
+#'  cost of plotting speed, performance and memory.
+#'
+#' @param normals Export surface normals per vertex. Defaults to FALSE.
+#'
+#' @param alpha Set the transparency of the cylinders used in the "ply" format.
+#'  Defaults to 1. 1 is opaque and 0 is fully transparent.
 #'
 #' @return A mesh file
 #' @export
@@ -313,7 +337,7 @@ format_mesh <- function(
       if (!is.null(color) && color == FALSE) {
         colors <- NULL
       } else {
-        colors <- plotting_colors(cylinder, color, palette, branch_order)
+        colors <- plot_colors(cylinder, color, palette, branch_order)
         colors <- rep(colors, each = facets * 6)
 
         if (!is.null(alpha)) {

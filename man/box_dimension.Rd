@@ -7,13 +7,16 @@
 box_dimension(cloud, lowercutoff = 0.01, rm_int_box = FALSE, plot = FALSE)
 }
 \arguments{
-\item{cloud}{A point cloud matrix size n x 3. Non-matrices are automatically converted to a matrix.}
+\item{cloud}{A point cloud matrix size n x 3.
+Non-matrices are automatically converted to a matrix.}
 
-\item{lowercutoff}{The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.}
+\item{lowercutoff}{The smallest box size determined by the point spacing of
+the cloud in meters. Defaults to 1 cm.}
 
 \item{rm_int_box}{Remove the initial box as TRUE or FALSE. Defaults to FALSE.}
 
-\item{plot}{Plot the results. The user can specify "2D", "3D", or "ALL" plots. FALSE disables plotting. Defaults to FALSE.}
+\item{plot}{Plot the results. The user can specify "2D", "3D", or "ALL" plots.
+FALSE disables plotting. Defaults to FALSE.}
 }
 \value{
 Returns a list

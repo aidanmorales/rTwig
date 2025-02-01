@@ -9,7 +9,7 @@ plot_qsm(
   radius = NULL,
   color = NULL,
   palette = NULL,
-  alpha = 1,
+  alpha = NULL,
   facets = 6,
   skeleton = FALSE,
   skeleton_lwd = NULL,
@@ -33,49 +33,81 @@ plot_qsm(
   bg_color = NULL,
   lit = TRUE,
   pan = TRUE,
-  normalize = FALSE
+  normalize = FALSE,
+  mesh = NULL
 )
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame.}
 
-\item{radius}{Radius column name either quoted or unquoted. Defaults to the modified radii.}
+\item{radius}{Radius column name either quoted or unquoted.
+Defaults to the modified radii.}
 
-\item{color}{Optional cylinder color parameter. Colors must be a single hex color string, a \code{grDevices::colors()}, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.}
+\item{color}{Optional cylinder color parameter.
+\code{color} must be a single hex color string, a \code{grDevices::colors()}, a vector
+of hex colors, or a quoted/unquoted column name.
+Vectors must have the same length as the cylinder data frame.
+\code{color = "random"} will generate a random color applied to all cylinders.
+Defaults to branching order.}
 
-\item{palette}{Optional color palette for numerical data. Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.}
+\item{palette}{Optional cylinder color palette for numerical data.
+Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB
+palette matrix with the length of cylinder. It can also be set to "random"
+to generate a random palette. If combined with \code{color = "random"}, each
+cylinder will have a random, distinct color.}
 
-\item{alpha}{Set the transparency of the cylinders. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+\item{alpha}{Set the transparency of the cylinders.
+Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
-\item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
+\item{facets}{The number of facets in the polygon cross section.
+Defaults to 6. A higher number of facets improves visual smoothness at the
+cost of plotting speed, performance and memory.}
 
 \item{skeleton}{Plot the QSM skeleton instead of cylinders. Defaults to FALSE.}
 
 \item{skeleton_lwd}{Skeleton line width. Defaults to 1.}
 
-\item{cloud}{Point cloud data frame where the first three columns are the x, y, and z coordinates in the same coordinate system as the QSM. Defaults to NULL.}
+\item{cloud}{Point cloud data frame or matrix where the first three columns
+are the x, y, and z coordinates.}
 
-\item{pt_color}{Color of the point cloud. Accepts hex colors, \code{grDevices::colors()}, or "random". Defaults to black.}
+\item{pt_color}{Optional point cloud color parameter.
+\code{pt_color} must be a single hex color string, a \code{grDevices::colors()}, a vector
+of hex colors, or a quoted/unquoted column name.
+\code{pt_color = "random"} will generate a random color for all points.
+Vectors must have the same length as the point cloud data frame.}
 
-\item{pt_palette}{Optional point cloud color palette for z values. Supports the same inputs as palette.}
+\item{pt_palette}{Optional point cloud color palette for numerical data.
+\code{pt_palette} includes \code{colourvalues::color_palettes()} or a user supplied RGB
+palette matrix with the length of the points. It can also be set to "random"
+to generate a random palette. If combined with \code{color = "random"}, each
+point will have a random, distinct color.}
 
 \item{pt_size}{Size of the points. Defaults to 0.1.}
 
-\item{pt_alpha}{Set the transparency of the point cloud. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+\item{pt_alpha}{Set the transparency of the point cloud.
+Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{triangulation}{Stem triangulation mesh from TreeQSM. Defaults to NULL.}
 
-\item{tri_color}{Color of the point cloud. Accepts hex colors, \code{grDevices::colors()}, or "random". Defaults to rainbow z-axis.}
+\item{tri_color}{Color of the triangulation mesh.
+Accepts hex colors, \code{grDevices::colors()}, or "random".
+Defaults to rainbow z-axis.}
 
-\item{tri_palette}{Optional triangulation color palette for z values. Supports the same inputs as palette.}
+\item{tri_palette}{Optional triangulation color palette for z values.
+Supports the same inputs as palette.}
 
-\item{tri_alpha}{Set the transparency of the triangulation mesh. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+\item{tri_alpha}{Set the transparency of the triangulation mesh.
+Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
-\item{leaves}{Leaf mesh in the rgl mesh3d format. Defaults to NULL.}
+\item{leaves}{Leaf mesh in the \code{rgl::mesh3d()} format. Defaults to NULL.}
 
-\item{lf_color}{Color of the leaves. Accepts hex colors, \code{grDevices::colors()},"random", or "random_vertex", which assigns a unique color to each vertex, while "random" will assign a random color for all leaves.}
+\item{lf_color}{Color of the leaves. Defaults to leaf green.
+Accepts hex colors, \code{grDevices::colors()},"random", or "random_vertex".
+\code{lf_color = "random"} assigns a random color to all leaves, while
+\code{lf_color = "random_vertex"} which assigns a random color to each vertex.}
 
-\item{lf_alpha}{Set the transparency of the leaves. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+\item{lf_alpha}{Set the transparency of the leaves.
+Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
@@ -87,19 +119,24 @@ plot_qsm(
 
 \item{hover}{Show cylinder and branch id on mouse hover. Defaults to FALSE.}
 
-\item{bg_color}{Set the background color of the plot. Accepts hex colors or \code{grDevices::colors()}. Defaults to white.}
+\item{bg_color}{Set the background color of the plot.
+Accepts hex colors or \code{grDevices::colors()}. Defaults to white.}
 
-\item{lit}{Enable light source in plot. Defaults to TRUE. Can be set to FALSE.}
+\item{lit}{Enable light source in plot. Defaults to TRUE.}
 
-\item{pan}{Use right mouse button to pan plot. Defaults to TRUE, but is disabled when hover is enabled.}
+\item{pan}{Use right mouse button to pan the plot. Defaults to TRUE.
+Panning is disabled when \code{hover = TRUE}.}
 
-\item{normalize}{Normalize the QSM to 0,0,0 based on the provided data. Defaults to FALSE.}
+\item{normalize}{Normalize the cylinders to 0,0,0. Defaults to FALSE.}
+
+\item{mesh}{Plot any \code{rgl::mesh3d()} object.}
 }
 \value{
-An rgl plot
+An \code{rgl::open3d()} plot
 }
 \description{
-Efficiently plot QSMs, point clouds, leaves, and stem triangulation meshes.
+Efficiently plot QSMs, point clouds, leaves, and stem
+triangulation meshes. Plots can be combined and extensively customized.
 }
 \examples{
 

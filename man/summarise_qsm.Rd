@@ -14,13 +14,15 @@ summarize_qsm(cylinder, radius, triangulation = NULL)
 
 \item{radius}{Radius column name either quoted or unquoted.}
 
-\item{triangulation}{QSM triangulation list. Defaults to NULL. Only supports TreeQSM.}
+\item{triangulation}{Optional QSM triangulation list. Only supports TreeQSM.}
 }
 \value{
 Returns a list
 }
 \description{
-Generates a simple QSM summary (e.g. volume, surface area, dbh, etc.) by totals and branch order.
+Generates a simple QSM summary. The summary includes basic tree
+metrics, such as DBH, total height, and also volume and surface area
+arranged by totals and branching order.
 }
 \details{
 \code{summarise_qsm()} and \code{summarize_qsm()} are synonyms.

@@ -18,19 +18,27 @@ prune_qsm(
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
-\item{cylinder_ids}{A single or vector of cylinder ids. Everything connected above the cylinder is pruned.}
+\item{cylinder_ids}{A single or vector of cylinder ids.
+Everything connected above the cylinder is pruned.}
 
-\item{branch_ids}{A single or vector of branch ids. Everything connected to the branch is pruned.}
+\item{branch_ids}{A single or vector of branch ids.
+Everything connected to the branch is pruned.}
 
-\item{segment_ids}{A single or vector of segment ids. Everything connected above the segment is pruned.}
+\item{segment_ids}{A single or vector of segment ids.
+Everything connected above the segment is pruned.}
 
-\item{height_m}{Height class in meters below which all cylinders are pruned. Valid inputs are numeric to one decimal.}
+\item{height_m}{Height class in meters below which all cylinders are pruned.
+Valid inputs are numeric to one decimal.}
 
-\item{diameter_cm}{Branch diameter class in centimeters below which all cylinders are pruned. Valid inputs are numeric to one decimal.}
+\item{diameter_cm}{Branch diameter class in centimeters below which all
+cylinders are pruned. Valid inputs are numeric to one decimal.}
 
-\item{invert}{Return the remaining or pruned data. Defaults to TRUE (the remaining data), but can be set to FALSE.}
+\item{invert}{Return the remaining or pruned data.
+Defaults to TRUE (the remaining data), but can be set to FALSE.}
 
-\item{index}{Returns a column index called \code{pruning} indicating if the cylinder is pruned (1) or un-pruned (0). Defaults to FALSE, but can be set to TRUE.}
+\item{index}{Returns a column index called \code{pruning} indicating if the
+cylinder is pruned (1) or un-pruned (0).
+Defaults to FALSE, but can be set to TRUE.}
 }
 \value{
 a data frame

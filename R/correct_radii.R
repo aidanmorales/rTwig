@@ -4,7 +4,8 @@
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param twig_radius Twig radius in millimeters
-#' @param broken_branch Enable or disable the broken branch filter. Defaults to enabled (TRUE).
+#' @param broken_branch Enable or disable the broken branch filter.
+#'  Defaults to enabled (TRUE).
 #'
 #' @return Returns a data frame
 #' @export

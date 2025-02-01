@@ -2,10 +2,16 @@
 #'
 #' @description R port of Dominik Seidel's fractal analysis "box-dimension" metric.
 #'
-#' @param cloud A point cloud matrix size n x 3. Non-matrices are automatically converted to a matrix.
-#' @param lowercutoff The smallest box size determined by the point spacing of the cloud in meters. Defaults to 1 cm.
+#' @param cloud A point cloud matrix size n x 3.
+#'  Non-matrices are automatically converted to a matrix.
+#'
+#' @param lowercutoff The smallest box size determined by the point spacing of
+#'  the cloud in meters. Defaults to 1 cm.
+#'
 #' @param rm_int_box Remove the initial box as TRUE or FALSE. Defaults to FALSE.
-#' @param plot Plot the results. The user can specify "2D", "3D", or "ALL" plots. FALSE disables plotting. Defaults to FALSE.
+#'
+#' @param plot Plot the results. The user can specify "2D", "3D", or "ALL" plots.
+#'  FALSE disables plotting. Defaults to FALSE.
 #'
 #' @return Returns a list
 #' @export

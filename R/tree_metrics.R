@@ -3,25 +3,25 @@
 #' @description Calculates tree metrics from a QSM
 #'
 #' @details Calculates detailed tree, branch, and segment metrics from a QSM.
-#' Valid inputs require a connected QSM, which can be a whole tree or an
-#' individual branch. The outputs include all of the standard outputs from
-#' TreeQSM, and also additional variables, including, but not limited to,
-#' growth length, reverse branch order, branch segment or node relationships,
-#' and distances from twigs and the base of the tree, across various
-#' distribution metrics. Also included is a simulated point cloud of the tree,
-#' based on the QSM cylinder radii. When corrected with Real Twig, this allows
-#' for the testing and validation of point cloud diameter overestimation
-#' throughout the tree.
+#'  Valid inputs require a connected QSM, which can be a whole tree or an
+#'  individual branch. The outputs include all of the standard outputs from
+#'  TreeQSM, and also additional variables, including, but not limited to,
+#'  growth length, reverse branch order, branch segment or node relationships,
+#'  and distances from twigs and the base of the tree, across various
+#'  distribution metrics. Also included is a simulated point cloud of the tree,
+#'  based on the QSM cylinder radii. When corrected with Real Twig, this allows
+#'  for the testing and validation of point cloud diameter overestimation
+#'  throughout the tree.
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param verify Verify QSM topology. If TRUE (default and recommended),
-#' only topologically connected structures (e.g. a whole a tree or an individual
-#' branch) are eligible to run. This ensures all metrics are correct and
-#' verified. If FALSE, the metrics are 'brute forced' and not verified.
-#' This is strongly discouraged, but can enable the calculation of tree metrics
-#' on topologically disconnected structures.
+#' @param verify Verify QSM topology. Defaults to TRUE. If `verify = TRUE`,
+#'  only topologically connected structures (e.g. a whole a tree or an
+#'  individual branch) are eligible to run. This ensures all metrics are correct
+#'  and verified. If `verify = FALSE`, the metrics are  run, but not verified.
+#'  This is strongly discouraged, but can enable the calculation of tree metrics
+#'  on topologically disconnected structures.
 #'
-#' @return Returns a list of tree metric data frames and synthetic point cloud
+#' @return Returns a list of tree metric data frames and a synthetic point cloud
 #' @export
 #'
 #' @references

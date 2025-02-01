@@ -17,23 +17,39 @@ export_mesh(
 )
 }
 \arguments{
-\item{cylinder}{QSM cylinder data frame}
+\item{cylinder}{QSM cylinder data frame.}
 
-\item{filename}{File name and path for exporting. The file extension is automatically added if not present.}
+\item{filename}{File name and path for exporting.
+The file extension is automatically added if not present.}
 
-\item{format}{Mesh file format. Defaults to "ply". Supported formats include "ply", "obj", "stl", and "blender". "blender" exports the mesh in the qsm-blender-addons format.}
+\item{format}{Mesh file format. Defaults to \code{ply}.
+Supported formats include \code{ply}, \code{obj}, \code{stl}, and \code{blender}.
+\code{format = "blender"} exports the mesh in the qsm-blender-addons format.}
 
-\item{radius}{Radius column name either quoted or unquoted. Defaults to modified cylinders from the cylinder data frame.}
+\item{radius}{Radius column name either quoted or unquoted.
+Defaults to the modified radii.}
 
-\item{color}{Optional cylinder color parameter used in the "ply" format. Colors are disabled by default. Colors must be a single hex color string, a \code{grDevices::colors()}, a vector of hex colors, or a quoted/unquoted column name. It can also be set to "random" to generate a random solid color, or FALSE to disable color on export. Vectors must have the same length as the cylinder data frame.}
+\item{color}{Optional cylinder color parameter.
+\code{color} must be a single hex color string, a \code{grDevices::colors()}, a vector
+of hex colors, or a quoted/unquoted column name.
+Vectors must have the same length as the cylinder data frame.
+\code{color = "random"} will generate a random color applied to all cylinders.
+Defaults to branching order.}
 
-\item{palette}{Optional color palette for numerical data used in the "ply" format. Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB palette matrix with the length of cylinder. It can also be set to "random" to generate a random palette.}
+\item{palette}{Optional cylinder color palette for numerical data.
+Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB
+palette matrix with the length of cylinder. It can also be set to "random"
+to generate a random palette. If combined with \code{color = "random"}, each
+cylinder will have a random, distinct color.}
 
-\item{facets}{The number of facets in the polygon cross section. Defaults to 6, but can be increased to improve visual smoothness at the cost of performance and memory.}
+\item{facets}{The number of facets in the polygon cross section.
+Defaults to 6. A higher number of facets improves visual smoothness at the
+cost of plotting speed, performance and memory.}
 
-\item{normals}{Export surface normals on a per vertex basis. Defaults to FALSE, but can be set to TRUE.}
+\item{normals}{Export surface normals per vertex. Defaults to FALSE.}
 
-\item{alpha}{Set the transparency of the cylinders used in the "ply" format. Defaults to 1. 1 is opaque and 0 is fully transparent.}
+\item{alpha}{Set the transparency of the cylinders used in the "ply" format.
+Defaults to 1. 1 is opaque and 0 is fully transparent.}
 }
 \value{
 A mesh file

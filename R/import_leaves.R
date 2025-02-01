@@ -1,12 +1,12 @@
 #' Import Leaves
 #'
 #' @description Imports leaves created by the QSM foliage and needles naive
-#' insertion (QSM-FaNNI) algorithm. The leaves are stored as a triangular mesh,
-#' compatible with both rTwig and RGL functions.
+#'  insertion (QSM-FaNNI) algorithm. The leaves are stored as a triangular mesh,
+#'  compatible with both rTwig and RGL functions.
 #'
 #' @param filename a QSM-FaNNI .obj file
 #' @param simplify simplify the mesh by removing duplicate vertices. This can
-#' reduce memory usage at the cost of import speed. Defaults to FALSE.
+#'  reduce memory usage at the cost of import speed. Defaults to FALSE.
 #'
 #' @return Returns an RGL mesh3d object
 #' @export

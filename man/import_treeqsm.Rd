@@ -9,7 +9,8 @@ import_treeqsm(filename, version = "2.x.x")
 \arguments{
 \item{filename}{a TreeQSM .mat MATLAB file}
 
-\item{version}{TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.}
+\item{version}{TreeQSM version. Valid versions include \verb{2.3.0} - \verb{2.4.1} and
+\code{2.0}. Defaults to the most recent format of \verb{2.x.x}.}
 }
 \value{
 Returns a list

@@ -11,7 +11,8 @@ correct_radii(cylinder, twig_radius, broken_branch = TRUE)
 
 \item{twig_radius}{Twig radius in millimeters}
 
-\item{broken_branch}{Enable or disable the broken branch filter. Defaults to enabled (TRUE).}
+\item{broken_branch}{Enable or disable the broken branch filter.
+Defaults to enabled (TRUE).}
 }
 \value{
 Returns a data frame

@@ -1,6 +1,8 @@
 #' Summarise QSM
 #'
-#' @description Generates a simple QSM summary (e.g. volume, surface area, dbh, etc.) by totals and branch order.
+#' @description Generates a simple QSM summary. The summary includes basic tree
+#'  metrics, such as DBH, total height, and also volume and surface area
+#'  arranged by totals and branching order.
 #'
 #' @details
 #' `summarise_qsm()` and `summarize_qsm()` are synonyms.
@@ -8,7 +10,7 @@
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param radius Radius column name either quoted or unquoted.
-#' @param triangulation QSM triangulation list. Defaults to NULL. Only supports TreeQSM.
+#' @param triangulation Optional QSM triangulation list. Only supports TreeQSM.
 #'
 #' @return Returns a list
 #' @export

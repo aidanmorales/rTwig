@@ -9,9 +9,11 @@ cluster_cloud(cylinder, cloud = NULL, spacing = NULL)
 \arguments{
 \item{cylinder}{A QSM cylinder data frame.}
 
-\item{cloud}{The input point cloud for the QSM to cluster. If NULL (default), the simulated cloud is returned.}
+\item{cloud}{The input point cloud for the QSM to cluster.
+If NULL (default), the simulated cloud is returned.}
 
-\item{spacing}{The point spacing in meters for the simulated cloud. Defaults to 0.02 meters.}
+\item{spacing}{The point spacing in meters for the simulated cloud.
+Defaults to 0.02 meters.}
 }
 \value{
 A point cloud data frame

@@ -15,7 +15,7 @@ export_mat(cylinder, filename)
 Returns a .mat file
 }
 \description{
-Exports the cylinder data to be visualized with TreeQSM's \code{plot_cylinder_model()}.
+Exports the cylinder data to the format used by TreeQSM
 }
 \examples{
 

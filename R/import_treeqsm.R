@@ -3,7 +3,8 @@
 #' @description Imports a QSM created by TreeQSM
 #'
 #' @param filename a TreeQSM .mat MATLAB file
-#' @param version TreeQSM version. Defaults to 2.x.x. The user can also specify the 2.0 format.
+#' @param version TreeQSM version. Valid versions include `2.3.0` - `2.4.1` and
+#'  `2.0`. Defaults to the most recent format of `2.x.x`.
 #'
 #' @return Returns a list
 #' @export
