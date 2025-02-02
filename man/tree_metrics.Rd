@@ -59,4 +59,6 @@ names(metrics)
 \insertRef{growth_parameter2}{rTwig}
 
 \insertRef{treegraph2}{rTwig}
+
+\insertRef{path_fraction}{rTwig}
 }

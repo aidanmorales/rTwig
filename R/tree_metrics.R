@@ -33,6 +33,8 @@
 #'
 #' \insertRef{treegraph2}{rTwig}
 #'
+#' \insertRef{path_fraction}{rTwig}
+#'
 #' @examples
 #'
 #' ## TreeQSM Processing Chain
@@ -418,6 +420,12 @@ calculate_tree_metrics <- function(
   tree$twigs <- length(unique(twig_cyl$branch))
   tree$twig_length_m <- sum(twig_cyl$length)
   tree$twig_distance_m <- cylinder$twig_distance[base]
+
+  tree$path_fraction <- cylinder %>%
+    filter(.data$twig_distance == .data$length) %>%
+    summarise(
+      path_fraction = mean(.data$base_distance) / max(.data$base_distance)
+    )
 
   tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
   tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)
