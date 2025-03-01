@@ -69,6 +69,7 @@
 <li><p><code>volume_change_pct</code> and <code>area_change_pct</code> are standard outputs of the <code>tree</code> data frame. These represent the percent change in total tree volume and surface area using <code>radius</code> and <code>raw_radius</code>.</p></li>
 <li><p><code>vessel_volume</code>, <code>pipe_area</code>, <code>pipe_radius</code>, and <code>twig_distance_m</code> are standard outputs taken from the base of the QSM.</p></li>
 <li><p>Added first order branches to the branch distribution metrics to better match the output of TreeQSM. These columns include <code>_1</code> in their column names.</p></li>
+<li><p><code>path_fraction</code> is now a standard output.</p></li>
 </ul></li>
 </ul></div>
 <div class="section level3">
@@ -86,7 +87,8 @@
 <li><p>Fixed an issue where disconnected data using <code>verify = FALSE</code> would fail crown base calculations due to missing branches (issue <a href="https://github.com/aidanmorales/rTwig/issues/18" class="external-link">#18</a>).</p></li>
 </ul></li>
 <li><p><code><a href="../reference/run_rtwig.html">run_rtwig()</a></code>: The user can now use <code>standardize</code> and <code>standardise</code> interchangeably.</p></li>
-<li><p>Update <code>Twigs</code> vignette with new info and plots.</p></li>
+<li><p>Updated <code>Twigs</code> vignette with new info and plots.</p></li>
+<li><p>Updated <code>Dictionary</code> vignette describing all standard outputs from <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>

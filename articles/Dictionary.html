@@ -173,7 +173,7 @@ branch index. Alternate branch zero is always the main stem. The rest of
 the branches are first order branches and all of their children. This is
 similar to cutting the first order branches off with a saw and labeling
 them consecutively. If using a SimpleForest QSM, this is the old
-<em>branchID</em> column updated so that the main stem is index
+<code>branchID</code> column updated so that the main stem is index
 zero.</p>
 </div>
 <div class="section level4">
@@ -234,7 +234,323 @@ twigs.</p>
 <div class="section level2">
 <h2 id="metrics">Metrics<a class="anchor" aria-label="anchor" href="#metrics"></a>
 </h2>
-<p>The</p>
+<p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> generates multiple detailed metrics,
+which are described in detail below. The <code>tree</code>,
+<code>branch</code>, and <code>segment</code> data frames are summaries
+on an individual tree, branch, or segment level, while the
+<code>tree_*_dist</code>, <code>branch_*_dist</code>, and
+<code>segment_*_dist</code> are summarised by <code>height</code>,
+<code>diameter</code>, <code>zenith</code>, <code>azimuth</code>,
+<code>angle</code>, or <code>order</code>. All of the outputs are
+described in detail below:</p>
+<div class="section level3">
+<h3 id="tree">tree<a class="anchor" aria-label="anchor" href="#tree"></a>
+</h3>
+<p><strong><code>tree_volume_m3:</code></strong> The total volume of the
+tree in cubic meters.</p>
+<p><strong><code>stem_volume_m3:</code></strong> The total volume of the
+main stem in cubic meters.</p>
+<p><strong><code>branch_volume_m3:</code></strong> The total volume of
+the branches in cubic meters.</p>
+<p><strong><code>tree_height_m:</code></strong> The total height of the
+tree in meters.</p>
+<p><strong><code>tree_length_m:</code></strong> The total length of the
+tree in meters. This is calculated by summing the length of all of the
+cylinders in the QSM. This is also equal to the growth length of base of
+the tree.</p>
+<p><strong><code>stem_length_m:</code></strong> The total length of the
+main stem in meters.</p>
+<p><strong><code>branch_length_m:</code></strong> The total length of
+the branches in meters. This is calculated by summing the length of all
+of the branch cylinders in the QSM.</p>
+<p><strong><code>branches:</code></strong> The total number of branches
+in the QSM, where a branch begins at a new branch order and ends at a
+twig.</p>
+<p><strong><code>branches_alt:</code></strong> The total number of
+alternate branches, where an alternate branch is attached directly to
+the main stem, and contains all connected children.</p>
+<p><strong><code>max_branch_order:</code></strong> The maximum branch
+order in the QSM.</p>
+<p><strong><code>max_reverse_order:</code></strong> The maximum reverse
+branch order in the QSM, which is the maximum node depth from the
+furthest twig.</p>
+<p><strong><code>twigs:</code></strong> The total number of twigs in the
+QSM.</p>
+<p><strong><code>twig_length_m:</code></strong> The total length of the
+twig cylinders in meters.</p>
+<p><strong><code>twig_distance_m:</code></strong> The average distance
+from the base of the tree to each twig.</p>
+<p><strong><code>path_fraction:</code></strong> The average path length
+(from the base of the tree to the twig) divided by the maximum path
+length. A path fraction of 1 is a perfect fractal.</p>
+<p><strong><code>tree_area_m2:</code></strong> The total surface area of
+the tree in square meters.</p>
+<p><strong><code>stem_area_m2:</code></strong> The total surface area of
+the main stem in square meters.</p>
+<p><strong><code>branch_area_m2:</code></strong> The total surface area
+of the branches in square meters.</p>
+<p><strong><code>dbh_qsm_cm:</code></strong> The diameter at breast
+height of the QSM at 1.37 meters in centimeters, modified by any
+tapering.</p>
+<p><strong><code>dbh_raw_cm:</code></strong> The diameter at breast
+height of the QSM at 1.37 meters in centimeters, without any radius
+modification.</p>
+<p><strong><code>d_base_qsm_cm:</code></strong> The diameter of the base
+cylinder of the QSM in centimeters, modified by any tapering.</p>
+<p><strong><code>d_base_raw_cm:</code></strong> The diameter of the base
+cylinder of the QSM in centimeters, without any radius modification.</p>
+<p><strong><code>crown_diameter_mean_m:</code></strong> The average
+crown diameter in meters.</p>
+<p><strong><code>crown_diameter_max_m:</code></strong> The maximum crown
+diameter in meters.</p>
+<p><strong><code>crown_diameter_min_m:</code></strong> The minimum crown
+diameter in meters.</p>
+<p><strong><code>crown_projected_area_m2:</code></strong> The projected
+crown area in square meters.</p>
+<p><strong><code>crown_base_height_m:</code></strong> The base height of
+the crown in meters.</p>
+<p><strong><code>crown_length_m:</code></strong> The length of the crown
+in meters.</p>
+<p><strong><code>crown_ratio:</code></strong> The crown length divided
+by the total tree height.</p>
+<p><strong><code>crown_area_m2:</code></strong> The surface area of the
+crown in square meters.</p>
+<p><strong><code>crown_volume_m3:</code></strong> The volume of the
+crown in cubic meters.</p>
+<p><strong><code>vessel_volume:</code></strong> The vessel volume of the
+base cylinder in the QSM.</p>
+<p><strong><code>pipe_area:</code></strong> The pipe area of the base
+cylinder in the QSM, equal to the total number of supported twigs.</p>
+<p><strong><code>pipe_radius:</code></strong> The pipe radius of the
+base cylinder in the QSM, equal to the square root of the pipe area.</p>
+<p><strong><code>start_x:</code></strong> The x coordinate of the base
+cylinder in the QSM.</p>
+<p><strong><code>start_y:</code></strong> The y coordinate of the base
+cylinder in the QSM.</p>
+<p><strong><code>start_z:</code></strong> The z coordinate of the base
+cylinder in the QSM.</p>
+<p><strong><code>modified:</code></strong> The ratio of cylinders with
+radii modified by Real Twig, divided by the total number of cylinders in
+the QSM. This value only exists if Real Twig has been run.</p>
+<p><strong><code>volume_change_pct:</code></strong> The percent change
+in total volume from running Real Twig. This value only exists if Real
+Twig has been run.</p>
+<p><strong><code>area_change_pct:</code></strong> The percent change in
+total surface area from running Real Twig. This value only exists if
+Real Twig has been run.</p>
+</div>
+<div class="section level3">
+<h3 id="branch-branch_alt-segment">branch, branch_alt, &amp; segment<a class="anchor" aria-label="anchor" href="#branch-branch_alt-segment"></a>
+</h3>
+<p><strong><code>branch:</code></strong> The id of the branch being
+summarised.</p>
+<p><strong><code>branch_alt:</code></strong> The id of the alternate
+branch being summarised.</p>
+<p><strong><code>segment:</code></strong> The id of the segment being
+summarised.</p>
+<p><strong><code>parent_branch:</code></strong> The parent branch of the
+branch being summarised.</p>
+<p><strong><code>parent_segment:</code></strong> The parent segment of
+the segment being summarised.</p>
+<p><strong><code>branch_order:</code></strong> The branch order of the
+branch or segment.</p>
+<p><strong><code>reverse_order:</code></strong> The reverse branch order
+of the branch or segment.</p>
+<p><strong><code>diameter_base_cm:</code></strong> The diameter of the
+base of the branch or segment in centimeters.</p>
+<p><strong><code>diameter_mid_cm:</code></strong> The diameter of the
+midpoint of the branch or segment in centimeters.</p>
+<p><strong><code>diameter_tip_cm:</code></strong> The diameter of the
+end of the branch or segment in centimeters.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the branch or segment.</p>
+<p><strong><code>area_m2:</code></strong> The surface area in square
+meters of the branch or segment.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+branch or segment.</p>
+<p><strong><code>height_m:</code></strong> The height above the ground
+in meters of the branch or segment.</p>
+<p><strong><code>angle_deg:</code></strong> The angle in degrees of the
+branch or segment.</p>
+<p><strong><code>azimuth_deg:</code></strong> The azimuth in degrees of
+the branch or segment.</p>
+<p><strong><code>zenith_deg:</code></strong> The zenith in degrees of
+the branch or segment.</p>
+<p><strong><code>growth_length:</code></strong> The growth length of the
+branch in meters.</p>
+<p><strong><code>cylinders:</code></strong> The total number of
+cylinders in the branch or segment.</p>
+<p><strong><code>segments:</code></strong> The total number of segments
+in the branch.</p>
+<p><strong><code>children:</code></strong> The sum of the supported
+children in the branch or segment.</p>
+<p><strong><code>base_distance_m:</code></strong> The shortest path
+distance in meters to the base of the tree from the base of the branch
+or segment.</p>
+<p><strong><code>twig_distance_m:</code></strong> The average distance
+in meters to the supported twigs from the base of the branch or
+segment.</p>
+</div>
+<div class="section level3">
+<h3 id="height_dist">*_height_dist<a class="anchor" aria-label="anchor" href="#height_dist"></a>
+</h3>
+<p>The height distributions are calculated on the tree, branch, and
+segment level. Branch column names containing <code>_1</code> summarise
+only the first order branch cylinders, similar to the output of
+TreeQSM.</p>
+<p><strong><code>height_class_m:</code></strong> The one meter height
+class of the tree, branch, or segment cylinders.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the tree, branch, or segment cylinders per height class.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the tree, branch, or segment cylinders per height class.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+tree, branch, or segment cylinders per height class.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+height class.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+height class.</p>
+</div>
+<div class="section level3">
+<h3 id="diameter_dist">*_diameter_dist<a class="anchor" aria-label="anchor" href="#diameter_dist"></a>
+</h3>
+<p>The diameter distributions are calculated on the tree, branch, and
+segment level. Branch column names containing <code>_1</code> summarise
+only the first order branch cylinders, similar to the output of
+TreeQSM.</p>
+<p><strong><code>diameter_class_cm:</code></strong> The one centimeter
+diameter class of the tree, branch, or segment cylinders.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the tree, branch, or segment cylinders per diameter class.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the tree, branch, or segment cylinders per diameter class.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+tree, branch, or segment cylinders per diameter class.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+diameter class.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+diameter class.</p>
+</div>
+<div class="section level3">
+<h3 id="zenith_dist">*_zenith_dist<a class="anchor" aria-label="anchor" href="#zenith_dist"></a>
+</h3>
+<p>The zenith distributions are calculated on the tree, branch, and
+segment level. Branch column names containing <code>_1</code> summarise
+only the first order branch cylinders, similar to the output of
+TreeQSM.</p>
+<p><strong><code>zenith_class_deg:</code></strong> The ten degree zenith
+class of the tree, branch, or segment cylinders.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the tree, branch, or segment cylinders per zenith class.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the tree, branch, or segment cylinders per zenith class.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+tree, branch, or segment cylinders per zenith class.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+zenith class.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+zenith class.</p>
+</div>
+<div class="section level3">
+<h3 id="azimuth_dist">*_azimuth_dist<a class="anchor" aria-label="anchor" href="#azimuth_dist"></a>
+</h3>
+<p>The azimuth distributions are calculated on the tree, branch, and
+segment level. Branch column names containing <code>_1</code> summarise
+only the first order branch cylinders, similar to the output of
+TreeQSM.</p>
+<p><strong><code>azimuth_class_deg:</code></strong> The ten degree
+azimuth class of the tree, branch, or segment cylinders.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the tree, branch, or segment cylinders per azimuth class.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the tree, branch, or segment cylinders per azimuth class.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+tree, branch, or segment cylinders per azimuth class.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+azimuth class.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+azimuth class.</p>
+</div>
+<div class="section level3">
+<h3 id="angle_dist">*_angle_dist<a class="anchor" aria-label="anchor" href="#angle_dist"></a>
+</h3>
+<p>The angle distributions are calculated on the branch and segment
+level. Branch column names containing <code>_1</code> summarise only the
+first order branch cylinders, similar to the output of TreeQSM.</p>
+<p><strong><code>angle_class_deg:</code></strong> The ten degree angle
+class of the branch or segment cylinders.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the branch or segment cylinders per angle class.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the branch or segment cylinders per angle class.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+branch or segment cylinders per angle class.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+angle class.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+angle class.</p>
+</div>
+<div class="section level3">
+<h3 id="order_dist">*_order_dist<a class="anchor" aria-label="anchor" href="#order_dist"></a>
+</h3>
+<p>The order distributions are calculated on the branch and segment
+level. Branch column names containing <code>_1</code> summarise only the
+first order branch cylinders, similar to the output of TreeQSM.</p>
+<p><strong><code>branch_order:</code></strong> The branch order.</p>
+<p><strong><code>reverse_order:</code></strong> The reverse branch
+order.</p>
+<p><strong><code>volume_m3:</code></strong> The volume in cubic meters
+of the branch or segment cylinders per order.</p>
+<p><strong><code>area_m2:</code></strong> The surface are in square
+meters of the branch or segment cylinders per order.</p>
+<p><strong><code>length_m:</code></strong> The length in meters of the
+branch or segment cylinders per order.</p>
+<p><strong><code>branches:</code></strong> The number of branches in the
+order.</p>
+<p><strong><code>segments:</code></strong> The number of segments in the
+order.</p>
+</div>
+<div class="section level3">
+<h3 id="stem_taper">stem_taper<a class="anchor" aria-label="anchor" href="#stem_taper"></a>
+</h3>
+<p><strong><code>height_m:</code></strong> The height in meters above
+the ground of the main stem.</p>
+<p><strong><code>diameter_cm:</code></strong> The diameter in
+centimeters at the given height.</p>
+</div>
+<div class="section level3">
+<h3 id="spreads">spreads<a class="anchor" aria-label="anchor" href="#spreads"></a>
+</h3>
+<p><strong><code>azimuth_deg:</code></strong> 20 degree azimuth
+classes.</p>
+<p><strong><code>height_class:</code></strong> 1 meter height
+classes.</p>
+<p><strong><code>spread_m:</code></strong> The crown spread in meters at
+the given azimuth and height.</p>
+</div>
+<div class="section level3">
+<h3 id="vertical_profile">vertical_profile<a class="anchor" aria-label="anchor" href="#vertical_profile"></a>
+</h3>
+<p><strong><code>height_class:</code></strong> 1 meter height
+classes.</p>
+<p><strong><code>avg_spread_m:</code></strong> The average crown spread
+in meters at the given height.</p>
+</div>
+<div class="section level3">
+<h3 id="cloud">cloud<a class="anchor" aria-label="anchor" href="#cloud"></a>
+</h3>
+<p>The simulated point cloud used to calculate many of the metrics.</p>
+</div>
+<div class="section level3">
+<h3 id="version">version<a class="anchor" aria-label="anchor" href="#version"></a>
+</h3>
+<p>The version of <code>rTwig</code> used to create the metrics.</p>
+</div>
+<div class="section level3">
+<h3 id="run_date">run_date<a class="anchor" aria-label="anchor" href="#run_date"></a>
+</h3>
+<p>The date and time the metrics were generated.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
