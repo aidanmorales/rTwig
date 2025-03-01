@@ -85,7 +85,7 @@
 #' @param bg_color Set the background color of the plot.
 #'  Accepts hex colors or `grDevices::colors()`. Defaults to white.
 #'
-#' @param lit Enable light source in plot. Defaults to TRUE.
+#' @param lit Enable light source in plot. Defaults to FALSE.
 #'
 #' @param pan Use right mouse button to pan the plot. Defaults to TRUE.
 #'  Panning is disabled when `hover = TRUE`.
@@ -114,29 +114,29 @@ plot_qsm <- function(
     radius = NULL,
     color = NULL,
     palette = NULL,
-    alpha = NULL,
+    alpha = 1,
     facets = 6,
     skeleton = FALSE,
     skeleton_lwd = NULL,
     cloud = NULL,
-    pt_color = NULL,
+    pt_color = "#000000",
     pt_palette = NULL,
     pt_size = NULL,
-    pt_alpha = NULL,
+    pt_alpha = 1,
     triangulation = NULL,
     tri_color = NULL,
     tri_palette = NULL,
-    tri_alpha = NULL,
+    tri_alpha = 1,
     leaves = NULL,
-    lf_color = NULL,
-    lf_alpha = NULL,
+    lf_color = "#5BA803",
+    lf_alpha = 1,
     axes = TRUE,
-    axes_color = NULL,
+    axes_color = "#000000",
     grid = FALSE,
-    grid_color = NULL,
+    grid_color = "#D3D3D3",
     hover = FALSE,
-    bg_color = NULL,
-    lit = TRUE,
+    bg_color = "#FFFFFF",
+    lit = FALSE,
     pan = TRUE,
     normalize = FALSE,
     mesh = NULL) {
@@ -675,7 +675,7 @@ plot_data <- function(
   # Plot grid lines ------------------------------------------------------------
   if (grid == TRUE) {
     if (is.null(grid_color)) {
-      grid_lines(grid, grid_color = "grey")
+      grid_lines(grid, grid_color = "#D3D3D3")
     } else {
       grid_lines(grid, grid_color)
     }

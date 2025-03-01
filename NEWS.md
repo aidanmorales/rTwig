@@ -20,6 +20,8 @@
 
     -   Added first order branches to the branch distribution metrics to better match the output of TreeQSM. These columns include `_1` in their column names.
 
+    -   `path_fraction` is now a standard output.
+
 ## Improvements
 
 -   `export_mesh()`: The function was entirely reworked using `Rcpp` for fast and efficient mesh export. All functionality that was dependent on `rgl` has been implemented in custom C++ functions.
@@ -44,7 +46,9 @@
 
 -   `run_rtwig()`: The user can now use `standardize` and `standardise` interchangeably.
 
--   Update `Twigs` vignette with new info and plots.
+-   Updated `Twigs` vignette with new info and plots.
+
+-   Updated `Dictionary` vignette describing all standard outputs from `tree_metrics()`.
 
 ## Breaking Changes
 

@@ -13,7 +13,7 @@ export_mesh(
   palette = NULL,
   facets = 6,
   normals = FALSE,
-  alpha = NULL
+  alpha = 1
 )
 }
 \arguments{

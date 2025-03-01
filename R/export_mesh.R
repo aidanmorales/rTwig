@@ -94,7 +94,7 @@ export_mesh <- function(
     palette = NULL,
     facets = 6,
     normals = FALSE,
-    alpha = NULL) {
+    alpha = 1) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."

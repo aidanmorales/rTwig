@@ -9,29 +9,29 @@ plot_qsm(
   radius = NULL,
   color = NULL,
   palette = NULL,
-  alpha = NULL,
+  alpha = 1,
   facets = 6,
   skeleton = FALSE,
   skeleton_lwd = NULL,
   cloud = NULL,
-  pt_color = NULL,
+  pt_color = "#000000",
   pt_palette = NULL,
   pt_size = NULL,
-  pt_alpha = NULL,
+  pt_alpha = 1,
   triangulation = NULL,
   tri_color = NULL,
   tri_palette = NULL,
-  tri_alpha = NULL,
+  tri_alpha = 1,
   leaves = NULL,
-  lf_color = NULL,
-  lf_alpha = NULL,
+  lf_color = "#5BA803",
+  lf_alpha = 1,
   axes = TRUE,
-  axes_color = NULL,
+  axes_color = "#000000",
   grid = FALSE,
-  grid_color = NULL,
+  grid_color = "#D3D3D3",
   hover = FALSE,
-  bg_color = NULL,
-  lit = TRUE,
+  bg_color = "#FFFFFF",
+  lit = FALSE,
   pan = TRUE,
   normalize = FALSE,
   mesh = NULL
@@ -122,7 +122,7 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.}
 \item{bg_color}{Set the background color of the plot.
 Accepts hex colors or \code{grDevices::colors()}. Defaults to white.}
 
-\item{lit}{Enable light source in plot. Defaults to TRUE.}
+\item{lit}{Enable light source in plot. Defaults to FALSE.}
 
 \item{pan}{Use right mouse button to pan the plot. Defaults to TRUE.
 Panning is disabled when \code{hover = TRUE}.}
