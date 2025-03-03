@@ -371,12 +371,13 @@ write_stl <- function(vertices, normals, filename) {
 #' @description Import leaf meshes from QSM-FaNNI
 #'
 #' @param filename string
+#' @param format string
 #' @return ply
 #'
 #' @noRd
 #'
-read_obj <- function(filename) {
-    .Call(`_rTwig_read_obj`, filename)
+read_obj <- function(filename, format) {
+    .Call(`_rTwig_read_obj`, filename, format)
 }
 
 #' @title Normalize View

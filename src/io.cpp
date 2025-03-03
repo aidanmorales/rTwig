@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <tuple>
+#include "helper_functions.h"
 
 using namespace Rcpp;
 
@@ -289,81 +290,199 @@ void write_stl(
 //' @description Import leaf meshes from QSM-FaNNI
 //'
 //' @param filename string
+//' @param format string
 //' @return ply
 //'
 //' @noRd
 //'
 // [[Rcpp::export]]
-NumericMatrix read_obj(std::string filename) {
+NumericMatrix read_obj(std::string filename, std::string format) {
+  if (format == "obj") {
+    std::ifstream file(filename);
 
-  // Open the OBJ file
-  std::ifstream file(filename);
+    // Vectors to store vertex and face data
+    std::vector<double> vertices;
+    std::vector<int> faces;
 
-  // Vectors to store vertex and face data
-  std::vector<double> vertices;
-  std::vector<int> faces;
+    std::string line;
 
-  std::string line;
+    // Process lines
+    while (std::getline(file, line)) {
+      if (line.empty() || line[0] == '#') {
+        continue; // Skip empty lines or comments
+      }
 
-  // Process lines
-  while (std::getline(file, line)) {
-    if (line.empty() || line[0] == '#') {
-      continue; // Skip empty lines or comments
+      // Vertex lines
+      if (line[0] == 'v' && line[1] == ' ') {
+        // (v x y z)
+        size_t pos = 2;
+        double x = std::stod(line.substr(pos, line.find(" ", pos) - pos));
+        pos = line.find(" ", pos) + 1;
+        double y = std::stod(line.substr(pos, line.find(" ", pos) - pos));
+        pos = line.find(" ", pos) + 1;
+        double z = std::stod(line.substr(pos));
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(z);
+      }
+      // Face lines
+      else if (line[0] == 'f' && line[1] == ' ') {
+        // (f v1 v2 v3) using R 1-based indexing
+        size_t pos = 2;
+        int v1 = std::stoi(line.substr(pos, line.find(" ", pos) - pos)) - 1;
+        pos = line.find(" ", pos) + 1;
+        int v2 = std::stoi(line.substr(pos, line.find(" ", pos) - pos)) - 1;
+        pos = line.find(" ", pos) + 1;
+        int v3 = std::stoi(line.substr(pos)) - 1;
+        faces.push_back(v1);
+        faces.push_back(v2);
+        faces.push_back(v3);
+      }
     }
 
-    // Vertex lines
-    if (line[0] == 'v' && line[1] == ' ') {
-      // (v x y z)
-      size_t pos = 2;
-      double x = std::stod(line.substr(pos, line.find(" ", pos) - pos));
-      pos = line.find(" ", pos) + 1;
-      double y = std::stod(line.substr(pos, line.find(" ", pos) - pos));
-      pos = line.find(" ", pos) + 1;
-      double z = std::stod(line.substr(pos));
-      vertices.push_back(x);
-      vertices.push_back(y);
-      vertices.push_back(z);
+    file.close();
+
+    // Create triangles matrix
+    size_t num_faces = faces.size() / 3;
+    NumericMatrix triangles(3 * num_faces, 3);
+
+    // Fill triangles matrix
+    for (size_t i = 0; i < num_faces; ++i) {
+      int v1 = faces[3 * i];
+      int v2 = faces[3 * i + 1];
+      int v3 = faces[3 * i + 2];
+
+      triangles(3 * i, 0) = vertices[3 * v1];
+      triangles(3 * i, 1) = vertices[3 * v1 + 1];
+      triangles(3 * i, 2) = vertices[3 * v1 + 2];
+
+      triangles(3 * i + 1, 0) = vertices[3 * v2];
+      triangles(3 * i + 1, 1) = vertices[3 * v2 + 1];
+      triangles(3 * i + 1, 2) = vertices[3 * v2 + 2];
+
+      triangles(3 * i + 2, 0) = vertices[3 * v3];
+      triangles(3 * i + 2, 1) = vertices[3 * v3 + 1];
+      triangles(3 * i + 2, 2) = vertices[3 * v3 + 2];
     }
-    // Face lines
-    else if (line[0] == 'f' && line[1] == ' ') {
-      // (f v1 v2 v3) using R 1-based indexing
-      size_t pos = 2;
-      int v1 = std::stoi(line.substr(pos, line.find(" ", pos) - pos)) - 1;
-      pos = line.find(" ", pos) + 1;
-      int v2 = std::stoi(line.substr(pos, line.find(" ", pos) - pos)) - 1;
-      pos = line.find(" ", pos) + 1;
-      int v3 = std::stoi(line.substr(pos)) - 1;
-      faces.push_back(v1);
-      faces.push_back(v2);
-      faces.push_back(v3);
+
+    return triangles;
+  } else if (format == "obj_ext") {
+    std::ifstream file(filename);
+    std::string line;
+    std::vector<std::vector<double>> base_vertices;
+    std::vector<std::vector<double>> transformedVertices;
+    std::vector<std::vector<int>> faces;
+    int vertex_offset = 0;
+
+    // Read the file line by line
+    while (std::getline(file, line)) {
+      std::istringstream iss(line);
+      std::string type;
+      iss >> type;
+
+      if (type == "v") {
+        // Base vertex geometry
+        double x, y, z;
+        iss >> x >> y >> z;
+        base_vertices.push_back({x, y, z});
+      } else if (type == "L") {
+        // Leaf transformation parameters
+        std::vector<double> L_params(15);
+        for (int i = 0; i < 15; ++i) {
+          iss >> L_params[i];
+        }
+
+        // Extract transformation parameters
+        NumericVector leaf_start = NumericVector::create(L_params[3], L_params[4], L_params[5]);
+        NumericVector leaf_direction = NumericVector::create(L_params[6], L_params[7], L_params[8]);
+        NumericVector leaf_normal = NumericVector::create(L_params[9], L_params[10], L_params[11]);
+        NumericVector leaf_scale = NumericVector::create(L_params[12], L_params[13], L_params[14]);
+
+        // Normalize direction and normal vectors
+        double dir_length = norm(leaf_direction);
+        leaf_direction = NumericVector::create(
+          leaf_direction[0] / dir_length,
+          leaf_direction[1] / dir_length,
+          leaf_direction[2] / dir_length
+        );
+
+        double normal_length = norm(leaf_normal);
+        leaf_normal = NumericVector::create(
+          leaf_normal[0] / normal_length,
+          leaf_normal[1] / normal_length,
+          leaf_normal[2] / normal_length
+        );
+
+        // Compute the coordinate system
+        NumericVector E1 = cross_product(leaf_normal, leaf_direction);
+        NumericVector E2 = leaf_direction;
+        NumericVector E3 = leaf_normal;
+
+        // Transform each base vertex
+        for (const auto& vertex : base_vertices) {
+          // Scale
+          NumericVector scaled_vertex = NumericVector::create(
+            vertex[0] * leaf_scale[0],
+            vertex[1] * leaf_scale[1],
+            vertex[2] * leaf_scale[2]
+          );
+
+          // Rotate
+          double x_new = scaled_vertex[0] * E1[0] + scaled_vertex[1] * E1[1] + scaled_vertex[2] * E1[2];
+          double y_new = scaled_vertex[0] * E2[0] + scaled_vertex[1] * E2[1] + scaled_vertex[2] * E2[2];
+          double z_new = scaled_vertex[0] * E3[0] + scaled_vertex[1] * E3[1] + scaled_vertex[2] * E3[2];
+
+          // Translate
+          x_new += leaf_start[0];
+          y_new += leaf_start[1];
+          z_new += leaf_start[2];
+
+          // Add to the result
+          transformedVertices.push_back({x_new, y_new, z_new});
+        }
+
+        // Create triangular faces for this leaf
+        // Assuming the base vertices form a triangle fan or strip
+        for (size_t i = 1; i < base_vertices.size() - 1; ++i) {
+          faces.push_back({
+            static_cast<int>(vertex_offset),
+            static_cast<int>(vertex_offset + i),
+            static_cast<int>(vertex_offset + i + 1)
+          });
+        }
+
+        // Update vertex offset
+        vertex_offset += static_cast<int>(base_vertices.size());
+      }
     }
+
+    file.close();
+
+    // Create triangles matrix
+    size_t num_faces = faces.size();
+    NumericMatrix triangles(3 * num_faces, 3);
+
+    // Fill triangles matrix
+    for (size_t i = 0; i < num_faces; ++i) {
+      int v1 = faces[i][0];
+      int v2 = faces[i][1];
+      int v3 = faces[i][2];
+
+      triangles(3 * i, 0) = transformedVertices[v1][0];
+      triangles(3 * i, 1) = transformedVertices[v1][1];
+      triangles(3 * i, 2) = transformedVertices[v1][2];
+
+      triangles(3 * i + 1, 0) = transformedVertices[v2][0];
+      triangles(3 * i + 1, 1) = transformedVertices[v2][1];
+      triangles(3 * i + 1, 2) = transformedVertices[v2][2];
+
+      triangles(3 * i + 2, 0) = transformedVertices[v3][0];
+      triangles(3 * i + 2, 1) = transformedVertices[v3][1];
+      triangles(3 * i + 2, 2) = transformedVertices[v3][2];
+    }
+
+    return triangles;
+  } else {
+    return NumericMatrix(0, 3);
   }
-
-  file.close();
-
-  // Create triangles matrix
-  size_t num_faces = faces.size() / 3;
-  NumericMatrix triangles(3 * num_faces, 3);
-
-  // Fill triangles matrix
-  for (size_t i = 0; i < num_faces; ++i) {
-    int v1 = faces[3 * i];
-    int v2 = faces[3 * i + 1];
-    int v3 = faces[3 * i + 2];
-
-    triangles(3 * i, 0) = vertices[3 * v1];
-    triangles(3 * i, 1) = vertices[3 * v1 + 1];
-    triangles(3 * i, 2) = vertices[3 * v1 + 2];
-
-    triangles(3 * i + 1, 0) = vertices[3 * v2];
-    triangles(3 * i + 1, 1) = vertices[3 * v2 + 1];
-    triangles(3 * i + 1, 2) = vertices[3 * v2 + 2];
-
-    triangles(3 * i + 2, 0) = vertices[3 * v3];
-    triangles(3 * i + 2, 1) = vertices[3 * v3 + 1];
-    triangles(3 * i + 2, 2) = vertices[3 * v3 + 2];
-  }
-
-  return triangles;
 }
-

@@ -5,10 +5,12 @@
 #'  compatible with both rTwig and RGL functions.
 #'
 #' @param filename a QSM-FaNNI .obj file
+#' @param format .obj file format. Valid formats include `obj` and `obj_ext`.
+#'  Defaults to `obj`.
 #' @param simplify simplify the mesh by removing duplicate vertices. This can
 #'  reduce memory usage at the cost of import speed. Defaults to FALSE.
 #'
-#' @return Returns an RGL mesh3d object
+#' @return rgl::mesh3d object
 #' @export
 #'
 #' @references
@@ -19,15 +21,14 @@
 #'
 #' ## Import FaNNI leaves from the standard obj format
 #' file <- "path_to_leaves.obj"
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_leaves(file, format = "obj")
 #'
 #' ## Import FaNNI leaves from the extended obj format
-#' # ADD THIS FUNCTIONALITY!!!
-#' file <- "path_to_leaves.obj"
-#' qsm <- import_treeqsm(file)
+#' file <- "path_to_leaves_extended.obj"
+#' qsm <- import_leaves(file, format = "obj_ext")
 #' }
 #'
-import_leaves <- function(filename, simplify = FALSE) {
+import_leaves <- function(filename, format = "obj", simplify = FALSE) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(filename)) {
     message <- "argument `filename` is missing, with no default."
@@ -45,6 +46,22 @@ import_leaves <- function(filename, simplify = FALSE) {
     message <- paste(
       "The file in `filename` does not exist.",
       "i Did you enter the correct path to your leaves?",
+      sep = "\n"
+    )
+    abort(message, class = "file_error")
+  }
+
+  if (!is_string(format)) {
+    message <- paste0(
+      "`format` must be a string, not ", class(format), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!(format == "obj" || format == "obj_ext")) {
+    message <- paste(
+      "Invalid `format`!.",
+      "i Valid formats include `obj` and `obj_ext`.",
       sep = "\n"
     )
     abort(message, class = "file_error")
@@ -68,7 +85,7 @@ import_leaves <- function(filename, simplify = FALSE) {
   inform("Importing Leaves")
 
   as.mesh3d(
-    read_obj(filename),
+    read_obj(filename, format),
     type = "triangles",
     smooth = FALSE,
     merge = simplify

@@ -340,13 +340,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // read_obj
-NumericMatrix read_obj(std::string filename);
-RcppExport SEXP _rTwig_read_obj(SEXP filenameSEXP) {
+NumericMatrix read_obj(std::string filename, std::string format);
+RcppExport SEXP _rTwig_read_obj(SEXP filenameSEXP, SEXP formatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_obj(filename));
+    Rcpp::traits::input_parameter< std::string >::type format(formatSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_obj(filename, format));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -468,7 +469,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
     {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
     {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},
-    {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 1},
+    {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 2},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
     {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},
