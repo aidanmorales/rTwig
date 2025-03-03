@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rTwig</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,9 +47,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.4.0" id="rtwig-140">rTwig 1.4.0<a class="anchor" aria-label="anchor" href="#rtwig-140"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-1-4-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li>
 <code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
 <li>
@@ -73,7 +73,7 @@
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-1-4-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-4-0"></a></h3>
 <ul><li><p><code><a href="../reference/export_mesh.html">export_mesh()</a></code>: The function was entirely reworked using <code>Rcpp</code> for fast and efficient mesh export. All functionality that was dependent on <code>rgl</code> has been implemented in custom C++ functions.</p></li>
 <li><p>Function names now use British English to be consistent with R standards. American spelling will still work interchangeably (e.g. <code><a href="../reference/standardise_qsm.html">standardize_qsm()</a></code> vs <code><a href="../reference/standardise_qsm.html">standardise_qsm()</a></code>.</p></li>
 <li><p>Some functions have been renamed to follow tidy guidelines and have consistency within rTwig and other R packages (e.g. <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> -&gt; <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code>).</p></li>
@@ -91,7 +91,7 @@
 <li><p>Updated <code>Dictionary</code> vignette describing all standard outputs from <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-1-4-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-4-0"></a></h3>
 <ul><li><p><code><a href="../reference/import_qsm.html">import_qsm()</a></code> is deprecated and has been replaced with <code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code>. The functionality is unchanged, but the name changed to be explicit about its use. <code><a href="../reference/import_qsm.html">import_qsm()</a></code> still functions, but will be removed in a future rTwig release.</p></li>
 <li><p><code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> is deprecated and has been replaced with <code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code>. The functionality is unchanged, but the name changed to be consistent with tidy guidelines. <code><a href="../reference/qsm_summary.html">qsm_summary()</a></code> still functions, but will be removed in a future rTwig release.</p></li>
 </ul></div>
