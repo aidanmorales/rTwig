@@ -59,7 +59,7 @@ compatible with both rTwig and RGL functions.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">import_leaves</span><span class="op">(</span><span class="va">filename</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">import_leaves</span><span class="op">(</span><span class="va">filename</span>, format <span class="op">=</span> <span class="st">"obj"</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,6 +70,11 @@ compatible with both rTwig and RGL functions.</p>
 <dd><p>a QSM-FaNNI .obj file</p></dd>
 
 
+<dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
+<dd><p>.obj file format. Valid formats include <code>obj</code> and <code>obj_ext</code>.
+Defaults to <code>obj</code>.</p></dd>
+
+
 <dt id="arg-simplify">simplify<a class="anchor" aria-label="anchor" href="#arg-simplify"></a></dt>
 <dd><p>simplify the mesh by removing duplicate vertices. This can
 reduce memory usage at the cost of import speed. Defaults to FALSE.</p></dd>
@@ -77,7 +82,7 @@ reduce memory usage at the cost of import speed. Defaults to FALSE.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns an RGL mesh3d object</p>
+    <p>rgl::mesh3d object</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -90,12 +95,11 @@ reduce memory usage at the cost of import speed. Defaults to FALSE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Import FaNNI leaves from the standard obj format</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_leaves.obj"</span></span></span>
-<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">import_leaves</span><span class="op">(</span><span class="va">file</span>, format <span class="op">=</span> <span class="st">"obj"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Import FaNNI leaves from the extended obj format</span></span></span>
-<span class="r-in"><span><span class="co"># ADD THIS FUNCTIONALITY!!!</span></span></span>
-<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_leaves.obj"</span></span></span>
-<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_leaves_extended.obj"</span></span></span>
+<span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">import_leaves</span><span class="op">(</span><span class="va">file</span>, format <span class="op">=</span> <span class="st">"obj_ext"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
