@@ -117,7 +117,7 @@ plot_qsm <- function(
     alpha = 1,
     facets = 6,
     skeleton = FALSE,
-    skeleton_lwd = NULL,
+    skeleton_lwd = 1,
     cloud = NULL,
     pt_color = "#000000",
     pt_palette = NULL,

@@ -1,4 +1,4 @@
-# rTwig (development version)
+# rTwig 1.4.0
 
 ## New Features
 
