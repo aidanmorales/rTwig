@@ -48,13 +48,18 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/export_mesh.html">export_mesh()</a></code>: add <a href="https://grogra.de/" class="external-link">GroIMP</a> as a QSM export format with <code>format = "groimp"</code> (issue <a href="https://github.com/aidanmorales/rTwig/issues/21" class="external-link">#21</a>).</li>
+</ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.4.0" id="rtwig-140">rTwig 1.4.0<a class="anchor" aria-label="anchor" href="#rtwig-140"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.4.0" id="rtwig-140">rTwig 1.4.0<a class="anchor" aria-label="anchor" href="#rtwig-140"></a></h2><p class="text-muted">CRAN release: 2025-03-03</p>
 <div class="section level3">
 <h3 id="new-features-1-4-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li>
-<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
+<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
 <li>
 <code><a href="../reference/export_mesh.html">export_mesh()</a></code>: The function now supports multiple 3d mesh formats including, <code>.ply</code>, <code>.obj</code> and <code>.stl</code>. It also supports exporting a QSM to <a href="https://www.blender.org/" class="external-link">Blender</a> using the <a href="https://github.com/InverseTampere/qsm-blender-addons" class="external-link">QSM Blender Addons</a> format <code>.txt</code>.</li>
 <li>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</li>
@@ -64,7 +69,7 @@
 <li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting both <code>color</code> and <code>palette</code> to <code>"random"</code>.</li>
 <li>Transparency options added for point clouds and main stem triangulation mesh with <code>pt_alpha</code> and <code>tri_alpha</code>.</li>
 <li>Point clouds can now be colored by any variable or palette using <code>pt_color</code> and <code>pt_palette</code>. The user can set a random color for each point by setting both <code>pt_color</code> and <code>pt_palette</code> to <code>random</code>.</li>
-<li>Any <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> objects can now be passed to <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> with the <code>mesh</code> parameter.</li>
+<li>Any <code><a href="https://dmurdoch.github.io/rgl/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> objects can now be passed to <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> with the <code>mesh</code> parameter.</li>
 </ul></li>
 <li>
 <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:

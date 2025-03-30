@@ -81,8 +81,9 @@ The file extension is automatically added if not present.</p></dd>
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
 <dd><p>Mesh file format. Defaults to <code>ply</code>.
-Supported formats include <code>ply</code>, <code>obj</code>, <code>stl</code>, and <code>blender</code>.
-<code>format = "blender"</code> exports the mesh in the qsm-blender-addons format.</p></dd>
+Supported formats include <code>ply</code>, <code>obj</code>, <code>stl</code>, <code>blender</code>, and <code>groimp</code>.
+<code>format = "blender"</code> exports the mesh in the qsm-blender-addons format.
+<code>format = "groimp"</code> exports the mesh in the GroIMP format.</p></dd>
 
 
 <dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
@@ -186,6 +187,15 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 <span class="r-in"><span>  filename <span class="op">=</span> <span class="va">filename</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"blender"</span>,</span></span>
 <span class="r-in"><span>  normals <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Mesh</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># GroIMP</span></span></span>
+<span class="r-in"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"QSM_groimp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">export_mesh</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  cylinder <span class="op">=</span> <span class="va">cylinder</span>,</span></span>
+<span class="r-in"><span>  filename <span class="op">=</span> <span class="va">filename</span>,</span></span>
+<span class="r-in"><span>  format <span class="op">=</span> <span class="st">"groimp"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Exporting Mesh</span>
 <span class="r-in"><span></span></span>
