@@ -1,5 +1,9 @@
 # rTwig (development version)
 
+## New Features
+
+-   `export_mesh()`: add [GroIMP](https://grogra.de/) as a QSM export format with `format = "groimp"` (issue #21).
+
 # rTwig 1.4.0
 
 ## New Features

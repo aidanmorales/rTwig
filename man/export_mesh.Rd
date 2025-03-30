@@ -23,8 +23,9 @@ export_mesh(
 The file extension is automatically added if not present.}
 
 \item{format}{Mesh file format. Defaults to \code{ply}.
-Supported formats include \code{ply}, \code{obj}, \code{stl}, and \code{blender}.
-\code{format = "blender"} exports the mesh in the qsm-blender-addons format.}
+Supported formats include \code{ply}, \code{obj}, \code{stl}, \code{blender}, and \code{groimp}.
+\code{format = "blender"} exports the mesh in the qsm-blender-addons format.
+\code{format = "groimp"} exports the mesh in the GroIMP format.}
 
 \item{radius}{Radius column name either quoted or unquoted.
 Defaults to the modified radii.}
@@ -101,6 +102,14 @@ export_mesh(
   filename = filename,
   format = "blender",
   normals = TRUE
+)
+
+# GroIMP
+filename <- tempfile(pattern = "QSM_groimp")
+export_mesh(
+  cylinder = cylinder,
+  filename = filename,
+  format = "groimp"
 )
 
 }

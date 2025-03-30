@@ -8,8 +8,9 @@
 #'  The file extension is automatically added if not present.
 #'
 #' @param format Mesh file format. Defaults to `ply`.
-#'  Supported formats include `ply`, `obj`, `stl`, and `blender`.
+#'  Supported formats include `ply`, `obj`, `stl`, `blender`, and `groimp`.
 #'  `format = "blender"` exports the mesh in the qsm-blender-addons format.
+#'  `format = "groimp"` exports the mesh in the GroIMP format.
 #'
 #' @param radius Radius column name either quoted or unquoted.
 #'  Defaults to the modified radii.
@@ -85,6 +86,14 @@
 #'   normals = TRUE
 #' )
 #'
+#' # GroIMP
+#' filename <- tempfile(pattern = "QSM_groimp")
+#' export_mesh(
+#'   cylinder = cylinder,
+#'   filename = filename,
+#'   format = "groimp"
+#' )
+#'
 export_mesh <- function(
     cylinder,
     filename,
@@ -111,10 +120,10 @@ export_mesh <- function(
   }
 
   if (!is_null(format)) {
-    if (!format %in% c("ply", "obj", "stl", "blender")) {
+    if (!format %in% c("ply", "obj", "stl", "blender", "groimp")) {
       message <- paste(
         "`format` is invalid!",
-        "i supported formats include: `ply`, `obj`, `stl`, `blender`",
+        "i supported formats include: `ply`, `obj`, `stl`, `blender`, `groimp`",
         sep = "\n"
       )
       abort(message, class = "data_format_error")
@@ -148,6 +157,8 @@ export_mesh <- function(
     filename <- paste(filename, format, sep = ".")
   } else if (format == "blender") {
     filename <- paste0(filename, ".txt")
+  } else if (format == "groimp") {
+    filename <- paste0(filename, ".csv")
   }
 
   # User selected columns
@@ -208,10 +219,12 @@ export_mesh <- function(
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
     format_mesh(
-      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      filename = filename, format = format, cylinder = cylinder,
+      id = "id", parent = "parent", radius = radius,
       length = "length", branch = "branch", branch_order = "branch_order",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      end_x = "end_x", end_y = "end_y", end_z = "end_z",
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
@@ -219,10 +232,12 @@ export_mesh <- function(
   # TreeQSM --------------------------------------------------------------------
   else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
     format_mesh(
-      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      filename = filename, format = format, cylinder = cylinder,
+      id = "extension", parent = "parent", radius = radius,
       length = "length", branch = "branch", branch_order = "BranchOrder",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
+      end_x = "end.x", end_y = "end.y", end_z = "end.z",
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
@@ -230,10 +245,12 @@ export_mesh <- function(
   # SimpleForest ---------------------------------------------------------------
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
     format_mesh(
-      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      filename = filename, format = format, cylinder = cylinder,
+      id = "ID", parent = "parentID", radius = radius,
       length = "length", branch = "branchID", branch_order = "branchOrder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
@@ -241,10 +258,12 @@ export_mesh <- function(
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
     format_mesh(
-      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      filename = filename, format = format, cylinder = cylinder,
+      id = "p1", parent = "p2", radius = radius,
       length = "length", branch = "nbranch", branch_order = "branch_order",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
+      end_x = "ex", end_y = "ey", end_z = "ez",
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
@@ -252,10 +271,12 @@ export_mesh <- function(
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
     format_mesh(
-      filename = filename, format = format, cylinder = cylinder, radius = radius,
+      filename = filename, format = format, cylinder = cylinder,
+      id = "cyl_ID", parent = "parent_ID", radius = radius,
       length = "length", branch = "n_branch", branch_order = "branching_order",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ",
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
@@ -273,6 +294,8 @@ export_mesh <- function(
 #' @param filename name of file to export
 #' @param format export format
 #' @param cylinder QSM cylinder data frame
+#' @param id cylinder id
+#' @param parent cylinder parent id
 #' @param radius cylinder radii
 #' @param length cylinder length
 #' @param branch cylinder branch id
@@ -283,6 +306,9 @@ export_mesh <- function(
 #' @param axis_x cylinder axis x
 #' @param axis_y cylinder axis y
 #' @param axis_z cylinder axis z
+#' @param end_x cylinder end x
+#' @param end_y cylinder end y
+#' @param end_z cylinder end z
 #' @param facets cylinder facets
 #' @param color cylinder color
 #' @param palette color palette
@@ -294,6 +320,8 @@ format_mesh <- function(
     filename,
     format,
     cylinder,
+    id,
+    parent,
     radius,
     length,
     branch,
@@ -304,6 +332,9 @@ format_mesh <- function(
     axis_x,
     axis_y,
     axis_z,
+    end_x,
+    end_y,
+    end_z,
     facets,
     color,
     palette,
@@ -436,6 +467,19 @@ format_mesh <- function(
         col.names = FALSE,
         row.names = FALSE,
         sep = " "
+      )
+  } else if (format == "groimp") {
+      select(
+        cylinder,
+        start_x = {{ start_x }}, start_y = {{ start_y }}, start_z = {{ start_z }},
+        end_x = {{ end_x }}, end_y = {{ end_y }}, end_z = {{ end_z }},
+        id = {{ id }}, parent = {{ parent }}, radius = {{ radius }},
+        length = {{ length }}, branch_order = {{ branch_order }}
+      ) %>%
+      fwrite(
+        file = filename,
+        row.names = FALSE,
+        sep = ","
       )
   } else {
     message <- paste(
