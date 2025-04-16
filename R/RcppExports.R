@@ -166,6 +166,14 @@ generate_mesh <- function(start, axis, length, radius, facets) {
     .Call(`_rTwig_generate_mesh`, start, axis, length, radius, facets)
 }
 
+define_branches <- function(cylinder) {
+    .Call(`_rTwig_define_branches`, cylinder)
+}
+
+define_branch_order <- function(cylinder) {
+    .Call(`_rTwig_define_branch_order`, cylinder)
+}
+
 #' @title Generate Cloud
 #'
 #' @description Generates a synthetic point cloud from QSM cylinder attributes

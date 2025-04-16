@@ -169,6 +169,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// define_branches
+IntegerVector define_branches(DataFrame cylinder);
+RcppExport SEXP _rTwig_define_branches(SEXP cylinderSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type cylinder(cylinderSEXP);
+    rcpp_result_gen = Rcpp::wrap(define_branches(cylinder));
+    return rcpp_result_gen;
+END_RCPP
+}
+// define_branch_order
+IntegerVector define_branch_order(DataFrame cylinder);
+RcppExport SEXP _rTwig_define_branch_order(SEXP cylinderSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type cylinder(cylinderSEXP);
+    rcpp_result_gen = Rcpp::wrap(define_branch_order(cylinder));
+    return rcpp_result_gen;
+END_RCPP
+}
 // generate_cloud
 NumericMatrix generate_cloud(NumericMatrix start, NumericMatrix axis, NumericMatrix tips, NumericVector length, NumericVector radius, IntegerVector branch, bool metrics, double spacing);
 RcppExport SEXP _rTwig_generate_cloud(SEXP startSEXP, SEXP axisSEXP, SEXP tipsSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP branchSEXP, SEXP metricsSEXP, SEXP spacingSEXP) {
@@ -455,6 +477,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_generate_circle_points", (DL_FUNC) &_rTwig_generate_circle_points, 3},
     {"_rTwig_rotate_circle_points", (DL_FUNC) &_rTwig_rotate_circle_points, 3},
     {"_rTwig_generate_mesh", (DL_FUNC) &_rTwig_generate_mesh, 5},
+    {"_rTwig_define_branches", (DL_FUNC) &_rTwig_define_branches, 1},
+    {"_rTwig_define_branch_order", (DL_FUNC) &_rTwig_define_branch_order, 1},
     {"_rTwig_generate_cloud", (DL_FUNC) &_rTwig_generate_cloud, 8},
     {"_rTwig_cross_product", (DL_FUNC) &_rTwig_cross_product, 2},
     {"_rTwig_norm", (DL_FUNC) &_rTwig_norm, 1},
