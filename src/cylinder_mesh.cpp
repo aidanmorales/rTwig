@@ -67,10 +67,28 @@ NumericMatrix rotate_circle_points(
     NumericVector start,
     NumericVector axis){
 
+  // Normalize the axis vector
+  double axis_norm = std::sqrt(sum(axis * axis));
+  if (axis_norm < 1e-8) axis_norm = 1.0; // prevent NaN division by zero
+  NumericVector axis_unit = axis / axis_norm;
+
   // Calculate Rotation Matrix
-  NumericVector start_z  = {0, 0, 1};
-  NumericVector rot_axis = cross_product(start_z, axis);
-  double rot_angle = acos(sum(start_z * axis));
+  NumericVector start_z = {0, 0, 1};
+  NumericVector rot_axis = cross_product(start_z, axis_unit);
+
+  double dot_product = sum(start_z * axis_unit);
+  dot_product = std::min(1.0, std::max(-1.0, dot_product));
+  double rot_angle = std::acos(dot_product);
+
+  // Allow axis aligned rotation angle
+  if (std::abs(rot_angle) < 1e-8) {
+    NumericMatrix translated(points.nrow(), 3);
+    for (int i = 0; i < points.nrow(); ++i)
+      for (int j = 0; j < 3; ++j)
+        translated(i, j) = points(i, j) + start[j];
+    return translated;
+  }
+
   NumericMatrix rot_matrix = transpose(rotation_matrix(rot_axis, rot_angle));
 
   // Rotate Points & Translate Points
