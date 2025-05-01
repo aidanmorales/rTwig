@@ -146,27 +146,21 @@ NumericMatrix generate_cloud(
     for (int h = 0; h <= height_pts; h++) {
       NumericVector M = start(i, _) + h * height_step * axis(i, _);
 
+      NumericVector axis_i = axis(i, _);
+      List UV = orthonormal_vectors(axis_i);
+      NumericVector V = UV["V"];
+      NumericVector W = UV["W"];
+
       for (int j = 0; j < circ_pts; j++) {
         double angle = j * angle_step;
 
-        NumericVector offset = {
-          radius[i] * cos(angle),
-          radius[i] * sin(angle),
-          0
-        };
-
-        NumericMatrix R = rotation_matrix(axis(i, _), angle);
-        NumericVector rotated_offset(3);
-        for (int l = 0; l < 3; l++) {
-          rotated_offset[l] = R(l, 0) * offset[0] + R(l, 1) * offset[1] + R(l, 2) * offset[2];
-        }
+        NumericVector offset = radius[i] * (cos(angle) * V + sin(angle) * W);
 
         for (int l = 0; l < 3; l++) {
-          cloud(t, l) = M[l] + rotated_offset[l];
+          cloud(t, l) = M[l] + offset[l];
         }
 
         cloud(t, 3) = i + 1;
-
         t++;
       }
     }
