@@ -12,11 +12,16 @@ reconstruct_qsm(
   start_x,
   start_y,
   start_z,
-  end_x,
-  end_y,
-  end_z,
+  end_x = NULL,
+  end_y = NULL,
+  end_z = NULL,
+  axis_x = NULL,
+  axis_y = NULL,
+  axis_z = NULL,
+  length = NULL,
   branch = NULL,
-  branch_order = NULL
+  branch_order = NULL,
+  metrics = FALSE
 )
 }
 \arguments{
@@ -40,9 +45,19 @@ reconstruct_qsm(
 
 \item{end_z}{cylinder end z position}
 
+\item{axis_x}{cylinder end x position}
+
+\item{axis_y}{cylinder end y position}
+
+\item{axis_z}{cylinder end z position}
+
+\item{length}{cylinder length}
+
 \item{branch}{optional cylinder branch id}
 
 \item{branch_order}{optional cylinder branch order}
+
+\item{metrics}{Calculate tree metrics. Defaults to FALSE.}
 }
 \value{
 data frame
@@ -50,10 +65,10 @@ data frame
 \description{
 Reconstruct a QSM and all of its variables from the minimum amount of
 required data. The required variables are the cylinder id, parent id,
-3d information (e.g. a combination of start and end points, or start, axis,
-and length), and the radius. Branch and branch order information are
-optional. If not provided, the branches and orders are defined recursively
-using the growth length.
+3d information and the radius. The cylinder can be defined in 3d space with
+either a combination of the start and end points, or the start, axis, and
+length. Branch and branch order information are optional. If not provided,
+the branches and orders are defined recursively using the growth length.
 }
 \examples{
 file <- system.file("extdata/QSM.csv", package = "rTwig")

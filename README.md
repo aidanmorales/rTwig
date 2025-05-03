@@ -103,6 +103,8 @@ rTwig currently supports
 - `import_treegraph()` imports a QSM created by Treegraph (.json)
 - `standardise_qsm()` standardises QSM variable names across supported
   software
+- `reconstruct_qsm()` reconstructs a QSM from the minimum amount of
+  variables
 - `update_cylinders()` updates cylinder relationships and adds new QSM
   variables
 - `correct_radii()` models QSM paths and corrects cylinder radii

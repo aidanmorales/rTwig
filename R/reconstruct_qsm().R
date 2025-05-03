@@ -3,10 +3,10 @@
 #' @description
 #'  Reconstruct a QSM and all of its variables from the minimum amount of
 #'  required data. The required variables are the cylinder id, parent id,
-#'  3d information (e.g. a combination of start and end points, or start, axis,
-#'  and length), and the radius. Branch and branch order information are
-#'  optional. If not provided, the branches and orders are defined recursively
-#'  using the growth length.
+#'  3d information and the radius. The cylinder can be defined in 3d space with
+#'  either a combination of the start and end points, or the start, axis, and
+#'  length. Branch and branch order information are optional. If not provided,
+#'  the branches and orders are defined recursively using the growth length.
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param id cylinder ids
@@ -18,8 +18,13 @@
 #' @param end_x cylinder end x position
 #' @param end_y cylinder end y position
 #' @param end_z cylinder end z position
+#' @param axis_x cylinder end x position
+#' @param axis_y cylinder end y position
+#' @param axis_z cylinder end z position
+#' @param length cylinder length
 #' @param branch optional cylinder branch id
 #' @param branch_order optional cylinder branch order
+#' @param metrics Calculate tree metrics. Defaults to FALSE.
 #'
 #' @returns data frame
 #' @export
@@ -42,34 +47,110 @@ reconstruct_qsm <- function(
     start_x,
     start_y,
     start_z,
-    end_x,
-    end_y,
-    end_z,
+    end_x = NULL,
+    end_y = NULL,
+    end_z = NULL,
+    axis_x = NULL,
+    axis_y = NULL,
+    axis_z = NULL,
+    length = NULL,
     branch = NULL,
-    branch_order = NULL) {
-  qsm <- cylinder %>%
-    select(
-      id = {{ id }},
-      parent = {{ parent }},
-      radius = {{ radius }},
-      start_x = {{ start_x }},
-      start_y = {{ start_y }},
-      start_z = {{ start_z }},
-      end_x = {{ end_x }},
-      end_y = {{ end_y }},
-      end_z = {{ end_z }}
-    ) %>%
-    mutate(
-      length = sqrt(
-        (.data$end_x - .data$start_x)^2 +
-          (.data$end_y - .data$start_y)^2 +
-          (.data$end_z - .data$start_z)^2
-      ),
-      axis_x = (.data$end_x - .data$start_x) / .data$length,
-      axis_y = (.data$end_y - .data$start_y) / .data$length,
-      axis_z = (.data$end_z - .data$start_z) / .data$length,
-      raw_radius = .data$radius
+    branch_order = NULL,
+    metrics = FALSE) {
+  # Check inputs ---------------------------------------------------------------
+  if (is_missing(cylinder)) {
+    message <- "argument `cylinder` is missing, with no default."
+    abort(message, class = "missing_argument")
+  }
+
+  if (!is.data.frame(cylinder)) {
+    message <- paste(
+      paste0("`cylinder` must be a data frame, not ", class(cylinder), "."),
+      "i Did you accidentally pass the QSM list instead of the cylinder data frame?",
+      sep = "\n"
     )
+    abort(message, class = "data_format_error")
+  }
+
+  start_end <- !is_null(start_x) && !is_null(start_y) && !is_null(start_z) &&
+    !is_null(end_x) && !is_null(end_y) && !is_null(end_z)
+
+  start_axis_length <- !is_null(start_x) && !is_null(start_y) && !is_null(start_z) &&
+    !is_null(axis_x) && !is_null(axis_y) && !is_null(axis_z) &&
+    !is_null(length)
+
+  if (!start_end && !start_axis_length) {
+    abort(
+      message = "Cylinder geometry must be defined by either start and end coordinates or start, axis, and length.",
+      class = "invalid_geometry"
+    )
+  }
+
+  if (!is_logical(metrics)) {
+    message <- paste0(
+      "`metrics` must be logical, not ", class(metrics), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  # Reconstruct QSM ------------------------------------------------------------
+  # Build cylinders from start and end point geometry
+  if (!is.null(start_x) & !is.null(start_y) & !is.null(start_z) &
+    !is.null(end_x) & !is.null(end_y) & !is.null(end_z)) {
+    qsm <- cylinder %>%
+      select(
+        id = {{ id }},
+        parent = {{ parent }},
+        radius = {{ radius }},
+        start_x = {{ start_x }},
+        start_y = {{ start_y }},
+        start_z = {{ start_z }},
+        end_x = {{ end_x }},
+        end_y = {{ end_y }},
+        end_z = {{ end_z }}
+      ) %>%
+      mutate(
+        length = sqrt(
+          (.data$end_x - .data$start_x)^2 +
+            (.data$end_y - .data$start_y)^2 +
+            (.data$end_z - .data$start_z)^2
+        ),
+        axis_x = (.data$end_x - .data$start_x) / .data$length,
+        axis_y = (.data$end_y - .data$start_y) / .data$length,
+        axis_z = (.data$end_z - .data$start_z) / .data$length,
+        raw_radius = .data$radius
+      )
+  }
+
+  # Build cylinders from start, axis, and length geometry
+  if (!is.null(start_x) & !is.null(start_y) & !is.null(start_z) &
+    !is.null(axis_x) & !is.null(axis_y) & !is.null(axis_z) &
+    !is.null(length)) {
+    qsm <- cylinder %>%
+      select(
+        id = {{ id }},
+        parent = {{ parent }},
+        radius = {{ radius }},
+        start_x = {{ start_x }},
+        start_y = {{ start_y }},
+        start_z = {{ start_z }},
+        axis_x = {{ axis_x }},
+        axis_y = {{ axis_y }},
+        axis_z = {{ axis_z }},
+        length = {{ length }}
+      ) %>%
+      mutate(
+        end_x = .data$start_x + (.data$axis_x * .data$length),
+        end_y = .data$start_y + (.data$axis_y * .data$length),
+        end_z = .data$start_z + (.data$axis_z * .data$length),
+        raw_radius = .data$radius
+      )
+  }
+
+  # Fill TreeQSM extension gaps
+  if (qsm$id[1] == 2 & nrow(filter(qsm, id == 0)) > 1) {
+    qsm <- mutate(qsm, id = row_number())
+  }
 
   # Update cylinder ordering
   qsm <- update_ordering(qsm, id = "id", parent = "parent")
@@ -117,7 +198,7 @@ reconstruct_qsm <- function(
   qsm <- path_metrics(network, qsm, "id", "length")
 
   # Arrange variables
-  select(qsm,
+  qsm <- select(qsm,
     start_x = "start_x", start_y = "start_y", start_z = "start_z",
     axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
     end_x = "end_x", end_y = "end_y", end_z = "end_z",
@@ -133,4 +214,11 @@ reconstruct_qsm <- function(
     pipe_area = "reversePipeAreaBranchorder",
     pipe_radius = "reversePipeRadiusBranchorder"
   )
+
+  if (metrics == TRUE) {
+    metrics <- tree_metrics(qsm)
+    return(list(cylinder = qsm, metrics = metrics))
+  } else {
+    return(qsm)
+  }
 }
