@@ -16,7 +16,7 @@ plot_qsm(
   cloud = NULL,
   pt_color = "#000000",
   pt_palette = NULL,
-  pt_size = NULL,
+  pt_size = 0.1,
   pt_alpha = 1,
   triangulation = NULL,
   tri_color = NULL,

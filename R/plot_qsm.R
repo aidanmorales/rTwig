@@ -121,7 +121,7 @@ plot_qsm <- function(
     cloud = NULL,
     pt_color = "#000000",
     pt_palette = NULL,
-    pt_size = NULL,
+    pt_size = 0.1,
     pt_alpha = 1,
     triangulation = NULL,
     tri_color = NULL,
@@ -229,13 +229,11 @@ plot_qsm <- function(
     abort(message, class = "invalid_argument")
   }
 
-  if (!is_null(skeleton_lwd)) {
-    if (!is_double(skeleton_lwd)) {
-      message <- paste0(
-        "`skeleton_lwd` must be a double, not ", class(skeleton_lwd), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
+  if (!is_double(skeleton_lwd)) {
+    message <- paste0(
+      "`skeleton_lwd` must be a double, not ", class(skeleton_lwd), "."
+    )
+    abort(message, class = "invalid_argument")
   }
 
   if (!is_null(cloud)) {
@@ -247,28 +245,26 @@ plot_qsm <- function(
     }
   }
 
-  if (!is_null(pt_size) & !is_double(pt_size)) {
+  if (!is_double(pt_size)) {
     message <- paste0(
       "`pt_size` must be a double, not ", class(pt_size), "."
     )
     abort(message, class = "invalid_argument")
   }
 
-  if (!is_null(pt_alpha)) {
-    if (!is_double(pt_alpha)) {
-      message <- paste0(
-        "`pt_alpha` must be a double, not ", class(pt_alpha), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
+  if (!is_double(pt_alpha)) {
+    message <- paste0(
+      "`pt_alpha` must be a double, not ", class(pt_alpha), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
 
-    if (pt_alpha != 1) {
-      message <- paste0(
-        "Alpha transparency signifcantly degrades plot performance ",
-        "for a large number of points."
-      )
-      warn(message)
-    }
+  if (pt_alpha != 1) {
+    message <- paste0(
+      "Alpha transparency signifcantly degrades plot performance ",
+      "for a large number of points."
+    )
+    warn(message)
   }
 
   if (!is.null(triangulation)) {
@@ -285,22 +281,21 @@ plot_qsm <- function(
     }
   }
 
-  if (!is_null(tri_alpha)) {
-    if (!is_double(tri_alpha)) {
-      message <- paste0(
-        "`tri_alpha` must be a double, not ", class(tri_alpha), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
-
-    if (tri_alpha != 1) {
-      message <- paste0(
-        "Alpha transparency signifcantly degrades plot performance ",
-        "for a large number of triangles."
-      )
-      warn(message)
-    }
+  if (!is_double(tri_alpha)) {
+    message <- paste0(
+      "`tri_alpha` must be a double, not ", class(tri_alpha), "."
+    )
+    abort(message, class = "invalid_argument")
   }
+
+  if (tri_alpha != 1) {
+    message <- paste0(
+      "Alpha transparency signifcantly degrades plot performance ",
+      "for a large number of triangles."
+    )
+    warn(message)
+  }
+
 
   if (!is.null(leaves)) {
     leaf_class <- class(leaves)
@@ -314,21 +309,19 @@ plot_qsm <- function(
     }
   }
 
-  if (!is_null(lf_alpha)) {
-    if (!is_double(lf_alpha)) {
-      message <- paste0(
-        "`lf_alpha` must be a double, not ", class(lf_alpha), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
+  if (!is_double(lf_alpha)) {
+    message <- paste0(
+      "`lf_alpha` must be a double, not ", class(lf_alpha), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
 
-    if (lf_alpha != 1) {
-      message <- paste0(
-        "Alpha transparency signifcantly degrades plot performance ",
-        "for a large number of leaves."
-      )
-      warn(message)
-    }
+  if (lf_alpha != 1) {
+    message <- paste0(
+      "Alpha transparency signifcantly degrades plot performance ",
+      "for a large number of leaves."
+    )
+    warn(message)
   }
 
   if (!is_logical(axes)) {
@@ -659,26 +652,16 @@ plot_data <- function(
   }
 
   # Background color -----------------------------------------------------------
-  if (!is.null(bg_color)) {
-    background_color(bg_color)
-  }
+  background_color(bg_color)
 
   # Plot axes ------------------------------------------------------------------
   if (axes == TRUE) {
-    if (is.null(axes_color)) {
-      axes(axes, axes_color = "#000000")
-    } else {
-      axes(axes, axes_color)
-    }
+    axes(axes, axes_color)
   }
 
   # Plot grid lines ------------------------------------------------------------
   if (grid == TRUE) {
-    if (is.null(grid_color)) {
-      grid_lines(grid, grid_color = "#D3D3D3")
-    } else {
-      grid_lines(grid, grid_color)
-    }
+    grid_lines(grid, grid_color)
   }
 
   # Pan plot -------------------------------------------------------------------
@@ -816,18 +799,12 @@ plot_skeleton <- function(
     end_z) {
   inform("Plotting Skeleton")
 
-  if (is.null(skeleton_lwd)) {
-    lwd <- 1
-  } else {
-    lwd <- skeleton_lwd
-  }
-
   # Plot Skeleton
   rgl::segments3d(
     x = as.vector(t(select(cylinder, all_of(c(start_x, end_x))))),
     y = as.vector(t(select(cylinder, all_of(c(start_y, end_y))))),
     z = as.vector(t(select(cylinder, all_of(c(start_z, end_z))))),
-    col = rep(colors, each = 2), lwd = lwd, alpha = alpha
+    col = rep(colors, each = 2), lwd = skeleton_lwd, alpha = alpha
   )
 }
 
@@ -918,18 +895,6 @@ plot_cloud <- function(cloud, pt_size, pt_color, pt_palette, pt_alpha) {
   # Initialize cloud inputs
   pt_color <- plot_colors(cloud, pt_color, pt_palette, NULL)
 
-  if (is.null(pt_size)) {
-    pt_size <- 0.1
-  } else {
-    pt_size <- pt_size
-  }
-
-  if (is.null(pt_alpha)) {
-    pt_alpha <- 1
-  } else {
-    pt_alpha <- pt_alpha
-  }
-
   # Plot cloud
   rgl::plot3d(
     x = cloud,
@@ -982,13 +947,6 @@ plot_triangulation <- function(
     tri_color <- colourvalues::color_values(z_normalized, palette = tri_palette)
   }
 
-  # Alpha transparency
-  if (is.null(tri_alpha)) {
-    tri_alpha <- 1
-  } else {
-    tri_alpha <- tri_alpha
-  }
-
   # Plot triangulation mesh
   rgl::triangles3d(
     triangulation_mesh,
@@ -1013,16 +971,12 @@ plot_leaves <- function(
   inform("Plotting Leaves")
 
   # Get leaf colors
-  if (!is.null(lf_color)) {
-    if (lf_color == "random") {
-      lf_color <- generate_random_colors(1)
-    } else if (lf_color == "random_vertex") {
-      lf_color <- rep(generate_random_colors(length(leaves$vb) / 3), each = 3)
-    } else {
-      lf_color <- lf_color
-    }
+  if (lf_color == "random") {
+    lf_color <- generate_random_colors(1)
+  } else if (lf_color == "random_vertex") {
+    lf_color <- rep(generate_random_colors(length(leaves$vb) / 3), each = 3)
   } else {
-    lf_color <- "#5BA803"
+    lf_color <- lf_color
   }
 
   # Plot leaf mesh

@@ -5,6 +5,16 @@
 -   `reconstruct_qsm()`: New function to reconstruct a QSM and all of its variables from the minimum amount of required data. This enables the reconstruction and analysis of generic QSMs from external software or even manual measurements. The only required variables are the cylinder id, parent id, 3d information (e.g. a combination of start and end points, or start, axis, and length), and the radius.
 -   `export_mesh()`: add [GroIMP](https://grogra.de/) as a QSM export format with `format = "groimp"` (issue #21).
 
+## Improvements
+
+-   Fixed a bug in `cluster_cloud()` where the simulated point cloud cylinders were not rotated correctly when internally calling `generate_cloud()`.
+
+-   Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both `plot_qsm()` and `export_mesh()`.
+
+-   Fixed a bug in `tree_metrics()` where the `diameter_mid_cm` column was returning the radius instead of the diameter.
+
+-   Updated the defaults for `plot_qsm()` to be explicit instead of NULL.
+
 # rTwig 1.4.0
 
 ## New Features
