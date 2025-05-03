@@ -55,6 +55,13 @@
 <li>
 <code><a href="../reference/export_mesh.html">export_mesh()</a></code>: add <a href="https://grogra.de/" class="external-link">GroIMP</a> as a QSM export format with <code>format = "groimp"</code> (issue <a href="https://github.com/aidanmorales/rTwig/issues/21" class="external-link">#21</a>).</li>
 </ul></div>
+<div class="section level3">
+<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<ul><li><p>Fixed a bug in <code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code> where the simulated point cloud cylinders were not rotated correctly when internally calling <code>generate_cloud()</code>.</p></li>
+<li><p>Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> and <code><a href="../reference/export_mesh.html">export_mesh()</a></code>.</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> where the <code>diameter_mid_cm</code> column was returning the radius instead of the diameter.</p></li>
+<li><p>Updated the defaults for <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> to be explicit instead of NULL.</p></li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.0" id="rtwig-140">rTwig 1.4.0<a class="anchor" aria-label="anchor" href="#rtwig-140"></a></h2><p class="text-muted">CRAN release: 2025-03-03</p>
