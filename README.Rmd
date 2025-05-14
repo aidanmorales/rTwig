@@ -30,7 +30,7 @@ rTwig includes a novel database of twig diameter measurements for many common No
 
 A complete description and validation of Real Twig can be read here:
 
-**Aidan Morales**, and **David W. MacFarlane**. "Reducing tree volume overestimation in quantitative structure models using modeled branch topology and direct twig measurements." *Forestry: An International Journal of Forest Research*, 2024, pp. 1-16. <https://doi.org/10.1093/forestry/cpae046>.
+**Aidan Morales**, and **David W. MacFarlane**. "Reducing tree volume overestimation in quantitative structure models using modeled branch topology and direct twig measurements." *Forestry: An International Journal of Forest Research*, 2024, *98*(3), 394–409. <https://doi.org/10.1093/forestry/cpae046>.
 
 ## Features
 
