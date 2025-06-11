@@ -123,6 +123,8 @@ rTwig currently supports
 - `export_mesh()` exports a QSM as to multiple mesh formats (.ply, .obj,
   .stl, .txt)
 - `export_mat()` exports a QSM in a MATLAB format (.mat)
+- `download_twigs()` download an external twig database updated
+  independently
 - `box_dimension()` calculates and visualizes the structural complexity
   of a point cloud
 

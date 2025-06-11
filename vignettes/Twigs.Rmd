@@ -33,6 +33,10 @@ The twig radius is the most important part of Real Twig. We recommend the follow
 
 The reason we advocate for a qualitative index over the genus average, is that genera with many species can have a wide range of twig radii. The qualitative index ensures the measurement is closer to the true value than a potentially biased average. However, if the species in the genera are similar the genus average can be used with good results [@real_twig_forestry].
 
+## Contributions
+
+If you would like to contribute twig measurements to the twigs database, please contact the package maintainer at [moral169\@msu.edu](mailto:moral169@msu.edu).
+
 ## Installation
 
 You can install the package directly from [CRAN](https://CRAN.R-project.org):
@@ -61,30 +65,25 @@ library(ggplot2)
 
 ## Twig Database
 
-The twig database is built directly into rTwig and can be called as follows:
-
-```{r, eval=FALSE}
-# If the rTwig library has been loaded
-twigs
-```
+While the summarised twig database is built directly into rTwig, we can load additional, raw measurements as follows:
 
 ```{r}
-# If rTwig hasn't been loaded, but just the twigs are needed
-rTwig::twigs
+twig_measurements <- rTwig::download_twigs(database = "all")
+twig_measurements
 ```
 
-The database is broken into 7 different columns. *scientific_name* is the specific epithet. Genus spp. is the average of all of the species in the genus. *radius_mm* is the twig radius in millimeters. For each species, *n* is the number of unique twig samples taken, *min* is the minimum twig radius, *max* is the max twig radius, *std* is the standard deviation, and *cv* is the coefficient of variation.
+The twigs database is broken into 7 different columns. *scientific_name* is the specific epithet. Genus spp. is the average of all of the species in the genus. *radius_mm* is the twig radius in millimeters. For each species, *n* is the number of unique twig samples taken, *min* is the minimum twig radius, *max* is the max twig radius, *std* is the standard deviation, and *cv* is the coefficient of variation.
 
 Let's see the breakdown of species.
 
 ```{r}
-unique(twigs$scientific_name)
+unique(twig_measurements$twigs$scientific_name)
 ```
 
 Similarly, we also provide the same data base broken down by twig size index. The size classes were adapted from [@coder2021].
 
 ```{r}
-twigs_index
+twig_measurements$twigs_index
 ```
 
 ## Visualization
@@ -93,11 +92,10 @@ Let's visualize some of the twig data by oak species, and then by size index.
 
 ```{r fig.height=6, fig.width=7, echo = FALSE}
 # Lets look at a subset of oak species
-twigs %>%
+twig_measurements$raw %>%
   filter(grepl("Quercus", scientific_name)) %>%
   ggplot(aes(x = scientific_name, y = radius_mm, color = scientific_name)) +
-  geom_point(aes(size = n)) +
-  geom_errorbar(aes(ymax = max, ymin = min)) +
+  geom_boxplot() +
   coord_flip() +
   labs(
     title = "Quercus Twig Radii",
@@ -109,7 +107,7 @@ twigs %>%
   scale_x_discrete(limits = rev) +
   theme_classic()
 
-twigs %>%
+twig_measurements$twigs %>%
   mutate(
     size_index = case_when(
       radius_mm <= 1 ~ "slender",
