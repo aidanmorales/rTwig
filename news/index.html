@@ -62,6 +62,8 @@
 <ul><li><p>Fixed a bug in <code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code> where the simulated point cloud cylinders were not rotated correctly when internally calling <code>generate_cloud()</code>.</p></li>
 <li><p>Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> and <code><a href="../reference/export_mesh.html">export_mesh()</a></code>.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> where the <code>diameter_mid_cm</code> column was returning the radius instead of the diameter.</p></li>
+<li><p>Fixed a bug in the internal <code>build_network()</code> function, where the named child network would sometimes fail to build with &gt;100k individual cylinders.</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code> where an unintended index column was being returned with the path metrics.</p></li>
 <li><p>Updated the defaults for <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> to be explicit instead of NULL.</p></li>
 </ul></div>
 </div>
@@ -70,7 +72,7 @@
 <div class="section level3">
 <h3 id="new-features-1-4-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li>
-<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
+<code><a href="../reference/import_leaves.html">import_leaves()</a></code>: a new function to import leaves from <a href="https://github.com/InverseTampere/qsm-fanni-matlab" class="external-link">QSM-FaNNI</a>. The leaves are stored as an <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> object.</li>
 <li>
 <code><a href="../reference/export_mesh.html">export_mesh()</a></code>: The function now supports multiple 3d mesh formats including, <code>.ply</code>, <code>.obj</code> and <code>.stl</code>. It also supports exporting a QSM to <a href="https://www.blender.org/" class="external-link">Blender</a> using the <a href="https://github.com/InverseTampere/qsm-blender-addons" class="external-link">QSM Blender Addons</a> format <code>.txt</code>.</li>
 <li>New database called <code>twigs_index</code>. This is based on qualitative size classes supported by the literature, making it easier to select a twig radius for tree species without twig measurements. More info can be found in the <code>Twigs</code> vignette.</li>
@@ -80,7 +82,7 @@
 <li>Now accepts random color palettes for cylinders, points, or triangulation meshes by setting the <code>*_palette = "random"</code>. Additionally, the user can set a random color for each cylinder by setting both <code>color</code> and <code>palette</code> to <code>"random"</code>.</li>
 <li>Transparency options added for point clouds and main stem triangulation mesh with <code>pt_alpha</code> and <code>tri_alpha</code>.</li>
 <li>Point clouds can now be colored by any variable or palette using <code>pt_color</code> and <code>pt_palette</code>. The user can set a random color for each point by setting both <code>pt_color</code> and <code>pt_palette</code> to <code>random</code>.</li>
-<li>Any <code><a href="https://dmurdoch.github.io/rgl/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> objects can now be passed to <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> with the <code>mesh</code> parameter.</li>
+<li>Any <code><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">rgl::mesh3d()</a></code> objects can now be passed to <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> with the <code>mesh</code> parameter.</li>
 </ul></li>
 <li>
 <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code>:
