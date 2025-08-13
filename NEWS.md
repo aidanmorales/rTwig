@@ -14,6 +14,10 @@
 
 -   Fixed a bug in `tree_metrics()` where the `diameter_mid_cm` column was returning the radius instead of the diameter.
 
+-   Fixed a bug in the internal `build_network()` function, where the named child network would sometimes fail to build with \>100k individual cylinders.
+
+-   Fixed a bug in `update_cylinders()` where an unintended index column was being returned with the path metrics.
+
 -   Updated the defaults for `plot_qsm()` to be explicit instead of NULL.
 
 # rTwig 1.4.0

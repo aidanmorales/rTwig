@@ -56,7 +56,7 @@ build_network <- function(
   }
 
   # Find supported children
-  child_g <- qsm_g - 1 # remove cylinder 0
+  child_g <- igraph::induced_subgraph(qsm_g, vids = as.character(id))
   child_g <- igraph::permute(child_g, match(igraph::V(child_g)$name, id))
   child_g <- igraph::ego(child_g, order = igraph::vcount(child_g), mode = "out")
 
