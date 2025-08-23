@@ -3,7 +3,7 @@
 #' @description Run the Real Twig correction and calculate tree metrics for
 #'  supported QSM formats.
 #'
-#' @param filename file path to QSM (.mat, .csv, .json)
+#' @param filename file path to QSM (.mat, .csv, .json, .obj)
 #' @param twig_radius Twig radius in millimeters
 #' @param metrics Calculate tree metrics. Defaults to TRUE.
 #'
@@ -220,10 +220,31 @@ run_rtwig <- function(
     } else {
       return(cylinder)
     }
+  }
+
+  # AdQSM ----------------------------------------------------------------------
+  else if (extension == "obj") {
+    # Import QSM ---------------------------------------------------------------
+    cylinder <- import_adqsm(file)
+
+    # Correct Radii ------------------------------------------------------------
+    cylinder <- correct_radii(
+      cylinder = cylinder,
+      twig_radius = twig_radius,
+      broken_branch = broken_branch
+    )
+
+    # Tree Metrics -------------------------------------------------------------
+    if (metrics == TRUE) {
+      metrics <- tree_metrics(cylinder)
+      return(list(cylinder = cylinder, metrics = metrics))
+    } else {
+      return(cylinder)
+    }
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, or AdQSM QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")

@@ -93,14 +93,16 @@ pages for more details.
 rTwig currently supports
 [TreeQSM](https://github.com/InverseTampere/TreeQSM),
 [SimpleForest](https://www.simpleforest.org/),
-[Treegraph](https://github.com/wanxinyang/treegraph), and
-[aRchi](https://github.com/umr-amap/aRchi)
+[Treegraph](https://github.com/wanxinyang/treegraph),
+[aRchi](https://github.com/umr-amap/aRchi), and
+[AdQSM](https://github.com/GuangpengFan/AdQSM)
 
 ## Functions
 
 - `run_rtwig()` runs the Real Twig method on a QSM
 - `import_treeqsm()` imports a QSM created by TreeQSM (.mat)
 - `import_treegraph()` imports a QSM created by Treegraph (.json)
+- `import_adqsm()` imports a QSM created by AdQSM (.obj)
 - `standardise_qsm()` standardises QSM variable names across supported
   software
 - `reconstruct_qsm()` reconstructs a QSM from the minimum amount of
@@ -216,6 +218,25 @@ general workflow and best practices.
  
  # File path to QSM
  file <- system.file("extdata/QSM2.csv", package = "rTwig")
+ 
+ # Correct QSM cylinders
+ qsm <- run_rtwig(file, twig_radius = 4.23)
+ 
+ # Plot the result
+ plot_qsm(qsm$cylinder)
+ 
+ # View detailed tree metrics
+ qsm$metrics
+```
+
+#### AdQSM
+
+``` r
+ # Load the Real Twig library
+ library(rTwig)
+ 
+ # File path to QSM
+ file <- "path_to_adqsm_obj"
  
  # Correct QSM cylinders
  qsm <- run_rtwig(file, twig_radius = 4.23)

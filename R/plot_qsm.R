@@ -496,7 +496,7 @@ plot_qsm <- function(
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
+      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, or AdQSM QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")

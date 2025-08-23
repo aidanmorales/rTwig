@@ -16,7 +16,7 @@ run_rtwig(
 )
 }
 \arguments{
-\item{filename}{file path to QSM (.mat, .csv, .json)}
+\item{filename}{file path to QSM (.mat, .csv, .json, .obj)}
 
 \item{twig_radius}{Twig radius in millimeters}
 
