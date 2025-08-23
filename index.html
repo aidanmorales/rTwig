@@ -16,8 +16,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Realistic Quantitative Structure Models">
-<meta name="description" content="Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes TreeQSM, SimpleForest, Treegraph, and aRchi. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.">
-<meta property="og:description" content="Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes TreeQSM, SimpleForest, Treegraph, and aRchi. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.">
+<meta name="description" content="Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes TreeQSM, SimpleForest, Treegraph, aRchi, and `AdQSM`. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.">
+<meta property="og:description" content="Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes TreeQSM, SimpleForest, Treegraph, aRchi, and `AdQSM`. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.">
 <meta property="og:image" content="https://aidanmorales.github.io/rTwig/logo.svg">
 </head>
 <body>
@@ -123,7 +123,7 @@
 <div class="section level4">
 <h4 id="supported-software">Supported Software<a class="anchor" aria-label="anchor" href="#supported-software"></a>
 </h4>
-<p>rTwig currently supports <a href="https://github.com/InverseTampere/TreeQSM" class="external-link">TreeQSM</a>, <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph" class="external-link">Treegraph</a>, and <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a></p>
+<p>rTwig currently supports <a href="https://github.com/InverseTampere/TreeQSM" class="external-link">TreeQSM</a>, <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph" class="external-link">Treegraph</a>, <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a>, and <a href="https://github.com/GuangpengFan/AdQSM" class="external-link">AdQSM</a></p>
 </div>
 </div>
 <div class="section level2">
@@ -136,6 +136,8 @@
 <code><a href="reference/import_treeqsm.html">import_treeqsm()</a></code> imports a QSM created by TreeQSM (.mat)</li>
 <li>
 <code><a href="reference/import_treegraph.html">import_treegraph()</a></code> imports a QSM created by Treegraph (.json)</li>
+<li>
+<code><a href="reference/import_adqsm.html">import_adqsm()</a></code> imports a QSM created by AdQSM (.obj)</li>
 <li>
 <code><a href="reference/standardise_qsm.html">standardise_qsm()</a></code> standardises QSM variable names across supported software</li>
 <li>
@@ -258,12 +260,31 @@
 <span> <span class="co"># View detailed tree metrics</span></span>
 <span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
+<div class="section level4">
+<h4 id="adqsm">AdQSM<a class="anchor" aria-label="anchor" href="#adqsm"></a>
+</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
+<span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># File path to QSM</span></span>
+<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_adqsm_obj"</span></span>
+<span> </span>
+<span> <span class="co"># Correct QSM cylinders</span></span>
+<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># Plot the result</span></span>
+<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="co"># View detailed tree metrics</span></span>
+<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="quick-start-fractal-analysis">Quick Start: Fractal Analysis<a class="anchor" aria-label="anchor" href="#quick-start-fractal-analysis"></a>
 </h3>
 <p>rTwig also includes an efficient function written in C++ via <code>Rcpp</code> for fractal analysis using the voxel-counting method. Below is an example of how to quickly calculate box-dimension on a point cloud using example data from the package. See the vignette for more details and explanation.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load a point cloud</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>

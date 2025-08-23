@@ -50,7 +50,8 @@
 <h2 class="pkg-version" data-toc-text="development version" id="rtwig-development-version">rTwig (development version)<a class="anchor" aria-label="anchor" href="#rtwig-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>
+<ul><li>The latest version of AdQSM (v.1.7.5) is now supported in the package. <code><a href="../reference/import_adqsm.html">import_adqsm()</a></code> can import an AdQSM from its <code>.obj</code> file, making it immediately usable with the other package functions, and does not require <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code> to be run.</li>
+<li>
 <code><a href="../reference/reconstruct_qsm.html">reconstruct_qsm()</a></code>: New function to reconstruct a QSM and all of its variables from the minimum amount of required data. This enables the reconstruction and analysis of generic QSMs from external software or even manual measurements. The only required variables are the cylinder id, parent id, 3d information (e.g. a combination of start and end points, or start, axis, and length), and the radius.</li>
 <li>
 <code><a href="../reference/export_mesh.html">export_mesh()</a></code>: Add <a href="https://grogra.de/" class="external-link">GroIMP</a> as a QSM export format with <code>format = "groimp"</code> (issue <a href="https://github.com/aidanmorales/rTwig/issues/21" class="external-link">#21</a>).</li>
