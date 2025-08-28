@@ -476,6 +476,22 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// write_mat
+void write_mat(std::string filename, Rcpp::List cylinder, Rcpp::List branch, Rcpp::List treedata, Rcpp::List rundata, Rcpp::List pmdistance, Rcpp::List triangulation);
+RcppExport SEXP _rTwig_write_mat(SEXP filenameSEXP, SEXP cylinderSEXP, SEXP branchSEXP, SEXP treedataSEXP, SEXP rundataSEXP, SEXP pmdistanceSEXP, SEXP triangulationSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type cylinder(cylinderSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type branch(branchSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type treedata(treedataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type rundata(rundataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type pmdistance(pmdistanceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type triangulation(triangulationSEXP);
+    write_mat(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
@@ -516,6 +532,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_user_matrix", (DL_FUNC) &_rTwig_user_matrix, 4},
     {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 4},
     {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
+    {"_rTwig_write_mat", (DL_FUNC) &_rTwig_write_mat, 7},
     {NULL, NULL, 0}
 };
 

@@ -505,3 +505,7 @@ connect_cylinders <- function(cylinder) {
     invisible(.Call(`_rTwig_connect_cylinders`, cylinder))
 }
 
+write_mat <- function(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation) {
+    invisible(.Call(`_rTwig_write_mat`, filename, cylinder, branch, treedata, rundata, pmdistance, triangulation))
+}
+

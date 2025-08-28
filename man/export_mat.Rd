@@ -4,12 +4,27 @@
 \alias{export_mat}
 \title{Export MAT}
 \usage{
-export_mat(cylinder, filename)
+export_mat(
+  cylinder,
+  filename,
+  metrics = TRUE,
+  rundata = NULL,
+  pmdistance = NULL,
+  triangulation = NULL
+)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
 
 \item{filename}{Desired name of file}
+
+\item{metrics}{Calculate treedata and branch structs? Defaults to TRUE.}
+
+\item{rundata}{Optional rundata list created by \code{import_treeqsm()}}
+
+\item{pmdistance}{Optional pmdistance list created by \code{import_treeqsm()}}
+
+\item{triangulation}{Optional triangulation list created by \code{import_treeqsm()}}
 }
 \value{
 Returns a .mat file

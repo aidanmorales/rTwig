@@ -10,7 +10,7 @@ import_adqsm(filename)
 \item{filename}{an AdQSM .obj file}
 }
 \value{
-Returns a list
+Returns a data frame
 }
 \description{
 Imports a QSM created by AdQSM
