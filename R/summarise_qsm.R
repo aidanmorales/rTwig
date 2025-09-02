@@ -10,7 +10,8 @@
 #'
 #' @param cylinder QSM cylinder data frame
 #' @param radius Radius column name either quoted or unquoted.
-#' @param triangulation Optional QSM triangulation list. Only supports TreeQSM.
+#' @param triangulation Calculate optional QSM triangulation metrics created
+#'  with `import_treeqsm()`. Only supports TreeQSM. Defaults to `NULL`.
 #'
 #' @return Returns a list
 #' @export
@@ -64,20 +65,27 @@ summarise_qsm <- function(cylinder, radius, triangulation = NULL) {
     }
   }
 
+  if (!is.null(triangulation)) {
+    if (!is_list(triangulation)) {
+      message <- paste(
+        paste0("`triangulation` must be a list, not ", class(triangulation), "."),
+        "i `triangulation` must be created by `import_treeqsm()`.",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
+  }
+
   inform("Creating QSM Summary")
 
   # rTwig ----------------------------------------------------------------------
   if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
     data_summary(
       cylinder = cylinder,
       radius = radius, length = "length", branch = "branch",
       branch_order = "branch_order", branch_position = "branch_position",
       start_z = "start_z", id = "id", parent = "parent",
-      triangulation = NULL
+      triangulation = triangulation
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -235,37 +243,6 @@ data_summary <- function(
   # Tree height ----------------------------------------------------------------
   tree_height_m <- max(cylinder$start_z) - min(cylinder$start_z)
 
-  # Triangulation volumes ------------------------------------------------------
-  if (!is.null(triangulation)) {
-    if (!is_list(triangulation)) {
-      message <- paste(
-        paste0("`triangulation` must be a list, not ", class(triangulation), "."),
-        "i `triangulation` must be created by `import_treeqsm()`.",
-        sep = "\n"
-      )
-      abort(message, class = "data_format_error")
-    }
-
-    # Finds the triangulation end cylinder
-    cyl_end <- pull(triangulation$cylind - 1)
-
-    # Gets the QSM volumes
-    qsm_vol_sa <- cylinder %>%
-      filter(.data$id %in% c(1:cyl_end)) %>%
-      mutate(
-        volume = pi * .data$radius^2 * .data$length * 1e3,
-        surface_area = 2 * pi * .data$radius * .data$length
-      ) %>%
-      summarise(
-        cyl_volume = sum(.data$volume),
-        cyl_surface_area = sum(.data$surface_area)
-      )
-
-    # Triangulation Volume and Surface Area
-    tri_volume <- pull(triangulation$volume)
-    tri_surface_area <- pull(triangulation$SideArea)
-  }
-
   # Branch order summary -------------------------------------------------------
   summary <- cylinder %>%
     mutate(
@@ -277,14 +254,6 @@ data_summary <- function(
       tree_volume_L = sum(.data$volume, na.rm = TRUE) * 1e3,
       tree_area_m2 = sum(.data$surface_area, na.rm = TRUE)
     )
-
-  # Update with triangulation volumes
-  if (!is.null(triangulation)) {
-    summary$tree_volume_L[1] <- summary$tree_volume_L[1] - qsm_vol_sa$cyl_volume + tri_volume
-    summary$tree_area_m2[1] <- summary$tree_area_m2[1] - qsm_vol_sa$cyl_surface_area + tri_surface_area
-  }
-
-
 
   # Tree summary ---------------------------------------------------------------
   if (qsm_connectivity == TRUE) {
@@ -335,6 +304,23 @@ data_summary <- function(
     )
   }
 
+  # Triangulation --------------------------------------------------------------
+  if (!is.null(triangulation)) {
+    tri <- summarise_triangulation(cylinder, triangulation) %>%
+      rename(
+        tri_volume_L = "tri_volume_m3",
+        stem_mix_volume_L = "stem_mix_volume_m3",
+        tree_mix_volume_L = "tree_mix_volume_m3"
+      ) %>%
+      mutate(
+        tri_volume_L = .data$tri_volume_L * 1000,
+        stem_mix_volume_L = .data$stem_mix_volume_L * 1000,
+        tree_mix_volume_L = .data$tree_mix_volume_L * 1000
+      )
+
+    return(list(summary, summary2, tri))
+  }
+
   return(list(summary, summary2))
 }
 
@@ -345,7 +331,8 @@ summarize_qsm <- summarise_qsm
 
 #' @title QSM Summary
 #'
-#' @description `qsm_summary` is deprecated and will be removed in a future version. Use `summarise_qsm()` instead.
+#' @description `qsm_summary` is deprecated and will be removed in a future
+#'  version. Use `summarise_qsm()` instead.
 #' @param ... function inputs
 #' @return Returns a list
 #' @export

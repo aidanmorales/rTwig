@@ -14,7 +14,8 @@ summarize_qsm(cylinder, radius, triangulation = NULL)
 
 \item{radius}{Radius column name either quoted or unquoted.}
 
-\item{triangulation}{Optional QSM triangulation list. Only supports TreeQSM.}
+\item{triangulation}{Calculate optional QSM triangulation metrics created
+with \code{import_treeqsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
 }
 \value{
 Returns a list

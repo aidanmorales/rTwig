@@ -328,6 +328,24 @@ The order distributions are calculated on the branch and segment level. Branch c
 
 **`avg_spread_m:`** The average crown spread in meters at the given height.
 
+### triangulation
+
+**`dbh_tri_cm:`** The diameter of the triangulation nearest to breast height.
+
+**`tri_volume_m3:`** The volume of the triangulation mesh in cubic meters.
+
+**`stem_mix_volume_m3:`** The mixed volume of the triangulation mesh and stem above the mesh in cubic meters.
+
+**`tree_mix_volume_m3:`** The mixed volume of the triangulation mesh and tree above the mesh in cubic meters.
+
+**`tri_area_m2:`** The area of the triangulation mesh in square meters.
+
+**`stem_mix_area_m2:`** The mixed area of the triangulation mesh and stem above the mesh in square meters.
+
+**`tree_mix_area_m2:`** The mixed area of the triangulation mesh and tree above the mesh in square meters.
+
+**`tri_length_m:`** The vertical length of the triangulation mesh in meters. 
+
 ### cloud
 
 The simulated point cloud used to calculate many of the metrics. 

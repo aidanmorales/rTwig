@@ -422,7 +422,7 @@ build_treeqsm_struct <- function(
   # branch and treedata struct -------------------------------------------------
   if (metrics == TRUE) {
     # Calculate tree metrics
-    metrics <- tree_metrics(cylinder)
+    metrics <- tree_metrics(cylinder = cylinder, triangulation = triangulation)
 
     # Branch struct
     branch_struct <- list(
@@ -465,15 +465,15 @@ build_treeqsm_struct <- function(
       CrownVolumeConv = metrics$tree$crown_volume_m3 * 1000,
       CrownVolumeAlpha = numeric(0), # add this --------------------------------
 
-      # Triangulation metrics
-      DBHtri = numeric(0),
-      TriaTrunkVolume = numeric(0),
-      MixTrunkVolume = numeric(0),
-      MixTotalVolume = numeric(0),
-      TriaTrunkArea = numeric(0),
-      MixTrunkArea = numeric(0),
-      MixTotalArea = numeric(0),
-      TriaTrunkLength = numeric(0),
+      # Triangulation metrics placeholder
+      DBHtri = NULL,
+      TriaTrunkVolume = NULL,
+      MixTrunkVolume = NULL,
+      MixTotalVolume = NULL,
+      TriaTrunkArea = NULL,
+      MixTrunkArea = NULL,
+      MixTotalArea = NULL,
+      TriaTrunkLength = NULL,
 
       # Stem location
       location = cbind(
@@ -569,6 +569,30 @@ build_treeqsm_struct <- function(
       NumBranchZen = t(as.matrix(metrics$branch_zenith_dist$branches)),
       NumBranchZen1 = t(as.matrix(metrics$branch_zenith_dist$branches_1))
     )
+
+    # Update triangulation metrics
+    if (!is.null(triangulation)) {
+      tri <- summarise_triangulation(cylinder, triangulation)
+      treedata_struct$DBHtri <- tri$dbh_tri_cm / 100
+      treedata_struct$TriaTrunkVolume <- tri$tri_volume_m3 * 1000
+      treedata_struct$MixTrunkVolume <- tri$stem_mix_volume_m3 * 1000
+      treedata_struct$MixTotalVolume <- tri$tree_mix_volume_m3 * 1000
+      treedata_struct$TriaTrunkArea <- tri$tri_area_m2
+      treedata_struct$MixTrunkArea <- tri$stem_mix_area_m2
+      treedata_struct$MixTotalArea <- tri$tree_mix_area_m2
+      treedata_struct$TriaTrunkLength <- tri$tri_length_m
+    } else {
+      treedata_struct[c(
+        "DBHtri",
+        "TriaTrunkVolume",
+        "MixTrunkVolume",
+        "MixTotalVolume",
+        "TriaTrunkArea",
+        "MixTrunkArea",
+        "MixTotalArea",
+        "TriaTrunkLength"
+      )] <- NULL
+    }
   } else {
     branch_struct <- list()
     treedata_struct <- list()
@@ -672,7 +696,7 @@ build_treeqsm_struct <- function(
       top = triangulation$top$top,
       triah = triangulation$triah$triah,
       triaw = triangulation$triaw$triaw,
-      cylind = triangulation$cylind$cylind - 1
+      cylind = triangulation$cylind$cylind
     )
   } else {
     triangulation_struct <- list()

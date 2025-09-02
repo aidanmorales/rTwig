@@ -9,6 +9,12 @@
 
 ## Improvements
 
+-   `export_mat()` now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the `.mat` format. All tree metrics are automatically calculated by setting `metrics = TRUE`. Additionally, `pmdistance`, `rundata`, and `triangulation` can all be re-exported.
+
+-   `tree_metrics()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame called `triangulation`.
+
+-   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
+
 -   Fixed a bug in `cluster_cloud()` where the simulated point cloud cylinders were not rotated correctly when internally calling `generate_cloud()`.
 
 -   Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both `plot_qsm()` and `export_mesh()`.

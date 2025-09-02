@@ -20,6 +20,8 @@
 #'  and verified. If `verify = FALSE`, the metrics are  run, but not verified.
 #'  This is strongly discouraged, but can enable the calculation of tree metrics
 #'  on topologically disconnected structures.
+#' @param triangulation Calculate optional QSM triangulation metrics created
+#'  with `import_treeqsm()`. Only supports TreeQSM. Defaults to `NULL`.
 #'
 #' @return Returns a list of tree metric data frames and a synthetic point cloud
 #' @export
@@ -51,7 +53,7 @@
 #' metrics <- tree_metrics(cylinder)
 #' names(metrics)
 #'
-tree_metrics <- function(cylinder, verify = TRUE) {
+tree_metrics <- function(cylinder, verify = TRUE, triangulation = NULL) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -65,6 +67,24 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       sep = "\n"
     )
     abort(message, class = "data_format_error")
+  }
+
+  if (!is_logical(verify)) {
+    message <- paste0(
+      "`verify` must be logical, not ", class(verify), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is.null(triangulation)) {
+    if (!is_list(triangulation)) {
+      message <- paste(
+        paste0("`triangulation` must be a list, not ", class(triangulation), "."),
+        "i `triangulation` must be created by `import_treeqsm()`.",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
   }
 
   # Verify cylinders -----------------------------------------------------------
@@ -85,7 +105,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       pipe_radius = "pipe_radius",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z", verify
+      end_x = "end_x", end_y = "end_y", end_z = "end_z",
+      verify = verify, triangulation = triangulation
     )
   }
   # TreeQSM --------------------------------------------------------------------
@@ -103,11 +124,16 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z", verify
+      end_x = "end.x", end_y = "end.y", end_z = "end.z",
+      verify = verify, triangulation = triangulation
     )
   }
   # SimpleForest ---------------------------------------------------------------
   else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
+    if (!is.null(triangulation)) {
+      inform("Main stem triangulation not supported.")
+    }
+
     calculate_tree_metrics(
       cylinder = cylinder, id = "ID", parent = "parentID",
       branch = "branchID", branch_alt = "branch_alt",
@@ -121,11 +147,16 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", verify
+      end_x = "endX", end_y = "endY", end_z = "endZ",
+      verify = verify, triangulation = NULL
     )
   }
   # Treegraph ------------------------------------------------------------------
   else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
+    if (!is.null(triangulation)) {
+      inform("Main stem triangulation not supported.")
+    }
+
     calculate_tree_metrics(
       cylinder = cylinder, id = "p1", parent = "p2",
       branch = "nbranch", branch_alt = "branch_alt",
@@ -139,11 +170,16 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez", verify
+      end_x = "ex", end_y = "ey", end_z = "ez",
+      verify = verify, triangulation = NULL
     )
   }
   # aRchi ----------------------------------------------------------------------
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
+    if (!is.null(triangulation)) {
+      inform("Main stem triangulation not supported.")
+    }
+
     calculate_tree_metrics(
       cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
       branch = "branch_ID", branch_alt = "branch_alt",
@@ -157,7 +193,8 @@ tree_metrics <- function(cylinder, verify = TRUE) {
       pipe_radius = "reversePipeRadiusBranchorder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", verify
+      end_x = "endX", end_y = "endY", end_z = "endZ",
+      verify = verify, triangulation = NULL
     )
   } else {
     message <- paste(
@@ -199,6 +236,7 @@ tree_metrics <- function(cylinder, verify = TRUE) {
 #' @param end_y cylinder end y position
 #' @param end_z cylinder end z position
 #' @param verify verify connectivity
+#' @param triangulation triangulation
 #' @returns list of tree metrics
 #' @noRd
 calculate_tree_metrics <- function(
@@ -230,7 +268,8 @@ calculate_tree_metrics <- function(
     end_x,
     end_y,
     end_z,
-    verify) {
+    verify,
+    triangulation) {
   # Dynamically select cylinder variables --------------------------------------
   cylinder <- cylinder %>%
     select(
@@ -582,6 +621,12 @@ calculate_tree_metrics <- function(
   if (branch_check == TRUE) {
     inform("Calculating Alternate Branch Metrics")
     metrics$branch_alt <- branch_alt_metrics(cylinder, base)
+  }
+
+  # Triangulation --------------------------------------------------------------
+  if (!is.null(triangulation)) {
+    inform("Calculating Triangulation Metrics")
+    metrics$triangulation <- summarise_triangulation(cylinder, triangulation)
   }
 
   # rTwig Version & Run Date ---------------------------------------------------
@@ -1348,5 +1393,107 @@ segment_order_distributions <- function(segment) {
       volume_m3 = sum(.data$volume_m3),
       area_m2 = sum(.data$area_m2),
       length_m = sum(.data$length_m)
+    )
+}
+
+#' Calculate DBH from TreeQSM triangulation
+#'
+#' @param triangulation triangulation list from `import_treeqsm()`
+#' @returns double
+#' @noRd
+triangulation_dbh <- function(triangulation) {
+  vert <- arrange(triangulation$vert, .data$vert.3)
+  dbh_height <- min(triangulation$vert[, 3], na.rm = TRUE) + 1.37
+
+  dbh_z_vertices <- vert$vert.3 %>%
+    as_tidytable() %>%
+    rename("z" = 1) %>%
+    distinct() %>%
+    mutate(diff = abs(.data$z - !!dbh_height)) %>%
+    filter(.data$diff == min(.data$diff)) %>%
+    pull("z")
+
+  xy <- vert %>%
+    filter(.data$vert.3 == !!dbh_z_vertices) %>%
+    select("vert.1", "vert.2") %>%
+    as.matrix()
+
+  diffs <- rbind(xy[-1, , drop = FALSE], xy[1, , drop = FALSE]) - xy
+  sum(sqrt(rowSums(diffs * diffs))) / pi
+}
+
+#' Summarise TreeQSM triangulation metrics
+#'
+#' @param cylinder QSM cylinder data frame
+#' @param triangulation triangulation list from `import_treeqsm()`
+#' @returns data frame
+#' @noRd
+summarise_triangulation <- function(cylinder, triangulation) {
+  # Find cylinder id where triangulation stops
+  tri_cyl <- triangulation$cylind[[1]] - 1
+
+  # Find all cylinders where triangulation occurs
+  tri_cyls <- cylinder %>%
+    select("id", "start_z") %>%
+    filter(.data$id <= !!tri_cyl + 1) %>%
+    arrange(.data$start_z)
+
+  # Find all cylinders above triangulation
+  top <- cylinder %>%
+    select("id", "branch_order", "length", "radius") %>%
+    filter(.data$id > !!tri_cyl)
+
+  # Stem metrics above triangulation
+  stem <- top %>%
+    filter(.data$branch_order == 0) %>%
+    mutate(
+      volume_m3 = pi * .data$radius^2 * .data$length,
+      area_m2 = 2 * pi * .data$radius * .data$length
+    ) %>%
+    summarise(
+      volume_m3 = sum(.data$volume_m3),
+      area_m2 = sum(.data$area_m2)
+    )
+
+  # Branch metrics
+  branch <- top %>%
+    filter(.data$branch_order != 0) %>%
+    mutate(
+      volume_m3 = pi * .data$radius^2 * .data$length,
+      area_m2 = 2 * pi * .data$radius * .data$length
+    ) %>%
+    summarise(
+      volume_m3 = sum(.data$volume_m3),
+      area_m2 = sum(.data$area_m2)
+    )
+
+  # Triangulation length
+  tri_length_m <- tri_cyls$start_z[[tri_cyl + 1]] - tri_cyls$start_z[[1]]
+
+  # Triangulation diameter
+  dbh_tri_cm <- triangulation_dbh(triangulation) * 100
+
+  # Triangulation volume
+  tri_volume_m3 <- triangulation$volume[[1]] / 1000
+  tri_area_m2 <- triangulation$SideArea[[1]]
+
+  # Build output data
+  tidytable(
+    dbh_tri_cm,
+    tri_volume_m3,
+    tri_area_m2,
+    tri_length_m
+  ) %>%
+    mutate(
+      stem_mix_volume_m3 = .data$tri_volume_m3 + stem$volume_m3,
+      tree_mix_volume_m3 = .data$stem_mix_volume_m3 + branch$volume_m3,
+      stem_mix_area_m2 = .data$tri_area_m2 + stem$area_m2,
+      tree_mix_area_m2 = .data$stem_mix_area_m2 + branch$area_m2
+    ) %>%
+    select(
+      "dbh_tri_cm",
+      "tri_volume_m3", "stem_mix_volume_m3", "tree_mix_volume_m3",
+      "tri_area_m2", "stem_mix_area_m2", "tree_mix_area_m2",
+      "tri_length_m"
     )
 }

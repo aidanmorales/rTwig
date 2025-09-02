@@ -13,5 +13,6 @@ qsm_summary(...)
 Returns a list
 }
 \description{
-\code{qsm_summary} is deprecated and will be removed in a future version. Use \code{summarise_qsm()} instead.
+\code{qsm_summary} is deprecated and will be removed in a future
+version. Use \code{summarise_qsm()} instead.
 }

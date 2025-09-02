@@ -4,7 +4,7 @@
 \alias{tree_metrics}
 \title{Tree Metrics}
 \usage{
-tree_metrics(cylinder, verify = TRUE)
+tree_metrics(cylinder, verify = TRUE, triangulation = NULL)
 }
 \arguments{
 \item{cylinder}{QSM cylinder data frame}
@@ -15,6 +15,9 @@ individual branch) are eligible to run. This ensures all metrics are correct
 and verified. If \code{verify = FALSE}, the metrics are  run, but not verified.
 This is strongly discouraged, but can enable the calculation of tree metrics
 on topologically disconnected structures.}
+
+\item{triangulation}{Calculate optional QSM triangulation metrics created
+with \code{import_treeqsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
 }
 \value{
 Returns a list of tree metric data frames and a synthetic point cloud

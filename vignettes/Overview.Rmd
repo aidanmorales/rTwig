@@ -176,11 +176,8 @@ filter(twigs, scientific_name == "Gymnocladus dioicus")
 Before we correct the QSM, Let's take a look at the current metrics, so we can compare the tree volume before and after correction. We can do this with the `summarise_qsm()` function. If stem triangulation was enabled in TreeQSM, we can use it to better represent the main stem volume in some cases, especially when there are large buttress flares. We can also make a plot of the radius versus the growth length to see how much overestimation there is in the twig radii.
 
 ```{r, message = FALSE}
-# QSM summary
-summarise_qsm(cylinder = cylinder, radius = radius)[[1]]
-
 # QSM summary with Triangulation
-summarise_qsm(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[[1]]
+summarise_qsm(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[c(2:3)]
 ```
 
 ```{r, echo=FALSE, fig.width = 7, fig.height = 4, fig.align='center'}
