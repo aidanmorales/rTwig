@@ -375,29 +375,23 @@ the main stem volume in some cases, especially when there are large
 buttress flares. We can also make a plot of the radius versus the growth
 length to see how much overestimation there is in the twig radii.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># QSM summary</span></span>
-<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
-<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0       10.8         0.644  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1        5.80        0.827  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2        3.86        0.732  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3        1.06        0.237  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span>
-<span></span>
-<span><span class="co"># QSM summary with Triangulation</span></span>
-<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   branch_order tree_volume_L tree_area_m2</span></span>
-<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            0       28.7         0.632  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            1        5.80        0.827  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            2        3.86        0.732  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            3        1.06        0.237  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            4        0.622       0.078<span style="text-decoration: underline;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            5        0.034<span style="text-decoration: underline;">6</span>      0.006<span style="text-decoration: underline;">93</span></span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># QSM summary with Triangulation</span></span>
+<span><span class="fu"><a href="../reference/summarise_qsm.html">summarise_qsm</a></span><span class="op">(</span>cylinder <span class="op">=</span> <span class="va">cylinder</span>, radius <span class="op">=</span> <span class="va">radius</span>, triangulation <span class="op">=</span> <span class="va">qsm</span><span class="op">$</span><span class="va">triangulation</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 1 × 8</span></span></span>
+<span><span class="co">#&gt;   dbh_qsm_cm tree_height_m stem_volume_L branch_volume_L tree_volume_L</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       7.18          3.69          10.8            11.4          22.2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: stem_area_m2 &lt;dbl&gt;, branch_area_m2 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   tree_area_m2 &lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tidytable: 1 × 8</span></span></span>
+<span><span class="co">#&gt;   dbh_tri_cm tri_volume_L stem_mix_volume_L tree_mix_volume_L tri_area_m2</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       6.13         24.7              28.7              40.1       0.320</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: stem_mix_area_m2 &lt;dbl&gt;, tree_mix_area_m2 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   tri_length_m &lt;dbl&gt;</span></span></span></code></pre></div>
 <p><img src="Overview_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Looking at the diagnostic plot on a log log scale, with the measured
 twig radius as the horizontal line, we can see that nearly all of the

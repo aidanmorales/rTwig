@@ -53,7 +53,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tree_metrics</span><span class="op">(</span><span class="va">cylinder</span>, verify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tree_metrics</span><span class="op">(</span><span class="va">cylinder</span>, verify <span class="op">=</span> <span class="cn">TRUE</span>, triangulation <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,6 +71,11 @@ individual branch) are eligible to run. This ensures all metrics are correct
 and verified. If <code>verify = FALSE</code>, the metrics are  run, but not verified.
 This is strongly discouraged, but can enable the calculation of tree metrics
 on topologically disconnected structures.</p></dd>
+
+
+<dt id="arg-triangulation">triangulation<a class="anchor" aria-label="anchor" href="#arg-triangulation"></a></dt>
+<dd><p>Calculate optional QSM triangulation metrics created
+with <code><a href="import_treeqsm.html">import_treeqsm()</a></code>. Only supports TreeQSM. Defaults to <code>NULL</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

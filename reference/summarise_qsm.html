@@ -77,7 +77,8 @@ arranged by totals and branching order.</p>
 
 
 <dt id="arg-triangulation">triangulation<a class="anchor" aria-label="anchor" href="#arg-triangulation"></a></dt>
-<dd><p>Optional QSM triangulation list. Only supports TreeQSM.</p></dd>
+<dd><p>Calculate optional QSM triangulation metrics created
+with <code><a href="import_treeqsm.html">import_treeqsm()</a></code>. Only supports TreeQSM. Defaults to <code>NULL</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -145,7 +146,7 @@ arranged by totals and branching order.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 6 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   branch_order tree_volume_L tree_area_m2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>            0       28.7         0.632  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>            0       10.8         0.644  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>            1        5.80        0.827  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>            2        3.86        0.732  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>            3        1.06        0.237  </span>
@@ -156,9 +157,17 @@ arranged by totals and branching order.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 1 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   dbh_qsm_cm tree_height_m stem_volume_L branch_volume_L tree_volume_L</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       7.18          3.69          28.7            11.4          40.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       7.18          3.69          10.8            11.4          22.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: stem_area_m2 &lt;dbl&gt;, branch_area_m2 &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   tree_area_m2 &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 1 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   dbh_tri_cm tri_volume_L stem_mix_volume_L tree_mix_volume_L tri_area_m2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       6.13         24.7              28.7              40.1       0.320</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: stem_mix_area_m2 &lt;dbl&gt;, tree_mix_area_m2 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   tri_length_m &lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

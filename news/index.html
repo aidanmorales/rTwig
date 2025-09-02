@@ -60,7 +60,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
-<ul><li><p>Fixed a bug in <code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code> where the simulated point cloud cylinders were not rotated correctly when internally calling <code>generate_cloud()</code>.</p></li>
+<ul><li><p><code><a href="../reference/export_mat.html">export_mat()</a></code> now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the <code>.mat</code> format. All tree metrics are automatically calculated by setting <code>metrics = TRUE</code>. Additionally, <code>pmdistance</code>, <code>rundata</code>, and <code>triangulation</code> can all be re-exported.</p></li>
+<li><p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame called <code>triangulation</code>.</p></li>
+<li><p><code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code> better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code> where the simulated point cloud cylinders were not rotated correctly when internally calling <code>generate_cloud()</code>.</p></li>
 <li><p>Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> and <code><a href="../reference/export_mesh.html">export_mesh()</a></code>.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> where the <code>diameter_mid_cm</code> column was returning the radius instead of the diameter.</p></li>
 <li><p>Fixed a bug in the internal <code>build_network()</code> function, where the named child network would sometimes fail to build with &gt;100k individual cylinders.</p></li>
