@@ -53,6 +53,8 @@ The main goal of Real Twig was to correct volume overestimation in QSMs caused b
 
 The goal of rTwig was to provide users with tools to visualize and analyze QSM metrics without being tied to any particular QSM software. To that end, `standardise_qsm()` provides a consistent naming convention between supported QSMs, making it easy to combine and analyze QSMs from different sources. `tree_metrics()` calculates all of the major QSM metrics between all supported software. `prune_qsm()` can virtually prune a tree using multiple input parameters. `cluster_cloud()` can transfer all QSM metrics directly onto an unorganized point cloud, or simulate a virtual point cloud. See the vignettes or function reference pages for more details.
 
+<img src="man/figures/crown_3d.png"/>
+
 #### Supported Software
 
 rTwig currently supports [TreeQSM](https://github.com/InverseTampere/TreeQSM), [SimpleForest](https://www.simpleforest.org/), [Treegraph](https://github.com/wanxinyang/treegraph), [aRchi](https://github.com/umr-amap/aRchi), and [AdQSM](https://github.com/GuangpengFan/AdQSM)

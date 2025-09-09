@@ -3,15 +3,32 @@
 ## New Features
 
 -   The latest version of AdQSM (v.1.7.5) is now supported in the package. `import_adqsm()` can import an AdQSM from its `.obj` file, making it immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
+
 -   `reconstruct_qsm()`: New function to reconstruct a QSM and all of its variables from the minimum amount of required data. This enables the reconstruction and analysis of generic QSMs from external software or even manual measurements. The only required variables are the cylinder id, parent id, 3d information (e.g. a combination of start and end points, or start, axis, and length), and the radius.
+
 -   `export_mesh()`: Add [GroIMP](https://grogra.de/) as a QSM export format with `format = "groimp"` (issue #21).
+
 -   `download_twigs()`: New function to download an expanded twig database containing both the package and user contributed data. Both the raw and summarised data can be downloaded, including data on the country, region, and contributor of the measurements.
 
 ## Improvements
 
 -   `export_mat()` now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the `.mat` format. All tree metrics are automatically calculated by setting `metrics = TRUE`. Additionally, `pmdistance`, `rundata`, and `triangulation` can all be re-exported.
 
--   `tree_metrics()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame called `triangulation`.
+-   `tree_metrics()`
+
+    -   An alpha shape is now calculated for the crown and the 3d mesh is saved as `crown_alpha_shape`. New exported tree variables include:
+
+        -   `crown_projected_alpha_area_m2`: the projected surface area of the crown
+
+        -    `crown_alpha_area_m2`: surface area of the crown
+
+        -   `crown_alpha_volume_m3` the volume of the crown
+
+    -   The 3d mesh for the crown convex hull is now returned as `crown_convex_hull`.
+
+    -   Better support for TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame called `triangulation`.
+
+    -   Fixed a bug where `crown_volume_m3` had the wrong units.
 
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
 

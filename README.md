@@ -88,6 +88,8 @@ transfer all QSM metrics directly onto an unorganized point cloud, or
 simulate a virtual point cloud. See the vignettes or function reference
 pages for more details.
 
+<img src="man/figures/crown_3d.png"/>
+
 #### Supported Software
 
 rTwig currently supports

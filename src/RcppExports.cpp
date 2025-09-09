@@ -11,6 +11,19 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// alpha_shape_delaunay
+Rcpp::List alpha_shape_delaunay(const Rcpp::NumericMatrix& cloud, Rcpp::IntegerMatrix dt, double alpha);
+RcppExport SEXP _rTwig_alpha_shape_delaunay(SEXP cloudSEXP, SEXP dtSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type cloud(cloudSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(alpha_shape_delaunay(cloud, dt, alpha));
+    return rcpp_result_gen;
+END_RCPP
+}
 // box_counting
 List box_counting(NumericMatrix cloud, double lowercutoff);
 RcppExport SEXP _rTwig_box_counting(SEXP cloudSEXP, SEXP lowercutoffSEXP) {
@@ -494,6 +507,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rTwig_alpha_shape_delaunay", (DL_FUNC) &_rTwig_alpha_shape_delaunay, 3},
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
     {"_rTwig_assign_cloud_ids", (DL_FUNC) &_rTwig_assign_cloud_ids, 2},
     {"_rTwig_generate_random_colors", (DL_FUNC) &_rTwig_generate_random_colors, 1},

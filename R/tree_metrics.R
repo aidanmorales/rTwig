@@ -512,16 +512,32 @@ calculate_tree_metrics <- function(
   tree$crown_length_m <- tree$tree_height_m - tree$crown_base_height_m
   tree$crown_ratio <- tree$crown_length_m / tree$tree_height_m
 
-  # Crown 3D Convex Hull -------------------------------------------------------
+  # Crown 3D Hull & Alpha Shape ------------------------------------------------
   if (is.na(tree$crown_base_height_m)) {
     tree$crown_area_m2 <- NA
     tree$crown_volume_m3 <- NA
+    tree$crown_projected_alpha_area_m2 <- NA
+    tree$crown_alpha_area_m2 <- NA
+    tree$crown_alpha_volume_m3 <- NA
   } else {
     base_height <- min(metrics$cloud[, 3]) + tree$crown_base_height_m
     crown_cloud <- metrics$cloud[metrics$cloud[, 3] >= base_height, ]
+
+    # Convex Hull
     crown_hull_3d <- geometry::convhulln(crown_cloud, "FA")
     tree$crown_area_m2 <- crown_hull_3d$area
-    tree$crown_volume_m3 <- crown_hull_3d$vol / 1000
+    tree$crown_volume_m3 <- crown_hull_3d$vol
+
+    # Alpha Shape
+    alpha_shape <- alpha_shape_delaunay(
+      cloud = crown_cloud,
+      dt = suppressWarnings(geometry::delaunayn(crown_cloud)),
+      alpha = max(0.5, tree$crown_diameter_mean_m / 10)
+    )
+
+    tree$crown_projected_alpha_area_m2 <- convex_hull_area(alpha_shape$V)
+    tree$crown_alpha_area_m2 <- alpha_shape$area
+    tree$crown_alpha_volume_m3 <- alpha_shape$volume
   }
 
   # Allometric Variables -------------------------------------------------------
@@ -549,6 +565,18 @@ calculate_tree_metrics <- function(
 
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree
+
+  metrics$crown_convex_hull <- tmesh3d(
+    vertices = t(crown_hull_3d$p),
+    indices = t(crown_hull_3d$hull),
+    homogeneous = FALSE
+  )
+
+  metrics$crown_alpha_shape <- tmesh3d(
+    vertices = t(alpha_shape$V),
+    indices  = t(alpha_shape$F),
+    homogeneous = TRUE
+  )
 
   # Tree Distribution Metrics --------------------------------------------------
   inform("Calculating Tree Distributions")

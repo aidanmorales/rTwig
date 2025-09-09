@@ -134,15 +134,21 @@ All of the variables shown here are created with the `update_cylinders()` functi
 
 **`crown_projected_area_m2:`** The projected crown area in square meters.
 
+**`crown_projected_alpha_area_m2:`** The projected crown area from an alpha shape in square meters.
+
 **`crown_base_height_m:`** The base height of the crown in meters.
 
 **`crown_length_m:`** The length of the crown in meters.
 
 **`crown_ratio:`** The crown length divided by the total tree height.
 
-**`crown_area_m2:`** The surface area of the crown in square meters.
+**`crown_area_m2:`** The surface area of the crown from a convex hull in square meters.
 
-**`crown_volume_m3:`** The volume of the crown in cubic meters.
+**`crown_volume_m3:`** The volume of the crown from a convex hull in cubic meters.
+
+**`crown_alpha_area_m2:`** The surface area of the crown from an alpha shape in square meters.
+
+**`crown_alpha_volume_m3:`** The volume of the crown from an alpha shape in cubic meters.
 
 **`vessel_volume:`** The vessel volume of the base cylinder in the QSM.
 

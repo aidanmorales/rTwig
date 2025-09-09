@@ -458,12 +458,12 @@ build_treeqsm_struct <- function(
       CrownDiamAve = metrics$tree$crown_diameter_mean_m,
       CrownDiamMax = metrics$tree$crown_diameter_max_m,
       CrownAreaConv = metrics$tree$crown_projected_area_m2,
-      CrownAreaAlpha = numeric(0), # add this ----------------------------------
+      CrownAreaAlpha = metrics$tree$crown_projected_alpha_area_m2,
       CrownBaseHeight = metrics$tree$crown_base_height_m,
       CrownLength = metrics$tree$crown_length_m,
       CrownRatio = metrics$tree$crown_ratio,
-      CrownVolumeConv = metrics$tree$crown_volume_m3 * 1000,
-      CrownVolumeAlpha = numeric(0), # add this --------------------------------
+      CrownVolumeConv = metrics$tree$crown_volume_m3,
+      CrownVolumeAlpha = metrics$tree$crown_alpha_volume_m3,
 
       # Triangulation metrics placeholder
       DBHtri = NULL,
