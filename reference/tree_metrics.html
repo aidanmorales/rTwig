@@ -156,14 +156,15 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "branch"                "segment"               "cloud"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "tree"                  "tree_height_dist"      "tree_diameter_dist"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "tree_zenith_dist"      "tree_azimuth_dist"     "branch_diameter_dist" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "branch_height_dist"    "branch_angle_dist"     "branch_zenith_dist"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "branch_azimuth_dist"   "branch_order_dist"     "segment_diameter_dist"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "segment_height_dist"   "segment_angle_dist"    "segment_zenith_dist"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "segment_azimuth_dist"  "segment_order_dist"    "stem_taper"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "spreads"               "vertical_profile"      "branch_alt"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "version"               "run_date"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "tree"                  "crown_convex_hull"     "crown_alpha_shape"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "tree_height_dist"      "tree_diameter_dist"    "tree_zenith_dist"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "tree_azimuth_dist"     "branch_diameter_dist"  "branch_height_dist"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "branch_angle_dist"     "branch_zenith_dist"    "branch_azimuth_dist"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "branch_order_dist"     "segment_diameter_dist" "segment_height_dist"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "segment_angle_dist"    "segment_zenith_dist"   "segment_azimuth_dist" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "segment_order_dist"    "stem_taper"            "spreads"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "vertical_profile"      "branch_alt"            "version"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [28] "run_date"             </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SimpleForest Processing Chain</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
@@ -189,14 +190,15 @@ ISSN 2056-3485, <a href="https://doi.org/10.1002/rse2.399" class="external-link"
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Metrics</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "branch"                "segment"               "cloud"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "tree"                  "tree_height_dist"      "tree_diameter_dist"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "tree_zenith_dist"      "tree_azimuth_dist"     "branch_diameter_dist" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "branch_height_dist"    "branch_angle_dist"     "branch_zenith_dist"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "branch_azimuth_dist"   "branch_order_dist"     "segment_diameter_dist"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "segment_height_dist"   "segment_angle_dist"    "segment_zenith_dist"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "segment_azimuth_dist"  "segment_order_dist"    "stem_taper"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "spreads"               "vertical_profile"      "branch_alt"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "version"               "run_date"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "tree"                  "crown_convex_hull"     "crown_alpha_shape"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "tree_height_dist"      "tree_diameter_dist"    "tree_zenith_dist"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "tree_azimuth_dist"     "branch_diameter_dist"  "branch_height_dist"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "branch_angle_dist"     "branch_zenith_dist"    "branch_azimuth_dist"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "branch_order_dist"     "segment_diameter_dist" "segment_height_dist"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "segment_angle_dist"    "segment_zenith_dist"   "segment_azimuth_dist" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "segment_order_dist"    "stem_taper"            "spreads"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "vertical_profile"      "branch_alt"            "version"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [28] "run_date"             </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
