@@ -71,6 +71,7 @@
 <li><p>Fixed a bug where <code>crown_volume_m3</code> had the wrong units.</p></li>
 </ul></li>
 <li><p><code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code> better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.</p></li>
+<li><p>Users can now pass column names by <code>.$</code> and <code>.[[]]</code> notation to all <code>rTwig</code> functions when piping data.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/cluster_cloud.html">cluster_cloud()</a></code> where the simulated point cloud cylinders were not rotated correctly when internally calling <code>generate_cloud()</code>.</p></li>
 <li><p>Fixed a bug where the mesh for axis aligned cylinders would not calculate correctly. This affected both <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> and <code><a href="../reference/export_mesh.html">export_mesh()</a></code>.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/tree_metrics.html">tree_metrics()</a></code> where the <code>diameter_mid_cm</code> column was returning the radius instead of the diameter.</p></li>
