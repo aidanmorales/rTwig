@@ -16,6 +16,13 @@
 select_column <- function(...) {
   expr <- rlang::quo_get_expr(...)
 
+  if (rlang::is_call(expr, "$") && length(expr) >= 3) {
+    expr <- expr[[3]]
+  }
+  if (rlang::is_call(expr, "[[") && length(expr) >= 3) {
+    expr <- expr[[3]]
+  }
+
   if (is.null(expr) | is.character(expr)) {
     return(expr)
   } else {

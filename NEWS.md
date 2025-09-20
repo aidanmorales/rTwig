@@ -20,7 +20,7 @@
 
         -   `crown_projected_alpha_area_m2`: the projected surface area of the crown
 
-        -    `crown_alpha_area_m2`: surface area of the crown
+        -   `crown_alpha_area_m2`: surface area of the crown
 
         -   `crown_alpha_volume_m3` the volume of the crown
 
@@ -31,6 +31,8 @@
     -   Fixed a bug where `crown_volume_m3` had the wrong units.
 
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
+
+-   Users can now pass column names by `.$` and `.[[]]` notation to all `rTwig` functions when piping data.
 
 -   Fixed a bug in `cluster_cloud()` where the simulated point cloud cylinders were not rotated correctly when internally calling `generate_cloud()`.
 

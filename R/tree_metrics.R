@@ -566,13 +566,13 @@ calculate_tree_metrics <- function(
   # Save Tree Metrics ----------------------------------------------------------
   metrics$tree <- tree
 
-  metrics$crown_convex_hull <- tmesh3d(
+  metrics$crown_convex_hull <- rgl::tmesh3d(
     vertices = t(crown_hull_3d$p),
     indices = t(crown_hull_3d$hull),
     homogeneous = FALSE
   )
 
-  metrics$crown_alpha_shape <- tmesh3d(
+  metrics$crown_alpha_shape <- rgl::tmesh3d(
     vertices = t(alpha_shape$V),
     indices  = t(alpha_shape$F),
     homogeneous = TRUE
