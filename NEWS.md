@@ -32,6 +32,8 @@
 
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
 
+-   `plot_qsm()` now uses a dark theme by default for better cylinder and point cloud contrast.
+
 -   Users can now pass column names by `.$` and `.[[]]` notation to all `rTwig` functions when piping data.
 
 -   Fixed a bug in `cluster_cloud()` where the simulated point cloud cylinders were not rotated correctly when internally calling `generate_cloud()`.

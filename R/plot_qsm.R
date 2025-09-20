@@ -40,6 +40,7 @@
 #'  of hex colors, or a quoted/unquoted column name.
 #'  `pt_color = "random"` will generate a random color for all points.
 #'  Vectors must have the same length as the point cloud data frame.
+#'  Defaults to white.
 #'
 #' @param pt_palette Optional point cloud color palette for numerical data.
 #'  `pt_palette` includes `colourvalues::color_palettes()` or a user supplied RGB
@@ -75,7 +76,7 @@
 #'  Defaults to 1. 1 is opaque and 0 is fully transparent.
 #'
 #' @param axes Show plot axes. Defaults to TRUE.
-#' @param axes_color Set the axes color. Defaults to black.
+#' @param axes_color Set the axes color. Defaults to white.
 #'
 #' @param grid Show plot grid lines. Defaults to FALSE.
 #' @param grid_color Set grid lines color. Defaults to grey.
@@ -83,7 +84,7 @@
 #' @param hover Show cylinder and branch id on mouse hover. Defaults to FALSE.
 #'
 #' @param bg_color Set the background color of the plot.
-#'  Accepts hex colors or `grDevices::colors()`. Defaults to white.
+#'  Accepts hex colors or `grDevices::colors()`. Defaults to black.
 #'
 #' @param lit Enable light source in plot. Defaults to FALSE.
 #'
@@ -119,7 +120,7 @@ plot_qsm <- function(
     skeleton = FALSE,
     skeleton_lwd = 1,
     cloud = NULL,
-    pt_color = "#000000",
+    pt_color = "#FFFFFF",
     pt_palette = NULL,
     pt_size = 0.1,
     pt_alpha = 1,
@@ -131,11 +132,11 @@ plot_qsm <- function(
     lf_color = "#5BA803",
     lf_alpha = 1,
     axes = TRUE,
-    axes_color = "#000000",
+    axes_color = "#FFFFFF",
     grid = FALSE,
     grid_color = "#D3D3D3",
     hover = FALSE,
-    bg_color = "#FFFFFF",
+    bg_color = "#000000",
     lit = FALSE,
     pan = TRUE,
     normalize = FALSE,
@@ -725,7 +726,7 @@ plot_colors <- function(data, color, palette, branch_order) {
         palette = "rainbow"
       )
     } else if (is.null(branch_order)) { # cloud defaults
-      default_color <- "#000000"
+      default_color <- "#FFFFFF"
     }
   } else if (is.vector(color) & length(color) > 1) {
     if (length(color) != nrow(data)) {
