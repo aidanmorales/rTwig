@@ -14,7 +14,7 @@ plot_qsm(
   skeleton = FALSE,
   skeleton_lwd = 1,
   cloud = NULL,
-  pt_color = "#000000",
+  pt_color = "#FFFFFF",
   pt_palette = NULL,
   pt_size = 0.1,
   pt_alpha = 1,
@@ -26,11 +26,11 @@ plot_qsm(
   lf_color = "#5BA803",
   lf_alpha = 1,
   axes = TRUE,
-  axes_color = "#000000",
+  axes_color = "#FFFFFF",
   grid = FALSE,
   grid_color = "#D3D3D3",
   hover = FALSE,
-  bg_color = "#FFFFFF",
+  bg_color = "#000000",
   lit = FALSE,
   pan = TRUE,
   normalize = FALSE,
@@ -74,7 +74,8 @@ are the x, y, and z coordinates.}
 \code{pt_color} must be a single hex color string, a \code{grDevices::colors()}, a vector
 of hex colors, or a quoted/unquoted column name.
 \code{pt_color = "random"} will generate a random color for all points.
-Vectors must have the same length as the point cloud data frame.}
+Vectors must have the same length as the point cloud data frame.
+Defaults to white.}
 
 \item{pt_palette}{Optional point cloud color palette for numerical data.
 \code{pt_palette} includes \code{colourvalues::color_palettes()} or a user supplied RGB
@@ -111,7 +112,7 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.}
 
 \item{axes}{Show plot axes. Defaults to TRUE.}
 
-\item{axes_color}{Set the axes color. Defaults to black.}
+\item{axes_color}{Set the axes color. Defaults to white.}
 
 \item{grid}{Show plot grid lines. Defaults to FALSE.}
 
@@ -120,7 +121,7 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.}
 \item{hover}{Show cylinder and branch id on mouse hover. Defaults to FALSE.}
 
 \item{bg_color}{Set the background color of the plot.
-Accepts hex colors or \code{grDevices::colors()}. Defaults to white.}
+Accepts hex colors or \code{grDevices::colors()}. Defaults to black.}
 
 \item{lit}{Enable light source in plot. Defaults to FALSE.}
 
