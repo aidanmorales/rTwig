@@ -66,7 +66,7 @@ triangulation meshes. Plots can be combined and extensively customized.</p>
 <span>  skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skeleton_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  cloud <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pt_color <span class="op">=</span> <span class="st">"#000000"</span>,</span>
+<span>  pt_color <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
 <span>  pt_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pt_size <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  pt_alpha <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -78,11 +78,11 @@ triangulation meshes. Plots can be combined and extensively customized.</p>
 <span>  lf_color <span class="op">=</span> <span class="st">"#5BA803"</span>,</span>
 <span>  lf_alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  axes_color <span class="op">=</span> <span class="st">"#000000"</span>,</span>
+<span>  axes_color <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
 <span>  grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  grid_color <span class="op">=</span> <span class="st">"#D3D3D3"</span>,</span>
 <span>  hover <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  bg_color <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
+<span>  bg_color <span class="op">=</span> <span class="st">"#000000"</span>,</span>
 <span>  lit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pan <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  normalize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -149,7 +149,8 @@ are the x, y, and z coordinates.</p></dd>
 <code>pt_color</code> must be a single hex color string, a <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, a vector
 of hex colors, or a quoted/unquoted column name.
 <code>pt_color = "random"</code> will generate a random color for all points.
-Vectors must have the same length as the point cloud data frame.</p></dd>
+Vectors must have the same length as the point cloud data frame.
+Defaults to white.</p></dd>
 
 
 <dt id="arg-pt-palette">pt_palette<a class="anchor" aria-label="anchor" href="#arg-pt-palette"></a></dt>
@@ -210,7 +211,7 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 
 
 <dt id="arg-axes-color">axes_color<a class="anchor" aria-label="anchor" href="#arg-axes-color"></a></dt>
-<dd><p>Set the axes color. Defaults to black.</p></dd>
+<dd><p>Set the axes color. Defaults to white.</p></dd>
 
 
 <dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
@@ -227,7 +228,7 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 
 <dt id="arg-bg-color">bg_color<a class="anchor" aria-label="anchor" href="#arg-bg-color"></a></dt>
 <dd><p>Set the background color of the plot.
-Accepts hex colors or <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>. Defaults to white.</p></dd>
+Accepts hex colors or <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>. Defaults to black.</p></dd>
 
 
 <dt id="arg-lit">lit<a class="anchor" aria-label="anchor" href="#arg-lit"></a></dt>
