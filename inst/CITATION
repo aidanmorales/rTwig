@@ -21,3 +21,24 @@ bibentry("Article",
          number       = "3",
          pages        = "394-409",
          doi          = "10.1093/forestry/cpae046")
+
+bibentry("Article",
+         title        = "rTwig: An R package to correct overestimated small branches and twigs in quantitative structure models of trees",
+         author       = c(
+                          person(
+                            given = "Aidan",
+                            family = "Morales",
+                            email = "moral169@msu.edu",
+                            comment = c(ORCID = "0009-0000-4513-4908")
+                          ),
+                          person(
+                            given = "David W.",
+                            family = "MacFarlane",
+                            email = "macfar24@msu.edu",
+                          )
+                        ),
+         journal      = "Science of Remote Sensing",
+         year         = "2025",
+         volume       = "12",
+         pages        = "100284",
+         doi          = "10.1016/j.srs.2025.100284")

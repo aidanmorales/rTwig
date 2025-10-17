@@ -43,9 +43,14 @@ A complete description and validation of Real Twig can be read here:
 
 **Aidan Morales**, and **David W. MacFarlane**. “Reducing tree volume
 overestimation in quantitative structure models using modeled branch
-topology and direct twig measurements.” *Forestry: An International
+topology and direct twig measurements” *Forestry: An International
 Journal of Forest Research*, 2024, *98*(3), 394–409.
 <https://doi.org/10.1093/forestry/cpae046>.
+
+**Aidan Morales**, and **David W. MacFarlane**. “rTwig: An R package to
+correct overestimated small branches and twigs in quantitative structure
+models of trees” *Science of Remote Sensing*, 2025, *12*, 100284.
+<https://doi.org/10.1016/j.srs.2025.100284>
 
 ## Features
 
