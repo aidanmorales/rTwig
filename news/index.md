@@ -4,10 +4,12 @@
 
 ### New Features
 
-- The latest version of AdQSM (v.1.7.5) is now supported in the package.
+- The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now
+  supported in the package.
   [`import_adqsm()`](https://aidanmorales.github.io/rTwig/reference/import_adqsm.md)
-  can import an AdQSM from its `.obj` file, making it immediately usable
-  with the other package functions, and does not require
+  can import an AdQSM or AdTree from its `.obj` file, making them
+  immediately usable with the other package functions, and does not
+  require
   [`update_cylinders()`](https://aidanmorales.github.io/rTwig/reference/update_cylinders.md)
   to be run.
 
