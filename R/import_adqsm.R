@@ -10,6 +10,7 @@
 #'
 #' @references
 #' \insertRef{fan2020adqsm}{rTwig}
+#'
 #' \insertRef{du2019adtree}{rTwig}
 #'
 #' @examples

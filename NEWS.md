@@ -2,7 +2,7 @@
 
 ## New Features
 
--   The latest version of AdQSM (v.1.7.5) is now supported in the package. `import_adqsm()` can import an AdQSM from its `.obj` file, making it immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
+-   The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now supported in the package. `import_adqsm()` can import an AdQSM or AdTree from its `.obj` file, making them immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
 
 -   `reconstruct_qsm()`: New function to reconstruct a QSM and all of its variables from the minimum amount of required data. This enables the reconstruction and analysis of generic QSMs from external software or even manual measurements. The only required variables are the cylinder id, parent id, 3d information (e.g. a combination of start and end points, or start, axis, and length), and the radius.
 
