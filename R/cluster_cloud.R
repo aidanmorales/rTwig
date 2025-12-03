@@ -135,7 +135,7 @@ cluster_cloud <- function(cylinder, cloud = NULL, spacing = NULL) {
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, or AdQSM QSMs are supported.",
+      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")

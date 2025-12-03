@@ -199,7 +199,7 @@ tree_metrics <- function(cylinder, verify = TRUE, triangulation = NULL) {
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, or AdQSM QSMs are supported.",
+      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")

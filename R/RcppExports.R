@@ -482,6 +482,10 @@ user_matrix <- function(x, y, z, start) {
     .Call(`_rTwig_user_matrix`, x, y, z, start)
 }
 
+build_adtree <- function(vertices, facets = 10L, tol = 1e-6, match_tol = 1e-4) {
+    .Call(`_rTwig_build_adtree`, vertices, facets, tol, match_tol)
+}
+
 build_adqsm <- function(vertices, facets = 10L, tol = 1e-5, match_tol = 1e-4) {
     .Call(`_rTwig_build_adqsm`, vertices, facets, tol, match_tol)
 }

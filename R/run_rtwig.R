@@ -10,6 +10,9 @@
 #' @param version If using a specific version of TreeQSM, the user can specify
 #'  the version (e.g. 2.4.1, 2.0, etc.).
 #'
+#' @param method Define the QSM generation method if using AdQSM or AdTree.
+#'  Define the method as `adqsm` or `adtree`. Defaults to `adqsm`.
+#'
 #' @param smooth Defaults to TRUE if using TreeQSM. Can be set to FALSE.
 #'
 #' @param standardise Standardise QSM cylinder data.
@@ -36,6 +39,7 @@ run_rtwig <- function(
     twig_radius,
     metrics = TRUE,
     version = NULL,
+    method = NULL,
     smooth = TRUE,
     standardise = FALSE,
     broken_branch = TRUE,
@@ -80,6 +84,24 @@ run_rtwig <- function(
         "`filename` must be a string, not ", class(version), "."
       )
       abort(message, class = "invalid_argument")
+    }
+  }
+
+  if (!is_null(method)) {
+    if (!is_string(method)) {
+      message <- paste0(
+        "`method` must be a string, not ", class(method), "."
+      )
+      abort(message, class = "invalid_argument")
+    }
+
+    if (!method %in% c("adqsm", "adtree")) {
+      message <- paste(
+        "`method` is invalid!",
+        "i supported methods include: `adqsm`, `adtree`",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
     }
   }
 
@@ -222,10 +244,23 @@ run_rtwig <- function(
     }
   }
 
-  # AdQSM ----------------------------------------------------------------------
+  # AdQSM / AdTree -------------------------------------------------------------
   else if (extension == "obj") {
+    if (is.null(method)) {
+      message <- paste(
+        "`method` is missing!",
+        "i supported methods include: `adqsm`, `adtree`",
+        sep = "\n"
+      )
+      abort(message, class = "data_format_error")
+    }
+
     # Import QSM ---------------------------------------------------------------
-    cylinder <- import_adqsm(file)
+    if (method == "adqsm") {
+      cylinder <- import_adqsm(file, method = "adqsm")
+    } else if (method == "adtree") {
+      cylinder <- import_adqsm(file, method = "adtree")
+    }
 
     # Correct Radii ------------------------------------------------------------
     cylinder <- correct_radii(
@@ -244,7 +279,7 @@ run_rtwig <- function(
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, or AdQSM QSMs are supported.",
+      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")

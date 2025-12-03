@@ -4,25 +4,28 @@
 \alias{import_adqsm}
 \title{Import AdQSM}
 \usage{
-import_adqsm(filename)
+import_adqsm(filename, method = "adqsm")
 }
 \arguments{
-\item{filename}{an AdQSM .obj file}
+\item{filename}{an AdQSM or AdTree .obj file}
+
+\item{method}{specify the method as \code{adqsm} or \code{adtree}. Defaults to \code{adqsm}.}
 }
 \value{
 Returns a data frame
 }
 \description{
-Imports a QSM created by AdQSM
+Imports a QSM created by AdQSM or AdTree
 }
 \examples{
 \dontrun{
 
-# Import an AdQSM
+# Import an AdQSM or AdTree
 qsm <- import_adqsm("path/to/obj/file")
 }
 
 }
 \references{
 \insertRef{fan2020adqsm}{rTwig}
+\insertRef{du2019adtree}{rTwig}
 }
