@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   Box-Dimension: Box-Dimension.html
@@ -8,7 +8,7 @@ articles:
   Overview: Overview.html
   Twigs: Twigs.html
   Validation: Validation.html
-last_built: 2025-10-17T16:20Z
+last_built: 2025-12-03T00:42Z
 urls:
   reference: https://aidanmorales.github.io/rTwig/reference
   article: https://aidanmorales.github.io/rTwig/articles

@@ -1,0 +1,532 @@
+# Dictionary
+
+## Background
+
+Real Twig allows QSM variable names and metrics to be standardized
+across TreeQSM, SimpleForest, Treegraph, and aRchi. This is done with
+the
+[`standardise_qsm()`](https://aidanmorales.github.io/rTwig/reference/standardise_qsm.md)
+and
+[`tree_metrics()`](https://aidanmorales.github.io/rTwig/reference/tree_metrics.md)
+functions, creating a consistent experience when working with QSMs.
+Below are detailed definitions of the standard variable names in rTwig.
+
+## Cylinder
+
+All of the variables shown here are created with the
+[`update_cylinders()`](https://aidanmorales.github.io/rTwig/reference/update_cylinders.md)
+function, which should be run as soon as a QSM is imported with rTwig.
+Unless,
+[`standardise_qsm()`](https://aidanmorales.github.io/rTwig/reference/standardise_qsm.md)
+is run, the variable names will vary depending on the particular QSM
+software used.
+
+#### Cylinder Attributes
+
+**`start:`** This defines the x, y, z coordinates at the center of the
+cylinder’s base.
+
+**`axis:`** This defines the x, y, z axis formed between the cylinder’s
+base and top.
+
+**`end:`** This defines the x, y, z coordinates at the center of the
+cylinder’s top.
+
+**`id:`** The first cylinder id is 1 and is the base of the tree. The
+largest id value is equal to the number of rows in the data frame.
+
+**`parent:`** This shows the relationships between individual cylinders
+in the QSM. The parent of the first cylinder is always zero, because the
+base of the tree has no parent. Within a branch, parent cylinders are
+always one less than their child. At the base of a branch, the parent
+cylinder is the cylinder the branch is connected to.
+
+**`radius:`** This is the radius of the cylinder in meters.
+
+**`raw_radius:`** This is the radius of the cylinder before any possible
+modifications. If using TreeQSM, this is always the *UnmodRadius*
+column. If using SimpleForest or Treegraph, this is a copy of the radius
+before Real Twig is run. Real Twig always uses this radius in its
+corrections.
+
+**`modified:`** This is an average index of if the cylinder radius was
+an outlier and modified with Real Twig across the QSM paths. A value of
+0 indicates that the cylinder was never modified in any path, while a
+value of 1 indicates that it was modified in every path. A value in
+between 0 and 1 was modified in only some, but not all of the paths.
+
+**`length:`** This is the length of the cylinder in meters.
+
+#### Branch Attributes
+
+**`branch:`** A branch is defined as starting at a new branch order and
+continuing until a twig is reached. This definition is what TreeQSM and
+Treegraph use. SimpleForest branches are converted to this definition
+when standardizing the QSM. The first branch is always the main stem
+under the rTwig format. Treegraph QSMs retain their definition of
+branches. TreeQSM and SimpleForest are numbered consecutively in order
+of the cylinder ids.
+
+**`branch_position:`** This is an index of the cylinder’s position
+within a branch. This is the same as TreeQSM’s *PositionInBranch*
+definition. The first position is always the base of the branch, and the
+last position is always a twig or the branch end in the case of a broken
+branch.
+
+**`branch_order:`** This is the order of every branch. The smallest
+branch order zero is always the main stem. First order branches are
+connected to the main stem, and so on a so forth for higher order
+branches. A new branch order always begins at a new branching fork,
+continues to a twig or end of a broken branch, and is one greater than
+the parent order. This definition is consistent between TreeQSM,
+SimpleForest, and Treegraph, but the rTwig format always defines the
+main stem as order zero for consistency.
+
+**`reverse_order:`** This is the reverse branch order (RBO). Traditional
+branch ordering is relative to the main stem, and does not tell us
+anything about the position or size of the branch. Small twigs and large
+branches can both be first order branches if they are connected to the
+main stem under the traditional definition. RBO solves this problem by
+considering the relative position of branches within a QSM. RBO assigns
+a value of one at the end of twigs or broken branches, and works
+backwards until the base of the tree is reached, which is assigned the
+highest RBO. The RBO of any branch is the maximum segment (internode)
+depth relative to the twigs in a tree.
+
+**`branch_alt:`** This is the alternate branch index. Alternate branch
+zero is always the main stem. The rest of the branches are first order
+branches and all of their children. This is similar to cutting the first
+order branches off with a saw and labeling them consecutively. If using
+a SimpleForest QSM, this is the old `branchID` column updated so that
+the main stem is index zero.
+
+#### Segment Attributes
+
+**`segment:`** A segment (internode) is a portion of a tree between
+branching forks (nodes). A new segment begins at every branch fork.
+Cylinders are a part of a segment until the cylinder has more than one
+child and a new segment is created. The rTwig format always defines the
+base of the tree as the first segment.
+
+**`parent_segment:`** This shows the relationships between segments in
+the QSM. The parent segment of the first segment is always zero, because
+the first segment (the base of the tree) has no parent segment. The
+parent segment is the node the current segment forked from.
+
+**`total_children:`** This is the total number of cylinders supported by
+the given cylinder. This is useful to find where branches fork. A value
+of one means that there are no branching forks. A value of two means
+that there is one branching fork, etc.
+
+#### Additional Metrics
+
+**`growth_length:`** This is the growth length in meters of any given
+cylinder. Growth length can be defined as the sum of the lengths of the
+cylinders supported by the given cylinder. We can visualize growth
+length by cutting a tree with a saw at any given point. The cumulative
+length of this cut portion is the growth length where the part of the
+tree was cut. The growth length of the base of the tree is the sum of
+the lengths of all the cylinders in the QSM. The growth length of a twig
+is simply the length of its cylinder. Growth length reflects a
+measurement that could be taken on a real tree, but is easier to obtain
+with QSMs.
+
+**`base_distance:`** This is the distance in meters of any given
+cylinder from the base of the tree. This distance is calculated by
+taking the simplest complete path from the given cylinder to the base of
+the tree.
+
+**`twig_distance:`** This is the average distance in meters a given
+cylinder is away from all supported twigs. This is calculated by finding
+all complete simple paths from the given cylinder to the supported
+twigs, summing the lengths, and then dividing by the number of paths.
+
+**`vessel_volume:`** This is the theoretical cumulative volume of living
+vessels supported by a given cylinder based on allometric scaling
+theory. It is the sum of *pipe_area \* length* for all supported
+cylinders.
+
+**`pipe_area:`** This is the theoretical cross-sectional area of a given
+cylinder based on allometric scaling theory. The units and values are
+the total number of supported twigs.
+
+**`pipe_radius:`** This is the theoretical radius of a given cylinder
+based on allometric scaling theory. The units and values are the square
+root of the total number of supported twigs.
+
+## Metrics
+
+[`tree_metrics()`](https://aidanmorales.github.io/rTwig/reference/tree_metrics.md)
+generates multiple detailed metrics, which are described in detail
+below. The `tree`, `branch`, and `segment` data frames are summaries on
+an individual tree, branch, or segment level, while the `tree_*_dist`,
+`branch_*_dist`, and `segment_*_dist` are summarised by `height`,
+`diameter`, `zenith`, `azimuth`, `angle`, or `order`. All of the outputs
+are described in detail below:
+
+### tree
+
+**`tree_volume_m3:`** The total volume of the tree in cubic meters.
+
+**`stem_volume_m3:`** The total volume of the main stem in cubic meters.
+
+**`branch_volume_m3:`** The total volume of the branches in cubic
+meters.
+
+**`tree_height_m:`** The total height of the tree in meters.
+
+**`tree_length_m:`** The total length of the tree in meters. This is
+calculated by summing the length of all of the cylinders in the QSM.
+This is also equal to the growth length of base of the tree.
+
+**`stem_length_m:`** The total length of the main stem in meters.
+
+**`branch_length_m:`** The total length of the branches in meters. This
+is calculated by summing the length of all of the branch cylinders in
+the QSM.
+
+**`branches:`** The total number of branches in the QSM, where a branch
+begins at a new branch order and ends at a twig.
+
+**`branches_alt:`** The total number of alternate branches, where an
+alternate branch is attached directly to the main stem, and contains all
+connected children.
+
+**`max_branch_order:`** The maximum branch order in the QSM.
+
+**`max_reverse_order:`** The maximum reverse branch order in the QSM,
+which is the maximum node depth from the furthest twig.
+
+**`twigs:`** The total number of twigs in the QSM.
+
+**`twig_length_m:`** The total length of the twig cylinders in meters.
+
+**`twig_distance_m:`** The average distance from the base of the tree to
+each twig.
+
+**`path_fraction:`** The average path length (from the base of the tree
+to the twig) divided by the maximum path length. A path fraction of 1 is
+a perfect fractal.
+
+**`tree_area_m2:`** The total surface area of the tree in square meters.
+
+**`stem_area_m2:`** The total surface area of the main stem in square
+meters.
+
+**`branch_area_m2:`** The total surface area of the branches in square
+meters.
+
+**`dbh_qsm_cm:`** The diameter at breast height of the QSM at 1.37
+meters in centimeters, modified by any tapering.
+
+**`dbh_raw_cm:`** The diameter at breast height of the QSM at 1.37
+meters in centimeters, without any radius modification.
+
+**`d_base_qsm_cm:`** The diameter of the base cylinder of the QSM in
+centimeters, modified by any tapering.
+
+**`d_base_raw_cm:`** The diameter of the base cylinder of the QSM in
+centimeters, without any radius modification.
+
+**`crown_diameter_mean_m:`** The average crown diameter in meters.
+
+**`crown_diameter_max_m:`** The maximum crown diameter in meters.
+
+**`crown_diameter_min_m:`** The minimum crown diameter in meters.
+
+**`crown_projected_area_m2:`** The projected crown area in square
+meters.
+
+**`crown_projected_alpha_area_m2:`** The projected crown area from an
+alpha shape in square meters.
+
+**`crown_base_height_m:`** The base height of the crown in meters.
+
+**`crown_length_m:`** The length of the crown in meters.
+
+**`crown_ratio:`** The crown length divided by the total tree height.
+
+**`crown_area_m2:`** The surface area of the crown from a convex hull in
+square meters.
+
+**`crown_volume_m3:`** The volume of the crown from a convex hull in
+cubic meters.
+
+**`crown_alpha_area_m2:`** The surface area of the crown from an alpha
+shape in square meters.
+
+**`crown_alpha_volume_m3:`** The volume of the crown from an alpha shape
+in cubic meters.
+
+**`vessel_volume:`** The vessel volume of the base cylinder in the QSM.
+
+**`pipe_area:`** The pipe area of the base cylinder in the QSM, equal to
+the total number of supported twigs.
+
+**`pipe_radius:`** The pipe radius of the base cylinder in the QSM,
+equal to the square root of the pipe area.
+
+**`start_x:`** The x coordinate of the base cylinder in the QSM.
+
+**`start_y:`** The y coordinate of the base cylinder in the QSM.
+
+**`start_z:`** The z coordinate of the base cylinder in the QSM.
+
+**`modified:`** The ratio of cylinders with radii modified by Real Twig,
+divided by the total number of cylinders in the QSM. This value only
+exists if Real Twig has been run.
+
+**`volume_change_pct:`** The percent change in total volume from running
+Real Twig. This value only exists if Real Twig has been run.
+
+**`area_change_pct:`** The percent change in total surface area from
+running Real Twig. This value only exists if Real Twig has been run.
+
+### branch, branch_alt, & segment
+
+**`branch:`** The id of the branch being summarised.
+
+**`branch_alt:`** The id of the alternate branch being summarised.
+
+**`segment:`** The id of the segment being summarised.
+
+**`parent_branch:`** The parent branch of the branch being summarised.
+
+**`parent_segment:`** The parent segment of the segment being
+summarised.
+
+**`branch_order:`** The branch order of the branch or segment.
+
+**`reverse_order:`** The reverse branch order of the branch or segment.
+
+**`diameter_base_cm:`** The diameter of the base of the branch or
+segment in centimeters.
+
+**`diameter_mid_cm:`** The diameter of the midpoint of the branch or
+segment in centimeters.
+
+**`diameter_tip_cm:`** The diameter of the end of the branch or segment
+in centimeters.
+
+**`volume_m3:`** The volume in cubic meters of the branch or segment.
+
+**`area_m2:`** The surface area in square meters of the branch or
+segment.
+
+**`length_m:`** The length in meters of the branch or segment.
+
+**`height_m:`** The height above the ground in meters of the branch or
+segment.
+
+**`angle_deg:`** The angle in degrees of the branch or segment.
+
+**`azimuth_deg:`** The azimuth in degrees of the branch or segment.
+
+**`zenith_deg:`** The zenith in degrees of the branch or segment.
+
+**`growth_length:`** The growth length of the branch in meters.
+
+**`cylinders:`** The total number of cylinders in the branch or segment.
+
+**`segments:`** The total number of segments in the branch.
+
+**`children:`** The sum of the supported children in the branch or
+segment.
+
+**`base_distance_m:`** The shortest path distance in meters to the base
+of the tree from the base of the branch or segment.
+
+**`twig_distance_m:`** The average distance in meters to the supported
+twigs from the base of the branch or segment.
+
+### \*\_height_dist
+
+The height distributions are calculated on the tree, branch, and segment
+level. Branch column names containing `_1` summarise only the first
+order branch cylinders, similar to the output of TreeQSM.
+
+**`height_class_m:`** The one meter height class of the tree, branch, or
+segment cylinders.
+
+**`volume_m3:`** The volume in cubic meters of the tree, branch, or
+segment cylinders per height class.
+
+**`area_m2:`** The surface are in square meters of the tree, branch, or
+segment cylinders per height class.
+
+**`length_m:`** The length in meters of the tree, branch, or segment
+cylinders per height class.
+
+**`branches:`** The number of branches in the height class.
+
+**`segments:`** The number of segments in the height class.
+
+### \*\_diameter_dist
+
+The diameter distributions are calculated on the tree, branch, and
+segment level. Branch column names containing `_1` summarise only the
+first order branch cylinders, similar to the output of TreeQSM.
+
+**`diameter_class_cm:`** The one centimeter diameter class of the tree,
+branch, or segment cylinders.
+
+**`volume_m3:`** The volume in cubic meters of the tree, branch, or
+segment cylinders per diameter class.
+
+**`area_m2:`** The surface are in square meters of the tree, branch, or
+segment cylinders per diameter class.
+
+**`length_m:`** The length in meters of the tree, branch, or segment
+cylinders per diameter class.
+
+**`branches:`** The number of branches in the diameter class.
+
+**`segments:`** The number of segments in the diameter class.
+
+### \*\_zenith_dist
+
+The zenith distributions are calculated on the tree, branch, and segment
+level. Branch column names containing `_1` summarise only the first
+order branch cylinders, similar to the output of TreeQSM.
+
+**`zenith_class_deg:`** The ten degree zenith class of the tree, branch,
+or segment cylinders.
+
+**`volume_m3:`** The volume in cubic meters of the tree, branch, or
+segment cylinders per zenith class.
+
+**`area_m2:`** The surface are in square meters of the tree, branch, or
+segment cylinders per zenith class.
+
+**`length_m:`** The length in meters of the tree, branch, or segment
+cylinders per zenith class.
+
+**`branches:`** The number of branches in the zenith class.
+
+**`segments:`** The number of segments in the zenith class.
+
+### \*\_azimuth_dist
+
+The azimuth distributions are calculated on the tree, branch, and
+segment level. Branch column names containing `_1` summarise only the
+first order branch cylinders, similar to the output of TreeQSM.
+
+**`azimuth_class_deg:`** The ten degree azimuth class of the tree,
+branch, or segment cylinders.
+
+**`volume_m3:`** The volume in cubic meters of the tree, branch, or
+segment cylinders per azimuth class.
+
+**`area_m2:`** The surface are in square meters of the tree, branch, or
+segment cylinders per azimuth class.
+
+**`length_m:`** The length in meters of the tree, branch, or segment
+cylinders per azimuth class.
+
+**`branches:`** The number of branches in the azimuth class.
+
+**`segments:`** The number of segments in the azimuth class.
+
+### \*\_angle_dist
+
+The angle distributions are calculated on the branch and segment level.
+Branch column names containing `_1` summarise only the first order
+branch cylinders, similar to the output of TreeQSM.
+
+**`angle_class_deg:`** The ten degree angle class of the branch or
+segment cylinders.
+
+**`volume_m3:`** The volume in cubic meters of the branch or segment
+cylinders per angle class.
+
+**`area_m2:`** The surface are in square meters of the branch or segment
+cylinders per angle class.
+
+**`length_m:`** The length in meters of the branch or segment cylinders
+per angle class.
+
+**`branches:`** The number of branches in the angle class.
+
+**`segments:`** The number of segments in the angle class.
+
+### \*\_order_dist
+
+The order distributions are calculated on the branch and segment level.
+Branch column names containing `_1` summarise only the first order
+branch cylinders, similar to the output of TreeQSM.
+
+**`branch_order:`** The branch order.
+
+**`reverse_order:`** The reverse branch order.
+
+**`volume_m3:`** The volume in cubic meters of the branch or segment
+cylinders per order.
+
+**`area_m2:`** The surface are in square meters of the branch or segment
+cylinders per order.
+
+**`length_m:`** The length in meters of the branch or segment cylinders
+per order.
+
+**`branches:`** The number of branches in the order.
+
+**`segments:`** The number of segments in the order.
+
+### stem_taper
+
+**`height_m:`** The height in meters above the ground of the main stem.
+
+**`diameter_cm:`** The diameter in centimeters at the given height.
+
+### spreads
+
+**`azimuth_deg:`** 20 degree azimuth classes.
+
+**`height_class:`** 1 meter height classes.
+
+**`spread_m:`** The crown spread in meters at the given azimuth and
+height.
+
+### vertical_profile
+
+**`height_class:`** 1 meter height classes.
+
+**`avg_spread_m:`** The average crown spread in meters at the given
+height.
+
+### triangulation
+
+**`dbh_tri_cm:`** The diameter of the triangulation nearest to breast
+height.
+
+**`tri_volume_m3:`** The volume of the triangulation mesh in cubic
+meters.
+
+**`stem_mix_volume_m3:`** The mixed volume of the triangulation mesh and
+stem above the mesh in cubic meters.
+
+**`tree_mix_volume_m3:`** The mixed volume of the triangulation mesh and
+tree above the mesh in cubic meters.
+
+**`tri_area_m2:`** The area of the triangulation mesh in square meters.
+
+**`stem_mix_area_m2:`** The mixed area of the triangulation mesh and
+stem above the mesh in square meters.
+
+**`tree_mix_area_m2:`** The mixed area of the triangulation mesh and
+tree above the mesh in square meters.
+
+**`tri_length_m:`** The vertical length of the triangulation mesh in
+meters.
+
+### cloud
+
+The simulated point cloud used to calculate many of the metrics.
+
+### version
+
+The version of `rTwig` used to create the metrics.
+
+### run_date
+
+The date and time the metrics were generated.
