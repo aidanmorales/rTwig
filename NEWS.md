@@ -30,6 +30,12 @@
 
     -   Fixed a bug where `crown_volume_m3` had the wrong units.
 
+    -   New metrics for paths and branches:
+
+        -   `*_length_mean_m`
+        -   `*_length_min_m`
+        -   `*_length_max_m`
+
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
 
 -   `plot_qsm()` now uses a dark theme by default for better cylinder and point cloud contrast.

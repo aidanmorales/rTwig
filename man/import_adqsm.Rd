@@ -27,5 +27,6 @@ qsm <- import_adqsm("path/to/obj/file")
 }
 \references{
 \insertRef{fan2020adqsm}{rTwig}
+
 \insertRef{du2019adtree}{rTwig}
 }

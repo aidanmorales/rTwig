@@ -456,15 +456,33 @@ calculate_tree_metrics <- function(
   tree$max_branch_order <- max(cylinder$branch_order)
   tree$max_reverse_order <- max(cylinder$reverse_order)
 
+  tree <- bind_cols(
+    tree,
+    summarise(
+      metrics$branch,
+      branch_length_min_m = min(.data$length_m),
+      branch_length_max_m = max(.data$length_m),
+      branch_length_mean_m = mean(.data$length_m)
+    )
+  )
+
   tree$twigs <- length(unique(twig_cyl$branch))
   tree$twig_length_m <- sum(twig_cyl$length)
   tree$twig_distance_m <- cylinder$twig_distance[base]
 
-  tree$path_fraction <- cylinder %>%
-    filter(.data$twig_distance == .data$length) %>%
-    summarise(
-      path_fraction = mean(.data$base_distance) / max(.data$base_distance)
-    )
+  tree <- bind_cols(
+    tree,
+    cylinder %>%
+      filter(.data$twig_distance == .data$length) %>%
+      summarise(
+        path_length_min_m = min(.data$base_distance),
+        path_length_max_m = max(.data$base_distance),
+        path_length_mean_m = mean(.data$base_distance)
+      ) %>%
+      mutate(
+        path_fraction = .data$path_length_mean_m / .data$path_length_max_m
+      )
+  )
 
   tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
   tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)
@@ -641,9 +659,11 @@ calculate_tree_metrics <- function(
   metrics$spreads$height_class <- as.integer(metrics$spreads$height_class)
 
   # Vertical Profile -----------------------------------------------------------
-  metrics$vertical_profile <- metrics$spreads %>%
-    group_by("height_class") %>%
-    summarise(avg_spread_m = mean(.data$spread_m))
+  metrics$vertical_profile <- summarise(
+      metrics$spreads,
+      avg_spread_m = mean(.data$spread_m),
+      .by = "height_class"
+    )
 
   # Alternate Branch Metrics ---------------------------------------------------
   if (branch_check == TRUE) {
@@ -720,7 +740,6 @@ branch_metrics <- function(cylinder, base) {
 
   # Calculate Branch Metrics
   cylinder %>%
-    group_by("branch") %>%
     summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
@@ -742,10 +761,10 @@ branch_metrics <- function(cylinder, base) {
       segments = length(unique(.data$segment)),
       children = sum(.data$total_children),
       base_distance_m = first(.data$base_distance),
-      twig_distance_m = first(.data$twig_distance)
+      twig_distance_m = first(.data$twig_distance),
+      .by = "branch"
     ) %>%
     left_join(parent_axis, by = "parent") %>%
-    ungroup() %>%
     group_by("branch") %>%
     mutate(
       dot_product = .data$axis_x * .data$p_axis_x + .data$axis_y * .data$p_axis_y + .data$axis_z * .data$p_axis_z,
@@ -755,7 +774,8 @@ branch_metrics <- function(cylinder, base) {
     ) %>%
     select(-c("parent", "p_axis_x", "p_axis_y", "p_axis_z", "axis_x", "axis_y", "axis_z", "dot_product")) %>%
     relocate("angle_deg", .after = "height_m") %>%
-    relocate("parent_branch", .after = "branch")
+    relocate("parent_branch", .after = "branch") %>%
+    ungroup()
 }
 
 #' Calculates alternate branch metrics
@@ -784,7 +804,6 @@ branch_alt_metrics <- function(cylinder, base) {
   # Calculate Alternate Branch Metrics
   cylinder %>%
     filter(!.data$branch_alt == 0) %>%
-    group_by("branch_alt") %>%
     summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
@@ -805,10 +824,10 @@ branch_alt_metrics <- function(cylinder, base) {
       cylinders = n(),
       segments = length(unique(.data$segment)),
       base_distance_m = first(.data$base_distance),
-      twig_distance_m = first(.data$twig_distance)
+      twig_distance_m = first(.data$twig_distance),
+      .by = "branch_alt"
     ) %>%
     left_join(parent_axis, by = "parent") %>%
-    ungroup() %>%
     group_by("branch_alt") %>%
     mutate(
       length_m = abs(max(c(.data$x_length, .data$y_length, .data$z_length))),
@@ -826,7 +845,8 @@ branch_alt_metrics <- function(cylinder, base) {
     ) %>%
     relocate("angle_deg", .after = "height_m") %>%
     relocate("parent_branch", .after = "branch_alt") %>%
-    relocate("length_m", .after = "area_m2")
+    relocate("length_m", .after = "area_m2") %>%
+    ungroup()
 }
 
 #' Calculates segment metrics
@@ -854,7 +874,6 @@ segment_metrics <- function(cylinder, base) {
 
   # Calculate Segment Metrics
   cylinder %>%
-    group_by("segment") %>%
     summarise(
       parent = first(.data$parent),
       axis_x = first(.data$axis_x),
@@ -874,10 +893,10 @@ segment_metrics <- function(cylinder, base) {
       cylinders = n(),
       children = sum(.data$total_children),
       base_distance_m = first(.data$base_distance),
-      twig_distance_m = first(.data$twig_distance)
+      twig_distance_m = first(.data$twig_distance),
+      .by = "segment"
     ) %>%
     left_join(parent_axis, by = "parent") %>%
-    ungroup() %>%
     group_by("segment") %>%
     mutate(
       dot_product = .data$axis_x * .data$p_axis_x + .data$axis_y * .data$p_axis_y + .data$axis_z * .data$p_axis_z,
@@ -887,7 +906,8 @@ segment_metrics <- function(cylinder, base) {
     ) %>%
     select(-c("parent", "p_axis_x", "p_axis_y", "p_axis_z", "axis_x", "axis_y", "axis_z", "dot_product")) %>%
     relocate("angle_deg", .after = "height_m") %>%
-    relocate("parent_segment", .after = "segment")
+    relocate("parent_segment", .after = "segment") %>%
+    ungroup()
 }
 
 #' Calculates horizontal crown spreads across different height classes
@@ -1222,12 +1242,11 @@ tree_distributions <- function(cylinder, distribution) {
         ),
         class = factor(class, levels = index)
       ) %>%
-      group_by("class") %>%
       summarise(
         volume_m3 = pi * sum(.data$radius^2 * .data$length, na.rm = TRUE),
         area_m2 = 2 * pi * sum(.data$radius * .data$length, na.rm = TRUE),
         length_m = sum(.data$length, na.rm = TRUE),
-        .groups = "drop"
+        .by = "class"
       ) %>%
       complete(
         class = factor(index, levels = index),
@@ -1399,12 +1418,13 @@ segment_distributions <- function(segment, tree, distribution) {
 branch_order_distributions <- function(branch) {
   branch %>%
     filter(!.data$branch_order == 0) %>%
-    group_by("branch_order") %>%
     summarise(
       branches = n(),
       volume_m3 = sum(.data$volume_m3),
       area_m2 = sum(.data$area_m2),
-      length_m = sum(.data$length_m)
+      length_m = sum(.data$length_m),
+      .by = "branch_order",
+      .groups = "drop"
     )
 }
 
@@ -1415,12 +1435,13 @@ branch_order_distributions <- function(branch) {
 #' @noRd
 segment_order_distributions <- function(segment) {
   segment %>%
-    group_by("reverse_order") %>%
     summarise(
       segments = n(),
       volume_m3 = sum(.data$volume_m3),
       area_m2 = sum(.data$area_m2),
-      length_m = sum(.data$length_m)
+      length_m = sum(.data$length_m),
+      .by = "reverse_order",
+      .groups = "drop"
     )
 }
 
