@@ -206,6 +206,12 @@ meters.
 **`branch_length_mean_m:`** The average branch length in the tree in
 meters.
 
+**`branch_length_mean_m:`** The average branch length in the tree in
+meters.
+
+**`branch_length_gini:`** The Gini coefficient of the branch lengths in
+the tree in meters.
+
 **`twigs:`** The total number of twigs in the QSM.
 
 **`twig_length_m:`** The total length of the twig cylinders in meters.
@@ -218,6 +224,12 @@ each twig.
 **`path_length_max_m:`** The longest path length in the tree in meters.
 
 **`path_length_mean_m:`** The average path length in the tree in meters.
+
+**`path_length_gini:`** The Gini coefficient of the path lengths in the
+tree in meters.
+
+**`path_length_sd_m:`** The standard deviation of the path lengths in
+the tree in meters.
 
 **`path_fraction:`** The average path length (from the base of the tree
 to the twig) divided by the maximum path length. A path fraction of 1 is

@@ -67,6 +67,8 @@
     - `*_length_mean_m`
     - `*_length_min_m`
     - `*_length_max_m`
+    - `*_length_sd_m`
+    - `*_length_gini`
 
 - [`summarise_qsm()`](https://aidanmorales.github.io/rTwig/reference/summarise_qsm.md)
   better supports TreeQSM triangulation data. If triangulation data is
