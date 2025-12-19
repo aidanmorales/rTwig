@@ -287,3 +287,43 @@ NumericMatrix calculate_normals(NumericMatrix vertices) {
 
   return normals;
 }
+
+//' @title Gini Coefficient
+//'
+//' @description Calculate Gini Coefficient
+//'
+//' @param x NumericVector
+//' @return double
+//'
+//' @noRd
+//'
+// [[Rcpp::export]]
+double gini_coefficient(NumericVector x) {
+  const int n = x.size();
+  if (n == 0) return NA_REAL;
+
+  std::vector<double> v;
+  v.reserve(n);
+  for (int i = 0; i < n; ++i) {
+    if (!NumericVector::is_na(x[i])) {
+      if (x[i] < 0) return NA_REAL;
+      v.push_back(x[i]);
+    }
+  }
+
+  const int m = v.size();
+  if (m == 0) return NA_REAL;
+
+  double sum_x = 0.0;
+  for (double xi : v) sum_x += xi;
+  if (sum_x == 0.0) return 0.0;
+
+  std::sort(v.begin(), v.end());
+
+  double num = 0.0;
+  for (int i = 0; i < m; ++i) {
+    num += (2.0 * (i + 1) - m - 1) * v[i];
+  }
+
+  return num / (m * sum_x);
+}

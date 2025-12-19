@@ -337,6 +337,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gini_coefficient
+double gini_coefficient(NumericVector x);
+RcppExport SEXP _rTwig_gini_coefficient(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(gini_coefficient(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // write_ply
 void write_ply(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> colors, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
 RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP colorsSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
@@ -548,6 +559,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
     {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 1},
+    {"_rTwig_gini_coefficient", (DL_FUNC) &_rTwig_gini_coefficient, 1},
     {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
     {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
     {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},

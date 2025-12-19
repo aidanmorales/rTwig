@@ -332,6 +332,19 @@ calculate_normals <- function(vertices) {
     .Call(`_rTwig_calculate_normals`, vertices)
 }
 
+#' @title Gini Coefficient
+#'
+#' @description Calculate Gini Coefficient
+#'
+#' @param x NumericVector
+#' @return double
+#'
+#' @noRd
+#'
+gini_coefficient <- function(x) {
+    .Call(`_rTwig_gini_coefficient`, x)
+}
+
 #' @title Write PLY
 #'
 #' @description Export a QSM cylinder mesh to .ply

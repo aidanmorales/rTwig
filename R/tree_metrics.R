@@ -462,7 +462,9 @@ calculate_tree_metrics <- function(
       metrics$branch,
       branch_length_min_m = min(.data$length_m),
       branch_length_max_m = max(.data$length_m),
-      branch_length_mean_m = mean(.data$length_m)
+      branch_length_mean_m = mean(.data$length_m),
+      branch_length_sd_m = stats::sd(.data$length_m),
+      branch_length_gini = gini_coefficient(.data$length_m)
     )
   )
 
@@ -477,7 +479,9 @@ calculate_tree_metrics <- function(
       summarise(
         path_length_min_m = min(.data$base_distance),
         path_length_max_m = max(.data$base_distance),
-        path_length_mean_m = mean(.data$base_distance)
+        path_length_mean_m = mean(.data$base_distance),
+        path_length_sd_m = stats::sd(.data$base_distance),
+        path_length_gini = gini_coefficient(.data$base_distance)
       ) %>%
       mutate(
         path_fraction = .data$path_length_mean_m / .data$path_length_max_m

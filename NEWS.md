@@ -35,6 +35,9 @@
         -   `*_length_mean_m`
         -   `*_length_min_m`
         -   `*_length_max_m`
+        -   `*_length_sd_m`
+        -   `*_length_gini`
+
 
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
 
