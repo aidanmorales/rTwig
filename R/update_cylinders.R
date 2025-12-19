@@ -437,8 +437,10 @@ total_children <- function(cylinder, parent, id) {
 
   # Adds supported children for each cylinder
   total_children <- cylinder %>%
-    group_by({{ parent }}) %>%
-    summarise(totalChildren = n(), .groups = "drop") %>%
+    summarise(
+      totalChildren = n(),
+      .by = {{ parent }}
+    ) %>%
     rename({{ id }} := {{ parent }})
 
   # Joins total children and fill na with 0
@@ -462,10 +464,9 @@ growth_length <- function(network, cylinder, id, length) {
       select(cylinder, id = {{ id }}, length = {{ length }}),
       by = "id"
     ) %>%
-    group_by("index") %>%
     summarise(
       growthLength = sum(!!rlang::sym(length), na.rm = TRUE),
-      .groups = "drop"
+      .by = "index"
     ) %>%
     rename({{ id }} := "index")
 
@@ -486,8 +487,7 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
   # Find branch break points
   breaks <- cylinder %>%
     rename(parent := {{ parent }}) %>%
-    group_by("parent") %>%
-    summarise(breaks = n(), .groups = "drop")
+    summarise(breaks = n(), .by = "parent")
 
   # Calculates Branch Nodes & Node Depth
   reverse_branch_order <- network$all_df %>%
@@ -502,10 +502,10 @@ reverse_branch_order <- function(network, cylinder, id, parent) {
       depth = 1:n(),
       reverseBranchOrder = abs(.data$depth - max(.data$depth)) + 1
     ) %>%
-    group_by("id") %>%
+    ungroup() %>%
     summarise(
       reverseBranchOrder = max(.data$reverseBranchOrder),
-      .groups = "drop"
+      .by = "id"
     ) %>%
     rename({{ id }} := "id")
 
@@ -664,11 +664,10 @@ path_metrics <- function(network, cylinder, id, length) {
       by = "id"
     ) %>%
     drop_na() %>%
-    group_by("index") %>%
     summarise(
       id = max(.data$id),
       distanceFromBase = sum(.data$length),
-      .groups = "drop"
+      .by = "index"
     ) %>%
     rename({{ id }} := "id") %>%
     mutate(
@@ -686,11 +685,10 @@ path_metrics <- function(network, cylinder, id, length) {
 
   # Calculate path metrics
   path_metrics <- path_df %>%
-    group_by("index") %>%
     summarise(
       twig_sum = sum(.data$twig),
       length_freq_sum = sum(.data$length * .data$frequency),
-      .groups = "drop"
+      .by = "index"
     ) %>%
     mutate(
       distanceToTwig = .data$length_freq_sum / .data$twig_sum,
@@ -710,9 +708,9 @@ path_metrics <- function(network, cylinder, id, length) {
       ),
       by = "id"
     ) %>%
-    group_by("index") %>%
     summarise(
-      vesselVolume = sum(.data$RBOPA * .data$length), .groups = "drop"
+      vesselVolume = sum(.data$RBOPA * .data$length),
+      .by = "index"
     ) %>%
     rename({{ id }} := .data$index) %>%
     select({{ id }}, "vesselVolume")
@@ -785,6 +783,7 @@ verify_topology <- function(
       select(id, branch_order) %>%
       group_by("id") %>%
       filter(branch_order == max(.data$branch_order)) %>%
+      ungroup() %>%
       rename({{ id }} := "id")
 
     # Update QSM topology

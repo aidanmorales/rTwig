@@ -229,14 +229,14 @@ model_paths <- function(
   # Model Paths ----------------------------------------------------------------
   inform("Modeling Paths")
   paths <- paths %>%
-    group_by("path") %>%
     summarise( # Broken branch filter and required variables
       data = list(broken_branch_filter(pick(), twig_radius = !!twig_radius, !!broken_branch)),
       growth_length = list(.data$growth_length),
       raw_radius = list(.data$radius),
       id = list(.data$id),
       index = list(.data$index),
-      branch_order = list(.data$branch_order)
+      branch_order = list(.data$branch_order),
+      .by = "path"
     ) %>%
     group_by("path") %>%
     mutate( # Matrix to constrain GAM with twig diameter
@@ -259,6 +259,7 @@ model_paths <- function(
       growth_length = .data$growth_length,
       max_rad_ord = .data$data[[1]]$max_rad_ord,
       min_rad = .data$data[[1]]$min_rad,
+      .groups = "drop"
     )
 
   # Diagnostic Graph -----------------------------------------------------------
@@ -289,7 +290,6 @@ model_paths <- function(
 
   # Combines all paths and calculates weighted mean for each cylinder
   cyl_radii <- unnest(paths) %>%
-    group_by("path") %>%
     summarise( # Remove tapering on good main stem cylinders and broken branches
       radius = case_when(
         .data$index == 0 & .data$branch_order == 0 ~ .data$raw_radius,
@@ -298,12 +298,13 @@ model_paths <- function(
         TRUE ~ .data$radius
       ),
       id = .data$id,
-      index = .data$index
+      index = .data$index,
+      .by = "path"
     ) %>%
-    group_by("id") %>%
     summarise( # Weighted radius mean across paths and modified index
       radius = stats::weighted.mean(w = .data$radius, .data$radius, na.rm = TRUE),
-      modified = mean(.data$index)
+      modified = mean(.data$index),
+      .by = "id"
     ) %>%
     rename(
       {{ id }} := "id",

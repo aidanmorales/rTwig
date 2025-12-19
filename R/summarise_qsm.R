@@ -249,10 +249,10 @@ data_summary <- function(
       volume = pi * .data$radius^2 * .data$length,
       surface_area = 2 * pi * .data$radius * .data$length
     ) %>%
-    group_by("branch_order") %>%
     summarise(
       tree_volume_L = sum(.data$volume, na.rm = TRUE) * 1e3,
-      tree_area_m2 = sum(.data$surface_area, na.rm = TRUE)
+      tree_area_m2 = sum(.data$surface_area, na.rm = TRUE),
+      .by = "branch_order"
     )
 
   # Tree summary ---------------------------------------------------------------

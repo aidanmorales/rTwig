@@ -38,7 +38,6 @@
         -   `*_length_sd_m`
         -   `*_length_gini`
 
-
 -   `summarise_qsm()` better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.
 
 -   `plot_qsm()` now uses a dark theme by default for better cylinder and point cloud contrast.
@@ -56,6 +55,8 @@
 -   Fixed a bug in `update_cylinders()` where an unintended index column was being returned with the path metrics.
 
 -   Updated the defaults for `plot_qsm()` to be explicit instead of NULL.
+
+-   Replaced `group_by %>% summarise` with `summarise(.by)` for slightly better memory efficiency and speed (issue #25).
 
 # rTwig 1.4.0
 
