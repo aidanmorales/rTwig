@@ -87,6 +87,7 @@
 <li><p>Fixed a bug in the internal <code>build_network()</code> function, where the named child network would sometimes fail to build with &gt;100k individual cylinders.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/update_cylinders.html">update_cylinders()</a></code> where an unintended index column was being returned with the path metrics.</p></li>
 <li><p>Updated the defaults for <code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> to be explicit instead of NULL.</p></li>
+<li><p>Replaced <code>group_by %&gt;% summarise</code> with <code>summarise(.by)</code> for slightly better memory efficiency and speed (issue <a href="https://github.com/aidanmorales/rTwig/issues/25" class="external-link">#25</a>).</p></li>
 </ul></div>
 </div>
     <div class="section level2">

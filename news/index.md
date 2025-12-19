@@ -112,6 +112,10 @@
   [`plot_qsm()`](https://aidanmorales.github.io/rTwig/reference/plot_qsm.md)
   to be explicit instead of NULL.
 
+- Replaced `group_by %>% summarise` with `summarise(.by)` for slightly
+  better memory efficiency and speed (issue
+  [\#25](https://github.com/aidanmorales/rTwig/issues/25)).
+
 ## rTwig 1.4.0
 
 CRAN release: 2025-03-03
