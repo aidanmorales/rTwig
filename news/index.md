@@ -62,6 +62,12 @@
 
   - Fixed a bug where `crown_volume_m3` had the wrong units.
 
+  - New metrics for paths and branches:
+
+    - `*_length_mean_m`
+    - `*_length_min_m`
+    - `*_length_max_m`
+
 - [`summarise_qsm()`](https://aidanmorales.github.io/rTwig/reference/summarise_qsm.md)
   better supports TreeQSM triangulation data. If triangulation data is
   supplied, the corresponding metrics are now stored in an additional

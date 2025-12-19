@@ -69,6 +69,12 @@
 <li><p>The 3d mesh for the crown convex hull is now returned as <code>crown_convex_hull</code>.</p></li>
 <li><p>Better support for TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame called <code>triangulation</code>.</p></li>
 <li><p>Fixed a bug where <code>crown_volume_m3</code> had the wrong units.</p></li>
+<li>
+<p>New metrics for paths and branches:</p>
+<ul><li><code>*_length_mean_m</code></li>
+<li><code>*_length_min_m</code></li>
+<li><code>*_length_max_m</code></li>
+</ul></li>
 </ul></li>
 <li><p><code><a href="../reference/summarise_qsm.html">summarise_qsm()</a></code> better supports TreeQSM triangulation data. If triangulation data is supplied, the corresponding metrics are now stored in an additional data frame, and all triangulation data has been removed from the initial summary and is only based on the cylinders.</p></li>
 <li><p><code><a href="../reference/plot_qsm.html">plot_qsm()</a></code> now uses a dark theme by default for better cylinder and point cloud contrast.</p></li>

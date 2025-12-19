@@ -26,9 +26,11 @@ Returns a data frame
 
 Fan G, Nan L, Dong Y, Su X, Chen F (2020). “AdQSM: A New Method for
 Estimating Above-Ground Biomass from TLS Point Clouds.” *Remote
-Sensing*, **12**(18), 3089. Du S, Lindenbergh R, Ledoux H, Stoter J, Nan
-L (2019). “AdTree: Accurate, detailed, and automatic modelling of
-laser-scanned trees.” *Remote Sensing*, **11**(18), 2074.
+Sensing*, **12**(18), 3089.
+
+Du S, Lindenbergh R, Ledoux H, Stoter J, Nan L (2019). “AdTree:
+Accurate, detailed, and automatic modelling of laser-scanned trees.”
+*Remote Sensing*, **11**(18), 2074.
 
 ## Examples
 

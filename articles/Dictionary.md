@@ -197,12 +197,27 @@ connected children.
 **`max_reverse_order:`** The maximum reverse branch order in the QSM,
 which is the maximum node depth from the furthest twig.
 
+**`branch_length_min_m:`** The shortest branch length in the tree in
+meters.
+
+**`branch_length_max_m:`** The longest branch length in the tree in
+meters.
+
+**`branch_length_mean_m:`** The average branch length in the tree in
+meters.
+
 **`twigs:`** The total number of twigs in the QSM.
 
 **`twig_length_m:`** The total length of the twig cylinders in meters.
 
 **`twig_distance_m:`** The average distance from the base of the tree to
 each twig.
+
+**`path_length_min_m:`** The shortest path length in the tree in meters.
+
+**`path_length_max_m:`** The longest path length in the tree in meters.
+
+**`path_length_mean_m:`** The average path length in the tree in meters.
 
 **`path_fraction:`** The average path length (from the base of the tree
 to the twig) divided by the maximum path length. A path fraction of 1 is
