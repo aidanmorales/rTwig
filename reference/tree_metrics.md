@@ -96,6 +96,7 @@ cylinder <- update_cylinders(cylinder)
 #> Calculating Path Metrics
 metrics <- tree_metrics(cylinder)
 #> Calculating Branch Metrics
+#> Calculating Alternate Branch Metrics
 #> Calculating Segment Metrics
 #> Calculating Tree Metrics
 #> Generating Point Cloud
@@ -105,17 +106,16 @@ metrics <- tree_metrics(cylinder)
 #> Calculating Segment Distributions
 #> Calculating Stem Taper
 #> Calculating Spreads
-#> Calculating Alternate Branch Metrics
 names(metrics)
-#>  [1] "branch"                "segment"               "cloud"                
-#>  [4] "tree"                  "crown_convex_hull"     "crown_alpha_shape"    
-#>  [7] "tree_height_dist"      "tree_diameter_dist"    "tree_zenith_dist"     
-#> [10] "tree_azimuth_dist"     "branch_diameter_dist"  "branch_height_dist"   
-#> [13] "branch_angle_dist"     "branch_zenith_dist"    "branch_azimuth_dist"  
-#> [16] "branch_order_dist"     "segment_diameter_dist" "segment_height_dist"  
-#> [19] "segment_angle_dist"    "segment_zenith_dist"   "segment_azimuth_dist" 
-#> [22] "segment_order_dist"    "stem_taper"            "spreads"              
-#> [25] "vertical_profile"      "branch_alt"            "version"              
+#>  [1] "branch"                "branch_alt"            "segment"              
+#>  [4] "cloud"                 "tree"                  "crown_convex_hull"    
+#>  [7] "crown_alpha_shape"     "tree_height_dist"      "tree_diameter_dist"   
+#> [10] "tree_zenith_dist"      "tree_azimuth_dist"     "branch_diameter_dist" 
+#> [13] "branch_height_dist"    "branch_angle_dist"     "branch_zenith_dist"   
+#> [16] "branch_azimuth_dist"   "branch_order_dist"     "segment_diameter_dist"
+#> [19] "segment_height_dist"   "segment_angle_dist"    "segment_zenith_dist"  
+#> [22] "segment_azimuth_dist"  "segment_order_dist"    "stem_taper"           
+#> [25] "spreads"               "vertical_profile"      "version"              
 #> [28] "run_date"             
 
 ## SimpleForest Processing Chain
@@ -130,6 +130,7 @@ cylinder <- update_cylinders(cylinder)
 #> Calculating Path Metrics
 metrics <- tree_metrics(cylinder)
 #> Calculating Branch Metrics
+#> Calculating Alternate Branch Metrics
 #> Calculating Segment Metrics
 #> Calculating Tree Metrics
 #> Generating Point Cloud
@@ -139,16 +140,15 @@ metrics <- tree_metrics(cylinder)
 #> Calculating Segment Distributions
 #> Calculating Stem Taper
 #> Calculating Spreads
-#> Calculating Alternate Branch Metrics
 names(metrics)
-#>  [1] "branch"                "segment"               "cloud"                
-#>  [4] "tree"                  "crown_convex_hull"     "crown_alpha_shape"    
-#>  [7] "tree_height_dist"      "tree_diameter_dist"    "tree_zenith_dist"     
-#> [10] "tree_azimuth_dist"     "branch_diameter_dist"  "branch_height_dist"   
-#> [13] "branch_angle_dist"     "branch_zenith_dist"    "branch_azimuth_dist"  
-#> [16] "branch_order_dist"     "segment_diameter_dist" "segment_height_dist"  
-#> [19] "segment_angle_dist"    "segment_zenith_dist"   "segment_azimuth_dist" 
-#> [22] "segment_order_dist"    "stem_taper"            "spreads"              
-#> [25] "vertical_profile"      "branch_alt"            "version"              
+#>  [1] "branch"                "branch_alt"            "segment"              
+#>  [4] "cloud"                 "tree"                  "crown_convex_hull"    
+#>  [7] "crown_alpha_shape"     "tree_height_dist"      "tree_diameter_dist"   
+#> [10] "tree_zenith_dist"      "tree_azimuth_dist"     "branch_diameter_dist" 
+#> [13] "branch_height_dist"    "branch_angle_dist"     "branch_zenith_dist"   
+#> [16] "branch_azimuth_dist"   "branch_order_dist"     "segment_diameter_dist"
+#> [19] "segment_height_dist"   "segment_angle_dist"    "segment_zenith_dist"  
+#> [22] "segment_azimuth_dist"  "segment_order_dist"    "stem_taper"           
+#> [25] "spreads"               "vertical_profile"      "version"              
 #> [28] "run_date"             
 ```

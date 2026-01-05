@@ -212,6 +212,12 @@ meters.
 **`branch_length_gini:`** The Gini coefficient of the branch lengths in
 the tree in meters.
 
+**`branch_volume_gini:`** The Gini coefficient of the branch volumes in
+meters.
+
+**`branch_alt_volume_gini:`** The Gini coefficient of the alternate
+branch volumes in meters.
+
 **`twigs:`** The total number of twigs in the QSM.
 
 **`twig_length_m:`** The total length of the twig cylinders in meters.

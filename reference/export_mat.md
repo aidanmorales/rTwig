@@ -72,6 +72,7 @@ filename <- tempfile(pattern = "TreeQSM_QSM", fileext = ".mat")
 export_mat(cylinder, filename)
 #> Exporting to .mat
 #> Calculating Branch Metrics
+#> Calculating Alternate Branch Metrics
 #> Calculating Segment Metrics
 #> Calculating Tree Metrics
 #> Generating Point Cloud
@@ -81,7 +82,6 @@ export_mat(cylinder, filename)
 #> Calculating Segment Distributions
 #> Calculating Stem Taper
 #> Calculating Spreads
-#> Calculating Alternate Branch Metrics
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
@@ -98,6 +98,7 @@ filename <- tempfile(pattern = "SimpleForest_QSM", fileext = ".mat")
 export_mat(cylinder, filename)
 #> Exporting to .mat
 #> Calculating Branch Metrics
+#> Calculating Alternate Branch Metrics
 #> Calculating Segment Metrics
 #> Calculating Tree Metrics
 #> Generating Point Cloud
@@ -107,5 +108,4 @@ export_mat(cylinder, filename)
 #> Calculating Segment Distributions
 #> Calculating Stem Taper
 #> Calculating Spreads
-#> Calculating Alternate Branch Metrics
 ```

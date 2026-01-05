@@ -88,6 +88,7 @@ qsm <- run_rtwig(file, twig_radius = 4.23)
 #> Modeling Paths
 #> Updating Radii
 #> Calculating Branch Metrics
+#> Calculating Alternate Branch Metrics
 #> Calculating Segment Metrics
 #> Calculating Tree Metrics
 #> Generating Point Cloud
@@ -97,7 +98,6 @@ qsm <- run_rtwig(file, twig_radius = 4.23)
 #> Calculating Segment Distributions
 #> Calculating Stem Taper
 #> Calculating Spreads
-#> Calculating Alternate Branch Metrics
 str(qsm$cylinder)
 #> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':   1136 obs. of  33 variables:
 #>  $ length                      : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...
