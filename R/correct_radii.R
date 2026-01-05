@@ -371,7 +371,7 @@ combine_paths <- function(
 #' @param y vector of good fit cylinder radii
 #' @param growth_length cylinder growth length vector of entire path
 #' @param twig_radius twig radius in meters
-#' @param matrix 1 x 3 matrix to constrain the GAM in form [0, min(growth_length), twig_radius (m)]
+#' @param matrix 1 x 3 matrix to constrain the GAM in form `[0, min(growth_length), twig_radius (m)]`
 #'
 #' @returns cylinder data frame
 #' @noRd

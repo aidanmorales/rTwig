@@ -415,6 +415,12 @@ calculate_tree_metrics <- function(
     branch_check <- TRUE
   }
 
+  # Calculate Alternate Branch Metrics -----------------------------------------
+  if (branch_check == TRUE) {
+    inform("Calculating Alternate Branch Metrics")
+    metrics$branch_alt <- branch_alt_metrics(cylinder, base)
+  }
+
   # Calculate segment metrics --------------------------------------------------
   inform("Calculating Segment Metrics")
   metrics$segment <- segment_metrics(cylinder, base)
@@ -467,6 +473,14 @@ calculate_tree_metrics <- function(
       branch_length_gini = gini_coefficient(.data$length_m)
     )
   )
+
+  tree$branch_volume_gini <- gini_coefficient(metrics$branch$volume_m3)
+
+  if (branch_check == TRUE) {
+    tree$branch_alt_volume_gini <- gini_coefficient( # include the main stem
+      c(metrics$branch$volume_m3[1], metrics$branch_alt$volume_m3)
+    )
+  }
 
   tree$twigs <- length(unique(twig_cyl$branch))
   tree$twig_length_m <- sum(twig_cyl$length)
@@ -668,12 +682,6 @@ calculate_tree_metrics <- function(
       avg_spread_m = mean(.data$spread_m),
       .by = "height_class"
     )
-
-  # Alternate Branch Metrics ---------------------------------------------------
-  if (branch_check == TRUE) {
-    inform("Calculating Alternate Branch Metrics")
-    metrics$branch_alt <- branch_alt_metrics(cylinder, base)
-  }
 
   # Triangulation --------------------------------------------------------------
   if (!is.null(triangulation)) {
