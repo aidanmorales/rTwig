@@ -470,18 +470,56 @@ calculate_tree_metrics <- function(
       branch_length_max_m = max(.data$length_m),
       branch_length_mean_m = mean(.data$length_m),
       branch_length_sd_m = stats::sd(.data$length_m),
-      branch_length_gini = gini_coefficient(.data$length_m)
+      branch_length_gini = gini_coefficient(.data$length_m),
+      branch_volume_min_m3 = min(.data$volume_m3),
+      branch_volume_max_m3 = max(.data$volume_m3),
+      branch_volume_mean_m3 = mean(.data$volume_m3),
+      branch_volume_sd_m3 = stats::sd(.data$volume_m3),
+      branch_volume_gini = gini_coefficient(.data$volume_m3),
     )
   )
 
-  tree$branch_volume_gini <- gini_coefficient(metrics$branch$volume_m3)
-
   if (branch_check == TRUE) {
-    tree$branch_alt_volume_gini <- gini_coefficient( # include the main stem
-      c(metrics$branch$volume_m3[1], metrics$branch_alt$volume_m3)
+    tree <- bind_cols(
+      tree,
+      summarise(
+        metrics$branch_alt,
+        branch_alt_length_min_m = min(.data$length_m),
+        branch_alt_length_max_m = max(.data$length_m),
+        branch_alt_length_mean_m = mean(.data$length_m),
+        branch_alt_length_sd_m = stats::sd(.data$length_m),
+        branch_alt_length_gini = gini_coefficient( # include main stem
+          c(.data$length_m, metrics$branch$length_m[1])
+        ),
+        branch_alt_volume_min_m3 = min(.data$volume_m3),
+        branch_alt_volume_max_m3 = max(.data$volume_m3),
+        branch_alt_volume_mean_m3 = mean(.data$volume_m3),
+        branch_alt_volume_sd_m3 = stats::sd(.data$volume_m3),
+        branch_alt_volume_gini = gini_coefficient( # include main stem
+          c(.data$volume_m3, metrics$branch$volume_m3[1])
+        )
+      )
+    )
+  } else {
+    tree <- bind_cols(
+      tree,
+      summarise(
+        metrics$branch_alt,
+        branch_alt_length_min_m = NA_real_,
+        branch_alt_length_max_m = NA_real_,
+        branch_alt_length_mean_m = NA_real_,
+        branch_alt_length_sd_m = NA_real_,
+        branch_alt_length_gini = NA_real_,
+        branch_alt_volume_min_m3 = NA_real_,
+        branch_alt_volume_max_m3 = NA_real_,
+        branch_alt_volume_mean_m3 = NA_real_,
+        branch_alt_volume_sd_m3 = NA_real_,
+        branch_alt_volume_gini = NA_real_
+      )
     )
   }
 
+  tree$segments <- length(unique(cylinder$segment))
   tree$twigs <- length(unique(twig_cyl$branch))
   tree$twig_length_m <- sum(twig_cyl$length)
   tree$twig_distance_m <- cylinder$twig_distance[base]
