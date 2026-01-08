@@ -62,13 +62,17 @@
 
   - Fixed a bug where `crown_volume_m3` had the wrong units.
 
-  - New metrics for paths and branches:
+  - New metrics for paths, branches, and alternate branches:
 
     - `*_length_mean_m`
     - `*_length_min_m`
     - `*_length_max_m`
     - `*_length_sd_m`
     - `*_length_gini`
+    - `*_volume_mean_m3`
+    - `*_volume_min_m3`
+    - `*_volume_max_m3`
+    - `*_volume_sd_m3`
     - `*_volume_gini`
 
 - [`summarise_qsm()`](https://aidanmorales.github.io/rTwig/reference/summarise_qsm.md)
