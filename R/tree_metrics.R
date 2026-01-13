@@ -306,9 +306,11 @@ calculate_tree_metrics <- function(
   # Verify connectivity --------------------------------------------------------
   if (verify == TRUE) {
     qsm_g <- verify_network(cylinder, graph = TRUE)
+    paths <- verify_network(cylinder, paths = TRUE)
     qsm_connectivity <- igraph::is_connected(qsm_g)
   } else {
     qsm_connectivity <- TRUE # bypass connectivity checks
+    paths <- NULL
     message <- paste(
       "`verify` is not TRUE!",
       "QSM topology will not be verified!",
@@ -459,9 +461,28 @@ calculate_tree_metrics <- function(
 
   tree$branches <- length(unique(cylinder$branch))
   tree$branches_alt <- length(unique(cylinder$branch_alt))
+
   tree$max_branch_order <- max(cylinder$branch_order)
   tree$max_reverse_order <- max(cylinder$reverse_order)
+  tree$segments <- length(unique(cylinder$segment))
 
+  tree$twigs <- length(unique(twig_cyl$branch))
+  tree$twig_length_m <- sum(twig_cyl$length)
+  tree$twig_distance_m <- cylinder$twig_distance[base]
+
+  tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
+  tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)
+  tree$branch_area_m2 <- 2 * pi * sum(branch_cyl$radius * branch_cyl$length)
+
+  # Diameter at Breast Height --------------------------------------------------
+  tree$dbh_qsm_cm <- suppressWarnings(dbh_cylinder(trunk_cyl, "radius") * 100)
+  tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
+
+  # Diameter at Base (Tree or Branch) ------------------------------------------
+  tree$d_base_qsm_cm <- cylinder$radius[base] * 200
+  tree$d_base_raw_cm <- cylinder$raw_radius[base] * 200
+
+  # Branch & Path Statistics ---------------------------------------------------
   tree <- bind_cols(
     tree,
     summarise(
@@ -519,11 +540,6 @@ calculate_tree_metrics <- function(
     )
   }
 
-  tree$segments <- length(unique(cylinder$segment))
-  tree$twigs <- length(unique(twig_cyl$branch))
-  tree$twig_length_m <- sum(twig_cyl$length)
-  tree$twig_distance_m <- cylinder$twig_distance[base]
-
   tree <- bind_cols(
     tree,
     cylinder %>%
@@ -540,17 +556,51 @@ calculate_tree_metrics <- function(
       )
   )
 
-  tree$tree_area_m2 <- 2 * pi * sum(cylinder$radius * cylinder$length)
-  tree$stem_area_m2 <- 2 * pi * sum(trunk_cyl$radius * trunk_cyl$length)
-  tree$branch_area_m2 <- 2 * pi * sum(branch_cyl$radius * branch_cyl$length)
-
-  # Diameter at Breast Height --------------------------------------------------
-  tree$dbh_qsm_cm <- suppressWarnings(dbh_cylinder(trunk_cyl, "radius") * 100)
-  tree$dbh_raw_cm <- dbh_cylinder(trunk_cyl, "raw_radius") * 100
-
-  # Diameter at Base (Tree or Branch) ------------------------------------------
-  tree$d_base_qsm_cm <- cylinder$radius[base] * 200
-  tree$d_base_raw_cm <- cylinder$raw_radius[base] * 200
+  if (!is.null(paths)) {
+    tree <- bind_cols(
+      tree,
+      inner_join(
+        x = paths,
+        y = select(cylinder, "id", "radius", "length", "segment"),
+        by = "id"
+      ) %>%
+        mutate(volume = pi * .data$radius^2 * .data$length) %>%
+        summarise(
+          volume = sum(.data$volume),
+          segment = length(unique(segment)),
+          .by = "index"
+        ) %>%
+        summarise(
+          path_volume_min_m3 = min(.data$volume),
+          path_volume_max_m3 = max(.data$volume),
+          path_volume_mean_m3 = mean(.data$volume),
+          path_volume_sd_m3 = stats::sd(.data$volume),
+          path_volume_gini = gini_coefficient(.data$volume),
+          path_segment_min = min(.data$segment),
+          path_segment_max = max(.data$segment),
+          path_segment_mean = mean(.data$segment),
+          path_segment_sd = stats::sd(.data$segment),
+          path_segment_gini = gini_coefficient(.data$segment)
+        )
+    )
+  } else {
+    tree <- bind_cols(
+      tree,
+      summarise(
+        cylinder,
+        path_volume_min_m3 = NA_real_,
+        path_volume_max_m3 = NA_real_,
+        path_volume_mean_m3 = NA_real_,
+        path_volume_sd_m3 = NA_real_,
+        path_volume_gini = NA_real_,
+        path_segment_min = NA_real_,
+        path_segment_max = NA_real_,
+        path_segment_mean = NA_real_,
+        path_segment_sd = NA_real_,
+        path_segment_gini = NA_real_,
+      )
+    )
+  }
 
   # Generate Point Cloud -------------------------------------------------------
   inform("Generating Point Cloud")
