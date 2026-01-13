@@ -62,7 +62,7 @@
 
   - Fixed a bug where `crown_volume_m3` had the wrong units.
 
-  - New metrics for paths, branches, and alternate branches:
+  - New metrics for paths and branches:
 
     - `*_length_mean_m`
     - `*_length_min_m`
