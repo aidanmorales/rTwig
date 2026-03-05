@@ -121,6 +121,9 @@
   better memory efficiency and speed (issue
   [\#25](https://github.com/aidanmorales/rTwig/issues/25)).
 
+- Updates `twigs` database, both inside the package, and with
+  [`download_twigs()`](https://aidanmorales.github.io/rTwig/reference/download_twigs.md).
+
 ## rTwig 1.4.0
 
 CRAN release: 2025-03-03

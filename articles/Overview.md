@@ -289,20 +289,20 @@ tree.
 ``` r
 # Look at the twigs database
 twigs
-#> # A tibble: 104 × 7
+#> # A tibble: 112 × 7
 #>    scientific_name  radius_mm     n   min   max   std    cv
 #>    <chr>                <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #>  1 Abies concolor        1.43    21  0.89  1.9   0.28  0.19
 #>  2 Abies spp.            1.43    21  0.89  1.9   0.28  0.19
-#>  3 Acer platanoides      1.39    30  0.89  2.03  0.3   0.21
-#>  4 Acer rubrum           1.18    30  0.89  1.52  0.16  0.14
-#>  5 Acer saccharinum      1.41    14  0.89  1.9   0.27  0.2 
-#>  6 Acer saccharum        1.2     30  0.89  1.65  0.23  0.19
-#>  7 Acer spp.             1.29   104  0.89  2.03  0.23  0.18
-#>  8 Aesculus flava        2.96    14  2.29  4.44  0.58  0.19
-#>  9 Aesculus spp.         2.96    14  2.29  4.44  0.58  0.19
-#> 10 Betula nigra          0.85    30  0.51  1.52  0.23  0.27
-#> # ℹ 94 more rows
+#>  3 Acer campestre        1       20  0.72  1.57  0.17  0.17
+#>  4 Acer platanoides      1.39    30  0.89  2.03  0.3   0.21
+#>  5 Acer rubrum           1.18    30  0.89  1.52  0.16  0.14
+#>  6 Acer saccharinum      1.41    14  0.89  1.9   0.27  0.2 
+#>  7 Acer saccharum        1.2     30  0.89  1.65  0.23  0.19
+#>  8 Acer spp.             1.24   124  0.72  2.03  0.22  0.18
+#>  9 Aesculus flava        2.96    14  2.29  4.44  0.58  0.19
+#> 10 Aesculus spp.         2.96    14  2.29  4.44  0.58  0.19
+#> # ℹ 102 more rows
 
 # Find our species
 filter(twigs, scientific_name == "Gymnocladus dioicus")
