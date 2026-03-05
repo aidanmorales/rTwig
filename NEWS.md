@@ -63,6 +63,8 @@
 
 -   Replaced `group_by %>% summarise` with `summarise(.by)` for slightly better memory efficiency and speed (issue #25).
 
+-   Updates `twigs` database, both inside the package, and with `download_twigs()`.
+
 # rTwig 1.4.0
 
 ## New Features
