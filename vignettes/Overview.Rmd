@@ -62,7 +62,7 @@ library(gt)
 
 rTwig supports all available versions of TreeQSM, from *v2.0* to *v2.4.1* at the time of writing. It is important to note that legacy versions of TreeQSM (*v2.0*) store data in a much different format than modern versions (*v2.3.0-2.4.1*). It is strongly advised to use the latest version of TreeQSM with rTwig for the best QSM topology and volume estimates. Older versions can be used, but the QSM topology is poor, and volume underestimation is almost guaranteed.
 
-Regardless of the version of TreeQSM or MATLAB used, the `import_treeqsm()` function will import a QSM (.mat extension) and convert the data to a format usable by R. The user must specify which version of TreeQSM they are using with the `version` parameter. rTwig automatically defaults to use the new TreeQSM format, so the older format can be imported with `version = "2.0"`. `import_treeqsm()` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
+Regardless of the version of TreeQSM or MATLAB used, the `import_treeqsm()` function will import a QSM (.mat extension) and convert the data to a format usable by R. `import_treeqsm()` also imports all QSM information, including cylinder, branch, treedata, rundata, pmdistance, and triangulation data, which are stored together as a list.
 
 SimpleForest exports its QSMs as .csv files, so they are easy to load into R using the built in `read.csv()` function. If the QSM contains thousands of cylinders, it is much faster to use the `fread()` function from the `data.table` package to take advantage of multi-threaded support.
 
@@ -108,7 +108,7 @@ Let's try importing an old QSM and check its structure.
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 
 # Import and save QSM
-qsm2 <- import_treeqsm(file, version = "2.0")
+qsm2 <- import_treeqsm(file)
 
 # QSM Info
 summary(qsm2)

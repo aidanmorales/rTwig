@@ -222,6 +222,55 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// write_ply
+void write_ply(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> colors, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
+RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP colorsSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_ply(vertices, colors, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// write_obj
+void write_obj(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
+RcppExport SEXP _rTwig_write_obj(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_obj(vertices, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// write_stl
+void write_stl(NumericMatrix vertices, NumericMatrix normals, std::string filename);
+RcppExport SEXP _rTwig_write_stl(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    write_stl(vertices, normals, filename);
+    return R_NilValue;
+END_RCPP
+}
+// read_obj
+NumericMatrix read_obj(std::string filename, std::string format);
+RcppExport SEXP _rTwig_read_obj(SEXP filenameSEXP, SEXP formatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type format(formatSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_obj(filename, format));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cross_product
 NumericVector cross_product(NumericVector a, NumericVector b);
 RcppExport SEXP _rTwig_cross_product(SEXP aSEXP, SEXP bSEXP) {
@@ -348,53 +397,42 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// write_ply
-void write_ply(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> colors, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
-RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP colorsSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type colors(colorsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_ply(vertices, colors, normals, filename);
-    return R_NilValue;
-END_RCPP
-}
-// write_obj
-void write_obj(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
-RcppExport SEXP _rTwig_write_obj(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_obj(vertices, normals, filename);
-    return R_NilValue;
-END_RCPP
-}
-// write_stl
-void write_stl(NumericMatrix vertices, NumericMatrix normals, std::string filename);
-RcppExport SEXP _rTwig_write_stl(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type normals(normalsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_stl(vertices, normals, filename);
-    return R_NilValue;
-END_RCPP
-}
-// read_obj
-NumericMatrix read_obj(std::string filename, std::string format);
-RcppExport SEXP _rTwig_read_obj(SEXP filenameSEXP, SEXP formatSEXP) {
+// read_mat_23
+SEXP read_mat_23(std::string path);
+RcppExport SEXP _rTwig_read_mat_23(SEXP pathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    Rcpp::traits::input_parameter< std::string >::type format(formatSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_obj(filename, format));
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_mat_23(path));
     return rcpp_result_gen;
+END_RCPP
+}
+// read_mat_20
+Rcpp::List read_mat_20(std::string path);
+RcppExport SEXP _rTwig_read_mat_20(SEXP pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_mat_20(path));
+    return rcpp_result_gen;
+END_RCPP
+}
+// write_mat
+void write_mat(std::string filename, Rcpp::List cylinder, Rcpp::List branch, Rcpp::List treedata, Rcpp::List rundata, Rcpp::List pmdistance, Rcpp::List triangulation);
+RcppExport SEXP _rTwig_write_mat(SEXP filenameSEXP, SEXP cylinderSEXP, SEXP branchSEXP, SEXP treedataSEXP, SEXP rundataSEXP, SEXP pmdistanceSEXP, SEXP triangulationSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type cylinder(cylinderSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type branch(branchSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type treedata(treedataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type rundata(rundataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type pmdistance(pmdistanceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type triangulation(triangulationSEXP);
+    write_mat(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation);
+    return R_NilValue;
 END_RCPP
 }
 // normalize_view
@@ -514,22 +552,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// write_mat
-void write_mat(std::string filename, Rcpp::List cylinder, Rcpp::List branch, Rcpp::List treedata, Rcpp::List rundata, Rcpp::List pmdistance, Rcpp::List triangulation);
-RcppExport SEXP _rTwig_write_mat(SEXP filenameSEXP, SEXP cylinderSEXP, SEXP branchSEXP, SEXP treedataSEXP, SEXP rundataSEXP, SEXP pmdistanceSEXP, SEXP triangulationSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type cylinder(cylinderSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type branch(branchSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type treedata(treedataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type rundata(rundataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type pmdistance(pmdistanceSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type triangulation(triangulationSEXP);
-    write_mat(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation);
-    return R_NilValue;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_alpha_shape_delaunay", (DL_FUNC) &_rTwig_alpha_shape_delaunay, 3},
@@ -549,6 +571,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_define_branches", (DL_FUNC) &_rTwig_define_branches, 1},
     {"_rTwig_define_branch_order", (DL_FUNC) &_rTwig_define_branch_order, 1},
     {"_rTwig_generate_cloud", (DL_FUNC) &_rTwig_generate_cloud, 8},
+    {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
+    {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
+    {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},
+    {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 2},
     {"_rTwig_cross_product", (DL_FUNC) &_rTwig_cross_product, 2},
     {"_rTwig_norm", (DL_FUNC) &_rTwig_norm, 1},
     {"_rTwig_orthonormal_vectors", (DL_FUNC) &_rTwig_orthonormal_vectors, 1},
@@ -560,10 +586,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
     {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 1},
     {"_rTwig_gini_coefficient", (DL_FUNC) &_rTwig_gini_coefficient, 1},
-    {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
-    {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
-    {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},
-    {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 2},
+    {"_rTwig_read_mat_23", (DL_FUNC) &_rTwig_read_mat_23, 1},
+    {"_rTwig_read_mat_20", (DL_FUNC) &_rTwig_read_mat_20, 1},
+    {"_rTwig_write_mat", (DL_FUNC) &_rTwig_write_mat, 7},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},
     {"_rTwig_as_euclidean", (DL_FUNC) &_rTwig_as_euclidean, 1},
@@ -573,7 +598,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_build_adtree", (DL_FUNC) &_rTwig_build_adtree, 4},
     {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 4},
     {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
-    {"_rTwig_write_mat", (DL_FUNC) &_rTwig_write_mat, 7},
     {NULL, NULL, 0}
 };
 

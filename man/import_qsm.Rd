@@ -13,5 +13,6 @@ import_qsm(...)
 Returns a list
 }
 \description{
-\code{import_qsm()} is deprecated and will be removed in a future version. Use \code{import_treeqsm()} instead.
+\code{import_qsm()} is deprecated and will be removed in a future
+version. Use \code{import_treeqsm()} instead.
 }

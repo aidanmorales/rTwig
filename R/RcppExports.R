@@ -196,6 +196,66 @@ generate_cloud <- function(start, axis, tips, length, radius, branch, metrics, s
     .Call(`_rTwig_generate_cloud`, start, axis, tips, length, radius, branch, metrics, spacing)
 }
 
+#' @title Write PLY
+#'
+#' @description Export a QSM cylinder mesh to .ply
+#'
+#' @param vertices NumericMatrix
+#' @param colors NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return ply
+#'
+#' @noRd
+#'
+write_ply <- function(vertices, colors, normals, filename) {
+    invisible(.Call(`_rTwig_write_ply`, vertices, colors, normals, filename))
+}
+
+#' @title Write OBJ
+#'
+#' @description Export a QSM cylinder mesh to .obj
+#'
+#' @param vertices NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return obj
+#'
+#' @noRd
+#'
+write_obj <- function(vertices, normals, filename) {
+    invisible(.Call(`_rTwig_write_obj`, vertices, normals, filename))
+}
+
+#' @title Write STL
+#'
+#' @description Export a QSM cylinder mesh to .stl
+#'
+#' @param vertices NumericMatrix
+#' @param normals NumericMatrix
+#' @param filename string
+#' @return stl
+#'
+#' @noRd
+#'
+write_stl <- function(vertices, normals, filename) {
+    invisible(.Call(`_rTwig_write_stl`, vertices, normals, filename))
+}
+
+#' @title Read OBJ
+#'
+#' @description Import leaf meshes from QSM-FaNNI
+#'
+#' @param filename string
+#' @param format string
+#' @return ply
+#'
+#' @noRd
+#'
+read_obj <- function(filename, format) {
+    .Call(`_rTwig_read_obj`, filename, format)
+}
+
 #' @title Cross Product
 #'
 #' @description Calculates the cross product of two vectors
@@ -345,64 +405,16 @@ gini_coefficient <- function(x) {
     .Call(`_rTwig_gini_coefficient`, x)
 }
 
-#' @title Write PLY
-#'
-#' @description Export a QSM cylinder mesh to .ply
-#'
-#' @param vertices NumericMatrix
-#' @param colors NumericMatrix
-#' @param normals NumericMatrix
-#' @param filename string
-#' @return ply
-#'
-#' @noRd
-#'
-write_ply <- function(vertices, colors, normals, filename) {
-    invisible(.Call(`_rTwig_write_ply`, vertices, colors, normals, filename))
+read_mat_23 <- function(path) {
+    .Call(`_rTwig_read_mat_23`, path)
 }
 
-#' @title Write OBJ
-#'
-#' @description Export a QSM cylinder mesh to .obj
-#'
-#' @param vertices NumericMatrix
-#' @param normals NumericMatrix
-#' @param filename string
-#' @return obj
-#'
-#' @noRd
-#'
-write_obj <- function(vertices, normals, filename) {
-    invisible(.Call(`_rTwig_write_obj`, vertices, normals, filename))
+read_mat_20 <- function(path) {
+    .Call(`_rTwig_read_mat_20`, path)
 }
 
-#' @title Write STL
-#'
-#' @description Export a QSM cylinder mesh to .stl
-#'
-#' @param vertices NumericMatrix
-#' @param normals NumericMatrix
-#' @param filename string
-#' @return stl
-#'
-#' @noRd
-#'
-write_stl <- function(vertices, normals, filename) {
-    invisible(.Call(`_rTwig_write_stl`, vertices, normals, filename))
-}
-
-#' @title Read OBJ
-#'
-#' @description Import leaf meshes from QSM-FaNNI
-#'
-#' @param filename string
-#' @param format string
-#' @return ply
-#'
-#' @noRd
-#'
-read_obj <- function(filename, format) {
-    .Call(`_rTwig_read_obj`, filename, format)
+write_mat <- function(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation) {
+    invisible(.Call(`_rTwig_write_mat`, filename, cylinder, branch, treedata, rundata, pmdistance, triangulation))
 }
 
 #' @title Normalize View
@@ -524,9 +536,5 @@ build_adqsm <- function(vertices, facets = 10L, tol = 1e-5, match_tol = 1e-4) {
 #'
 connect_cylinders <- function(cylinder) {
     invisible(.Call(`_rTwig_connect_cylinders`, cylinder))
-}
-
-write_mat <- function(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation) {
-    invisible(.Call(`_rTwig_write_mat`, filename, cylinder, branch, treedata, rundata, pmdistance, triangulation))
 }
 

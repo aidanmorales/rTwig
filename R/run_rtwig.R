@@ -7,9 +7,6 @@
 #' @param twig_radius Twig radius in millimeters
 #' @param metrics Calculate tree metrics. Defaults to TRUE.
 #'
-#' @param version If using a specific version of TreeQSM, the user can specify
-#'  the version (e.g. 2.4.1, 2.0, etc.).
-#'
 #' @param method Define the QSM generation method if using AdQSM or AdTree.
 #'  Define the method as `adqsm` or `adtree`. Defaults to `adqsm`.
 #'
@@ -35,15 +32,15 @@
 #' str(qsm$cylinder)
 #'
 run_rtwig <- function(
-    filename,
-    twig_radius,
-    metrics = TRUE,
-    version = NULL,
-    method = NULL,
-    smooth = TRUE,
-    standardise = FALSE,
-    broken_branch = TRUE,
-    ...) {
+  filename,
+  twig_radius,
+  metrics = TRUE,
+  method = NULL,
+  smooth = TRUE,
+  standardise = FALSE,
+  broken_branch = TRUE,
+  ...
+) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(filename)) {
     message <- "argument `filename` is missing, with no default."
@@ -76,15 +73,6 @@ run_rtwig <- function(
       "`metrics` must be logical, not ", class(metrics), "."
     )
     abort(message, class = "invalid_argument")
-  }
-
-  if (!is_null(version)) {
-    if (!is_string(version)) {
-      message <- paste0(
-        "`filename` must be a string, not ", class(version), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
   }
 
   if (!is_null(method)) {
@@ -152,40 +140,56 @@ run_rtwig <- function(
   # TreeQSM --------------------------------------------------------------------
   if (extension == "mat") {
     # Import QSM ---------------------------------------------------------------
-    if (!is.null(version)) {
-      version <- version
-      cylinder <- import_treeqsm(file, version)$cylinder
+    qsm <- import_treeqsm(file)
+
+    if (!is.null(qsm[[1]]) && is.list(qsm[[1]]) && !is.null(qsm[[1]]$cylinder)) {
+      inform("Multiple QSMs detected!")
+      qsms <- qsm
     } else {
-      cylinder <- import_treeqsm(file)$cylinder
+      qsms <- list(qsm)
     }
 
-    # Update Cylinders ---------------------------------------------------------
-    cylinder <- update_cylinders(cylinder)
+    out <- vector("list", length(qsms))
 
-    # Smooth QSM ---------------------------------------------------------------
-    if (smooth == TRUE) {
-      cylinder <- smooth_qsm(cylinder)
+    for (i in seq_along(qsms)) {
+      inform(paste0("Processing tree ", i, " of ", length(qsms), "..."))
+
+      qsm <- qsms[[i]]
+
+      cylinder <- qsm$cylinder
+
+      # Update Cylinders -------------------------------------------------------
+      cylinder <- update_cylinders(cylinder)
+
+      # Smooth QSM -------------------------------------------------------------
+      if (smooth == TRUE) {
+        cylinder <- smooth_qsm(cylinder)
+      }
+
+      # Standardise QSM --------------------------------------------------------
+      if (standardise == TRUE) {
+        cylinder <- standardise_qsm(cylinder)
+      }
+
+      # Correct Radii ----------------------------------------------------------
+      cylinder <- correct_radii(
+        cylinder = cylinder,
+        twig_radius = twig_radius,
+        broken_branch = broken_branch
+      )
+
+      # Tree Metrics -----------------------------------------------------------
+      if (metrics == TRUE) {
+        out[[i]] <- list(
+          cylinder = cylinder,
+          metrics = tree_metrics(cylinder)
+        )
+      } else {
+        out[[i]] <- cylinder
+      }
     }
 
-    # Standardise QSM ----------------------------------------------------------
-    if (standardise == TRUE) {
-      cylinder <- standardise_qsm(cylinder)
-    }
-
-    # Correct Radii ------------------------------------------------------------
-    cylinder <- correct_radii(
-      cylinder = cylinder,
-      twig_radius = twig_radius,
-      broken_branch = broken_branch
-    )
-
-    # Tree Metrics -------------------------------------------------------------
-    if (metrics == TRUE) {
-      metrics <- tree_metrics(cylinder)
-      return(list(cylinder = cylinder, metrics = metrics))
-    } else {
-      return(cylinder)
-    }
+    if (length(out) == 1) out[[1]] else out
   }
   # SimpleForest & aRchi -------------------------------------------------------
   else if (extension == "csv") {

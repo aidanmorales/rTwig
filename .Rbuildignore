@@ -15,3 +15,5 @@
 ^revdep$
 ^doc$
 ^Meta$
+^\.positai$
+^\.claude$

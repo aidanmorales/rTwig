@@ -4,13 +4,10 @@
 \alias{import_treeqsm}
 \title{Import TreeQSM}
 \usage{
-import_treeqsm(filename, version = "2.x.x")
+import_treeqsm(filename)
 }
 \arguments{
 \item{filename}{a TreeQSM .mat MATLAB file}
-
-\item{version}{TreeQSM version. Valid versions include \verb{2.3.0} - \verb{2.4.1} and
-\code{2.0}. Defaults to the most recent format of \verb{2.x.x}.}
 }
 \value{
 Returns a list
@@ -22,12 +19,12 @@ Imports a QSM created by TreeQSM
 
 ## Read a TreeQSM MATLAB file in the 2.3.x - 2.4.x format
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file, version = "2.x.x")
+qsm <- import_treeqsm(file)
 summary(qsm)
 
 ## Read a TreeQSM MATLAB file in the 2.0 format
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
-qsm <- import_treeqsm(file, version = "2.0")
+qsm <- import_treeqsm(file)
 names(qsm)
 
 }
