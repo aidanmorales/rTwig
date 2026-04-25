@@ -109,11 +109,17 @@ import_treeqsm <- function(filename) {
 
       # Assigns names to each element in the cylinder qsm
       for (j in 1:length(qsm$cylinder)) {
-        temp <- as.data.frame(qsm$cylinder[j])
+        temp <- as.data.frame(lapply(qsm$cylinder[j], function(x) {
+          if (is.null(x) || length(x) == 0 || prod(dim(x)) == 0) NA else x
+        }))
         if (min(dim(temp)) == 1) {
           colnames(temp) <- cylinder_names[j]
         } else if (min(dim(temp)) == 3) {
-          colnames(temp) <- c(paste0(cylinder_names[j], ".x"), paste0(cylinder_names[j], ".y"), paste0(cylinder_names[j], ".z"))
+          colnames(temp) <- c(
+            paste0(cylinder_names[j], ".x"),
+            paste0(cylinder_names[j], ".y"),
+            paste0(cylinder_names[j], ".z")
+          )
         }
         cylinder <- c(cylinder, list(temp))
       }
@@ -128,45 +134,48 @@ import_treeqsm <- function(filename) {
       # Names of each element of the branch data
       branch_names <- names(qsm$branch)
 
-      # Assigns names to each element in the branch qsm
-      for (j in 1:length(qsm$branch)) {
-        temp <- as.data.frame(qsm$branch[j])
-        colnames(temp) <- branch_names[j]
-        branch <- c(branch, list(temp))
+      if (!is.null(branch_names)) {
+        # Assigns names to each element in the branch qsm
+        for (j in 1:length(qsm$branch)) {
+          temp <- as.data.frame(qsm$branch[j])
+          colnames(temp) <- branch_names[j]
+          branch <- c(branch, list(temp))
+        }
+
+        # Combines all of the branch data into a single data frame
+        branch <- do.call(cbind, branch)
       }
-
-      # Combines all of the branch data into a single data frame
-      branch <- do.call(cbind, branch)
-
       # Tree Data --------------------------------------------------------------
       treedata <- list()
 
       # Names of each element of the treedata data
       treedata_names <- names(qsm$treedata)
 
-      # Loops through and converts the MATLAB arrays to data frames
-      # The results are stored in the treedata qsm
-      for (j in 1:length(qsm$treedata)) {
-        # Gets the name of the qsm element
-        name <- treedata_names[j]
+      if (!is.null(treedata_names)) {
+        # Loops through and converts the MATLAB arrays to data frames
+        # The results are stored in the treedata qsm
+        for (j in 1:length(qsm$treedata)) {
+          # Gets the name of the qsm element
+          name <- treedata_names[j]
 
-        # Extracts the tree variables
-        if (!name %in% c("location", "StemTaper", "spreads")) {
-          temp <- as.data.frame(t(qsm$treedata[[j]]))
-          colnames(temp) <- name
-        } else if (name == "location") {
-          temp <- as.vector(qsm$treedata[[j]])
-        } else if (name == "StemTaper") {
-          temp <- as.data.frame(t(qsm$treedata[[j]]))
-          rownames(temp) <- 1:nrow(temp)
-          colnames(temp) <- c("Dist.m", "Stem.dia.m")
-        } else if (name == "spreads") {
-          temp <- qsm$treedata[[j]]
+          # Extracts the tree variables
+          if (!name %in% c("location", "StemTaper", "spreads")) {
+            temp <- as.data.frame(t(qsm$treedata[[j]]))
+            colnames(temp) <- name
+          } else if (name == "location") {
+            temp <- as.vector(qsm$treedata[[j]])
+          } else if (name == "StemTaper") {
+            temp <- as.data.frame(t(qsm$treedata[[j]]))
+            rownames(temp) <- 1:nrow(temp)
+            colnames(temp) <- c("Dist.m", "Stem.dia.m")
+          } else if (name == "spreads") {
+            temp <- qsm$treedata[[j]]
+          }
+
+          # Binds each iteration to the treedata qsm and names it
+          treedata[[j]] <- temp
+          names(treedata)[j] <- name
         }
-
-        # Binds each iteration to the treedata qsm and names it
-        treedata[[j]] <- temp
-        names(treedata)[j] <- name
       }
 
       # Run Data ---------------------------------------------------------------

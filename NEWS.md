@@ -2,7 +2,7 @@
 
 ## New Features
 
-- Reworked `import_treeqsm()` with a custom file reader, improved functionality, and compatibility with `export_mat()`. Dependencies on `rmatio` and `R.matlab` have been removed. The user can now import multiple QSMs contained in the same struct. The `version` parameter has also been removed, and the TreeQSM format is automatically determined. Users can now re-import TreeQSM files from (issue #24, issue #28).
+- Reworked `import_treeqsm()` with a custom file reader, improved functionality, and compatibility with `export_mat()`. Dependencies on `rmatio` and `R.matlab` have been removed. The user can now import multiple QSMs contained in the same struct. The `version` parameter has also been removed, and the TreeQSM format is automatically determined. Users can now re-import TreeQSM files created with rTwig (issue #24, issue #28).
 
 - `run_rtwig()` can now batch process multiple TreeQSM models if the mat file contains different runs for the same tree. The `version` parameter was also removed, since TreeQSM versions are now automatically detected.
 
