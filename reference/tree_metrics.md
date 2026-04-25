@@ -67,7 +67,7 @@ Geomatics*, **15**.
 
 Yang W, Wilkes P, Vicari MB, Hand K, Calders K, Disney M (2024).
 “Treegraph: tree architecture from terrestrial laser scanning point
-clouds.” *Remote Sensing in Ecology and Conservation*. ISSN 2056-3485,
+clouds.” *Remote Sensing in Ecology and Conservation*. ISSN 2056-3485.
 [doi:10.1002/rse2.399](https://doi.org/10.1002/rse2.399) .
 
 Smith D, Sperry J, Enquist B, Savage V, McCulloh K, Bentley L (2013).

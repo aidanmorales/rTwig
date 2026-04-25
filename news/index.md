@@ -12,8 +12,9 @@
   Dependencies on `rmatio` and `R.matlab` have been removed. The user
   can now import multiple QSMs contained in the same struct. The
   `version` parameter has also been removed, and the TreeQSM format is
-  automatically determined. Users can now re-import TreeQSM files from
-  (issue [\#24](https://github.com/aidanmorales/rTwig/issues/24), issue
+  automatically determined. Users can now re-import TreeQSM files
+  created with rTwig (issue
+  [\#24](https://github.com/aidanmorales/rTwig/issues/24), issue
   [\#28](https://github.com/aidanmorales/rTwig/issues/28)).
 
 - [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md)

@@ -35,8 +35,8 @@ rgl::mesh3d object
 Åkerblom M, Raumonen P, Casella E, Disney MI, Danson FM, Gaulton R,
 Schofield LA, Kaasalainen M (2018). “An algorithm to insert leaves into
 quantitative structure models of trees.” *Interface Focus*, **8**(2),
-20170045. ISSN 2042-8898,
-[doi:10.1098/rsfs.2017.0045](https://doi.org/10.1098/rsfs.2017.0045) ,
+20170045. ISSN 2042-8898.
+[doi:10.1098/rsfs.2017.0045](https://doi.org/10.1098/rsfs.2017.0045) .
 20180216.
 
 ## Examples
