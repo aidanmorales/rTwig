@@ -91,7 +91,7 @@ summarise_qsm(cylinder, radius, triangulation = qsm$triangulation)
 #> [[1]]
 #> # A tidytable: 6 × 3
 #>   branch_order tree_volume_L tree_area_m2
-#>          <int>         <dbl>        <dbl>
+#>          <dbl>         <dbl>        <dbl>
 #> 1            0       10.8         0.644  
 #> 2            1        5.80        0.827  
 #> 3            2        3.86        0.732  

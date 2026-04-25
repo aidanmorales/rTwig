@@ -49,6 +49,7 @@ file2 <- system.file("extdata/cloud.txt", package = "rTwig")
 
 qsm <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
 #> Importing TreeQSM
+#> Processing tree 1 of 1...
 #> Updating Cylinder Ordering
 #> Calculating Total Children
 #> Building Cylinder Network

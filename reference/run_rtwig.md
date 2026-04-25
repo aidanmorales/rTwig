@@ -10,7 +10,6 @@ run_rtwig(
   filename,
   twig_radius,
   metrics = TRUE,
-  version = NULL,
   method = NULL,
   smooth = TRUE,
   standardise = FALSE,
@@ -32,11 +31,6 @@ run_rtwig(
 - metrics:
 
   Calculate tree metrics. Defaults to TRUE.
-
-- version:
-
-  If using a specific version of TreeQSM, the user can specify the
-  version (e.g. 2.4.1, 2.0, etc.).
 
 - method:
 
@@ -72,6 +66,7 @@ Returns cylinder data frame or list if metrics is true.
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- run_rtwig(file, twig_radius = 4.23)
 #> Importing TreeQSM
+#> Processing tree 1 of 1...
 #> Updating Cylinder Ordering
 #> Calculating Total Children
 #> Building Cylinder Network
@@ -111,9 +106,9 @@ str(qsm$cylinder)
 #>  $ end.y                       : num  -16.4 -16.4 -16.3 -16.3 -16.3 ...
 #>  $ end.z                       : num  254 254 254 254 254 ...
 #>  $ added                       : num  0 0 0 0 0 0 0 0 0 0 ...
-#>  $ BranchOrder                 : int  0 0 0 0 0 0 0 0 0 0 ...
+#>  $ BranchOrder                 : num  0 0 0 0 0 0 0 0 0 0 ...
 #>  $ reverseBranchOrder          : num  20 20 20 20 20 20 20 20 20 20 ...
-#>  $ PositionInBranch            : int  1 2 3 4 5 6 7 8 9 10 ...
+#>  $ PositionInBranch            : num  1 2 3 4 5 6 7 8 9 10 ...
 #>  $ segment                     : int  1 1 1 1 1 1 1 1 1 1 ...
 #>  $ parentSegment               : int  0 0 0 0 0 0 0 0 0 0 ...
 #>  $ mad                         : num  0.00072 0.000538 0.000523 0.000335 0.000438 ...
