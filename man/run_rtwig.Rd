@@ -8,7 +8,6 @@ run_rtwig(
   filename,
   twig_radius,
   metrics = TRUE,
-  method = NULL,
   smooth = TRUE,
   standardise = FALSE,
   broken_branch = TRUE,
@@ -21,9 +20,6 @@ run_rtwig(
 \item{twig_radius}{Twig radius in millimeters}
 
 \item{metrics}{Calculate tree metrics. Defaults to TRUE.}
-
-\item{method}{Define the QSM generation method if using AdQSM or AdTree.
-Define the method as \code{adqsm} or \code{adtree}. Defaults to \code{adqsm}.}
 
 \item{smooth}{Defaults to TRUE if using TreeQSM. Can be set to FALSE.}
 

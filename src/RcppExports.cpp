@@ -397,25 +397,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// read_mat_23
-SEXP read_mat_23(std::string path);
-RcppExport SEXP _rTwig_read_mat_23(SEXP pathSEXP) {
+// read_mat_nested
+SEXP read_mat_nested(std::string path);
+RcppExport SEXP _rTwig_read_mat_nested(SEXP pathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_mat_23(path));
+    rcpp_result_gen = Rcpp::wrap(read_mat_nested(path));
     return rcpp_result_gen;
 END_RCPP
 }
-// read_mat_20
-Rcpp::List read_mat_20(std::string path);
-RcppExport SEXP _rTwig_read_mat_20(SEXP pathSEXP) {
+// read_mat_flat
+Rcpp::List read_mat_flat(std::string path);
+RcppExport SEXP _rTwig_read_mat_flat(SEXP pathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_mat_20(path));
+    rcpp_result_gen = Rcpp::wrap(read_mat_flat(path));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -586,8 +586,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
     {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 1},
     {"_rTwig_gini_coefficient", (DL_FUNC) &_rTwig_gini_coefficient, 1},
-    {"_rTwig_read_mat_23", (DL_FUNC) &_rTwig_read_mat_23, 1},
-    {"_rTwig_read_mat_20", (DL_FUNC) &_rTwig_read_mat_20, 1},
+    {"_rTwig_read_mat_nested", (DL_FUNC) &_rTwig_read_mat_nested, 1},
+    {"_rTwig_read_mat_flat", (DL_FUNC) &_rTwig_read_mat_flat, 1},
     {"_rTwig_write_mat", (DL_FUNC) &_rTwig_write_mat, 7},
     {"_rTwig_normalize_view", (DL_FUNC) &_rTwig_normalize_view, 4},
     {"_rTwig_solve_and_transpose", (DL_FUNC) &_rTwig_solve_and_transpose, 3},

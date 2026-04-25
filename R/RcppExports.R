@@ -405,12 +405,12 @@ gini_coefficient <- function(x) {
     .Call(`_rTwig_gini_coefficient`, x)
 }
 
-read_mat_23 <- function(path) {
-    .Call(`_rTwig_read_mat_23`, path)
+read_mat_nested <- function(path) {
+    .Call(`_rTwig_read_mat_nested`, path)
 }
 
-read_mat_20 <- function(path) {
-    .Call(`_rTwig_read_mat_20`, path)
+read_mat_flat <- function(path) {
+    .Call(`_rTwig_read_mat_flat`, path)
 }
 
 write_mat <- function(filename, cylinder, branch, treedata, rundata, pmdistance, triangulation) {

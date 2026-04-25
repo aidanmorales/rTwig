@@ -7,9 +7,6 @@
 #' @param twig_radius Twig radius in millimeters
 #' @param metrics Calculate tree metrics. Defaults to TRUE.
 #'
-#' @param method Define the QSM generation method if using AdQSM or AdTree.
-#'  Define the method as `adqsm` or `adtree`. Defaults to `adqsm`.
-#'
 #' @param smooth Defaults to TRUE if using TreeQSM. Can be set to FALSE.
 #'
 #' @param standardise Standardise QSM cylinder data.
@@ -35,7 +32,6 @@ run_rtwig <- function(
   filename,
   twig_radius,
   metrics = TRUE,
-  method = NULL,
   smooth = TRUE,
   standardise = FALSE,
   broken_branch = TRUE,
@@ -75,23 +71,6 @@ run_rtwig <- function(
     abort(message, class = "invalid_argument")
   }
 
-  if (!is_null(method)) {
-    if (!is_string(method)) {
-      message <- paste0(
-        "`method` must be a string, not ", class(method), "."
-      )
-      abort(message, class = "invalid_argument")
-    }
-
-    if (!method %in% c("adqsm", "adtree")) {
-      message <- paste(
-        "`method` is invalid!",
-        "i supported methods include: `adqsm`, `adtree`",
-        sep = "\n"
-      )
-      abort(message, class = "data_format_error")
-    }
-  }
 
   if (!is_logical(smooth)) {
     message <- paste0(
@@ -135,7 +114,7 @@ run_rtwig <- function(
 
   # Get file extension
   extension <- sub(".*\\.", "", basename(filename))
-  file <- filename # file must be re-defined internally pass string checks
+  file <- filename # file must be re-defined internally to pass string checks
 
   # TreeQSM --------------------------------------------------------------------
   if (extension == "mat") {
@@ -250,21 +229,8 @@ run_rtwig <- function(
 
   # AdQSM / AdTree -------------------------------------------------------------
   else if (extension == "obj") {
-    if (is.null(method)) {
-      message <- paste(
-        "`method` is missing!",
-        "i supported methods include: `adqsm`, `adtree`",
-        sep = "\n"
-      )
-      abort(message, class = "data_format_error")
-    }
-
     # Import QSM ---------------------------------------------------------------
-    if (method == "adqsm") {
-      cylinder <- import_adqsm(file, method = "adqsm")
-    } else if (method == "adtree") {
-      cylinder <- import_adqsm(file, method = "adtree")
-    }
+    cylinder <- import_adqsm(file)
 
     # Correct Radii ------------------------------------------------------------
     cylinder <- correct_radii(

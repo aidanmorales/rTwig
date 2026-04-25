@@ -2,11 +2,13 @@
 
 ## New Features
 
-- Reworked `import_treeqsm()` with a custom file reader, improved functionality, and compatibility with `export_mat()`. Dependencies on `rmatio` and `R.matlab` have been removed. The user can now import multiple QSMs contained in the same struct. The `version` parameter has also been removed, and the TreeQSM format is automatically determined. Users can now re-import TreeQSM files created with rTwig (issue #24, issue #28).
+- Reworked `import_qsm()` to automatically import all supported QSMs. `import_treeqsm()`, `import_treegraph()`, and `import_adqsm()` are all deprecated and will be removed in a future rTwig version. MATLAB files now use a custom file reader, with improved functionality, and compatibility with `export_mat()`. Dependencies on `rmatio` and `R.matlab` have been removed. The user can now import multiple TreeQSMs contained in the same struct. The `version` parameter has also been removed, and the TreeQSM format is automatically determined. Users can now re-import TreeQSM files created with rTwig (issue #24, issue #28).
 
 - `run_rtwig()` can now batch process multiple TreeQSM models if the mat file contains different runs for the same tree. The `version` parameter was also removed, since TreeQSM versions are now automatically detected.
 
-- The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now supported in the package. `import_adqsm()` can import an AdQSM or AdTree from its `.obj` file, making them immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
+- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM) support.
+
+- The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now supported in the package. `import_qsm()` can import an AdQSM or AdTree from its `.obj` file, making them immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
 
 - `reconstruct_qsm()`: New function to reconstruct a QSM and all of its variables from the minimum amount of required data. This enables the reconstruction and analysis of generic QSMs from external software or even manual measurements. The only required variables are the cylinder id, parent id, 3d information (e.g. a combination of start and end points, or start, axis, and length), and the radius.
 
@@ -68,6 +70,12 @@
 - Replaced `group_by %>% summarise` with `summarise(.by)` for slightly better memory efficiency and speed (issue #25).
 
 - Updates `twigs` database, both inside the package, and with `download_twigs()`.
+
+## Breaking Changes
+
+- `import_treeqsm()`, `import_treegraph()`, and `import_adqsm()`, are all deprecated and have been replaced with `import_qsm()`. The functionality is unchanged, but they will be removed in a future rTwig release.
+
+- `run_rtwig()`: the TreeQSM `version`, and AdQSM `method` parameters were removed, since QSM type is now automatically detected.
 
 # rTwig 1.4.0
 

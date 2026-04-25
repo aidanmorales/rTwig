@@ -534,7 +534,7 @@ static std::string write_temp_raw(Rcpp::RawVector x) {
 }
 
 // [[Rcpp::export]]
-SEXP read_mat_23(std::string path) {
+SEXP read_mat_nested(std::string path) {
   std::ifstream f(path, std::ios::binary);
 
   if (!f.is_open()) {
@@ -676,7 +676,7 @@ static bool keep_treeqsm_20_var(const std::string& nm) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List read_mat_20(std::string path) {
+Rcpp::List read_mat_flat(std::string path) {
   std::ifstream f(path, std::ios::binary);
   if (!f.is_open()) Rcpp::stop("Could not open file");
 
