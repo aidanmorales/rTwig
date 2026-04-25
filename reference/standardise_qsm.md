@@ -40,7 +40,8 @@ has been run, or at any stage.
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 cylinder <- qsm$cylinder
 cylinder <- standardise_qsm(cylinder)
 #> Verifying Cylinders
@@ -76,7 +77,7 @@ str(cylinder)
 #>  $ vessel_volume  : num  279 271 266 260 259 ...
 #>  $ pipe_area      : int  82 82 82 82 82 82 82 82 82 82 ...
 #>  $ pipe_radius    : num  9.06 9.06 9.06 9.06 9.06 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x55e3beaf3a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
 
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
@@ -115,7 +116,7 @@ str(cylinder)
 #>  $ vessel_volume  : num  237 233 229 226 222 ...
 #>  $ pipe_area      : int  69 69 69 69 69 69 69 69 69 69 ...
 #>  $ pipe_radius    : num  8.31 8.31 8.31 8.31 8.31 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x55e3beaf3a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
 
 ## aRchi Processing Chain
 file <- system.file("extdata/QSM2.csv", package = "rTwig")
@@ -154,5 +155,5 @@ str(cylinder)
 #>  $ vessel_volume  : num  416 409 406 403 400 ...
 #>  $ pipe_area      : int  121 121 121 121 121 121 121 121 121 121 ...
 #>  $ pipe_radius    : num  11 11 11 11 11 11 11 11 11 11 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x55e3beaf3a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
 ```

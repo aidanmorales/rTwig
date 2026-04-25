@@ -141,33 +141,32 @@ best QSM topology and volume estimates. Older versions can be used, but
 the QSM topology is poor, and volume underestimation is almost
 guaranteed.</p>
 <p>Regardless of the version of TreeQSM or MATLAB used, the
-<code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code> function will import a QSM (.mat
-extension) and convert the data to a format usable by R.
-<code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code> also imports all QSM information,
-including cylinder, branch, treedata, rundata, pmdistance, and
-triangulation data, which are stored together as a list.</p>
+<code><a href="../reference/import_qsm.html">import_qsm()</a></code> function will import a QSM (.mat extension)
+and convert the data to a format usable by R. <code><a href="../reference/import_qsm.html">import_qsm()</a></code>
+also imports all QSM information, including cylinder, branch, treedata,
+rundata, pmdistance, and triangulation data, which are stored together
+as a list.</p>
 <p>SimpleForest exports its QSMs as .csv files, so they are easy to load
 into R using the built in <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code> function. If the QSM
 contains thousands of cylinders, it is much faster to use the
 <code>fread()</code> function from the <code>data.table</code> package
 to take advantage of multi-threaded support.</p>
-<p>Treegraph exports its QSMs as .json files. To import them into R, we
-can use the <code><a href="../reference/import_treegraph.html">import_treegraph()</a></code> function to quickly load in
-a Treegraph QSM.</p>
 <p>aRchi is built in R, so there is no provided function to import the
 data. Users can extract the aRchi cylinder data with
 <code>aRchi::get_QSM()</code> before running the rTwig functions.</p>
+<p>Treegraph, SmartQSM, AdQSM, and AdTree (.json, .mat, .obj) can also
+be automatically imported into R with <code><a href="../reference/import_qsm.html">import_qsm()</a></code>.</p>
 <div class="section level4">
 <h4 id="example-1-treeqsm-v2-3-0---2-4-1">Example 1: TreeQSM v2.3.0 - 2.4.1<a class="anchor" aria-label="anchor" href="#example-1-treeqsm-v2-3-0---2-4-1"></a>
 </h4>
-<p>We can import a QSM by supplying the <code><a href="../reference/import_treeqsm.html">import_treeqsm()</a></code>
+<p>We can import a QSM by supplying the <code><a href="../reference/import_qsm.html">import_qsm()</a></code>
 function the directory to our QSM.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># QSM directory</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import and save QSM</span></span>
-<span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
 <p>The QSM should be a list with six elements. We can check it as
 follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -218,7 +217,7 @@ made, and take a look at the cylinder data.</p>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM_2.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import and save QSM</span></span>
-<span><span class="va">qsm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_treeqsm.html">import_treeqsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="va">qsm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_qsm.html">import_qsm</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># QSM Info</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">qsm2</span><span class="op">)</span></span>

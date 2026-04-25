@@ -68,10 +68,10 @@ volume estimates. Older versions can be used, but the QSM topology is
 poor, and volume underestimation is almost guaranteed.
 
 Regardless of the version of TreeQSM or MATLAB used, the
-[`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+[`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 function will import a QSM (.mat extension) and convert the data to a
 format usable by R.
-[`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+[`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 also imports all QSM information, including cylinder, branch, treedata,
 rundata, pmdistance, and triangulation data, which are stored together
 as a list.
@@ -83,19 +83,18 @@ QSM contains thousands of cylinders, it is much faster to use the
 `fread()` function from the `data.table` package to take advantage of
 multi-threaded support.
 
-Treegraph exports its QSMs as .json files. To import them into R, we can
-use the
-[`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md)
-function to quickly load in a Treegraph QSM.
-
 aRchi is built in R, so there is no provided function to import the
 data. Users can extract the aRchi cylinder data with `aRchi::get_QSM()`
 before running the rTwig functions.
 
+Treegraph, SmartQSM, AdQSM, and AdTree (.json, .mat, .obj) can also be
+automatically imported into R with
+[`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md).
+
 #### Example 1: TreeQSM v2.3.0 - 2.4.1
 
 We can import a QSM by supplying the
-[`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+[`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 function the directory to our QSM.
 
 ``` r
@@ -103,7 +102,7 @@ function the directory to our QSM.
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
 # Import and save QSM
-qsm <- import_treeqsm(file)
+qsm <- import_qsm(file)
 ```
 
 The QSM should be a list with six elements. We can check it as follows:
@@ -160,7 +159,7 @@ Let’s try importing an old QSM and check its structure.
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 
 # Import and save QSM
-qsm2 <- import_treeqsm(file)
+qsm2 <- import_qsm(file)
 
 # QSM Info
 summary(qsm2)

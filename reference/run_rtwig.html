@@ -60,7 +60,6 @@ supported QSM formats.</p>
 <span>  <span class="va">filename</span>,</span>
 <span>  <span class="va">twig_radius</span>,</span>
 <span>  metrics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  smooth <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  standardise <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  broken_branch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -82,11 +81,6 @@ supported QSM formats.</p>
 
 <dt id="arg-metrics">metrics<a class="anchor" aria-label="anchor" href="#arg-metrics"></a></dt>
 <dd><p>Calculate tree metrics. Defaults to TRUE.</p></dd>
-
-
-<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Define the QSM generation method if using AdQSM or AdTree.
-Define the method as <code>adqsm</code> or <code>adtree</code>. Defaults to <code>adqsm</code>.</p></dd>
 
 
 <dt id="arg-smooth">smooth<a class="anchor" aria-label="anchor" href="#arg-smooth"></a></dt>
@@ -119,7 +113,8 @@ used as synonyms.</p></dd>
 <span class="r-in"><span><span class="co">## TreeQSM</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.mat"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu">run_rtwig</span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing TreeQSM</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`import_treeqsm()` was deprecated in rTwig 1.5.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> i Please use `import_qsm()` instead.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Processing tree 1 of 1...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Updating Cylinder Ordering</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Total Children</span>
@@ -182,7 +177,7 @@ used as synonyms.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  279 271 266 260 259 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;pointer: 0x55e3beaf3a10&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;pointer: 0x558d9a410a10&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

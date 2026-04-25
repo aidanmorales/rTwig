@@ -33,7 +33,8 @@ Returns a data frame
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering
@@ -86,5 +87,5 @@ str(cylinder)
 #>  $ vesselVolume                : num  279 271 266 260 259 ...
 #>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...
 #>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x55e3beaf3a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
 ```

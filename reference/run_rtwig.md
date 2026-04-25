@@ -10,7 +10,6 @@ run_rtwig(
   filename,
   twig_radius,
   metrics = TRUE,
-  method = NULL,
   smooth = TRUE,
   standardise = FALSE,
   broken_branch = TRUE,
@@ -31,11 +30,6 @@ run_rtwig(
 - metrics:
 
   Calculate tree metrics. Defaults to TRUE.
-
-- method:
-
-  Define the QSM generation method if using AdQSM or AdTree. Define the
-  method as `adqsm` or `adtree`. Defaults to `adqsm`.
 
 - smooth:
 
@@ -65,7 +59,8 @@ Returns cylinder data frame or list if metrics is true.
 ## TreeQSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- run_rtwig(file, twig_radius = 4.23)
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 #> Processing tree 1 of 1...
 #> Updating Cylinder Ordering
 #> Calculating Total Children
@@ -128,5 +123,5 @@ str(qsm$cylinder)
 #>  $ vesselVolume                : num  279 271 266 260 259 ...
 #>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...
 #>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x55e3beaf3a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
 ```

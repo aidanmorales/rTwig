@@ -5,12 +5,18 @@
 ### New Features
 
 - Reworked
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
-  with a custom file reader, improved functionality, and compatibility
-  with
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
+  to automatically import all supported QSMs.
+  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md),
+  [`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md),
+  and
+  [`import_adqsm()`](https://aidanmorales.github.io/rTwig/reference/import_adqsm.md)
+  are all deprecated and will be removed in a future rTwig version.
+  MATLAB files now use a custom file reader, with improved
+  functionality, and compatibility with
   [`export_mat()`](https://aidanmorales.github.io/rTwig/reference/export_mat.md).
   Dependencies on `rmatio` and `R.matlab` have been removed. The user
-  can now import multiple QSMs contained in the same struct. The
+  can now import multiple TreeQSMs contained in the same struct. The
   `version` parameter has also been removed, and the TreeQSM format is
   automatically determined. Users can now re-import TreeQSM files
   created with rTwig (issue
@@ -22,9 +28,12 @@
   different runs for the same tree. The `version` parameter was also
   removed, since TreeQSM versions are now automatically detected.
 
+- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM)
+  support.
+
 - The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now
   supported in the package.
-  [`import_adqsm()`](https://aidanmorales.github.io/rTwig/reference/import_adqsm.md)
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
   can import an AdQSM or AdTree from its `.obj` file, making them
   immediately usable with the other package functions, and does not
   require
@@ -141,6 +150,21 @@
 
 - Updates `twigs` database, both inside the package, and with
   [`download_twigs()`](https://aidanmorales.github.io/rTwig/reference/download_twigs.md).
+
+### Breaking Changes
+
+- [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md),
+  [`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md),
+  and
+  [`import_adqsm()`](https://aidanmorales.github.io/rTwig/reference/import_adqsm.md),
+  are all deprecated and have been replaced with
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md).
+  The functionality is unchanged, but they will be removed in a future
+  rTwig release.
+
+- [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md):
+  the TreeQSM `version`, and AdQSM `method` parameters were removed,
+  since QSM type is now automatically detected.
 
 ## rTwig 1.4.0
 

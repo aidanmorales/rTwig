@@ -19,7 +19,7 @@
 - [`import_leaves()`](https://aidanmorales.github.io/rTwig/reference/import_leaves.md)
   : Import Leaves
 - [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
-  : Import TreeQSM
+  : Import QSM
 - [`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md)
   : Import Treegraph
 - [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)

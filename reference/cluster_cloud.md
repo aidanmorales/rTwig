@@ -48,7 +48,8 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 file2 <- system.file("extdata/cloud.txt", package = "rTwig")
 
 qsm <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 #> Processing tree 1 of 1...
 #> Updating Cylinder Ordering
 #> Calculating Total Children

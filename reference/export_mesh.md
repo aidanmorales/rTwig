@@ -85,7 +85,8 @@ A mesh file
 ## Load QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering

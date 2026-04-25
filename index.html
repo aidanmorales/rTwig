@@ -125,52 +125,154 @@
 <div class="section level4">
 <h4 id="supported-software">Supported Software<a class="anchor" aria-label="anchor" href="#supported-software"></a>
 </h4>
-<p>rTwig currently supports <a href="https://github.com/InverseTampere/TreeQSM" class="external-link">TreeQSM</a>, <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph" class="external-link">Treegraph</a>, <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a>, <a href="https://github.com/GuangpengFan/AdQSM" class="external-link">AdQSM</a>, and <a href="https://github.com/tudelft3d/AdTree" class="external-link">AdTree</a>.</p>
+<p>rTwig currently supports <a href="https://github.com/InverseTampere/TreeQSM" class="external-link">TreeQSM</a>, <a href="https://github.com/project-lightlin/SmartQSM" class="external-link">SmartQSM</a>, <a href="https://www.simpleforest.org/" class="external-link">SimpleForest</a>, <a href="https://github.com/wanxinyang/treegraph" class="external-link">Treegraph</a>, <a href="https://github.com/umr-amap/aRchi" class="external-link">aRchi</a>, <a href="https://github.com/GuangpengFan/AdQSM" class="external-link">AdQSM</a>, and <a href="https://github.com/tudelft3d/AdTree" class="external-link">AdTree</a>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
-<ul>
-<li>
-<code><a href="reference/run_rtwig.html">run_rtwig()</a></code> runs the Real Twig method on a QSM</li>
-<li>
-<code><a href="reference/import_treeqsm.html">import_treeqsm()</a></code> imports a QSM created by TreeQSM (.mat)</li>
-<li>
-<code><a href="reference/import_treegraph.html">import_treegraph()</a></code> imports a QSM created by Treegraph (.json)</li>
-<li>
-<code><a href="reference/import_adqsm.html">import_adqsm()</a></code> imports a QSM created by AdQSM or AdTree (.obj)</li>
-<li>
-<code><a href="reference/standardise_qsm.html">standardise_qsm()</a></code> standardises QSM variable names across supported software</li>
-<li>
-<code><a href="reference/reconstruct_qsm.html">reconstruct_qsm()</a></code> reconstructs a QSM from the minimum amount of variables</li>
-<li>
-<code><a href="reference/update_cylinders.html">update_cylinders()</a></code> updates cylinder relationships and adds new QSM variables</li>
-<li>
-<code><a href="reference/correct_radii.html">correct_radii()</a></code> models QSM paths and corrects cylinder radii</li>
-<li>
-<code><a href="reference/tree_metrics.html">tree_metrics()</a></code> generates detailed tree metrics and a simulated point cloud</li>
-<li>
-<code><a href="reference/cluster_cloud.html">cluster_cloud()</a></code> transfers QSM variables to a point cloud or simulates a point cloud</li>
-<li>
-<code><a href="reference/summarise_qsm.html">summarise_qsm()</a></code> summarises QSM diameter, height, volume, and surface area</li>
-<li>
-<code><a href="reference/smooth_qsm.html">smooth_qsm()</a></code> connects cylinder end-to-end to smooth branch visualization</li>
-<li>
-<code><a href="reference/plot_qsm.html">plot_qsm()</a></code> plots QSMs and optionally their point clouds</li>
-<li>
-<code><a href="reference/prune_qsm.html">prune_qsm()</a></code> prunes a QSM by cylinder attributes, height, or diameter classes</li>
-<li>
-<code><a href="reference/import_leaves.html">import_leaves()</a></code> imports leaves created by the FaNNI algorithm (.obj)</li>
-<li>
-<code><a href="reference/export_mesh.html">export_mesh()</a></code> exports a QSM as to multiple mesh formats (.ply, .obj, .stl, .txt)</li>
-<li>
-<code><a href="reference/export_mat.html">export_mat()</a></code> exports a QSM in a MATLAB format (.mat)</li>
-<li>
-<code><a href="reference/download_twigs.html">download_twigs()</a></code> download an external twig database updated independently</li>
-<li>
-<code><a href="reference/box_dimension.html">box_dimension()</a></code> calculates and visualizes the structural complexity of a point cloud</li>
-</ul>
+<div class="section level3">
+<h3 id="import--export">Import &amp; Export<a class="anchor" aria-label="anchor" href="#import--export"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/import_qsm.html">import_qsm()</a></code></td>
+<td>Import a QSM from TreeQSM, SmartQSM, Treegraph, AdQSM, or AdTree (.mat, .json, .obj)</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/import_leaves.html">import_leaves()</a></code></td>
+<td>Import leaves created by the FaNNI algorithm (.obj)</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/export_mesh.html">export_mesh()</a></code></td>
+<td>Export a QSM to different mesh formats (.ply, .obj, .stl, .txt)</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/export_mat.html">export_mat()</a></code></td>
+<td>Export a QSM to the TreeQSM MATLAB format (.mat)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="processing">Processing<a class="anchor" aria-label="anchor" href="#processing"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/run_rtwig.html">run_rtwig()</a></code></td>
+<td>Run the Real Twig method on a QSM</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/standardise_qsm.html">standardise_qsm()</a></code></td>
+<td>Standardise QSM variable names across supported software</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/reconstruct_qsm.html">reconstruct_qsm()</a></code></td>
+<td>Reconstruct a QSM from the minimum amount of variables</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/update_cylinders.html">update_cylinders()</a></code></td>
+<td>Update cylinder relationships and add new QSM variables</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/correct_radii.html">correct_radii()</a></code></td>
+<td>Model QSM paths and correct cylinder radii</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/prune_qsm.html">prune_qsm()</a></code></td>
+<td>Prune a QSM by cylinder attributes, height, or diameter classes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/tree_metrics.html">tree_metrics()</a></code></td>
+<td>Generate detailed tree metrics and a simulated point cloud</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/summarise_qsm.html">summarise_qsm()</a></code></td>
+<td>Summarise QSM diameter, height, volume, and surface area</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/box_dimension.html">box_dimension()</a></code></td>
+<td>Calculate and visualize the structural complexity of a point cloud</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/plot_qsm.html">plot_qsm()</a></code></td>
+<td>Plot QSMs and point clouds</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/smooth_qsm.html">smooth_qsm()</a></code></td>
+<td>Visually smooth a QSM by connecting cylinders end-to-end</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/cluster_cloud.html">cluster_cloud()</a></code></td>
+<td>Transfer QSM variables to a point cloud or simulate a point cloud</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h3>
+<table class="table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td><code><a href="reference/download_twigs.html">download_twigs()</a></code></td>
+<td>Download the official rTwig twig database</td>
+</tr></tbody>
+</table>
+</div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -187,7 +289,7 @@
 </h3>
 <p>Below are examples of how to quickly run and visualize Real Twig, using example data from the package. See the vignettes for more details on a general workflow and best practices.</p>
 <div class="section level4">
-<h4 id="treeqsm">TreeQSM<a class="anchor" aria-label="anchor" href="#treeqsm"></a>
+<h4 id="treeqsm--smartqsm">TreeQSM / SmartQSM<a class="anchor" aria-label="anchor" href="#treeqsm--smartqsm"></a>
 </h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
@@ -206,14 +308,16 @@
 <span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="simpleforest">SimpleForest<a class="anchor" aria-label="anchor" href="#simpleforest"></a>
+<h4 id="simpleforest--archi">SimpleForest / aRchi<a class="anchor" aria-label="anchor" href="#simpleforest--archi"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># File path to QSM</span></span>
-<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
+<span> </span>
+<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span> <span class="co"># SimpleForest</span></span>
+<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM2.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span> <span class="co"># aRchi</span></span>
 <span> </span>
 <span> <span class="co"># Correct QSM cylinders</span></span>
 <span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
@@ -244,28 +348,9 @@
 <span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="archi">aRchi<a class="anchor" aria-label="anchor" href="#archi"></a>
+<h4 id="adqsm--adtree">AdQSM / AdTree<a class="anchor" aria-label="anchor" href="#adqsm--adtree"></a>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
-<span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># File path to QSM</span></span>
-<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/QSM2.csv"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># Correct QSM cylinders</span></span>
-<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># Plot the result</span></span>
-<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># View detailed tree metrics</span></span>
-<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="adqsm">AdQSM<a class="anchor" aria-label="anchor" href="#adqsm"></a>
-</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
 <span> </span>
@@ -273,26 +358,7 @@
 <span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_adqsm_obj"</span></span>
 <span> </span>
 <span> <span class="co"># Correct QSM cylinders</span></span>
-<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span>, method <span class="op">=</span> <span class="st">"adqsm"</span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># Plot the result</span></span>
-<span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># View detailed tree metrics</span></span>
-<span> <span class="va">qsm</span><span class="op">$</span><span class="va">metrics</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="adtree">AdTree<a class="anchor" aria-label="anchor" href="#adtree"></a>
-</h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span> <span class="co"># Load the Real Twig library</span></span>
-<span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aidanmorales.github.io/rTwig/">rTwig</a></span><span class="op">)</span></span>
-<span> </span>
-<span> <span class="co"># File path to QSM</span></span>
-<span> <span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"path_to_adtree_obj"</span></span>
-<span> </span>
-<span> <span class="co"># Correct QSM cylinders</span></span>
-<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span>, method <span class="op">=</span> <span class="st">"adtree"</span><span class="op">)</span></span>
+<span> <span class="va">qsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_rtwig.html">run_rtwig</a></span><span class="op">(</span><span class="va">file</span>, twig_radius <span class="op">=</span> <span class="fl">4.23</span><span class="op">)</span></span>
 <span> </span>
 <span> <span class="co"># Plot the result</span></span>
 <span> <span class="fu"><a href="reference/plot_qsm.html">plot_qsm</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span>
@@ -305,7 +371,7 @@
 <h3 id="quick-start-fractal-analysis">Quick Start: Fractal Analysis<a class="anchor" aria-label="anchor" href="#quick-start-fractal-analysis"></a>
 </h3>
 <p>rTwig also includes an efficient function written in C++ via <code>Rcpp</code> for fractal analysis using the voxel-counting method. Below is an example of how to quickly calculate box-dimension on a point cloud using example data from the package. See the vignette for more details and explanation.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load a point cloud</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/cloud.txt"</span>, package <span class="op">=</span> <span class="st">"rTwig"</span><span class="op">)</span></span>
 <span><span class="va">cloud</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>

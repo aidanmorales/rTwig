@@ -82,7 +82,8 @@ scaling.” *The New phytologist*, **201**.
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 cylinder <- import_treeqsm(file)$cylinder
-#> Importing TreeQSM
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering
 #> Calculating Total Children

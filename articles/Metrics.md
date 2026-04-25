@@ -37,6 +37,8 @@ file <- system.file("extdata/QSM.mat", package = "rTwig")
 
 # Run Real Twig
 cylinder <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
+#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
+#> i Please use `import_qsm()` instead.
 
 # Calculate detailed tree metrics
 metrics <- tree_metrics(cylinder)

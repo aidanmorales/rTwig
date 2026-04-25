@@ -88,6 +88,7 @@ reference pages for more details.
 
 rTwig currently supports
 [TreeQSM](https://github.com/InverseTampere/TreeQSM),
+[SmartQSM](https://github.com/project-lightlin/SmartQSM),
 [SimpleForest](https://www.simpleforest.org/),
 [Treegraph](https://github.com/wanxinyang/treegraph),
 [aRchi](https://github.com/umr-amap/aRchi),
@@ -96,44 +97,47 @@ rTwig currently supports
 
 ## Functions
 
-- [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md)
-  runs the Real Twig method on a QSM
-- [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
-  imports a QSM created by TreeQSM (.mat)
-- [`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md)
-  imports a QSM created by Treegraph (.json)
-- [`import_adqsm()`](https://aidanmorales.github.io/rTwig/reference/import_adqsm.md)
-  imports a QSM created by AdQSM or AdTree (.obj)
-- [`standardise_qsm()`](https://aidanmorales.github.io/rTwig/reference/standardise_qsm.md)
-  standardises QSM variable names across supported software
-- [`reconstruct_qsm()`](https://aidanmorales.github.io/rTwig/reference/reconstruct_qsm.md)
-  reconstructs a QSM from the minimum amount of variables
-- [`update_cylinders()`](https://aidanmorales.github.io/rTwig/reference/update_cylinders.md)
-  updates cylinder relationships and adds new QSM variables
-- [`correct_radii()`](https://aidanmorales.github.io/rTwig/reference/correct_radii.md)
-  models QSM paths and corrects cylinder radii
-- [`tree_metrics()`](https://aidanmorales.github.io/rTwig/reference/tree_metrics.md)
-  generates detailed tree metrics and a simulated point cloud
-- [`cluster_cloud()`](https://aidanmorales.github.io/rTwig/reference/cluster_cloud.md)
-  transfers QSM variables to a point cloud or simulates a point cloud
-- [`summarise_qsm()`](https://aidanmorales.github.io/rTwig/reference/summarise_qsm.md)
-  summarises QSM diameter, height, volume, and surface area
-- [`smooth_qsm()`](https://aidanmorales.github.io/rTwig/reference/smooth_qsm.md)
-  connects cylinder end-to-end to smooth branch visualization
-- [`plot_qsm()`](https://aidanmorales.github.io/rTwig/reference/plot_qsm.md)
-  plots QSMs and optionally their point clouds
-- [`prune_qsm()`](https://aidanmorales.github.io/rTwig/reference/prune_qsm.md)
-  prunes a QSM by cylinder attributes, height, or diameter classes
-- [`import_leaves()`](https://aidanmorales.github.io/rTwig/reference/import_leaves.md)
-  imports leaves created by the FaNNI algorithm (.obj)
-- [`export_mesh()`](https://aidanmorales.github.io/rTwig/reference/export_mesh.md)
-  exports a QSM as to multiple mesh formats (.ply, .obj, .stl, .txt)
-- [`export_mat()`](https://aidanmorales.github.io/rTwig/reference/export_mat.md)
-  exports a QSM in a MATLAB format (.mat)
-- [`download_twigs()`](https://aidanmorales.github.io/rTwig/reference/download_twigs.md)
-  download an external twig database updated independently
-- [`box_dimension()`](https://aidanmorales.github.io/rTwig/reference/box_dimension.md)
-  calculates and visualizes the structural complexity of a point cloud
+### Import & Export
+
+| Function                                                                             | Description                                                                          |
+|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)       | Import a QSM from TreeQSM, SmartQSM, Treegraph, AdQSM, or AdTree (.mat, .json, .obj) |
+| [`import_leaves()`](https://aidanmorales.github.io/rTwig/reference/import_leaves.md) | Import leaves created by the FaNNI algorithm (.obj)                                  |
+| [`export_mesh()`](https://aidanmorales.github.io/rTwig/reference/export_mesh.md)     | Export a QSM to different mesh formats (.ply, .obj, .stl, .txt)                      |
+| [`export_mat()`](https://aidanmorales.github.io/rTwig/reference/export_mat.md)       | Export a QSM to the TreeQSM MATLAB format (.mat)                                     |
+
+### Processing
+
+| Function                                                                                   | Description                                                     |
+|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md)               | Run the Real Twig method on a QSM                               |
+| [`standardise_qsm()`](https://aidanmorales.github.io/rTwig/reference/standardise_qsm.md)   | Standardise QSM variable names across supported software        |
+| [`reconstruct_qsm()`](https://aidanmorales.github.io/rTwig/reference/reconstruct_qsm.md)   | Reconstruct a QSM from the minimum amount of variables          |
+| [`update_cylinders()`](https://aidanmorales.github.io/rTwig/reference/update_cylinders.md) | Update cylinder relationships and add new QSM variables         |
+| [`correct_radii()`](https://aidanmorales.github.io/rTwig/reference/correct_radii.md)       | Model QSM paths and correct cylinder radii                      |
+| [`prune_qsm()`](https://aidanmorales.github.io/rTwig/reference/prune_qsm.md)               | Prune a QSM by cylinder attributes, height, or diameter classes |
+
+### Analysis
+
+| Function                                                                             | Description                                                        |
+|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| [`tree_metrics()`](https://aidanmorales.github.io/rTwig/reference/tree_metrics.md)   | Generate detailed tree metrics and a simulated point cloud         |
+| [`summarise_qsm()`](https://aidanmorales.github.io/rTwig/reference/summarise_qsm.md) | Summarise QSM diameter, height, volume, and surface area           |
+| [`box_dimension()`](https://aidanmorales.github.io/rTwig/reference/box_dimension.md) | Calculate and visualize the structural complexity of a point cloud |
+
+### Visualization
+
+| Function                                                                             | Description                                                       |
+|--------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| [`plot_qsm()`](https://aidanmorales.github.io/rTwig/reference/plot_qsm.md)           | Plot QSMs and point clouds                                        |
+| [`smooth_qsm()`](https://aidanmorales.github.io/rTwig/reference/smooth_qsm.md)       | Visually smooth a QSM by connecting cylinders end-to-end          |
+| [`cluster_cloud()`](https://aidanmorales.github.io/rTwig/reference/cluster_cloud.md) | Transfer QSM variables to a point cloud or simulate a point cloud |
+
+### Data
+
+| Function                                                                               | Description                               |
+|----------------------------------------------------------------------------------------|-------------------------------------------|
+| [`download_twigs()`](https://aidanmorales.github.io/rTwig/reference/download_twigs.md) | Download the official rTwig twig database |
 
 ## Installation
 
@@ -158,7 +162,7 @@ Below are examples of how to quickly run and visualize Real Twig, using
 example data from the package. See the vignettes for more details on a
 general workflow and best practices.
 
-#### TreeQSM
+#### TreeQSM / SmartQSM
 
 ``` r
  # Load the Real Twig library
@@ -177,14 +181,16 @@ general workflow and best practices.
  qsm$metrics
 ```
 
-#### SimpleForest
+#### SimpleForest / aRchi
 
 ``` r
  # Load the Real Twig library
  library(rTwig)
  
  # File path to QSM
- file <- system.file("extdata/QSM.csv", package = "rTwig")
+ 
+ file <- system.file("extdata/QSM.csv", package = "rTwig") # SimpleForest
+ file <- system.file("extdata/QSM2.csv", package = "rTwig") # aRchi
  
  # Correct QSM cylinders
  qsm <- run_rtwig(file, twig_radius = 4.23)
@@ -215,26 +221,7 @@ general workflow and best practices.
  qsm$metrics
 ```
 
-#### aRchi
-
-``` r
- # Load the Real Twig library
- library(rTwig)
- 
- # File path to QSM
- file <- system.file("extdata/QSM2.csv", package = "rTwig")
- 
- # Correct QSM cylinders
- qsm <- run_rtwig(file, twig_radius = 4.23)
- 
- # Plot the result
- plot_qsm(qsm$cylinder)
- 
- # View detailed tree metrics
- qsm$metrics
-```
-
-#### AdQSM
+#### AdQSM / AdTree
 
 ``` r
  # Load the Real Twig library
@@ -244,26 +231,7 @@ general workflow and best practices.
  file <- "path_to_adqsm_obj"
  
  # Correct QSM cylinders
- qsm <- run_rtwig(file, twig_radius = 4.23, method = "adqsm")
- 
- # Plot the result
- plot_qsm(qsm$cylinder)
- 
- # View detailed tree metrics
- qsm$metrics
-```
-
-#### AdTree
-
-``` r
- # Load the Real Twig library
- library(rTwig)
- 
- # File path to QSM
- file <- "path_to_adtree_obj"
- 
- # Correct QSM cylinders
- qsm <- run_rtwig(file, twig_radius = 4.23, method = "adtree")
+ qsm <- run_rtwig(file, twig_radius = 4.23)
  
  # Plot the result
  plot_qsm(qsm$cylinder)
@@ -313,7 +281,7 @@ output[[2]]$slope
 - [`import_leaves()`](https://aidanmorales.github.io/rTwig/reference/import_leaves.md)
   : Import Leaves
 - [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
-  : Import TreeQSM
+  : Import QSM
 - [`import_treegraph()`](https://aidanmorales.github.io/rTwig/reference/import_treegraph.md)
   : Import Treegraph
 - [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
