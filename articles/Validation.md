@@ -25,10 +25,10 @@ Real Twig on the same QSMs.
 
 ![](Validation_files/figure-html/unnamed-chunk-4-1.png)
 
-| Method                     | Mean Relative Error (%) | RMSE (kg) | Relative RMSE (%) | CCC   |
-|----------------------------|-------------------------|-----------|-------------------|-------|
-| Real Twig (TreeQSM v2.4.1) | -1.190                  | 138.783   | 10.528            | 0.999 |
-| TreeQSM v2.4.1             | 76.754                  | 641.746   | 48.683            | 0.982 |
+| Method | Mean Relative Error (%) | RMSE (kg) | Relative RMSE (%) | CCC |
+|----|----|----|----|----|
+| Real Twig (TreeQSM v2.4.1) | -1.190 | 138.783 | 10.528 | 0.999 |
+| TreeQSM v2.4.1 | 76.754 | 641.746 | 48.683 | 0.982 |
 
 ## TreeQSM v2.4.1
 

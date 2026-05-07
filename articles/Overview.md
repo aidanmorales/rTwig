@@ -34,12 +34,14 @@ You can install the package directly from
 [CRAN](https://CRAN.R-project.org):
 
 ``` r
+
 install.packages("rTwig")
 ```
 
 Or the latest development version from [GitHub](https://github.com/):
 
 ``` r
+
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 
@@ -50,6 +52,7 @@ paired with packages from the [Tidyverse](https://www.tidyverse.org/),
 so we will also load the dplyr package to help with data manipulation.
 
 ``` r
+
 # Load rTwig
 library(rTwig)
 
@@ -98,6 +101,7 @@ We can import a QSM by supplying the
 function the directory to our QSM.
 
 ``` r
+
 # QSM directory
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
@@ -108,6 +112,7 @@ qsm <- import_qsm(file)
 The QSM should be a list with six elements. We can check it as follows:
 
 ``` r
+
 summary(qsm)
 #>               Length Class      Mode
 #> cylinder      17     data.frame list
@@ -122,6 +127,7 @@ Let’s check what version of TreeQSM was used, the date the QSM was made,
 and take a look at the cylinder data.
 
 ``` r
+
 # QSM info
 qsm$rundata$version
 #> [1] "2.4.1"
@@ -155,6 +161,7 @@ str(qsm$cylinder)
 Let’s try importing an old QSM and check its structure.
 
 ``` r
+
 # QSM Directory
 file <- system.file("extdata/QSM_2.mat", package = "rTwig")
 
@@ -188,6 +195,7 @@ str(qsm2$cylinder)
 #### Example 3: SimpleForest
 
 ``` r
+
 # QSM directory
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 
@@ -198,6 +206,7 @@ cylinder <- read.csv(file)
 Let’s take a look at the SimpleForest cylinder data.
 
 ``` r
+
 str(cylinder)
 #> 'data.frame':    1149 obs. of  17 variables:
 #>  $ ID                  : int  0 1 2 3 4 5 6 7 8 9 ...
@@ -245,6 +254,7 @@ Let’s save the cylinders to a new variable to make it easier to work
 with and update the ordering.
 
 ``` r
+
 # Save cylinders to new object
 cylinder <- qsm$cylinder
 
@@ -263,6 +273,7 @@ function to do this. We want to check the raw cylinder fits before any
 possible modification, so we will will use the raw cylinder radii.
 
 ``` r
+
 # Load the input point cloud
 file <- system.file("extdata/cloud.txt", package = "rTwig")
 cloud <- read.table(file, header = FALSE)
@@ -283,6 +294,7 @@ look at the twig data set and find the twig diameter for Kentucky coffee
 tree.
 
 ``` r
+
 # Look at the twigs database
 twigs
 #> # A tibble: 112 × 7
@@ -321,6 +333,7 @@ versus the growth length to see how much overestimation there is in the
 twig radii.
 
 ``` r
+
 # QSM summary with Triangulation
 summarise_qsm(cylinder = cylinder, radius = radius, triangulation = qsm$triangulation)[c(2:3)]
 #> [[1]]
@@ -360,11 +373,13 @@ Kentucky coffee tree and look at the new volume estimates and diagnostic
 plots.
 
 ``` r
+
 # Correct cylinder radii
 cylinder <- correct_radii(cylinder, twig_radius = 4.23)
 ```
 
 ``` r
+
 # Corrected QSM summary
 summarise_qsm(cylinder, radius = radius)[[1]]
 #> # A tidytable: 6 × 3
@@ -412,6 +427,7 @@ also color our QSM by many different variables and palettes. See the
 documentation for more details.
 
 ``` r
+
 # Smooth QSM
 cylinder <- smooth_qsm(cylinder)
 
@@ -444,6 +460,7 @@ function. The same colors and palettes found in the
 function can be used to color the mesh.
 
 ``` r
+
 # Export Mesh Colored by RBO
 cylinder %>%
   export_mesh(
@@ -476,6 +493,7 @@ saving the results to a master list. Make sure to read each function’s
 documentation for more examples and unique features.
 
 ``` r
+
 # Import QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 

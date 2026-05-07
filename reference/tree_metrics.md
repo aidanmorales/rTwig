@@ -79,6 +79,7 @@ scaling.” *The New phytologist*, **201**.
 ## Examples
 
 ``` r
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 cylinder <- import_treeqsm(file)$cylinder

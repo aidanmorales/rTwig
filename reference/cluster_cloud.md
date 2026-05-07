@@ -43,6 +43,7 @@ library for Nearest Neighbor (NN) with KD-trees.”
 ## Examples
 
 ``` r
+
 ## Load Data
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 file2 <- system.file("extdata/cloud.txt", package = "rTwig")

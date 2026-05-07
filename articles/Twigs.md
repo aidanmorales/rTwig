@@ -46,12 +46,14 @@ You can install the package directly from
 [CRAN](https://CRAN.R-project.org):
 
 ``` r
+
 install.packages("rTwig")
 ```
 
 Or the latest development version from [GitHub](https://github.com/):
 
 ``` r
+
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 
@@ -60,6 +62,7 @@ devtools::install_github("https://github.com/aidanmorales/rTwig")
 The first step is to load the rTwig package.
 
 ``` r
+
 library(rTwig)
 
 # Useful packages
@@ -73,6 +76,7 @@ While the summarised twig database is built directly into rTwig, we can
 load additional, raw measurements as follows:
 
 ``` r
+
 twig_measurements <- rTwig::download_twigs(database = "all")
 #> Downloading Twig Measurements
 twig_measurements
@@ -128,6 +132,7 @@ deviation, and *cv* is the coefficient of variation.
 Let’s see the breakdown of species.
 
 ``` r
+
 unique(twig_measurements$twigs$scientific_name)
 #>   [1] "Abies concolor"               "Abies spp."                  
 #>   [3] "Acer campestre"               "Acer platanoides"            
@@ -191,6 +196,7 @@ Similarly, we also provide the same data base broken down by twig size
 index. The size classes were adapted from (Coder 2021).
 
 ``` r
+
 twig_measurements$twigs_index
 #> # A tidytable: 4 × 7
 #>   size_index         radius_mm     n   min   max   std    cv
@@ -213,8 +219,8 @@ index.
 
 ## References
 
-Coder, Kim D. 2021. *Tree Anatomy Manual: Twigs*. Athens, GA: University
-of Georgia Warnell School of Forestry & Natural Resources.
+Coder, Kim D. 2021. *Tree Anatomy Manual: Twigs*. University of Georgia
+Warnell School of Forestry & Natural Resources.
 
 Morales, Aidan, and David W MacFarlane. 2024. “Reducing Tree Volume
 Overestimation in Quantitative Structure Models Using Modeled Branch

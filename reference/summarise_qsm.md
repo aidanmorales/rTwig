@@ -39,6 +39,7 @@ Returns a list
 ## Examples
 
 ``` r
+
 ## SimpleForest Processing Chain
 file <- system.file("extdata/QSM.csv", package = "rTwig")
 cylinder <- read.csv(file)

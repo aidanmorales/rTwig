@@ -51,6 +51,7 @@ Returns a .mat file
 ## Examples
 
 ``` r
+
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)

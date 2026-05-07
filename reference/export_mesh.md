@@ -13,6 +13,8 @@ export_mesh(
   color = NULL,
   palette = NULL,
   facets = 6,
+  caps = FALSE,
+  close = FALSE,
   normals = FALSE,
   alpha = 1
 )
@@ -66,6 +68,14 @@ export_mesh(
   higher number of facets improves visual smoothness at the cost of
   plotting speed, performance and memory.
 
+- caps:
+
+  Add caps to the cylinders. Defaults to FALSE.
+
+- close:
+
+  Close the mesh by filling cylinder gaps. Defaults to FALSE.
+
 - normals:
 
   Export surface normals per vertex. Defaults to FALSE.
@@ -82,6 +92,7 @@ A mesh file
 ## Examples
 
 ``` r
+
 ## Load QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)

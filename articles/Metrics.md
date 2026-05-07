@@ -9,10 +9,12 @@ data manipulation and visualization, ggpubr for multi-panel plots, and
 rgl for point cloud plotting.
 
 ``` r
+
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 
 ``` r
+
 # Load rTwig
 library(rTwig)
 
@@ -32,6 +34,7 @@ and calculate our tree metrics with
 [`tree_metrics()`](https://aidanmorales.github.io/rTwig/reference/tree_metrics.md).
 
 ``` r
+
 # File path to QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 
@@ -74,12 +77,14 @@ We can even plot the simulated point cloud with the rgl library, and
 look at the cylinder connectivity.
 
 ``` r
+
 plot_qsm(cylinder, qsm$cylinder, cloud = metrics$cloud, skeleton = TRUE)
 ```
 
 ## Plotting Code
 
 ``` r
+
 # Stem Taper -------------------------------------------------------------------
 metrics$stem_taper %>%
   ggplot(aes(x = height_m, y = diameter_cm)) +

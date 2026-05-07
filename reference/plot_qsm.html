@@ -63,6 +63,8 @@ triangulation meshes. Plots can be combined and extensively customized.</p>
 <span>  palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  facets <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  caps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  close <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skeleton_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  cloud <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -129,6 +131,14 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.</p></dd>
 <dd><p>The number of facets in the polygon cross section.
 Defaults to 6. A higher number of facets improves visual smoothness at the
 cost of plotting speed, performance and memory.</p></dd>
+
+
+<dt id="arg-caps">caps<a class="anchor" aria-label="anchor" href="#arg-caps"></a></dt>
+<dd><p>Add caps to the cylinders. Defaults to FALSE.</p></dd>
+
+
+<dt id="arg-close">close<a class="anchor" aria-label="anchor" href="#arg-close"></a></dt>
+<dd><p>Close the mesh by filling cylinder gaps. Defaults to FALSE.</p></dd>
 
 
 <dt id="arg-skeleton">skeleton<a class="anchor" aria-label="anchor" href="#arg-skeleton"></a></dt>

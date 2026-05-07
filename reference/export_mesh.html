@@ -61,6 +61,8 @@
 <span>  color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  facets <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  caps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  close <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  normals <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -112,6 +114,14 @@ cylinder will have a random, distinct color.</p></dd>
 <dd><p>The number of facets in the polygon cross section.
 Defaults to 6. A higher number of facets improves visual smoothness at the
 cost of plotting speed, performance and memory.</p></dd>
+
+
+<dt id="arg-caps">caps<a class="anchor" aria-label="anchor" href="#arg-caps"></a></dt>
+<dd><p>Add caps to the cylinders. Defaults to FALSE.</p></dd>
+
+
+<dt id="arg-close">close<a class="anchor" aria-label="anchor" href="#arg-close"></a></dt>
+<dd><p>Close the mesh by filling cylinder gaps. Defaults to FALSE.</p></dd>
 
 
 <dt id="arg-normals">normals<a class="anchor" aria-label="anchor" href="#arg-normals"></a></dt>

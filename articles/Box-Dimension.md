@@ -30,12 +30,14 @@ You can install the package directly from
 [CRAN](https://CRAN.R-project.org):
 
 ``` r
+
 install.packages("rTwig")
 ```
 
 Or the latest development version from [GitHub](https://github.com/):
 
 ``` r
+
 devtools::install_github("https://github.com/aidanmorales/rTwig")
 ```
 
@@ -44,6 +46,7 @@ devtools::install_github("https://github.com/aidanmorales/rTwig")
 The first step is to load the rTwig package.
 
 ``` r
+
 library(rTwig)
 ```
 
@@ -54,6 +57,7 @@ cloud, from single trees, to entire forest stands. Let’s use our example
 Kentucky coffee tree.
 
 ``` r
+
 file <- system.file("extdata/cloud.txt", package = "rTwig")
 cloud <- read.table(file, header = FALSE)
 ```
@@ -70,6 +74,7 @@ parameter to 0.01 m, which is also the default. Let’s take a look at the
 summary data and extract the box dimension (slope).
 
 ``` r
+
 # Box Dimension Summary
 output <- box_dimension(cloud)
 str(output)
@@ -77,7 +82,7 @@ str(output)
 #>  $ :Classes 'tidytable', 'tbl', 'data.table' and 'data.frame':   9 obs. of  2 variables:
 #>   ..$ log.box.size: num [1:9] 0 0.693 1.386 2.079 2.773 ...
 #>   ..$ log.voxels  : num [1:9] 1.1 1.95 3.09 4.11 5.18 ...
-#>   ..- attr(*, ".internal.selfref")=<pointer: 0x564a65026ee0> 
+#>   ..- attr(*, ".internal.selfref")=<pointer: 0x556cdfe37ee0> 
 #>  $ :Classes 'tidytable', 'tbl', 'data.table' and 'data.frame':   1 obs. of  4 variables:
 #>   ..$ r.squared    : num 1
 #>   ..$ adj.r.squared: num 1
@@ -96,6 +101,7 @@ We can also plot the results as both 2D and 3D plots, by setting the
 `FALSE` by default to speed up the calculations.
 
 ``` r
+
 # 2D Plot
 output <- box_dimension(cloud, plot = "2D")
 ```
@@ -103,6 +109,7 @@ output <- box_dimension(cloud, plot = "2D")
 ![](Box-Dimension_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
+
 # 3D Plot
 output <- box_dimension(cloud, plot = "3D")
 ```

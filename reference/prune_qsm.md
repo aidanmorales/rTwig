@@ -69,6 +69,7 @@ a data frame
 ## Examples
 
 ``` r
+
 ## Load QSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)

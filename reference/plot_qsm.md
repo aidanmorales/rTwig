@@ -13,6 +13,8 @@ plot_qsm(
   palette = NULL,
   alpha = 1,
   facets = 6,
+  caps = FALSE,
+  close = FALSE,
   skeleton = FALSE,
   skeleton_lwd = 1,
   cloud = NULL,
@@ -80,6 +82,14 @@ plot_qsm(
   The number of facets in the polygon cross section. Defaults to 6. A
   higher number of facets improves visual smoothness at the cost of
   plotting speed, performance and memory.
+
+- caps:
+
+  Add caps to the cylinders. Defaults to FALSE.
+
+- close:
+
+  Close the mesh by filling cylinder gaps. Defaults to FALSE.
 
 - skeleton:
 
@@ -216,6 +226,7 @@ plot
 ## Examples
 
 ``` r
+
 ## TreeQSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)

@@ -50,6 +50,7 @@ Photogrammetry and Remote Sensing*, **232**, 712-739. ISSN 0924-2716.
 ## Examples
 
 ``` r
+
 # Read a TreeQSM MATLAB file
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_qsm(file)

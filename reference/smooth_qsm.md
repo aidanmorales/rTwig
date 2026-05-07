@@ -22,6 +22,7 @@ Returns a data frame
 ## Examples
 
 ``` r
+
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- import_treeqsm(file)
 #> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.

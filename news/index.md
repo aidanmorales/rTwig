@@ -23,13 +23,24 @@
   [\#24](https://github.com/aidanmorales/rTwig/issues/24), issue
   [\#28](https://github.com/aidanmorales/rTwig/issues/28)).
 
+- Improved
+  [`plot_qsm()`](https://aidanmorales.github.io/rTwig/reference/plot_qsm.md)
+  and
+  [`export_mesh()`](https://aidanmorales.github.io/rTwig/reference/export_mesh.md)
+  speed and responsiveness by storing triangles and colors more
+  efficiently. Added the option to add caps to the cylinders with
+  `caps = TRUE`. Users can also now plot and export their QSM as a
+  closed mesh, with `close = TRUE` (issue
+  [\#27](https://github.com/aidanmorales/rTwig/issues/27)). Closing the
+  mesh may reduce performance for large QSMs with many facets.
+
 - [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md)
   can now batch process multiple TreeQSM models if the mat file contains
   different runs for the same tree. The `version` parameter was also
   removed, since TreeQSM versions are now automatically detected.
 
-- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM)
-  support.
+- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM) support
+  (issue [\#29](https://github.com/aidanmorales/rTwig/issues/29)).
 
 - The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now
   supported in the package.

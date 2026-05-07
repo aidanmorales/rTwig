@@ -56,6 +56,7 @@ Returns cylinder data frame or list if metrics is true.
 ## Examples
 
 ``` r
+
 ## TreeQSM
 file <- system.file("extdata/QSM.mat", package = "rTwig")
 qsm <- run_rtwig(file, twig_radius = 4.23)
@@ -123,5 +124,5 @@ str(qsm$cylinder)
 #>  $ vesselVolume                : num  279 271 266 260 259 ...
 #>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...
 #>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x558d9a410a10> 
+#>  - attr(*, ".internal.selfref")=<pointer: 0x55801aa37a10> 
 ```
