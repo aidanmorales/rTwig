@@ -4,9 +4,11 @@
 
 - Reworked `import_qsm()` to automatically import all supported QSMs. `import_treeqsm()`, `import_treegraph()`, and `import_adqsm()` are all deprecated and will be removed in a future rTwig version. MATLAB files now use a custom file reader, with improved functionality, and compatibility with `export_mat()`. Dependencies on `rmatio` and `R.matlab` have been removed. The user can now import multiple TreeQSMs contained in the same struct. The `version` parameter has also been removed, and the TreeQSM format is automatically determined. Users can now re-import TreeQSM files created with rTwig (issue #24, issue #28).
 
+- Improved `plot_qsm()` and `export_mesh()` speed and responsiveness by storing triangles and colors more efficiently. Added the option to add caps to the cylinders with `caps = TRUE`. Users can also now plot and export their QSM as a closed mesh, with `close = TRUE` (issue #27). Closing the mesh may reduce performance for large QSMs with many facets.
+
 - `run_rtwig()` can now batch process multiple TreeQSM models if the mat file contains different runs for the same tree. The `version` parameter was also removed, since TreeQSM versions are now automatically detected.
 
-- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM) support.
+- Added [SmartQSM](https://github.com/project-lightlin/SmartQSM) support (issue #29).
 
 - The latest versions of AdQSM (v1.7.5) and AdTree (v1.1.2) are now supported in the package. `import_qsm()` can import an AdQSM or AdTree from its `.obj` file, making them immediately usable with the other package functions, and does not require `update_cylinders()` to be run.
 

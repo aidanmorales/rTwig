@@ -9,6 +9,27 @@ box_counting <- function(cloud, lowercutoff) {
     .Call(`_rTwig_box_counting`, cloud, lowercutoff)
 }
 
+#' @title Generate Closed Mesh
+#'
+#' @description Build a closed tube mesh from QSM skeleton samples.
+#'
+#' @param start cylinder starts
+#' @param axis cylinder axes
+#' @param length cylinder lengths
+#' @param radius cylinder radii
+#' @param facets mesh facets around each cross section
+#' @param id cylinder id
+#' @param parent parent cylinder id
+#' @param branch branch id
+#' @param color hex color per cylinder
+#' @return List with vertices, indices, and face_colors for rgl::tmesh3d()
+#'
+#' @noRd
+#'
+generate_closed_mesh <- function(start, axis, length, radius, facets, id, parent, branch, color = character()) {
+    .Call(`_rTwig_generate_closed_mesh`, start, axis, length, radius, facets, id, parent, branch, color)
+}
+
 assign_cloud_ids <- function(cloud_ref, cloud) {
     .Call(`_rTwig_assign_cloud_ids`, cloud_ref, cloud)
 }
@@ -123,51 +144,23 @@ model_matrix <- function(min_growth_length, twig_radius) {
     .Call(`_rTwig_model_matrix`, min_growth_length, twig_radius)
 }
 
-#' @title Generate Circle Points
-#'
-#' @description Generate circular points from n facets
-#'
-#' @param center cylinder center
-#' @param radius cylinder radius
-#' @param facets number of cylinder facets
-#' @return Numeric Matrix
-#'
-#' @noRd
-#'
-generate_circle_points <- function(center, radius, facets) {
-    .Call(`_rTwig_generate_circle_points`, center, radius, facets)
-}
-
-#' @title Rotate Circle Points
-#'
-#' @description Rotate circle points along an axis
-#'
-#' @param points circle points
-#' @param start cylinder start point
-#' @param axis cylinder axis
-#' @return Numeric Matrix
-#'
-#' @noRd
-#'
-rotate_circle_points <- function(points, start, axis) {
-    .Call(`_rTwig_rotate_circle_points`, points, start, axis)
-}
-
 #' @title Generate Mesh
 #'
-#' @description Generate mesh vertices to visualize cylinder
+#' @description Generate cylinder mesh for rgl::tmesh3d
 #'
 #' @param start cylinder starts
 #' @param axis cylinder axes
-#' @param length cylinder length
-#' @param radius cylinder radius
+#' @param length cylinder lengths
+#' @param radius cylinder radii
 #' @param facets number of cylinder facets
-#' @return Numeric Matrix
+#' @param caps should individual cylinder ends be capped?
+#' @param color hex color per cylinder
+#' @return List with vertices, indices, and face_colors
 #'
 #' @noRd
 #'
-generate_mesh <- function(start, axis, length, radius, facets) {
-    .Call(`_rTwig_generate_mesh`, start, axis, length, radius, facets)
+generate_cylinder_mesh <- function(start, axis, length, radius, facets, caps = FALSE, color = character()) {
+    .Call(`_rTwig_generate_cylinder_mesh`, start, axis, length, radius, facets, caps, color)
 }
 
 define_branches <- function(cylinder) {
@@ -200,46 +193,49 @@ generate_cloud <- function(start, axis, tips, length, radius, branch, metrics, s
 #'
 #' @description Export a QSM cylinder mesh to .ply
 #'
-#' @param vertices NumericMatrix
-#' @param colors NumericMatrix
-#' @param normals NumericMatrix
+#' @param vertices NumericMatrix, 3 x n_vertices
+#' @param indices IntegerMatrix, 3 x n_faces
+#' @param face_colors IntegerMatrix, n_faces x 3
 #' @param filename string
+#' @param alpha alpha transparency from 0 to 1
 #' @return ply
 #'
 #' @noRd
 #'
-write_ply <- function(vertices, colors, normals, filename) {
-    invisible(.Call(`_rTwig_write_ply`, vertices, colors, normals, filename))
+write_ply <- function(vertices, indices, face_colors, filename, alpha = 1.0) {
+    invisible(.Call(`_rTwig_write_ply`, vertices, indices, face_colors, filename, alpha))
 }
 
 #' @title Write OBJ
 #'
 #' @description Export a QSM cylinder mesh to .obj
 #'
-#' @param vertices NumericMatrix
-#' @param normals NumericMatrix
+#' @param vertices NumericMatrix, 3 x n_vertices
+#' @param indices IntegerMatrix, 3 x n_faces
+#' @param normals NumericMatrix, n_faces x 3
 #' @param filename string
 #' @return obj
 #'
 #' @noRd
 #'
-write_obj <- function(vertices, normals, filename) {
-    invisible(.Call(`_rTwig_write_obj`, vertices, normals, filename))
+write_obj <- function(vertices, indices, normals, filename) {
+    invisible(.Call(`_rTwig_write_obj`, vertices, indices, normals, filename))
 }
 
 #' @title Write STL
 #'
 #' @description Export a QSM cylinder mesh to .stl
 #'
-#' @param vertices NumericMatrix
-#' @param normals NumericMatrix
+#' @param vertices NumericMatrix, 3 x n_vertices
+#' @param indices IntegerMatrix, 3 x n_faces
+#' @param normals NumericMatrix, n_faces x 3
 #' @param filename string
 #' @return stl
 #'
 #' @noRd
 #'
-write_stl <- function(vertices, normals, filename) {
-    invisible(.Call(`_rTwig_write_stl`, vertices, normals, filename))
+write_stl <- function(vertices, indices, normals, filename) {
+    invisible(.Call(`_rTwig_write_stl`, vertices, indices, normals, filename))
 }
 
 #' @title Read OBJ
@@ -381,15 +377,16 @@ which_rcpp <- function(condition) {
 
 #' @title Calculate Normals
 #'
-#' @description Calculate normals per cylinder vertex
+#' @description Calculate face normals for indexed mesh
 #'
-#' @param vertices NumericMatrix
-#' @return NumericMatrix
+#' @param vertices NumericMatrix, 3 x n_vertices
+#' @param indices IntegerMatrix, 3 x n_faces, 1-based indices
+#' @return NumericMatrix, n_faces x 3
 #'
 #' @noRd
 #'
-calculate_normals <- function(vertices) {
-    .Call(`_rTwig_calculate_normals`, vertices)
+calculate_normals <- function(vertices, indices) {
+    .Call(`_rTwig_calculate_normals`, vertices, indices)
 }
 
 #' @title Gini Coefficient

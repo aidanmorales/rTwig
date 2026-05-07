@@ -223,69 +223,71 @@ IntegerVector which_rcpp(LogicalVector condition) {
 
 //' @title Calculate Normals
 //'
-//' @description Calculate normals per cylinder vertex
+//' @description Calculate face normals for indexed mesh
 //'
-//' @param vertices NumericMatrix
-//' @return NumericMatrix
+//' @param vertices NumericMatrix, 3 x n_vertices
+//' @param indices IntegerMatrix, 3 x n_faces, 1-based indices
+//' @return NumericMatrix, n_faces x 3
 //'
 //' @noRd
 //'
 // [[Rcpp::export]]
-NumericMatrix calculate_normals(NumericMatrix vertices) {
-  int n_triangles = vertices.nrow() / 3;
-  NumericMatrix normals(vertices.nrow(), 3);
+NumericMatrix calculate_normals(
+   NumericMatrix vertices,
+   IntegerMatrix indices
+) {
+ int n_faces = indices.ncol();
 
-  // Loop through each triangle
-  for (int i = 0; i < n_triangles; ++i) {
-    // Get the triangle vertics
-    double x0 = vertices(i * 3, 0);
-    double y0 = vertices(i * 3, 1);
-    double z0 = vertices(i * 3, 2);
+ NumericMatrix normals(n_faces, 3);
 
-    double x1 = vertices(i * 3 + 1, 0);
-    double y1 = vertices(i * 3 + 1, 1);
-    double z1 = vertices(i * 3 + 1, 2);
+ for (int i = 0; i < n_faces; i++) {
+   int i0 = indices(0, i) - 1;
+   int i1 = indices(1, i) - 1;
+   int i2 = indices(2, i) - 1;
 
-    double x2 = vertices(i * 3 + 2, 0);
-    double y2 = vertices(i * 3 + 2, 1);
-    double z2 = vertices(i * 3 + 2, 2);
+   double x0 = vertices(0, i0);
+   double y0 = vertices(1, i0);
+   double z0 = vertices(2, i0);
 
-    // Calculate the two edge vectors
-    double e1_x = x1 - x0;
-    double e1_y = y1 - y0;
-    double e1_z = z1 - z0;
+   double x1 = vertices(0, i1);
+   double y1 = vertices(1, i1);
+   double z1 = vertices(2, i1);
 
-    double e2_x = x2 - x0;
-    double e2_y = y2 - y0;
-    double e2_z = z2 - z0;
+   double x2 = vertices(0, i2);
+   double y2 = vertices(1, i2);
+   double z2 = vertices(2, i2);
 
-    // Compute the cross product (normal)
-    double normal_x = e1_y * e2_z - e1_z * e2_y;
-    double normal_y = e1_z * e2_x - e1_x * e2_z;
-    double normal_z = e1_x * e2_y - e1_y * e2_x;
+   double e1_x = x1 - x0;
+   double e1_y = y1 - y0;
+   double e1_z = z1 - z0;
 
-    // Normalize the normal vector
-    double length = std::sqrt(normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
+   double e2_x = x2 - x0;
+   double e2_y = y2 - y0;
+   double e2_z = z2 - z0;
 
-    normal_x /= length;
-    normal_y /= length;
-    normal_z /= length;
+   double normal_x = e1_y * e2_z - e1_z * e2_y;
+   double normal_y = e1_z * e2_x - e1_x * e2_z;
+   double normal_z = e1_x * e2_y - e1_y * e2_x;
 
-    // Store the normals for each triangle vertex
-    normals(i * 3, 0) = normal_x;
-    normals(i * 3, 1) = normal_y;
-    normals(i * 3, 2) = normal_z;
+   double normal_length = std::sqrt(
+     normal_x * normal_x +
+       normal_y * normal_y +
+       normal_z * normal_z
+   );
 
-    normals(i * 3 + 1, 0) = normal_x;
-    normals(i * 3 + 1, 1) = normal_y;
-    normals(i * 3 + 1, 2) = normal_z;
+   if (normal_length < 1e-12) {
+     normals(i, 0) = 0.0;
+     normals(i, 1) = 0.0;
+     normals(i, 2) = 1.0;
+     continue;
+   }
 
-    normals(i * 3 + 2, 0) = normal_x;
-    normals(i * 3 + 2, 1) = normal_y;
-    normals(i * 3 + 2, 2) = normal_z;
-  }
+   normals(i, 0) = normal_x / normal_length;
+   normals(i, 1) = normal_y / normal_length;
+   normals(i, 2) = normal_z / normal_length;
+ }
 
-  return normals;
+ return normals;
 }
 
 //' @title Gini Coefficient

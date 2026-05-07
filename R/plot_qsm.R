@@ -28,6 +28,10 @@
 #'  Defaults to 6. A higher number of facets improves visual smoothness at the
 #'  cost of plotting speed, performance and memory.
 #'
+#' @param caps Add caps to the cylinders. Defaults to FALSE.
+#'
+#' @param close Close the mesh by filling cylinder gaps. Defaults to FALSE.
+#'
 #' @param skeleton Plot the QSM skeleton instead of cylinders. Defaults to FALSE.
 #'
 #' @param skeleton_lwd Skeleton line width. Defaults to 1.
@@ -111,36 +115,39 @@
 #' plot_qsm(triangulation = triangulation)
 #'
 plot_qsm <- function(
-    cylinder = NULL,
-    radius = NULL,
-    color = NULL,
-    palette = NULL,
-    alpha = 1,
-    facets = 6,
-    skeleton = FALSE,
-    skeleton_lwd = 1,
-    cloud = NULL,
-    pt_color = "#FFFFFF",
-    pt_palette = NULL,
-    pt_size = 0.1,
-    pt_alpha = 1,
-    triangulation = NULL,
-    tri_color = NULL,
-    tri_palette = NULL,
-    tri_alpha = 1,
-    leaves = NULL,
-    lf_color = "#5BA803",
-    lf_alpha = 1,
-    axes = TRUE,
-    axes_color = "#FFFFFF",
-    grid = FALSE,
-    grid_color = "#D3D3D3",
-    hover = FALSE,
-    bg_color = "#000000",
-    lit = FALSE,
-    pan = TRUE,
-    normalize = FALSE,
-    mesh = NULL) {
+  cylinder = NULL,
+  radius = NULL,
+  color = NULL,
+  palette = NULL,
+  alpha = 1,
+  facets = 6,
+  caps = FALSE,
+  close = FALSE,
+  skeleton = FALSE,
+  skeleton_lwd = 1,
+  cloud = NULL,
+  pt_color = "#FFFFFF",
+  pt_palette = NULL,
+  pt_size = 0.1,
+  pt_alpha = 1,
+  triangulation = NULL,
+  tri_color = NULL,
+  tri_palette = NULL,
+  tri_alpha = 1,
+  leaves = NULL,
+  lf_color = "#5BA803",
+  lf_alpha = 1,
+  axes = TRUE,
+  axes_color = "#FFFFFF",
+  grid = FALSE,
+  grid_color = "#D3D3D3",
+  hover = FALSE,
+  bg_color = "#000000",
+  lit = FALSE,
+  pan = TRUE,
+  normalize = FALSE,
+  mesh = NULL
+) {
   # Check inputs ---------------------------------------------------------------
   if (!is_null(cylinder)) {
     if (!is.data.frame(cylinder)) {
@@ -221,6 +228,20 @@ plot_qsm <- function(
       "performance for a large number of cylinders."
     )
     warn(message)
+  }
+
+  if (!is_logical(caps)) {
+    message <- paste0(
+      "`caps` must be logical, not ", class(caps), "."
+    )
+    abort(message, class = "invalid_argument")
+  }
+
+  if (!is_logical(close)) {
+    message <- paste0(
+      "`close` must be logical, not ", class(close), "."
+    )
+    abort(message, class = "invalid_argument")
   }
 
   if (!is_logical(skeleton)) {
@@ -386,8 +407,9 @@ plot_qsm <- function(
       branch = "branch", branch_order = "branch_order",
       start_x = "start_x", start_y = "start_y", start_z = "start_z",
       axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z",
-      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      end_x = "end_x", end_y = "end_y", end_z = "end_z", parent = "parent",
+      facets = facets, caps = caps, close = close,
+      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
@@ -406,8 +428,9 @@ plot_qsm <- function(
       branch = "branch", branch_order = "BranchOrder",
       start_x = "start.x", start_y = "start.y", start_z = "start.z",
       axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z",
-      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      end_x = "end.x", end_y = "end.y", end_z = "end.z", parent = "parent",
+      facets = facets, caps = caps, close = close,
+      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
@@ -426,8 +449,9 @@ plot_qsm <- function(
       branch = "branchID", branch_order = "branchOrder",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      end_x = "endX", end_y = "endY", end_z = "endZ", parent = "parentID",
+      facets = facets, caps = caps, close = close,
+      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
@@ -446,8 +470,9 @@ plot_qsm <- function(
       branch = "nbranch", branch_order = "branch_order",
       start_x = "sx", start_y = "sy", start_z = "sz",
       axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez",
-      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      end_x = "ex", end_y = "ey", end_z = "ez", parent = "p2",
+      facets = facets, caps = caps, close = close,
+      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
@@ -466,8 +491,9 @@ plot_qsm <- function(
       branch = "branch_ID", branch_order = "branching_order",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      facets = facets, skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+      end_x = "endX", end_y = "endY", end_z = "endZ", parent = "parent_ID",
+      facets = facets, caps = caps, close = close,
+      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
       color = color, palette = palette, alpha = alpha,
       axes = axes, axes_color = axes_color,
       grid = grid, grid_color = grid_color, hover = hover,
@@ -497,7 +523,7 @@ plot_qsm <- function(
   } else {
     message <- paste(
       "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
+      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
       sep = "\n"
     )
     abort(message, class = "data_format_error")
@@ -520,7 +546,10 @@ plot_qsm <- function(
 #' @param end_x cylinder end x
 #' @param end_y cylinder end y
 #' @param end_z cylinder end z
+#' @param parent cylinder parent
 #' @param facets cylinder facets
+#' @param caps cylinder caps
+#' @param close close mesh
 #' @param skeleton skeleton logical
 #' @param skeleton_lwd skeleton line width
 #' @param color cylinder color
@@ -551,49 +580,53 @@ plot_qsm <- function(
 #' @returns an rgl::open3d plot
 #' @noRd
 plot_data <- function(
-    cylinder = NULL,
-    radius = NULL,
-    length = NULL,
-    id = NULL,
-    branch = NULL,
-    branch_order = NULL,
-    start_x = NULL,
-    start_y = NULL,
-    start_z = NULL,
-    axis_x = NULL,
-    axis_y = NULL,
-    axis_z = NULL,
-    end_x = NULL,
-    end_y = NULL,
-    end_z = NULL,
-    facets = NULL,
-    skeleton = NULL,
-    skeleton_lwd = NULL,
-    color = NULL,
-    palette = NULL,
-    alpha = NULL,
-    axes = NULL,
-    axes_color = NULL,
-    grid = NULL,
-    grid_color = NULL,
-    hover = NULL,
-    cloud = NULL,
-    pt_color = NULL,
-    pt_palette = NULL,
-    pt_size = NULL,
-    pt_alpha = NULL,
-    bg_color = NULL,
-    lit = NULL,
-    pan = NULL,
-    normalize = NULL,
-    triangulation = NULL,
-    tri_color = NULL,
-    tri_palette = NULL,
-    tri_alpha = NULL,
-    leaves = NULL,
-    lf_color = NULL,
-    lf_alpha = NULL,
-    mesh = NULL) {
+  cylinder = NULL,
+  radius = NULL,
+  length = NULL,
+  id = NULL,
+  branch = NULL,
+  branch_order = NULL,
+  start_x = NULL,
+  start_y = NULL,
+  start_z = NULL,
+  axis_x = NULL,
+  axis_y = NULL,
+  axis_z = NULL,
+  end_x = NULL,
+  end_y = NULL,
+  end_z = NULL,
+  parent = NULL,
+  facets = NULL,
+  caps = NULL,
+  close = NULL,
+  skeleton = NULL,
+  skeleton_lwd = NULL,
+  color = NULL,
+  palette = NULL,
+  alpha = NULL,
+  axes = NULL,
+  axes_color = NULL,
+  grid = NULL,
+  grid_color = NULL,
+  hover = NULL,
+  cloud = NULL,
+  pt_color = NULL,
+  pt_palette = NULL,
+  pt_size = NULL,
+  pt_alpha = NULL,
+  bg_color = NULL,
+  lit = NULL,
+  pan = NULL,
+  normalize = NULL,
+  triangulation = NULL,
+  tri_color = NULL,
+  tri_palette = NULL,
+  tri_alpha = NULL,
+  leaves = NULL,
+  lf_color = NULL,
+  lf_alpha = NULL,
+  mesh = NULL
+) {
   if (!is.null(cylinder)) {
     # Plotting radii -----------------------------------------------------------
     radius <- plotting_radii(cylinder, radius)
@@ -622,7 +655,8 @@ plot_data <- function(
     else {
       plot_cylinders(
         cylinder, radius, length, start_x, start_y, start_z,
-        axis_x, axis_y, axis_z, facets, colors, alpha, lit
+        axis_x, axis_y, axis_z, id, parent, branch,
+        facets, caps, close, colors, alpha, lit
       )
     }
 
@@ -689,6 +723,7 @@ plotting_radii <- function(cylinder, radius) {
 
 #' Plot colors
 #' @param data QSM or point cloud data data frame
+#' @param color column name or color value
 #' @param radius data radii column name
 #' @param palette color palette
 #' @param branch_order branch order column name
@@ -788,16 +823,17 @@ plot_colors <- function(data, color, palette, branch_order) {
 #' @returns NA
 #' @noRd
 plot_skeleton <- function(
-    cylinder,
-    colors,
-    alpha,
-    skeleton_lwd,
-    start_x,
-    start_y,
-    start_z,
-    end_x,
-    end_y,
-    end_z) {
+  cylinder,
+  colors,
+  alpha,
+  skeleton_lwd,
+  start_x,
+  start_y,
+  start_z,
+  end_x,
+  end_y,
+  end_z
+) {
   inform("Plotting Skeleton")
 
   # Plot Skeleton
@@ -805,7 +841,8 @@ plot_skeleton <- function(
     x = as.vector(t(select(cylinder, all_of(c(start_x, end_x))))),
     y = as.vector(t(select(cylinder, all_of(c(start_y, end_y))))),
     z = as.vector(t(select(cylinder, all_of(c(start_z, end_z))))),
-    col = rep(colors, each = 2), lwd = skeleton_lwd, alpha = alpha
+    col = rep(colors, each = 2),
+    lwd = skeleton_lwd, alpha = alpha, add = TRUE
   )
 }
 
@@ -819,29 +856,37 @@ plot_skeleton <- function(
 #' @param axis_x column name of axis_x
 #' @param axis_y column name of axis_y
 #' @param axis_z column name of axis_z
+#' @param id column name of id
+#' @param parent column name of parent
+#' @param branch column name of branch
 #' @param facets cylinder facets
+#' @param caps cylinder caps
+#' @param close close mesh
 #' @param colors cylinder colors
 #' @param alpha cylinder transparency
 #' @param lit plot lighting
 #' @returns NA
 #' @noRd
 plot_cylinders <- function(
-    cylinder,
-    radius,
-    length,
-    start_x,
-    start_y,
-    start_z,
-    axis_x,
-    axis_y,
-    axis_z,
-    facets,
-    colors,
-    alpha,
-    lit) {
-  inform("Plotting Cylinders")
-
-  # Extract required variables
+  cylinder,
+  radius,
+  length,
+  start_x,
+  start_y,
+  start_z,
+  axis_x,
+  axis_y,
+  axis_z,
+  id,
+  parent,
+  branch,
+  facets,
+  caps,
+  close,
+  colors,
+  alpha,
+  lit
+) {
   start <- cbind(
     pull(cylinder, {{ start_x }}),
     pull(cylinder, {{ start_y }}),
@@ -856,19 +901,62 @@ plot_cylinders <- function(
 
   length <- pull(cylinder, {{ length }})
 
-  # Create cylinder mesh
-  cylinder_mesh <- generate_mesh(start, axis, length, radius, facets)
-  colors <- rep(colors, each = facets * 6)
-
-  # Alpha transparency
   if (is.null(alpha)) {
     alpha <- 1
-  } else {
-    alpha <- alpha
   }
 
-  # Plot cylinders
-  rgl::triangles3d(cylinder_mesh, col = colors, lit = lit, alpha = alpha)
+  if (isTRUE(close)) {
+    inform("Plotting Closed Mesh")
+
+    id <- pull(cylinder, {{ id }})
+    parent <- pull(cylinder, {{ parent }})
+    branch <- pull(cylinder, {{ branch }})
+
+    mesh <- generate_closed_mesh(
+      start = start,
+      axis = axis,
+      length = length,
+      radius = radius,
+      facets = facets,
+      id = id,
+      parent = parent,
+      branch = branch,
+      color = colors
+    )
+  } else {
+    inform("Plotting Cylinders")
+    mesh <- generate_cylinder_mesh(
+      start = start,
+      axis = axis,
+      length = length,
+      radius = radius,
+      facets = facets,
+      caps = caps,
+      color = colors
+    )
+  }
+
+  face_cols <- grDevices::rgb(
+    mesh$face_colors[, 1],
+    mesh$face_colors[, 2],
+    mesh$face_colors[, 3],
+    maxColorValue = 255
+  )
+
+  rgl::plot3d(
+    x = rgl::tmesh3d(
+      vertices = mesh$vertices,
+      indices = mesh$indices,
+      homogeneous = FALSE
+    ),
+    color = face_cols,
+    meshColor = "faces",
+    lit = lit,
+    alpha = alpha,
+    aspect = FALSE,
+    decorate = FALSE,
+    add = TRUE
+  )
 }
 
 #' Plot cloud
@@ -916,22 +1004,27 @@ plot_cloud <- function(cloud, pt_size, pt_color, pt_palette, pt_alpha) {
 #' @returns NA
 #' @noRd
 plot_triangulation <- function(
-    triangulation,
-    tri_color,
-    tri_palette,
-    tri_alpha,
-    lit) {
+  triangulation,
+  tri_color,
+  tri_palette,
+  tri_alpha,
+  lit
+) {
   inform("Plotting Triangulation")
 
   # Extract TreeQSM triangulation data
   v <- as.matrix(triangulation$vert)
   f <- as.matrix(triangulation$facet)
 
-  # Create triangulation mesh
-  triangulation_mesh <- v[as.vector(t(f)), ]
+  # Create indexed triangulation mesh
+  triangulation_mesh <- rgl::tmesh3d(
+    vertices = t(v),
+    indices = t(f),
+    homogeneous = FALSE
+  )
 
   # Colors
-  z <- triangulation_mesh[, 3]
+  z <- v[, 3]
   z_normalized <- (z - min(z)) / (max(z) - min(z))
 
   if (is.null(tri_color) & is.null(tri_palette)) {
@@ -949,11 +1042,15 @@ plot_triangulation <- function(
   }
 
   # Plot triangulation mesh
-  rgl::triangles3d(
+  rgl::plot3d(
     triangulation_mesh,
     color = tri_color,
+    meshColor = if (length(tri_color) == nrow(v)) "vertices" else "faces",
     alpha = tri_alpha,
-    lit = lit
+    lit = lit,
+    aspect = FALSE,
+    decorate = FALSE,
+    add = TRUE
   )
 }
 
@@ -965,10 +1062,11 @@ plot_triangulation <- function(
 #' @returns NA
 #' @noRd
 plot_leaves <- function(
-    leaves,
-    lf_color,
-    lf_alpha,
-    lit) {
+  leaves,
+  lf_color,
+  lf_alpha,
+  lit
+) {
   inform("Plotting Leaves")
 
   # Get leaf colors
@@ -1086,14 +1184,15 @@ pan_plot <- function(button = 2) {
 #' @returns normalized coordinates or tree start
 #' @noRd
 normalize_qsm <- function(
-    cylinder,
-    id,
-    start_x,
-    start_y,
-    start_z,
-    end_x,
-    end_y,
-    end_z) {
+  cylinder,
+  id,
+  start_x,
+  start_y,
+  start_z,
+  end_x,
+  end_y,
+  end_z
+) {
   # Update cylinder coordinates
   coords <- cylinder %>%
     select(

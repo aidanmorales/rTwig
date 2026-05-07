@@ -12,6 +12,8 @@ export_mesh(
   color = NULL,
   palette = NULL,
   facets = 6,
+  caps = FALSE,
+  close = FALSE,
   normals = FALSE,
   alpha = 1
 )
@@ -46,6 +48,10 @@ cylinder will have a random, distinct color.}
 \item{facets}{The number of facets in the polygon cross section.
 Defaults to 6. A higher number of facets improves visual smoothness at the
 cost of plotting speed, performance and memory.}
+
+\item{caps}{Add caps to the cylinders. Defaults to FALSE.}
+
+\item{close}{Close the mesh by filling cylinder gaps. Defaults to FALSE.}
 
 \item{normals}{Export surface normals per vertex. Defaults to FALSE.}
 

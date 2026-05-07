@@ -1,181 +1,221 @@
 #include <Rcpp.h>
-#include "helper_functions.h"
 using namespace Rcpp;
-
-//' @title Generate Circle Points
-//'
-//' @description Generate circular points from n facets
-//'
-//' @param center cylinder center
-//' @param radius cylinder radius
-//' @param facets number of cylinder facets
-//' @return Numeric Matrix
-//'
-//' @noRd
-//'
-// [[Rcpp::export]]
-NumericMatrix generate_circle_points(
-    NumericVector center,
-    double radius,
-    int facets){
-
-  NumericVector theta(facets + 1);
-
-  double start = 0.0;
-  double end = 2 * M_PI;
-  double step = (end - start) / facets;
-
-  for (int i = 0; i < theta.size(); ++i) {
-    theta[i] = start + i * step;
-  }
-
-  NumericMatrix points(facets + 1, 3);
-
-  points(_, 0) = radius * cos(theta);
-  points(_, 1) = radius * sin(theta);
-  points(_, 2) = rep(0, facets + 1);
-
-  NumericMatrix ptcenter(facets + 1, 3);
-
-  for(int i = 0; i < ptcenter.nrow(); i++){
-    ptcenter(i, _) = center;
-  }
-
-  for(int i = 0; i < points.nrow(); i++){
-    for(int j = 0; j < points.ncol(); j++){
-      points(i, j) = points(i, j) + ptcenter(i, j);
-    }
-  }
-
-  return(points);
-}
-
-//' @title Rotate Circle Points
-//'
-//' @description Rotate circle points along an axis
-//'
-//' @param points circle points
-//' @param start cylinder start point
-//' @param axis cylinder axis
-//' @return Numeric Matrix
-//'
-//' @noRd
-//'
-// [[Rcpp::export]]
-NumericMatrix rotate_circle_points(
-    NumericMatrix points,
-    NumericVector start,
-    NumericVector axis){
-
-  // Normalize the axis vector
-  double axis_norm = std::sqrt(sum(axis * axis));
-  if (axis_norm < 1e-8) axis_norm = 1.0; // prevent NaN division by zero
-  NumericVector axis_unit = axis / axis_norm;
-
-  // Calculate Rotation Matrix
-  NumericVector start_z = {0, 0, 1};
-  NumericVector rot_axis = cross_product(start_z, axis_unit);
-
-  double dot_product = sum(start_z * axis_unit);
-  dot_product = std::min(1.0, std::max(-1.0, dot_product));
-  double rot_angle = std::acos(dot_product);
-
-  // Allow axis aligned rotation angle
-  if (std::abs(rot_angle) < 1e-8) {
-    NumericMatrix translated(points.nrow(), 3);
-    for (int i = 0; i < points.nrow(); ++i)
-      for (int j = 0; j < 3; ++j)
-        translated(i, j) = points(i, j) + start[j];
-    return translated;
-  }
-
-  NumericMatrix rot_matrix = transpose(rotation_matrix(rot_axis, rot_angle));
-
-  // Rotate Points & Translate Points
-  NumericMatrix result = mat_vec_subtraction(mat_multiplication(points, rot_matrix), -start);
-
-  return result;
-}
 
 //' @title Generate Mesh
 //'
-//' @description Generate mesh vertices to visualize cylinder
+//' @description Generate cylinder mesh for rgl::tmesh3d
 //'
 //' @param start cylinder starts
 //' @param axis cylinder axes
-//' @param length cylinder length
-//' @param radius cylinder radius
+//' @param length cylinder lengths
+//' @param radius cylinder radii
 //' @param facets number of cylinder facets
-//' @return Numeric Matrix
+//' @param caps should individual cylinder ends be capped?
+//' @param color hex color per cylinder
+//' @return List with vertices, indices, and face_colors
 //'
 //' @noRd
 //'
 // [[Rcpp::export]]
-NumericMatrix generate_mesh(
-    NumericMatrix start,
-    NumericMatrix axis,
-    NumericVector length,
-    NumericVector radius,
-    int facets){
+List generate_cylinder_mesh(
+   NumericMatrix start,
+   NumericMatrix axis,
+   NumericVector length,
+   NumericVector radius,
+   int facets,
+   bool caps = false,
+   CharacterVector color = CharacterVector()
+) {
+ int n = start.nrow();
 
-  // Pre-allocate the matrix of all cylinder vertices
-  // There are two triangles per facet
-  // There are three vertices per triangle
-  // There are n cylinders
-  // Total vertices = n * facets * 2 * 3
-  int n = start.nrow();
-  int v_size = facets * 6;
-  NumericMatrix vertices(v_size * n, 3);
+ bool use_color = color.size() == n;
 
-  for (int i = 0; i < n; i++){
+ int verts_per_cyl = caps ? facets * 2 + 2 : facets * 2;
+ int faces_per_cyl = caps ? facets * 4 : facets * 2;
 
-    // Initial cylinder base and top
-    NumericVector base_center = {0, 0, 0};
-    NumericVector top_center = {0, 0, length[i]};
+ NumericMatrix vertices(3, n * verts_per_cyl);
+ IntegerMatrix indices(3, n * faces_per_cyl);
+ IntegerMatrix face_colors(n * faces_per_cyl, 3);
 
-    // Initial cylinder base points
-    NumericMatrix base_points = generate_circle_points(
-      base_center,
-      radius[i],
-      facets
-    );
+ std::vector<double> ct(facets);
+ std::vector<double> st(facets);
 
-    // Initial cylinder top points
-    NumericMatrix top_points = generate_circle_points(
-      top_center,
-      radius[i],
-      facets
-    );
+ for (int j = 0; j < facets; j++) {
+   double theta = 2.0 * M_PI * j / facets;
+   ct[j] = std::cos(theta);
+   st[j] = std::sin(theta);
+ }
 
-    // Rotate base and top points along the cylinder's axis
-    base_points = rotate_circle_points(base_points, start(i, _), axis(i, _));
-    top_points = rotate_circle_points(top_points, start(i, _), axis(i, _));
+ int v_out = 0;
+ int f_out = 0;
 
-    // Pre-allocate the matrix of individual cylinder vertices
-    // There are two triangles per facet
-    // There are three vertices per triangle
-    // Total vertices = facets * 2 * 3
-    NumericMatrix cyl_vert(v_size, 3);
+ for (int i = 0; i < n; i++) {
+   double sx = start(i, 0);
+   double sy = start(i, 1);
+   double sz = start(i, 2);
 
-    // Create the facets using cyl_vert
-    for (int j = 0; j < facets; j++) {
-      int index = j * 6;
+   double ax = axis(i, 0);
+   double ay = axis(i, 1);
+   double az = axis(i, 2);
 
-      cyl_vert(index, _) = base_points(j, _);
-      cyl_vert(index + 1, _) = top_points(j, _);
-      cyl_vert(index + 2, _) = top_points(j + 1, _);
-      cyl_vert(index + 3, _) = base_points(j, _);
-      cyl_vert(index + 4, _) = top_points(j + 1, _);
-      cyl_vert(index + 5, _) = base_points(j + 1, _);
-    }
+   double an = std::sqrt(ax * ax + ay * ay + az * az);
 
-    // Append individual cylinder vertices to all cylinder vertices
-    int index = i * v_size;
+   if (an < 1e-12) {
+     ax = 0.0;
+     ay = 0.0;
+     az = 1.0;
+     an = 1.0;
+   }
 
-    for (int j = 0; j < v_size; j++){
-      vertices(index + j, _) = cyl_vert(j, _);
-    }
-  }
+   ax /= an;
+   ay /= an;
+   az /= an;
 
-  return(vertices);
+   double rx;
+   double ry;
+   double rz;
+
+   if (std::abs(az) < 0.9) {
+     rx = -ay;
+     ry = ax;
+     rz = 0.0;
+   } else {
+     rx = 0.0;
+     ry = -az;
+     rz = ay;
+   }
+
+   double rn = std::sqrt(rx * rx + ry * ry + rz * rz);
+
+   if (rn < 1e-12) {
+     rx = 1.0;
+     ry = 0.0;
+     rz = 0.0;
+     rn = 1.0;
+   }
+
+   rx /= rn;
+   ry /= rn;
+   rz /= rn;
+
+   double bx = ay * rz - az * ry;
+   double by = az * rx - ax * rz;
+   double bz = ax * ry - ay * rx;
+
+   double tx = sx + ax * length[i];
+   double ty = sy + ay * length[i];
+   double tz = sz + az * length[i];
+
+   int rr = 255;
+   int gg = 255;
+   int bb = 255;
+
+   if (use_color && !CharacterVector::is_na(color[i])) {
+     std::string col = as<std::string>(color[i]);
+
+     if (col.size() >= 7 && col[0] == '#') {
+       auto hv = [](char c) {
+         if (c >= '0' && c <= '9') return c - '0';
+         if (c >= 'a' && c <= 'f') return 10 + c - 'a';
+         if (c >= 'A' && c <= 'F') return 10 + c - 'A';
+         return 0;
+       };
+
+       rr = 16 * hv(col[1]) + hv(col[2]);
+       gg = 16 * hv(col[3]) + hv(col[4]);
+       bb = 16 * hv(col[5]) + hv(col[6]);
+     }
+   }
+
+   int base_start = v_out + 1;
+
+   for (int j = 0; j < facets; j++) {
+     double ox = radius[i] * (ct[j] * rx + st[j] * bx);
+     double oy = radius[i] * (ct[j] * ry + st[j] * by);
+     double oz = radius[i] * (ct[j] * rz + st[j] * bz);
+
+     vertices(0, v_out) = sx + ox;
+     vertices(1, v_out) = sy + oy;
+     vertices(2, v_out) = sz + oz;
+     v_out++;
+
+     vertices(0, v_out) = tx + ox;
+     vertices(1, v_out) = ty + oy;
+     vertices(2, v_out) = tz + oz;
+     v_out++;
+   }
+
+   for (int j = 0; j < facets; j++) {
+     int j2 = (j + 1) % facets;
+
+     int b0 = base_start + j * 2;
+     int t0 = b0 + 1;
+     int b1 = base_start + j2 * 2;
+     int t1 = b1 + 1;
+
+     indices(0, f_out) = b0;
+     indices(1, f_out) = t0;
+     indices(2, f_out) = t1;
+     face_colors(f_out, 0) = rr;
+     face_colors(f_out, 1) = gg;
+     face_colors(f_out, 2) = bb;
+     f_out++;
+
+     indices(0, f_out) = b0;
+     indices(1, f_out) = t1;
+     indices(2, f_out) = b1;
+     face_colors(f_out, 0) = rr;
+     face_colors(f_out, 1) = gg;
+     face_colors(f_out, 2) = bb;
+     f_out++;
+   }
+
+   if (caps) {
+     int base_center = v_out + 1;
+
+     vertices(0, v_out) = sx;
+     vertices(1, v_out) = sy;
+     vertices(2, v_out) = sz;
+     v_out++;
+
+     int top_center = v_out + 1;
+
+     vertices(0, v_out) = tx;
+     vertices(1, v_out) = ty;
+     vertices(2, v_out) = tz;
+     v_out++;
+
+     for (int j = 0; j < facets; j++) {
+       int j2 = (j + 1) % facets;
+
+       int b0 = base_start + j * 2;
+       int b1 = base_start + j2 * 2;
+
+       int t0 = b0 + 1;
+       int t1 = b1 + 1;
+
+       indices(0, f_out) = base_center;
+       indices(1, f_out) = b1;
+       indices(2, f_out) = b0;
+       face_colors(f_out, 0) = rr;
+       face_colors(f_out, 1) = gg;
+       face_colors(f_out, 2) = bb;
+       f_out++;
+
+       indices(0, f_out) = top_center;
+       indices(1, f_out) = t0;
+       indices(2, f_out) = t1;
+       face_colors(f_out, 0) = rr;
+       face_colors(f_out, 1) = gg;
+       face_colors(f_out, 2) = bb;
+       f_out++;
+     }
+   }
+ }
+
+ return List::create(
+   Named("vertices") = vertices,
+   Named("indices") = indices,
+   Named("face_colors") = face_colors
+ );
 }

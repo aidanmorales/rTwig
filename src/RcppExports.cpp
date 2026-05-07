@@ -36,6 +36,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// generate_closed_mesh
+List generate_closed_mesh(NumericMatrix start, NumericMatrix axis, NumericVector length, NumericVector radius, int facets, IntegerVector id, IntegerVector parent, IntegerVector branch, CharacterVector color);
+RcppExport SEXP _rTwig_generate_closed_mesh(SEXP startSEXP, SEXP axisSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP facetsSEXP, SEXP idSEXP, SEXP parentSEXP, SEXP branchSEXP, SEXP colorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type start(startSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type axis(axisSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type length(lengthSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type parent(parentSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type branch(branchSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type color(colorSEXP);
+    rcpp_result_gen = Rcpp::wrap(generate_closed_mesh(start, axis, length, radius, facets, id, parent, branch, color));
+    return rcpp_result_gen;
+END_RCPP
+}
 // assign_cloud_ids
 arma::vec assign_cloud_ids(const arma::mat& cloud_ref, const arma::mat& cloud);
 RcppExport SEXP _rTwig_assign_cloud_ids(SEXP cloud_refSEXP, SEXP cloudSEXP) {
@@ -141,35 +160,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// generate_circle_points
-NumericMatrix generate_circle_points(NumericVector center, double radius, int facets);
-RcppExport SEXP _rTwig_generate_circle_points(SEXP centerSEXP, SEXP radiusSEXP, SEXP facetsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type center(centerSEXP);
-    Rcpp::traits::input_parameter< double >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
-    rcpp_result_gen = Rcpp::wrap(generate_circle_points(center, radius, facets));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rotate_circle_points
-NumericMatrix rotate_circle_points(NumericMatrix points, NumericVector start, NumericVector axis);
-RcppExport SEXP _rTwig_rotate_circle_points(SEXP pointsSEXP, SEXP startSEXP, SEXP axisSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type points(pointsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type axis(axisSEXP);
-    rcpp_result_gen = Rcpp::wrap(rotate_circle_points(points, start, axis));
-    return rcpp_result_gen;
-END_RCPP
-}
-// generate_mesh
-NumericMatrix generate_mesh(NumericMatrix start, NumericMatrix axis, NumericVector length, NumericVector radius, int facets);
-RcppExport SEXP _rTwig_generate_mesh(SEXP startSEXP, SEXP axisSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP facetsSEXP) {
+// generate_cylinder_mesh
+List generate_cylinder_mesh(NumericMatrix start, NumericMatrix axis, NumericVector length, NumericVector radius, int facets, bool caps, CharacterVector color);
+RcppExport SEXP _rTwig_generate_cylinder_mesh(SEXP startSEXP, SEXP axisSEXP, SEXP lengthSEXP, SEXP radiusSEXP, SEXP facetsSEXP, SEXP capsSEXP, SEXP colorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -178,7 +171,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type length(lengthSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
     Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
-    rcpp_result_gen = Rcpp::wrap(generate_mesh(start, axis, length, radius, facets));
+    Rcpp::traits::input_parameter< bool >::type caps(capsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type color(colorSEXP);
+    rcpp_result_gen = Rcpp::wrap(generate_cylinder_mesh(start, axis, length, radius, facets, caps, color));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -223,39 +218,42 @@ BEGIN_RCPP
 END_RCPP
 }
 // write_ply
-void write_ply(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> colors, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
-RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP colorsSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+void write_ply(NumericMatrix vertices, IntegerMatrix indices, Nullable<IntegerMatrix> face_colors, std::string filename, double alpha);
+RcppExport SEXP _rTwig_write_ply(SEXP verticesSEXP, SEXP indicesSEXP, SEXP face_colorsSEXP, SEXP filenameSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type colors(colorsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type indices(indicesSEXP);
+    Rcpp::traits::input_parameter< Nullable<IntegerMatrix> >::type face_colors(face_colorsSEXP);
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_ply(vertices, colors, normals, filename);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    write_ply(vertices, indices, face_colors, filename, alpha);
     return R_NilValue;
 END_RCPP
 }
 // write_obj
-void write_obj(Rcpp::NumericMatrix vertices, Rcpp::Nullable<Rcpp::NumericMatrix> normals, std::string filename);
-RcppExport SEXP _rTwig_write_obj(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+void write_obj(NumericMatrix vertices, IntegerMatrix indices, Nullable<NumericMatrix> normals, std::string filename);
+RcppExport SEXP _rTwig_write_obj(SEXP verticesSEXP, SEXP indicesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type vertices(verticesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type indices(indicesSEXP);
+    Rcpp::traits::input_parameter< Nullable<NumericMatrix> >::type normals(normalsSEXP);
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_obj(vertices, normals, filename);
+    write_obj(vertices, indices, normals, filename);
     return R_NilValue;
 END_RCPP
 }
 // write_stl
-void write_stl(NumericMatrix vertices, NumericMatrix normals, std::string filename);
-RcppExport SEXP _rTwig_write_stl(SEXP verticesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
+void write_stl(NumericMatrix vertices, IntegerMatrix indices, NumericMatrix normals, std::string filename);
+RcppExport SEXP _rTwig_write_stl(SEXP verticesSEXP, SEXP indicesSEXP, SEXP normalsSEXP, SEXP filenameSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type indices(indicesSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type normals(normalsSEXP);
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    write_stl(vertices, normals, filename);
+    write_stl(vertices, indices, normals, filename);
     return R_NilValue;
 END_RCPP
 }
@@ -376,13 +374,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // calculate_normals
-NumericMatrix calculate_normals(NumericMatrix vertices);
-RcppExport SEXP _rTwig_calculate_normals(SEXP verticesSEXP) {
+NumericMatrix calculate_normals(NumericMatrix vertices, IntegerMatrix indices);
+RcppExport SEXP _rTwig_calculate_normals(SEXP verticesSEXP, SEXP indicesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type vertices(verticesSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_normals(vertices));
+    Rcpp::traits::input_parameter< IntegerMatrix >::type indices(indicesSEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_normals(vertices, indices));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -556,6 +555,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_alpha_shape_delaunay", (DL_FUNC) &_rTwig_alpha_shape_delaunay, 3},
     {"_rTwig_box_counting", (DL_FUNC) &_rTwig_box_counting, 2},
+    {"_rTwig_generate_closed_mesh", (DL_FUNC) &_rTwig_generate_closed_mesh, 9},
     {"_rTwig_assign_cloud_ids", (DL_FUNC) &_rTwig_assign_cloud_ids, 2},
     {"_rTwig_generate_random_colors", (DL_FUNC) &_rTwig_generate_random_colors, 1},
     {"_rTwig_hex_to_float", (DL_FUNC) &_rTwig_hex_to_float, 1},
@@ -565,15 +565,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_taper_filter", (DL_FUNC) &_rTwig_taper_filter, 2},
     {"_rTwig_broken_branch_filter", (DL_FUNC) &_rTwig_broken_branch_filter, 3},
     {"_rTwig_model_matrix", (DL_FUNC) &_rTwig_model_matrix, 2},
-    {"_rTwig_generate_circle_points", (DL_FUNC) &_rTwig_generate_circle_points, 3},
-    {"_rTwig_rotate_circle_points", (DL_FUNC) &_rTwig_rotate_circle_points, 3},
-    {"_rTwig_generate_mesh", (DL_FUNC) &_rTwig_generate_mesh, 5},
+    {"_rTwig_generate_cylinder_mesh", (DL_FUNC) &_rTwig_generate_cylinder_mesh, 7},
     {"_rTwig_define_branches", (DL_FUNC) &_rTwig_define_branches, 1},
     {"_rTwig_define_branch_order", (DL_FUNC) &_rTwig_define_branch_order, 1},
     {"_rTwig_generate_cloud", (DL_FUNC) &_rTwig_generate_cloud, 8},
-    {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 4},
-    {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 3},
-    {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 3},
+    {"_rTwig_write_ply", (DL_FUNC) &_rTwig_write_ply, 5},
+    {"_rTwig_write_obj", (DL_FUNC) &_rTwig_write_obj, 4},
+    {"_rTwig_write_stl", (DL_FUNC) &_rTwig_write_stl, 4},
     {"_rTwig_read_obj", (DL_FUNC) &_rTwig_read_obj, 2},
     {"_rTwig_cross_product", (DL_FUNC) &_rTwig_cross_product, 2},
     {"_rTwig_norm", (DL_FUNC) &_rTwig_norm, 1},
@@ -584,7 +582,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_index_order", (DL_FUNC) &_rTwig_index_order, 1},
     {"_rTwig_sort_index", (DL_FUNC) &_rTwig_sort_index, 2},
     {"_rTwig_which_rcpp", (DL_FUNC) &_rTwig_which_rcpp, 1},
-    {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 1},
+    {"_rTwig_calculate_normals", (DL_FUNC) &_rTwig_calculate_normals, 2},
     {"_rTwig_gini_coefficient", (DL_FUNC) &_rTwig_gini_coefficient, 1},
     {"_rTwig_read_mat_nested", (DL_FUNC) &_rTwig_read_mat_nested, 1},
     {"_rTwig_read_mat_flat", (DL_FUNC) &_rTwig_read_mat_flat, 1},

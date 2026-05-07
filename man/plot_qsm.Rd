@@ -11,6 +11,8 @@ plot_qsm(
   palette = NULL,
   alpha = 1,
   facets = 6,
+  caps = FALSE,
+  close = FALSE,
   skeleton = FALSE,
   skeleton_lwd = 1,
   cloud = NULL,
@@ -62,6 +64,10 @@ Defaults to 1. 1 is opaque and 0 is fully transparent.}
 \item{facets}{The number of facets in the polygon cross section.
 Defaults to 6. A higher number of facets improves visual smoothness at the
 cost of plotting speed, performance and memory.}
+
+\item{caps}{Add caps to the cylinders. Defaults to FALSE.}
+
+\item{close}{Close the mesh by filling cylinder gaps. Defaults to FALSE.}
 
 \item{skeleton}{Plot the QSM skeleton instead of cylinders. Defaults to FALSE.}
 

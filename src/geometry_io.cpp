@@ -1,189 +1,137 @@
 #include <Rcpp.h>
 #include <fstream>
-#include <sstream>
 #include <string>
-#include <unordered_map>
-#include <vector>
-#include <tuple>
 #include "helper_functions.h"
 
 using namespace Rcpp;
-
-// Generate a hash for a vertex
-std::size_t vertex_hash(NumericVector vertex) {
-  return std::hash<float>()(vertex[0]) ^ std::hash<float>()(vertex[1]) ^ std::hash<float>()(vertex[2]);
-}
 
 //' @title Write PLY
 //'
 //' @description Export a QSM cylinder mesh to .ply
 //'
-//' @param vertices NumericMatrix
-//' @param colors NumericMatrix
-//' @param normals NumericMatrix
+//' @param vertices NumericMatrix, 3 x n_vertices
+//' @param indices IntegerMatrix, 3 x n_faces
+//' @param face_colors IntegerMatrix, n_faces x 3
 //' @param filename string
+//' @param alpha alpha transparency from 0 to 1
 //' @return ply
 //'
 //' @noRd
 //'
 // [[Rcpp::export]]
 void write_ply(
-    Rcpp::NumericMatrix vertices,
-    Rcpp::Nullable<Rcpp::NumericMatrix> colors,
-    Rcpp::Nullable<Rcpp::NumericMatrix> normals,
-    std::string filename) {
+   NumericMatrix vertices,
+   IntegerMatrix indices,
+   Nullable<IntegerMatrix> face_colors,
+   std::string filename,
+   double alpha = 1.0
+) {
+ std::ofstream file(
+     filename,
+     std::ios::out | std::ios::binary
+ );
 
-  // Open the PLY file in binary mode
-  std::ofstream file(filename, std::ios::out | std::ios::binary);
+ if (!file.is_open()) {
+   stop("Could not open output PLY file.");
+ }
 
-  // Get the number of vertices
-  int n_vertices = vertices.nrow();
+ int n_faces = indices.ncol();
+ int n_vertices = n_faces * 3;
 
-  // Create a map to track unique vertices and their indices
-  std::unordered_map<std::size_t, int> vertexMap;
-  std::vector<Rcpp::NumericVector> unique_vertices;
-  std::vector<int> face_indices; // To store the face indices
+ bool has_colors = face_colors.isNotNull();
 
-  // Store color and normal indices and corresponding unique values
-  std::vector<int> color_indices;
-  std::vector<int> normal_indices;
-  std::vector<Rcpp::NumericVector> unique_colors;
-  std::vector<Rcpp::NumericVector> unique_normals;
+ IntegerMatrix color_matrix;
 
-  // If colors are provided, cast to a NumericMatrix
-  Rcpp::NumericMatrix color_matrix;
-  if (colors.isNotNull()) {
-    color_matrix = Rcpp::as<Rcpp::NumericMatrix>(colors);
-  }
+ if (has_colors) {
+   color_matrix = as<IntegerMatrix>(face_colors);
 
-  // If normals are provided, cast to a NumericMatrix
-  Rcpp::NumericMatrix normal_matrix;
-  if (normals.isNotNull()) {
-    normal_matrix = Rcpp::as<Rcpp::NumericMatrix>(normals);
-  }
+   if (color_matrix.nrow() != n_faces || color_matrix.ncol() < 3) {
+     stop("face_colors must have n_faces rows and at least 3 columns.");
+   }
+ }
 
-  // Iterate over the vertices to remove duplicates
-  for (int i = 0; i < n_vertices; ++i) {
-    Rcpp::NumericVector vertex = vertices(i, Rcpp::_);
-    std::size_t hashValue = vertex_hash(vertex);
+ double alpha_value = alpha * 255.0;
 
-    // If the vertex is already seen, add the index of the existing vertex
-    if (vertexMap.find(hashValue) == vertexMap.end()) {
-      // Otherwise, add it to the unique_vertices list
-      vertexMap[hashValue] = unique_vertices.size();
-      unique_vertices.push_back(vertex);
+ if (alpha_value < 0.0) {
+   alpha_value = 0.0;
+ }
 
-      // Store the corresponding color and normal values if provided
-      if (colors.isNotNull()) {
-        unique_colors.push_back(color_matrix.row(i));
-      }
+ if (alpha_value > 255.0) {
+   alpha_value = 255.0;
+ }
 
-      if (normals.isNotNull()) {
-        unique_normals.push_back(normal_matrix.row(i));
-      }
-    }
-    // Add the index of the vertex in the face
-    face_indices.push_back(vertexMap[hashValue]);
+ unsigned char alpha_byte = static_cast<unsigned char>(
+   std::round(alpha_value)
+ );
 
-    // Store the indices for colors and normals
-    color_indices.push_back(i);
-    normal_indices.push_back(i);
-  }
+ file << "ply\n";
+ file << "format binary_little_endian 1.0\n";
 
-  // Write the PLY header
-  file << "ply\n";
-  file << "format binary_little_endian 1.0\n";
-  file << "element vertex " << unique_vertices.size() << "\n";
-  file << "property float x\n";
-  file << "property float y\n";
-  file << "property float z\n";
+ file << "element vertex " << n_vertices << "\n";
+ file << "property float x\n";
+ file << "property float y\n";
+ file << "property float z\n";
 
-  // Only write color and alpha properties if there are more than 3 columns
-  bool has_colors = colors.isNotNull();
-  if (has_colors) {
-    file << "property uchar red\n";
-    file << "property uchar green\n";
-    file << "property uchar blue\n";
-    file << "property uchar alpha\n";
-  }
+ if (has_colors) {
+   file << "property uchar red\n";
+   file << "property uchar green\n";
+   file << "property uchar blue\n";
+   file << "property uchar alpha\n";
+ }
 
-  bool has_normals = normals.isNotNull();
-  if (has_normals) {
-    file << "property float nx\n";
-    file << "property float ny\n";
-    file << "property float nz\n";
-  }
+ file << "element face " << n_faces << "\n";
+ file << "property list uchar int vertex_indices\n";
+ file << "end_header\n";
 
-  file << "element face " << face_indices.size() / 3 << "\n";
-  file << "property list uchar int vertex_index\n";
-  file << "end_header\n";
+ for (int i = 0; i < n_faces; i++) {
+   for (int j = 0; j < 3; j++) {
+     int vertex_id = indices(j, i) - 1;
 
-  // Write the unique vertex data in binary format
-  for (size_t i = 0; i < unique_vertices.size(); ++i) { // Change to size_t
-    Rcpp::NumericVector vertex = unique_vertices[i];
-    float x = vertex[0];
-    float y = vertex[1];
-    float z = vertex[2];
+     float x = static_cast<float>(vertices(0, vertex_id));
+     float y = static_cast<float>(vertices(1, vertex_id));
+     float z = static_cast<float>(vertices(2, vertex_id));
 
-    // Write binary data for the vertex coordinates
-    file.write(reinterpret_cast<char*>(&x), sizeof(float));
-    file.write(reinterpret_cast<char*>(&y), sizeof(float));
-    file.write(reinterpret_cast<char*>(&z), sizeof(float));
+     file.write(reinterpret_cast<char*>(&x), sizeof(float));
+     file.write(reinterpret_cast<char*>(&y), sizeof(float));
+     file.write(reinterpret_cast<char*>(&z), sizeof(float));
 
-    // Write color data if available
-    if (has_colors) {
-      Rcpp::NumericVector color = unique_colors[i];
-      unsigned char r = static_cast<unsigned char>(color[0]);
-      unsigned char g = static_cast<unsigned char>(color[1]);
-      unsigned char b = static_cast<unsigned char>(color[2]);
-      unsigned char a = static_cast<unsigned char>(color[3]);
+     if (has_colors) {
+       unsigned char r = static_cast<unsigned char>(color_matrix(i, 0));
+       unsigned char g = static_cast<unsigned char>(color_matrix(i, 1));
+       unsigned char b = static_cast<unsigned char>(color_matrix(i, 2));
+       unsigned char a = alpha_byte;
 
-      // Write binary data for color and alpha
-      file.write(reinterpret_cast<char*>(&r), sizeof(unsigned char));
-      file.write(reinterpret_cast<char*>(&g), sizeof(unsigned char));
-      file.write(reinterpret_cast<char*>(&b), sizeof(unsigned char));
-      file.write(reinterpret_cast<char*>(&a), sizeof(unsigned char));
-    }
+       file.write(reinterpret_cast<char*>(&r), sizeof(unsigned char));
+       file.write(reinterpret_cast<char*>(&g), sizeof(unsigned char));
+       file.write(reinterpret_cast<char*>(&b), sizeof(unsigned char));
+       file.write(reinterpret_cast<char*>(&a), sizeof(unsigned char));
+     }
+   }
+ }
 
-    // Write normal data if available
-    if (has_normals) {
-      Rcpp::NumericVector normal = unique_normals[i];
-      float nx = normal[0];
-      float ny = normal[1];
-      float nz = normal[2];
+ for (int i = 0; i < n_faces; i++) {
+   unsigned char vertex_count = 3;
 
-      // Write binary data for normals
-      file.write(reinterpret_cast<char*>(&nx), sizeof(float));
-      file.write(reinterpret_cast<char*>(&ny), sizeof(float));
-      file.write(reinterpret_cast<char*>(&nz), sizeof(float));
-    }
-  }
+   int vertex1 = i * 3;
+   int vertex2 = i * 3 + 1;
+   int vertex3 = i * 3 + 2;
 
-  // Write the face data in binary format
-  for (size_t i = 0; i < face_indices.size(); i += 3) { // Change to size_t
-    unsigned char vertexCount = 3;
-    file.write(reinterpret_cast<char*>(&vertexCount), sizeof(unsigned char));
+   file.write(reinterpret_cast<char*>(&vertex_count), sizeof(unsigned char));
+   file.write(reinterpret_cast<char*>(&vertex1), sizeof(int));
+   file.write(reinterpret_cast<char*>(&vertex2), sizeof(int));
+   file.write(reinterpret_cast<char*>(&vertex3), sizeof(int));
+ }
 
-    // Write the vertex indices for the face
-    int vertex1 = face_indices[i];
-    int vertex2 = face_indices[i + 1];
-    int vertex3 = face_indices[i + 2];
-
-    file.write(reinterpret_cast<char*>(&vertex1), sizeof(int));
-    file.write(reinterpret_cast<char*>(&vertex2), sizeof(int));
-    file.write(reinterpret_cast<char*>(&vertex3), sizeof(int));
-  }
-
-  // Close the file
-  file.close();
+ file.close();
 }
 
 //' @title Write OBJ
 //'
 //' @description Export a QSM cylinder mesh to .obj
 //'
-//' @param vertices NumericMatrix
-//' @param normals NumericMatrix
+//' @param vertices NumericMatrix, 3 x n_vertices
+//' @param indices IntegerMatrix, 3 x n_faces
+//' @param normals NumericMatrix, n_faces x 3
 //' @param filename string
 //' @return obj
 //'
@@ -191,50 +139,78 @@ void write_ply(
 //'
 // [[Rcpp::export]]
 void write_obj(
-    Rcpp::NumericMatrix vertices,
-    Rcpp::Nullable<Rcpp::NumericMatrix> normals,
-    std::string filename) {
+   NumericMatrix vertices,
+   IntegerMatrix indices,
+   Nullable<NumericMatrix> normals,
+   std::string filename
+) {
+ std::ofstream file(filename);
 
-  // Open the OBJ file
-  std::ofstream file(filename);
+ if (!file.is_open()) {
+   stop("Could not open output OBJ file.");
+ }
 
-  // Write vertices
-  int n_vertices = vertices.nrow();
-  for (int i = 0; i < n_vertices; ++i) {
-    Rcpp::NumericVector vertex = vertices(i, Rcpp::_);
-    file << "v " << vertex[0] << " " << vertex[1] << " " << vertex[2] << "\n";
-  }
+ int n_vertices = vertices.ncol();
+ int n_faces = indices.ncol();
 
-  // If normals are provided, cast to a NumericMatrix
-  Rcpp::NumericMatrix normal_matrix;
-  if (normals.isNotNull()) {
-    normal_matrix = Rcpp::as<Rcpp::NumericMatrix>(normals);
-  }
+ bool has_normals = normals.isNotNull();
 
-  // Write normals
-  int n_normals = normal_matrix.nrow();
-  for (int i = 0; i < n_normals; ++i) {
-    Rcpp::NumericVector normal = normal_matrix(i, Rcpp::_);
-    file << "vn " << normal[0] << " " << normal[1] << " " << normal[2] << "\n";
-  }
+ NumericMatrix normal_matrix;
 
-  // Write faces using 1-based indexing
-  for (int i = 0; i < n_vertices; i += 3) {
-    file << "f " << (i + 1) << "//" << (i + 1) << " "
-         << (i + 2) << "//" << (i + 2) << " "
-         << (i + 3) << "//" << (i + 3) << "\n";
-  }
+ if (has_normals) {
+   normal_matrix = as<NumericMatrix>(normals);
 
-  // Close the file
-  file.close();
+   if (normal_matrix.nrow() != n_faces || normal_matrix.ncol() < 3) {
+     stop("normals must have n_faces rows and 3 columns.");
+   }
+ }
+
+ for (int i = 0; i < n_vertices; i++) {
+   file << "v "
+        << vertices(0, i) << " "
+        << vertices(1, i) << " "
+        << vertices(2, i) << "\n";
+ }
+
+ if (has_normals) {
+   for (int i = 0; i < n_faces; i++) {
+     file << "vn "
+          << normal_matrix(i, 0) << " "
+          << normal_matrix(i, 1) << " "
+          << normal_matrix(i, 2) << "\n";
+   }
+ }
+
+ for (int i = 0; i < n_faces; i++) {
+   int vertex1 = indices(0, i);
+   int vertex2 = indices(1, i);
+   int vertex3 = indices(2, i);
+
+   if (has_normals) {
+     int normal_id = i + 1;
+
+     file << "f "
+          << vertex1 << "//" << normal_id << " "
+          << vertex2 << "//" << normal_id << " "
+          << vertex3 << "//" << normal_id << "\n";
+   } else {
+     file << "f "
+          << vertex1 << " "
+          << vertex2 << " "
+          << vertex3 << "\n";
+   }
+ }
+
+ file.close();
 }
 
 //' @title Write STL
 //'
 //' @description Export a QSM cylinder mesh to .stl
 //'
-//' @param vertices NumericMatrix
-//' @param normals NumericMatrix
+//' @param vertices NumericMatrix, 3 x n_vertices
+//' @param indices IntegerMatrix, 3 x n_faces
+//' @param normals NumericMatrix, n_faces x 3
 //' @param filename string
 //' @return stl
 //'
@@ -242,47 +218,55 @@ void write_obj(
 //'
 // [[Rcpp::export]]
 void write_stl(
-    NumericMatrix vertices,
-    NumericMatrix normals,
-    std::string filename) {
+   NumericMatrix vertices,
+   IntegerMatrix indices,
+   NumericMatrix normals,
+   std::string filename
+) {
+ std::ofstream file(filename, std::ios::binary);
 
-  // Open the STL file in binary write mode
-  std::ofstream file(filename, std::ios::binary);
+ if (!file.is_open()) {
+   stop("Could not open output STL file.");
+ }
 
-  // Write the 80-byte header (set to empty or custom)
-  char header[80] = {0};
-  file.write(header, 80);
+ int n_faces = indices.ncol();
 
-  // Number of triangles (3 vertices and normals per triangle)
-  unsigned int num_triangles = vertices.nrow() / 3;
+ if (normals.nrow() != n_faces || normals.ncol() < 3) {
+   stop("normals must have n_faces rows and 3 columns.");
+ }
 
-  // Write the number of triangles (4 bytes)
-  file.write(reinterpret_cast<char*>(&num_triangles), sizeof(num_triangles));
+ char header[80] = {0};
+ file.write(header, 80);
 
-  // Write triangle normals and verticess
-  for (size_t i = 0; i < num_triangles; i++) {
-    // Each triangle has 3 rows for vertices and normals
-    // Normal vector (one normal for the whole triangle)
-    float normal[3] = {static_cast<float>(normals(i, 0)),
-                       static_cast<float>(normals(i, 1)),
-                       static_cast<float>(normals(i, 2))};
-    file.write(reinterpret_cast<char*>(normal), 3 * sizeof(float));
+ unsigned int num_triangles = static_cast<unsigned int>(n_faces);
+ file.write(reinterpret_cast<char*>(&num_triangles), sizeof(num_triangles));
 
-    // Write the triangle vertices
-    for (size_t j = 0; j < 3; j++) {
-      float vertex[3] = {static_cast<float>(vertices(3 * i + j, 0)),
-                         static_cast<float>(vertices(3 * i + j, 1)),
-                         static_cast<float>(vertices(3 * i + j, 2))};
-      file.write(reinterpret_cast<char*>(vertex), 3 * sizeof(float));
-    }
+ for (int i = 0; i < n_faces; i++) {
+   float normal[3] = {
+     static_cast<float>(normals(i, 0)),
+     static_cast<float>(normals(i, 1)),
+     static_cast<float>(normals(i, 2))
+   };
 
-    // Write the attribute byte count (2 bytes, usually 0)
-    unsigned short attribute = 0;
-    file.write(reinterpret_cast<char*>(&attribute), sizeof(attribute));
-  }
+   file.write(reinterpret_cast<char*>(normal), 3 * sizeof(float));
 
-  // Close the file
-  file.close();
+   for (int j = 0; j < 3; j++) {
+     int vertex_id = indices(j, i) - 1;
+
+     float vertex[3] = {
+       static_cast<float>(vertices(0, vertex_id)),
+       static_cast<float>(vertices(1, vertex_id)),
+       static_cast<float>(vertices(2, vertex_id))
+     };
+
+     file.write(reinterpret_cast<char*>(vertex), 3 * sizeof(float));
+   }
+
+   unsigned short attribute = 0;
+   file.write(reinterpret_cast<char*>(&attribute), sizeof(attribute));
+ }
+
+ file.close();
 }
 
 //' @title Read OBJ
