@@ -158,6 +158,34 @@ static int prod_dims(IntegerVector dims) {
 
 static SEXP read_matrix(std::ifstream& f, std::streampos matrix_end);
 
+static List read_cell(std::ifstream& f,
+                      IntegerVector dims,
+                      std::streampos matrix_end);
+
+static List read_struct(std::ifstream& f,
+                        IntegerVector dims,
+                        std::streampos matrix_end);
+
+static bool can_read(std::ifstream& f,
+                     std::streampos end,
+                     std::streamoff n) {
+  std::streampos pos = tell(f);
+  if (pos == std::streampos(-1)) return false;
+  return pos + n <= end;
+}
+
+static NumericVector make_empty_numeric(IntegerVector dims) {
+  NumericVector out(0);
+  out.attr("dim") = dims;
+  return out;
+}
+
+static CharacterVector make_empty_char(IntegerVector dims) {
+  CharacterVector out(0);
+  out.attr("dim") = dims;
+  return out;
+}
+
 static std::string trim_nulls(std::string s) {
   while (!s.empty() && s.back() == '\0') s.pop_back();
   while (!s.empty() && s.front() == '\0') s.erase(s.begin());
@@ -364,18 +392,35 @@ static CharacterVector read_char_array(std::ifstream& f, IntegerVector dims) {
   return CharacterVector::create(s);
 }
 
-static List read_cell(std::ifstream& f, IntegerVector dims) {
+static List read_cell(std::ifstream& f,
+                      IntegerVector dims,
+                      std::streampos matrix_end) {
   int n = prod_dims(dims);
   List out(n);
 
   for (int i = 0; i < n; ++i) {
+    if (!can_read(f, matrix_end, 8)) {
+      out[i] = make_empty_numeric(IntegerVector::create(0, 0));
+      continue;
+    }
+
     Tag t = read_tag(f);
 
     if (t.type != miMATRIX) {
       Rcpp::stop("Expected miMATRIX inside cell array");
     }
 
+    if (t.bytes == 0) {
+      out[i] = make_empty_numeric(IntegerVector::create(0, 0));
+      continue;
+    }
+
     std::streampos end = tell(f) + static_cast<std::streamoff>(t.bytes);
+
+    if (end > matrix_end) {
+      Rcpp::stop("Cell element exceeds matrix boundary");
+    }
+
     out[i] = read_matrix(f, end);
     f.seekg(end);
     skip_pad(f, t.bytes);
@@ -385,23 +430,49 @@ static List read_cell(std::ifstream& f, IntegerVector dims) {
   return out;
 }
 
-static List read_struct(std::ifstream& f, IntegerVector dims) {
+
+static List read_struct(std::ifstream& f,
+                        IntegerVector dims,
+                        std::streampos matrix_end) {
   int nelem = prod_dims(dims);
+
+  auto empty_struct = [&](CharacterVector field_names = CharacterVector::create()) {
+    List out(0);
+    out.attr("names") = field_names;
+    out.attr("dim") = dims;
+    out.attr("mat_struct_array") = true;
+    out.attr("mat_empty_struct") = true;
+    return out;
+  };
+
+  // MATLAB can store empty structs / zero-field structs with no remaining
+  // field-name metadata after the array name. Do not try to read a tag if the
+  // mxSTRUCT payload is exhausted.
+  if (!can_read(f, matrix_end, 8)) {
+    return empty_struct();
+  }
 
   Tag field_len_tag = read_tag(f);
   std::vector<char> field_len_raw = read_payload(f, field_len_tag);
 
   if (field_len_raw.size() < 4) {
-    Rcpp::stop("Invalid struct field-name length");
+    return empty_struct();
   }
 
   int32_t field_len = *reinterpret_cast<int32_t*>(field_len_raw.data());
+
+  if (field_len <= 0) {
+    return empty_struct();
+  }
+
+  if (!can_read(f, matrix_end, 8)) {
+    return empty_struct();
+  }
 
   Tag field_names_tag = read_tag(f);
   std::vector<char> field_names_raw = read_payload(f, field_names_tag);
 
   int nfields = static_cast<int>(field_names_raw.size() / field_len);
-
   CharacterVector field_names(nfields);
 
   for (int i = 0; i < nfields; ++i) {
@@ -411,21 +482,46 @@ static List read_struct(std::ifstream& f, IntegerVector dims) {
     field_names[i] = nm;
   }
 
+  // Empty struct arrays and zero-field scalar structs have no field value
+  // matrices to read.
+  if (nelem == 0 || nfields == 0) {
+    return empty_struct(field_names);
+  }
+
+  auto read_struct_field = [&](std::streampos parent_end) -> SEXP {
+    if (!can_read(f, parent_end, 8)) {
+      return make_empty_numeric(IntegerVector::create(0, 0));
+    }
+
+    Tag t = read_tag(f);
+
+    if (t.type != miMATRIX) {
+      Rcpp::stop("Expected miMATRIX inside struct field");
+    }
+
+    if (t.bytes == 0) {
+      return make_empty_numeric(IntegerVector::create(0, 0));
+    }
+
+    std::streampos end = tell(f) + static_cast<std::streamoff>(t.bytes);
+
+    if (end > parent_end) {
+      Rcpp::stop("Struct field exceeds matrix boundary");
+    }
+
+    SEXP value = read_matrix(f, end);
+    f.seekg(end);
+    skip_pad(f, t.bytes);
+
+    return value;
+  };
+
   if (nelem == 1) {
     List out(nfields);
     out.attr("names") = field_names;
 
     for (int i = 0; i < nfields; ++i) {
-      Tag t = read_tag(f);
-
-      if (t.type != miMATRIX) {
-        Rcpp::stop("Expected miMATRIX inside struct field");
-      }
-
-      std::streampos end = tell(f) + static_cast<std::streamoff>(t.bytes);
-      out[i] = read_matrix(f, end);
-      f.seekg(end);
-      skip_pad(f, t.bytes);
+      out[i] = read_struct_field(matrix_end);
     }
 
     return out;
@@ -438,16 +534,7 @@ static List read_struct(std::ifstream& f, IntegerVector dims) {
     one.attr("names") = field_names;
 
     for (int i = 0; i < nfields; ++i) {
-      Tag t = read_tag(f);
-
-      if (t.type != miMATRIX) {
-        Rcpp::stop("Expected miMATRIX inside struct array field");
-      }
-
-      std::streampos end = tell(f) + static_cast<std::streamoff>(t.bytes);
-      one[i] = read_matrix(f, end);
-      f.seekg(end);
-      skip_pad(f, t.bytes);
+      one[i] = read_struct_field(matrix_end);
     }
 
     out[e] = one;
@@ -457,7 +544,12 @@ static List read_struct(std::ifstream& f, IntegerVector dims) {
   return out;
 }
 
+
 static SEXP read_matrix(std::ifstream& f, std::streampos matrix_end) {
+  if (!can_read(f, matrix_end, 8)) {
+    return make_empty_numeric(IntegerVector::create(0, 0));
+  }
+
   Tag flags_tag = read_tag(f);
   std::vector<char> flags_raw = read_payload(f, flags_tag);
 
@@ -469,23 +561,37 @@ static SEXP read_matrix(std::ifstream& f, std::streampos matrix_end) {
   uint8_t mx_class = flags & 0xff;
   bool logical_flag = (flags & 0x0200) != 0;
 
+  if (!can_read(f, matrix_end, 8)) {
+    return make_empty_numeric(IntegerVector::create(0, 0));
+  }
+
   IntegerVector dims = read_dims(f);
+
+  if (!can_read(f, matrix_end, 8)) {
+    return make_empty_numeric(dims);
+  }
+
   std::string name = read_name(f);
   if (!name.empty()) LAST_MATRIX_NAME = name;
 
   SEXP out;
+  int nelem = prod_dims(dims);
 
   switch (mx_class) {
   case mxSTRUCT_CLASS:
-    out = read_struct(f, dims);
+    out = read_struct(f, dims, matrix_end);
     break;
 
   case mxCELL_CLASS:
-    out = read_cell(f, dims);
+    out = read_cell(f, dims, matrix_end);
     break;
 
   case mxCHAR_CLASS:
-    out = read_char_array(f, dims);
+    if (!can_read(f, matrix_end, 8)) {
+      out = make_empty_char(dims);
+    } else {
+      out = read_char_array(f, dims);
+    }
     break;
 
   case mxOPAQUE_CLASS:
@@ -503,7 +609,13 @@ static SEXP read_matrix(std::ifstream& f, std::streampos matrix_end) {
   case mxINT64_CLASS:
   case mxUINT64_CLASS:
   case mxLOGICAL_CLASS:
-    out = read_numeric_array(f, mx_class, logical_flag, dims);
+    // MATLAB may omit the real-data subelement for empty numeric/logical
+    // arrays. Empty fields such as [] therefore must not call read_tag().
+    if (nelem == 0 || !can_read(f, matrix_end, 8)) {
+      out = make_empty_numeric(dims);
+    } else {
+      out = read_numeric_array(f, mx_class, logical_flag, dims);
+    }
     break;
 
   default:
@@ -516,6 +628,7 @@ static SEXP read_matrix(std::ifstream& f, std::streampos matrix_end) {
 
   return out;
 }
+
 
 static std::string write_temp_raw(Rcpp::RawVector x) {
   Rcpp::Function tempfile("tempfile");
@@ -1102,4 +1215,3 @@ void write_mat(
   std::fclose(fp);
   if (n != filebuf.size()) stop("Failed to write complete MAT file.");
 }
-
