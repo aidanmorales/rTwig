@@ -82,7 +82,7 @@ str(output)
 #>  $ :Classes 'tidytable', 'tbl', 'data.table' and 'data.frame':   9 obs. of  2 variables:
 #>   ..$ log.box.size: num [1:9] 0 0.693 1.386 2.079 2.773 ...
 #>   ..$ log.voxels  : num [1:9] 1.1 1.95 3.09 4.11 5.18 ...
-#>   ..- attr(*, ".internal.selfref")=<pointer: 0x556cdfe37ee0> 
+#>   ..- attr(*, ".internal.selfref")=<pointer: 0x559a58d07f00> 
 #>  $ :Classes 'tidytable', 'tbl', 'data.table' and 'data.frame':   1 obs. of  4 variables:
 #>   ..$ r.squared    : num 1
 #>   ..$ adj.r.squared: num 1
