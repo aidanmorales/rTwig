@@ -25,4 +25,7 @@ Useful links:
 
 Authors:
 
+- Aidan Morales <moral169@msu.edu>
+  ([ORCID](https://orcid.org/0009-0000-4513-4908)) \[copyright holder\]
+
 - David W. MacFarlane <macfar24@msu.edu> \[copyright holder\]
