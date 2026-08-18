@@ -28,24 +28,32 @@ import(Rdpack)
 import(rgl)
 import(rlang)
 import(tidytable)
-importFrom(RcppSimdJson,fload)
-importFrom(RcppSimdJson,fparse)
+importFrom(RcppSimdJson,
+  fload,
+  fparse
+)
 importFrom(Rdpack,reprompt)
 importFrom(cobs,cobs)
 importFrom(colourvalues,color_values)
 importFrom(geometry,convhulln)
-importFrom(graphics,abline)
-importFrom(graphics,text)
-importFrom(igraph,V)
-importFrom(igraph,all_simple_paths)
-importFrom(igraph,as_ids)
-importFrom(igraph,components)
-importFrom(igraph,degree)
-importFrom(igraph,ends)
-importFrom(igraph,graph_from_data_frame)
-importFrom(igraph,is_connected)
-importFrom(igraph,vcount)
-importFrom(stats,lm)
-importFrom(stats,predict)
-importFrom(stats,quantile)
+importFrom(graphics,
+  abline,
+  text
+)
+importFrom(igraph,
+  V,
+  all_simple_paths,
+  as_ids,
+  components,
+  degree,
+  ends,
+  graph_from_data_frame,
+  is_connected,
+  vcount
+)
+importFrom(stats,
+  lm,
+  predict,
+  quantile
+)
 useDynLib(rTwig, .registration = TRUE)

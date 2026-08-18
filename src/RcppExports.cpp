@@ -528,16 +528,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // build_adqsm
-DataFrame build_adqsm(DataFrame vertices, int facets, double tol, double match_tol);
-RcppExport SEXP _rTwig_build_adqsm(SEXP verticesSEXP, SEXP facetsSEXP, SEXP tolSEXP, SEXP match_tolSEXP) {
+DataFrame build_adqsm(DataFrame vertices, int facets, double match_tol);
+RcppExport SEXP _rTwig_build_adqsm(SEXP verticesSEXP, SEXP facetsSEXP, SEXP match_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type vertices(verticesSEXP);
     Rcpp::traits::input_parameter< int >::type facets(facetsSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< double >::type match_tol(match_tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(build_adqsm(vertices, facets, tol, match_tol));
+    rcpp_result_gen = Rcpp::wrap(build_adqsm(vertices, facets, match_tol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -594,7 +593,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_translation_matrix", (DL_FUNC) &_rTwig_translation_matrix, 3},
     {"_rTwig_user_matrix", (DL_FUNC) &_rTwig_user_matrix, 4},
     {"_rTwig_build_adtree", (DL_FUNC) &_rTwig_build_adtree, 4},
-    {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 4},
+    {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 3},
     {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
     {NULL, NULL, 0}
 };

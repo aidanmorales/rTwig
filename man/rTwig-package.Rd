@@ -6,7 +6,7 @@
 \alias{rTwig-package}
 \title{rTwig: Realistic Quantitative Structure Models}
 \description{
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
 Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes 'TreeQSM', 'SimpleForest', 'Treegraph', 'aRchi', and `AdQSM`. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.
 }
@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Aidan Morales \email{moral169@msu.edu} (\href{https://orcid.org/0009-0000-4513-4908}{ORCID}) [copyright holder]
   \item David W. MacFarlane \email{macfar24@msu.edu} [copyright holder]
 }
 

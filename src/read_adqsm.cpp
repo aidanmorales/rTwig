@@ -335,7 +335,6 @@ DataFrame build_adtree(
 DataFrame build_adqsm(
     DataFrame vertices,
     int facets = 10,
-    double tol = 1e-5,
     double match_tol = 1e-4) {
 
   NumericVector X = vertices["x"];
@@ -351,31 +350,150 @@ DataFrame build_adqsm(
   std::vector<int>    out_parent; out_parent.reserve(rough_max);
   std::vector<int>    out_branch; out_branch.reserve(rough_max);
   std::vector<int>    out_base;   out_base.reserve(rough_max);
-  std::vector<double> sx,sy,sz, ax,ay,az, ex,ey,ez, L, R;
+  std::vector<double> sx,sy,sz, ax,ay,az, ex,ey,ez, L,R;
   sx.reserve(rough_max); sy.reserve(rough_max); sz.reserve(rough_max);
   ax.reserve(rough_max); ay.reserve(rough_max); az.reserve(rough_max);
   ex.reserve(rough_max); ey.reserve(rough_max); ez.reserve(rough_max);
   L.reserve(rough_max);  R.reserve(rough_max);
 
-  std::vector<V3>    pbuf(facets);
-  std::vector<double> qx(facets), qy(facets);
-  std::vector<int>    idxBottom, idxTop;
+  std::vector<int> idxBottom, idxTop;
+  std::vector<int> testBottom, testTop;
+  std::vector<int> ringIdx(facets), coneIdx(facets);
 
   const int base_pts = 2 * facets;
   int i = 0;
   int branch = 1;
   int next_id = 1;
 
+  // Lower score is a more uniform ring
+  auto ring_score_idx = [&](const std::vector<int>& idx) -> double {
+    double cx=0, cy=0, cz=0;
+
+    for (int k : idx) {
+      cx += px[k];
+      cy += py[k];
+      cz += pz[k];
+    }
+
+    cx /= facets;
+    cy /= facets;
+    cz /= facets;
+
+    double mean_r=0, mean_e=0;
+
+    for (int k=0; k<facets; ++k) {
+      const int a=idx[k];
+      const int b=idx[(k+1)%facets];
+
+      const double dx=px[a]-cx;
+      const double dy=py[a]-cy;
+      const double dz=pz[a]-cz;
+      mean_r += std::sqrt(dx*dx+dy*dy+dz*dz);
+
+      const double ex_=px[b]-px[a];
+      const double ey_=py[b]-py[a];
+      const double ez_=pz[b]-pz[a];
+      mean_e += std::sqrt(ex_*ex_+ey_*ey_+ez_*ez_);
+    }
+
+    mean_r /= facets;
+    mean_e /= facets;
+
+    if (!(mean_r>0) || !(mean_e>0))
+      return std::numeric_limits<double>::infinity();
+
+    double var_r=0, var_e=0;
+
+    for (int k=0; k<facets; ++k) {
+      const int a=idx[k];
+      const int b=idx[(k+1)%facets];
+
+      const double dx=px[a]-cx;
+      const double dy=py[a]-cy;
+      const double dz=pz[a]-cz;
+      const double r=std::sqrt(dx*dx+dy*dy+dz*dz);
+
+      const double ex_=px[b]-px[a];
+      const double ey_=py[b]-py[a];
+      const double ez_=pz[b]-pz[a];
+      const double e=std::sqrt(ex_*ex_+ey_*ey_+ez_*ez_);
+
+      const double dr=r-mean_r;
+      const double de=e-mean_e;
+
+      var_r += dr*dr;
+      var_e += de*de;
+    }
+
+    return var_r/(mean_r*mean_r) +
+      var_e/(mean_e*mean_e);
+  };
+
+  // Normal continuation ring
+  auto ring_score = [&](int pos) -> double {
+    if (pos < 0 || pos + facets > n)
+      return std::numeric_limits<double>::infinity();
+
+    for (int k=0; k<facets; ++k)
+      ringIdx[k]=pos+k;
+
+    return ring_score_idx(ringIdx);
+  };
+
+  // Normal two-ring branch base
+  auto base_score = [&](int pos) -> double {
+    if (pos < 0 || pos + base_pts > n)
+      return std::numeric_limits<double>::infinity();
+
+    split_base(pos, facets, testBottom, testTop);
+
+    return 0.5 * (
+        ring_score_idx(testBottom) +
+          ring_score_idx(testTop)
+    );
+  };
+
+  // Ring + one embedded tip
+  auto cone_score = [&](int pos, int& tip_rel) -> double {
+    tip_rel=-1;
+
+    if (pos < 0 || pos + facets + 1 > n)
+      return std::numeric_limits<double>::infinity();
+
+    double best=std::numeric_limits<double>::infinity();
+
+    for (int skip=0; skip<=facets; ++skip) {
+      int q=0;
+
+      for (int k=0; k<=facets; ++k) {
+        if (k==skip) continue;
+        coneIdx[q++]=pos+k;
+      }
+
+      const double s=ring_score_idx(coneIdx);
+
+      if (s < best) {
+        best=s;
+        tip_rel=skip;
+      }
+    }
+
+    return best;
+  };
+
+  // Parent matching using ring centroids
   auto find_parent_for_start = [&](double Sx, double Sy, double Sz) -> int {
     if (out_id.empty()) return 0;
     const double tol2 = match_tol * match_tol;
     int best = 0;
     double best_d2 = std::numeric_limits<double>::infinity();
+
     for (size_t k = 0; k < ex.size(); ++k) {
       const double dx = ex[k] - Sx;
       const double dy = ey[k] - Sy;
       const double dz = ez[k] - Sz;
       const double d2 = dx*dx + dy*dy + dz*dz;
+
       if (d2 <= tol2 && d2 < best_d2) {
         best = out_id[k];
         best_d2 = d2;
@@ -384,7 +502,57 @@ DataFrame build_adqsm(
     return best;
   };
 
-  while (i + base_pts <= n) {
+  while (i < n) {
+    int cone_tip=-1;
+
+    const double bs=base_score(i);
+    const double cs=cone_score(i, cone_tip);
+
+    // Short ring + embedded tip
+    if (cs < bs) {
+      int q=0;
+
+      for (int k=0; k<=facets; ++k) {
+        if (k==cone_tip) continue;
+        coneIdx[q++]=i+k;
+      }
+
+      double cx,cy,cz,rr;
+      centroid_radius_idx(px,py,pz, coneIdx, cx,cy,cz,rr);
+
+      const int tip=i+cone_tip;
+      const double tx=px[tip];
+      const double ty=py[tip];
+      const double tz=pz[tip];
+      const double dx=tx-cx;
+      const double dy=ty-cy;
+      const double dz=tz-cz;
+      const double len=std::sqrt(dx*dx+dy*dy+dz*dz);
+      double ax_=0, ay_=0, az_=0;
+      if (len>0){
+        ax_=dx/len; ay_=dy/len; az_=dz/len;
+      }
+
+      out_id.push_back(next_id);
+      out_parent.push_back(find_parent_for_start(cx,cy,cz));
+      out_branch.push_back(branch);
+      out_base.push_back(1);
+      sx.push_back(cx); sy.push_back(cy); sz.push_back(cz);
+      ax.push_back(ax_); ay.push_back(ay_); az.push_back(az_);
+      ex.push_back(tx); ey.push_back(ty); ez.push_back(tz);
+      L.push_back(len);
+      R.push_back(rr);
+
+      ++next_id;
+      ++branch;
+      i += facets + 1;
+      continue;
+    }
+
+    if (i + base_pts > n)
+      break;
+
+    // Branch base
     split_base(i, facets, idxBottom, idxTop);
 
     double bcx,bcy,bcz, br;
@@ -420,12 +588,38 @@ DataFrame build_adqsm(
 
     double prev_cx=tcx, prev_cy=tcy, prev_cz=tcz, prev_r=tr;
     int j = i + base_pts;
-    bool branched = false;
 
-    while (j + facets <= n) {
-      if (is_circle(px,py,pz, j, facets, tol, pbuf, qx, qy)) {
-        double cx,cy,cz, rr;
-        centroid_radius(px,py,pz, j, facets, cx,cy,cz, rr);
+    while (true) {
+      int cone0_tip=-1;
+      int cone1_tip=-1;
+
+      const double sr  = ring_score(j);
+      const double sb0 = base_score(j);
+      const double sc0 = cone_score(j,   cone0_tip);
+      const double sb1 = base_score(j+1);
+      const double sc1 = cone_score(j+1, cone1_tip);
+
+      double best=sr;
+      int type=0;  // continuation ring
+
+      if (sb0 < best){ best=sb0; type=1; }
+      if (sc0 < best){ best=sc0; type=2; }
+      if (sb1 < best){ best=sb1; type=3; }
+      if (sc1 < best){ best=sc1; type=4; }
+
+      if (!std::isfinite(best)) {
+        if (j < n) type=3;
+        else {
+          i=j;
+          ++branch;
+          break;
+        }
+      }
+
+      // Normal continuation ring
+      if (type==0) {
+        double cx,cy,cz,rr;
+        centroid_radius(px,py,pz, j, facets, cx,cy,cz,rr);
 
         const double dx=cx-prev_cx;
         const double dy=cy-prev_cy;
@@ -451,41 +645,86 @@ DataFrame build_adqsm(
 
         prev_cx=cx; prev_cy=cy; prev_cz=cz; prev_r=rr;
         j += facets;
-      } else {
-        const double tx=px[j];
-        const double ty=py[j];
-        const double tz=pz[j];
-        const double dx=tx-prev_cx;
-        const double dy=ty-prev_cy;
-        const double dz=tz-prev_cz;
-        const double len=std::sqrt(dx*dx+dy*dy+dz*dz);
-        double ax_=0, ay_=0, az_=0;
-        if (len>0){
-          ax_=dx/len; ay_=dy/len; az_=dz/len;
-        }
+        continue;
+      }
 
-        out_id.push_back(next_id);
-        out_parent.push_back(last_id_in_branch);
-        out_branch.push_back(branch);
-        out_base.push_back(0);
-        sx.push_back(prev_cx); sy.push_back(prev_cy); sz.push_back(prev_cz);
-        ax.push_back(ax_);     ay.push_back(ay_);     az.push_back(az_);
-        ex.push_back(tx);      ey.push_back(ty);      ez.push_back(tz);
-        L.push_back(len);
-        R.push_back(prev_r);
-
-        ++next_id;
-
-        i = j + 1;
+      // Next branch starts immediately
+      if (type==1) {
+        i=j;
         ++branch;
-        branched = true;
         break;
       }
-    }
 
-    if (!branched) {
-      // assign remaining points to final tip if any
-      if (j < n) {
+      // Final ring with embedded tip
+      if (type==2) {
+        int q=0;
+
+        for (int k=0; k<=facets; ++k) {
+          if (k==cone0_tip) continue;
+          coneIdx[q++]=j+k;
+        }
+
+        double cx,cy,cz,rr;
+        centroid_radius_idx(px,py,pz, coneIdx, cx,cy,cz,rr);
+
+        // Previous ring to final ring
+        {
+          const double dx=cx-prev_cx;
+          const double dy=cy-prev_cy;
+          const double dz=cz-prev_cz;
+          const double len=std::sqrt(dx*dx+dy*dy+dz*dz);
+          double ax_=0, ay_=0, az_=0;
+          if (len>0){
+            ax_=dx/len; ay_=dy/len; az_=dz/len;
+          }
+
+          out_id.push_back(next_id);
+          out_parent.push_back(last_id_in_branch);
+          out_branch.push_back(branch);
+          out_base.push_back(0);
+          sx.push_back(prev_cx); sy.push_back(prev_cy); sz.push_back(prev_cz);
+          ax.push_back(ax_);     ay.push_back(ay_);     az.push_back(az_);
+          ex.push_back(cx);      ey.push_back(cy);      ez.push_back(cz);
+          L.push_back(len);
+          R.push_back(prev_r);
+
+          last_id_in_branch = next_id;
+          ++next_id;
+        }
+
+        // Final ring to embedded tip
+        const int tip=j+cone0_tip;
+        const double tx=px[tip];
+        const double ty=py[tip];
+        const double tz=pz[tip];
+        const double dx=tx-cx;
+        const double dy=ty-cy;
+        const double dz=tz-cz;
+        const double len=std::sqrt(dx*dx+dy*dy+dz*dz);
+        double ax_=0, ay_=0, az_=0;
+        if (len>0){
+          ax_=dx/len; ay_=dy/len; az_=dz/len;
+        }
+
+        out_id.push_back(next_id);
+        out_parent.push_back(last_id_in_branch);
+        out_branch.push_back(branch);
+        out_base.push_back(0);
+        sx.push_back(cx); sy.push_back(cy); sz.push_back(cz);
+        ax.push_back(ax_); ay.push_back(ay_); az.push_back(az_);
+        ex.push_back(tx); ey.push_back(ty); ez.push_back(tz);
+        L.push_back(len);
+        R.push_back(rr);
+
+        ++next_id;
+
+        i=j+facets+1;
+        ++branch;
+        break;
+      }
+
+      // j is the ordinary single tip
+      {
         const double tx=px[j];
         const double ty=py[j];
         const double tz=pz[j];
@@ -510,11 +749,9 @@ DataFrame build_adqsm(
 
         ++next_id;
 
-        i = j + 1;
+        i=j+1;
         ++branch;
-      } else {
-        i = j;
-        ++branch;
+        break;
       }
     }
   }

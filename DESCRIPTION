@@ -20,7 +20,6 @@ Authors@R:
 Description: Real Twig is a method to correct branch overestimation in quantitative structure models. Overestimated cylinders are correctly tapered using measured twig diameters of corresponding tree species. Supported quantitative structure modeling software includes 'TreeQSM', 'SimpleForest', 'Treegraph', 'aRchi', and `AdQSM`. Also included is a novel database of twig diameters and tools for fractal analysis of point clouds.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 RdMacros: Rdpack
 Imports: tidytable, cobs, igraph, rgl, colourvalues, Rdpack, rlang, Rcpp, RcppSimdJson, geometry
 License: GPL (>= 3)
@@ -34,3 +33,4 @@ Maintainer: Aidan Morales <moral169@msu.edu>
 URL: https://aidanmorales.github.io/rTwig/, https://github.com/aidanmorales/rTwig
 BugReports: https://github.com/aidanmorales/rTwig/issues
 LinkingTo: Rcpp, RcppArmadillo
+Config/roxygen2/version: 8.1.0
