@@ -174,8 +174,12 @@ import_qsm <- function(filename) {
       inform("Importing TreeQSM")
 
       if (!is.null(qsm[[1]]) && is.list(qsm[[1]]) && !is.null(qsm[[1]]$cylinder)) {
-        inform("Multiple QSMs detected!")
-        qsms <- qsm
+        if (is.list(qsm[[2]])) {
+          inform("Multiple QSMs detected!")
+          qsms <- qsm
+        } else {
+          qsms <- list(qsm[[1]])
+        }
       } else {
         qsms <- list(qsm)
       }
