@@ -27,9 +27,14 @@ summary(qsm)
 }
 \references{
 \insertRef{TreeQSM}{rTwig}
+
 \insertRef{treegraph2}{rTwig}
+
 \insertRef{treegraph1}{rTwig}
+
 \insertRef{fan2020adqsm}{rTwig}
+
 \insertRef{du2019adtree}{rTwig}
+
 \insertRef{SmartQSM}{rTwig}
 }

@@ -19,7 +19,7 @@ are connected. Only TreeQSM is supported.
 \examples{
 
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
+qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 

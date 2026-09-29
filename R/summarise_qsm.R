@@ -11,7 +11,7 @@
 #' @param cylinder QSM cylinder data frame
 #' @param radius Radius column name either quoted or unquoted.
 #' @param triangulation Calculate optional QSM triangulation metrics created
-#'  with `import_treeqsm()`. Only supports TreeQSM. Defaults to `NULL`.
+#'  with `import_qsm()`. Only supports TreeQSM. Defaults to `NULL`.
 #'
 #' @return Returns a list
 #' @export
@@ -26,7 +26,7 @@
 #'
 #' # TreeQSM Triangulation
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' summarise_qsm(cylinder, radius, triangulation = qsm$triangulation)
@@ -78,75 +78,31 @@ summarise_qsm <- function(cylinder, radius, triangulation = NULL) {
 
   inform("Creating QSM Summary")
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
+  }
+
+  cols <- define_columns(qsm_format)
+
+  if (!qsm_format %in% c("rtwig", "treeqsm")) {
+    if (!is.null(triangulation)) {
+      inform("Main stem triangulation not supported.")
+    }
+    triangulation <- NULL
+  }
+
+  rlang::inject(
     data_summary(
       cylinder = cylinder,
-      radius = radius, length = "length", branch = "branch",
-      branch_order = "branch_order", branch_position = "branch_position",
-      start_z = "start_z", id = "id", parent = "parent",
+      radius = radius, length = !!cols$length, branch = !!cols$branch,
+      branch_order = !!cols$branch_order, branch_position = !!cols$branch_position,
+      start_z = !!cols$start_z, id = !!cols$id, parent = !!cols$parent,
       triangulation = triangulation
     )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    data_summary(
-      cylinder = cylinder,
-      radius = radius, length = "length", branch = "branch",
-      branch_order = "BranchOrder", branch_position = "PositionInBranch",
-      start_z = "start.z", id = "extension", parent = "parent",
-      triangulation = triangulation
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    data_summary(
-      cylinder = cylinder,
-      radius = radius, length = "length", branch = "branchID",
-      branch_order = "branchOrder", branch_position = "positionInBranch",
-      start_z = "startZ", id = "ID", parent = "parentID",
-      triangulation = NULL
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    data_summary(
-      cylinder = cylinder,
-      radius = radius, length = "length", branch = "nbranch",
-      branch_order = "branch_order", branch_position = "positionInBranch",
-      start_z = "sz", id = "p1", parent = "p2",
-      triangulation = NULL
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    data_summary(
-      cylinder = cylinder,
-      radius = radius, length = "length", branch = "branch_ID",
-      branch_order = "branching_order", branch_position = "positionInBranch",
-      start_z = "startZ", id = "cyl_ID", parent = "parent_ID",
-      triangulation = NULL
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Data summary

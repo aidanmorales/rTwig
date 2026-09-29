@@ -1,3 +1,163 @@
+#' Detect Format
+#'
+#' @description
+#' Detects the QSM format based on its stored column names.
+#'
+#' @param cylinder QSM cylinder data frame
+#'
+#' @returns string
+#' @noRd
+#'
+detect_format <- function(cylinder) {
+  signatures <- list(
+    rtwig = c("id", "parent", "start_x", "branch_order"),
+    treeqsm = c("parent", "extension", "branch", "BranchOrder"),
+    simpleforest = c("ID", "parentID", "branchID", "branchOrder"),
+    treegraph = c("p1", "p2", "ninternode"),
+    archi = c("cyl_ID", "parent_ID", "branching_order")
+  )
+
+  for (type in names(signatures)) {
+    if (all(signatures[[type]] %in% colnames(cylinder))) {
+      return(type)
+    }
+  }
+
+  NULL
+}
+
+
+#' Define Columns
+#'
+#' @description
+#' Define the column names based on their QSM format.
+#'
+#'
+#' @param format QSM format as a string
+#'
+#' @returns list of column names
+#' @noRd
+#'
+define_columns <- function(format) {
+  if (!rlang::is_string(format)) {
+    rlang::abort(
+      unsupported_format_message(),
+      class = "data_format_error"
+    )
+  }
+
+  switch(
+    format,
+
+    rtwig = list(
+      start_x = "start_x", start_y = "start_y", start_z = "start_z",
+      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      end_x = "end_x", end_y = "end_y", end_z = "end_z",
+      id = "id", parent = "parent", radius = "radius",
+      raw_radius = "raw_radius", modified = "modified",
+      length = "length", branch = "branch",
+      branch_position = "branch_position",
+      branch_order = "branch_order", reverse_order = "reverse_order",
+      branch_alt = "branch_alt",
+      segment = "segment", parent_segment = "parent_segment",
+      total_children = "total_children", growth_length = "growth_length",
+      base_distance = "base_distance", twig_distance = "twig_distance",
+      vessel_volume = "vessel_volume",
+      pipe_area = "pipe_area",
+      pipe_radius = "pipe_radius"
+    ),
+
+    treeqsm = list(
+      start_x = "start.x", start_y = "start.y", start_z = "start.z",
+      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
+      end_x = "end.x", end_y = "end.y", end_z = "end.z",
+      id = "extension", parent = "parent", radius = "radius",
+      raw_radius = "UnmodRadius", modified = "modified",
+      length = "length", branch = "branch",
+      branch_position = "PositionInBranch",
+      branch_order = "BranchOrder", reverse_order = "reverseBranchOrder",
+      branch_alt = "branch_alt",
+      segment = "segment", parent_segment = "parentSegment",
+      total_children = "totalChildren", growth_length = "growthLength",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume",
+      pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder"
+    ),
+
+    simpleforest = list(
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ",
+      id = "ID", parent = "parentID", radius = "radius",
+      raw_radius = "UnmodRadius", modified = "modified",
+      length = "length", branch = "branchID",
+      branch_position = "positionInBranch",
+      branch_order = "branchOrder", reverse_order = "reverseBranchOrder",
+      branch_alt = "branch_alt",
+      segment = "segmentID", parent_segment = "parentSegmentID",
+      total_children = "totalChildren", growth_length = "growthLength",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume",
+      pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder"
+    ),
+
+    treegraph = list(
+      start_x = "sx", start_y = "sy", start_z = "sz",
+      axis_x = "ax", axis_y = "ay", axis_z = "az",
+      end_x = "ex", end_y = "ey", end_z = "ez",
+      id = "p1", parent = "p2", radius = "radius",
+      raw_radius = "UnmodRadius", modified = "modified",
+      length = "length", branch = "nbranch",
+      branch_position = "positionInBranch",
+      branch_order = "branch_order", reverse_order = "reverseBranchOrder",
+      branch_alt = "branch_alt",
+      segment = "segment", parent_segment = "parentSegment",
+      total_children = "totalChildren", growth_length = "growthLength",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume",
+      pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder"
+    ),
+
+    archi = list(
+      start_x = "startX", start_y = "startY", start_z = "startZ",
+      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
+      end_x = "endX", end_y = "endY", end_z = "endZ",
+      id = "cyl_ID", parent = "parent_ID", radius = "radius_cyl",
+      raw_radius = "UnmodRadius", modified = "modified",
+      length = "length", branch = "branch_ID",
+      branch_position = "positionInBranch",
+      branch_order = "branching_order", reverse_order = "reverseBranchOrder",
+      branch_alt = "branch_alt",
+      segment = "segment", parent_segment = "parentSegment",
+      total_children = "totalChildren", growth_length = "growthLength",
+      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
+      vessel_volume = "vesselVolume",
+      pipe_area = "reversePipeAreaBranchorder",
+      pipe_radius = "reversePipeRadiusBranchorder"
+    ),
+
+    rlang::abort(
+      unsupported_format_message(),
+      class = "data_format_error"
+    )
+  )
+}
+
+#' Unsupported Format Message
+#'
+#' @returns A message listing the supported QSM formats.
+#' @noRd
+unsupported_format_message <- function() {
+  paste(
+    "Unsupported QSM format provided.",
+    "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
+    sep = "\n"
+  )
+}
+
 #' Select Column
 #'
 #' @description Uses rlang to convert a variable to a string without evaluation.

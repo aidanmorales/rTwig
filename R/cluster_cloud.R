@@ -88,58 +88,23 @@ cluster_cloud <- function(cylinder, cloud = NULL, spacing = NULL) {
   # Verify cylinders
   cylinder <- verify_cylinders(cylinder)
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
+  }
+
+  cols <- define_columns(qsm_format)
+
+  rlang::inject(
     cluster_data(
-      cylinder = cylinder, radius = "radius", length = "length", id = "id",
-      start_x = "start_x", start_y = "start_y", start_z = "start_z",
-      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
+      cylinder = cylinder, radius = !!cols$radius, length = !!cols$length, id = !!cols$id,
+      start_x = !!cols$start_x, start_y = !!cols$start_y, start_z = !!cols$start_z,
+      axis_x = !!cols$axis_x, axis_y = !!cols$axis_y, axis_z = !!cols$axis_z,
       cloud = cloud, spacing = spacing
     )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    cluster_data(
-      cylinder = cylinder, radius = "radius", length = "length", id = "extension",
-      start_x = "start.x", start_y = "start.y", start_z = "start.z",
-      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      cloud = cloud, spacing = spacing
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    cluster_data(
-      cylinder = cylinder, radius = "radius", length = "length", id = "ID",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      cloud = cloud, spacing = spacing
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    cluster_data(
-      cylinder = cylinder, radius = "radius", length = "length", id = "p1",
-      start_x = "sx", start_y = "sy", start_z = "sz",
-      axis_x = "ax", axis_y = "ay", axis_z = "az",
-      cloud = cloud, spacing = spacing
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    cluster_data(
-      cylinder = cylinder, radius = "radius_cyl", length = "length", id = "cyl_ID",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      cloud = cloud, spacing = spacing
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Cluster data

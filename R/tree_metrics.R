@@ -21,7 +21,7 @@
 #'  This is strongly discouraged, but can enable the calculation of tree metrics
 #'  on topologically disconnected structures.
 #' @param triangulation Calculate optional QSM triangulation metrics created
-#'  with `import_treeqsm()`. Only supports TreeQSM. Defaults to `NULL`.
+#'  with `import_qsm()`. Only supports TreeQSM. Defaults to `NULL`.
 #'
 #' @return Returns a list of tree metric data frames and a synthetic point cloud
 #' @export
@@ -41,7 +41,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' cylinder <- import_treeqsm(file)$cylinder
+#' cylinder <- import_qsm(file)$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' metrics <- tree_metrics(cylinder)
 #' names(metrics)
@@ -90,120 +90,40 @@ tree_metrics <- function(cylinder, verify = TRUE, triangulation = NULL) {
   # Verify cylinders -----------------------------------------------------------
   cylinder <- verify_cylinders(cylinder)
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
+  }
+
+  cols <- define_columns(qsm_format)
+
+  if (!qsm_format %in% c("rtwig", "treeqsm")) {
+    if (!is.null(triangulation)) {
+      inform("Main stem triangulation not supported.")
+    }
+    triangulation <- NULL
+  }
+
+  rlang::inject(
     calculate_tree_metrics(
-      cylinder = cylinder, id = "id", parent = "parent",
-      branch = "branch", branch_alt = "branch_alt",
-      radius = "radius", raw_radius = "raw_radius",
-      length = "length", segment = "segment",
-      branch_position = "branch_position",
-      growth_length = "growth_length", branch_order = "branch_order",
-      reverse_order = "reverse_order", total_children = "total_children",
-      base_distance = "base_distance", twig_distance = "twig_distance",
-      vessel_volume = "vessel_volume", pipe_area = "pipe_area",
-      pipe_radius = "pipe_radius",
-      start_x = "start_x", start_y = "start_y", start_z = "start_z",
-      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z",
+      cylinder = cylinder, id = !!cols$id, parent = !!cols$parent,
+      branch = !!cols$branch, branch_alt = !!cols$branch_alt,
+      radius = !!cols$radius, raw_radius = !!cols$raw_radius,
+      length = !!cols$length, segment = !!cols$segment,
+      branch_position = !!cols$branch_position,
+      growth_length = !!cols$growth_length, branch_order = !!cols$branch_order,
+      reverse_order = !!cols$reverse_order, total_children = !!cols$total_children,
+      base_distance = !!cols$base_distance, twig_distance = !!cols$twig_distance,
+      vessel_volume = !!cols$vessel_volume, pipe_area = !!cols$pipe_area,
+      pipe_radius = !!cols$pipe_radius,
+      start_x = !!cols$start_x, start_y = !!cols$start_y, start_z = !!cols$start_z,
+      axis_x = !!cols$axis_x, axis_y = !!cols$axis_y, axis_z = !!cols$axis_z,
+      end_x = !!cols$end_x, end_y = !!cols$end_y, end_z = !!cols$end_z,
       verify = verify, triangulation = triangulation
     )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    calculate_tree_metrics(
-      cylinder = cylinder, id = "extension", parent = "parent",
-      branch = "branch", branch_alt = "branch_alt",
-      radius = "radius", raw_radius = "UnmodRadius",
-      length = "length", segment = "segment",
-      branch_position = "PositionInBranch",
-      growth_length = "growthLength", branch_order = "BranchOrder",
-      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder",
-      start_x = "start.x", start_y = "start.y", start_z = "start.z",
-      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z",
-      verify = verify, triangulation = triangulation
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    calculate_tree_metrics(
-      cylinder = cylinder, id = "ID", parent = "parentID",
-      branch = "branchID", branch_alt = "branch_alt",
-      radius = "radius", raw_radius = "UnmodRadius",
-      length = "length", segment = "segmentID",
-      branch_position = "positionInBranch",
-      growth_length = "growthLength", branch_order = "branchOrder",
-      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      verify = verify, triangulation = NULL
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    calculate_tree_metrics(
-      cylinder = cylinder, id = "p1", parent = "p2",
-      branch = "nbranch", branch_alt = "branch_alt",
-      radius = "radius", raw_radius = "UnmodRadius",
-      length = "length", segment = "segment",
-      branch_position = "positionInBranch",
-      growth_length = "growthLength", branch_order = "branch_order",
-      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder",
-      start_x = "sx", start_y = "sy", start_z = "sz",
-      axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez",
-      verify = verify, triangulation = NULL
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    if (!is.null(triangulation)) {
-      inform("Main stem triangulation not supported.")
-    }
-
-    calculate_tree_metrics(
-      cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
-      branch = "branch_ID", branch_alt = "branch_alt",
-      radius = "radius_cyl", raw_radius = "UnmodRadius",
-      length = "length", segment = "segment",
-      branch_position = "positionInBranch",
-      growth_length = "growthLength", branch_order = "branching_order",
-      reverse_order = "reverseBranchOrder", total_children = "totalChildren",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume", pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      verify = verify, triangulation = NULL
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Calculates tree metrics
@@ -1547,7 +1467,7 @@ segment_order_distributions <- function(segment) {
 
 #' Calculate DBH from TreeQSM triangulation
 #'
-#' @param triangulation triangulation list from `import_treeqsm()`
+#' @param triangulation triangulation list from `import_qsm()`
 #' @returns double
 #' @noRd
 triangulation_dbh <- function(triangulation) {
@@ -1574,7 +1494,7 @@ triangulation_dbh <- function(triangulation) {
 #' Summarise TreeQSM triangulation metrics
 #'
 #' @param cylinder QSM cylinder data frame
-#' @param triangulation triangulation list from `import_treeqsm()`
+#' @param triangulation triangulation list from `import_qsm()`
 #' @returns data frame
 #' @noRd
 summarise_triangulation <- function(cylinder, triangulation) {

@@ -48,7 +48,7 @@
 #'
 #' ## Load QSM
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
@@ -237,83 +237,28 @@ export_mesh <- function(
   # Verify cylinders
   cylinder <- verify_cylinders(cylinder)
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
+  }
+
+  cols <- define_columns(qsm_format)
+
+  rlang::inject(
     format_mesh(
       filename = filename, format = format, cylinder = cylinder,
-      id = "id", parent = "parent", radius = radius,
-      length = "length", branch = "branch", branch_order = "branch_order",
-      start_x = "start_x", start_y = "start_y", start_z = "start_z",
-      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z",
+      id = !!cols$id, parent = !!cols$parent, radius = radius,
+      length = !!cols$length, branch = !!cols$branch, branch_order = !!cols$branch_order,
+      start_x = !!cols$start_x, start_y = !!cols$start_y, start_z = !!cols$start_z,
+      axis_x = !!cols$axis_x, axis_y = !!cols$axis_y, axis_z = !!cols$axis_z,
+      end_x = !!cols$end_x, end_y = !!cols$end_y, end_z = !!cols$end_z,
       caps = caps, close = close,
       facets = facets, color = color, palette = palette,
       normals = normals, alpha = alpha
     )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    format_mesh(
-      filename = filename, format = format, cylinder = cylinder,
-      id = "extension", parent = "parent", radius = radius,
-      length = "length", branch = "branch", branch_order = "BranchOrder",
-      start_x = "start.x", start_y = "start.y", start_z = "start.z",
-      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z",
-      caps = caps, close = close,
-      facets = facets, color = color, palette = palette,
-      normals = normals, alpha = alpha
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    format_mesh(
-      filename = filename, format = format, cylinder = cylinder,
-      id = "ID", parent = "parentID", radius = radius,
-      length = "length", branch = "branchID", branch_order = "branchOrder",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      caps = caps, close = close,
-      facets = facets, color = color, palette = palette,
-      normals = normals, alpha = alpha
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    format_mesh(
-      filename = filename, format = format, cylinder = cylinder,
-      id = "p1", parent = "p2", radius = radius,
-      length = "length", branch = "nbranch", branch_order = "branch_order",
-      start_x = "sx", start_y = "sy", start_z = "sz",
-      axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez",
-      caps = caps, close = close,
-      facets = facets, color = color, palette = palette,
-      normals = normals, alpha = alpha
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    format_mesh(
-      filename = filename, format = format, cylinder = cylinder,
-      id = "cyl_ID", parent = "parent_ID", radius = radius,
-      length = "length", branch = "branch_ID", branch_order = "branching_order",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      caps = caps, close = close,
-      facets = facets, color = color, palette = palette,
-      normals = normals, alpha = alpha
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Format mesh
@@ -500,12 +445,6 @@ format_mesh <- function(
         sep = ","
       )
   } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-
-    abort(message, class = "data_format_error")
+    abort(unsupported_format_message(), class = "data_format_error")
   }
 }

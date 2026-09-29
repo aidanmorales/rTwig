@@ -20,11 +20,11 @@ export_mat(
 
 \item{metrics}{Calculate treedata and branch structs? Defaults to TRUE.}
 
-\item{rundata}{Optional rundata list created by \code{import_treeqsm()}}
+\item{rundata}{Optional rundata list created by \code{import_qsm()}}
 
-\item{pmdistance}{Optional pmdistance list created by \code{import_treeqsm()}}
+\item{pmdistance}{Optional pmdistance list created by \code{import_qsm()}}
 
-\item{triangulation}{Optional triangulation list created by \code{import_treeqsm()}}
+\item{triangulation}{Optional triangulation list created by \code{import_qsm()}}
 }
 \value{
 Returns a .mat file
@@ -36,7 +36,7 @@ Exports the cylinder data to the format used by TreeQSM
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
+qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 

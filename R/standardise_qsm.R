@@ -22,7 +22,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- standardise_qsm(cylinder)
 #' str(cylinder)
@@ -58,86 +58,10 @@ standardise_qsm <- function(cylinder) {
   # Verify cylinders
   cylinder <- verify_cylinders(cylinder)
 
-  # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    select(cylinder,
-      start_x = "start.x", start_y = "start.y", start_z = "start.z",
-      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z",
-      id = "extension", parent = "parent", radius = "radius",
-      raw_radius = "UnmodRadius", modified = any_of("modified"),
-      length = "length", branch = "branch",
-      branch_position = "PositionInBranch",
-      branch_order = "BranchOrder", reverse_order = "reverseBranchOrder",
-      branch_alt = "branch_alt",
-      segment = "segment", parent_segment = "parentSegment",
-      total_children = "totalChildren", growth_length = "growthLength",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume",
-      pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder"
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    select(cylinder,
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      id = "ID", parent = "parentID", radius = "radius",
-      raw_radius = "UnmodRadius", modified = any_of("modified"),
-      length = "length", branch = "branchID",
-      branch_position = "positionInBranch",
-      branch_order = "branchOrder", reverse_order = "reverseBranchOrder",
-      branch_alt = "branch_alt",
-      segment = "segmentID", parent_segment = "parentSegmentID",
-      total_children = "totalChildren", growth_length = "growthLength",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume",
-      pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder"
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    select(cylinder,
-      start_x = "sx", start_y = "sy", start_z = "sz",
-      axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez",
-      id = "p1", parent = "p2", radius = "radius",
-      raw_radius = "UnmodRadius", modified = any_of("modified"),
-      length = "length", branch = "nbranch",
-      branch_position = "positionInBranch",
-      branch_order = "branch_order", reverse_order = "reverseBranchOrder",
-      branch_alt = "branch_alt",
-      segment = "segment", parent_segment = "parentSegment",
-      total_children = "totalChildren", growth_length = "growthLength",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume",
-      pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder"
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    select(cylinder,
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ",
-      id = "cyl_ID", parent = "parent_ID", radius = "radius_cyl",
-      raw_radius = "UnmodRadius", modified = any_of("modified"),
-      length = "length", branch = "branch_ID",
-      branch_position = "positionInBranch",
-      branch_order = "branching_order", reverse_order = "reverseBranchOrder",
-      branch_alt = "branch_alt",
-      segment = "segment", parent_segment = "parentSegment",
-      total_children = "totalChildren", growth_length = "growthLength",
-      base_distance = "distanceFromBase", twig_distance = "distanceToTwig",
-      vessel_volume = "vesselVolume",
-      pipe_area = "reversePipeAreaBranchorder",
-      pipe_radius = "reversePipeRadiusBranchorder"
-    )
-  } else {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format) || qsm_format == "rtwig") {
     message <- paste(
       "Unsupported QSM format provided.",
       "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
@@ -145,6 +69,15 @@ standardise_qsm <- function(cylinder) {
     )
     abort(message, class = "data_format_error")
   }
+
+  cols <- unlist(define_columns(qsm_format), use.names = TRUE)
+
+  # Only modified is optional; retain the existing column order.
+  if (!cols[["modified"]] %in% colnames(cylinder)) {
+    cols <- cols[names(cols) != "modified"]
+  }
+
+  select(cylinder, all_of(cols))
 }
 
 #' @rdname standardise_qsm

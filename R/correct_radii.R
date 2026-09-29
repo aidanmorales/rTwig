@@ -14,7 +14,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' cylinder <- correct_radii(cylinder, twig_radius = 4.23)
@@ -69,73 +69,28 @@ correct_radii <- function(
   # Gets broken branch filter
   broken_branch <- broken_branch
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
-    model_paths(
-      cylinder = cylinder, id = "id", parent = "parent",
-      radius = "radius", raw_radius = "raw_radius",
-      growth_length = "growth_length", branch = "branch",
-      branch_order = "branch_order", reverse_order = "reverse_order",
-      branch_position = "branch_position",
-      total_children = "total_children",
-      twig_radius = twig_radius, taper = 1, broken_branch = broken_branch
-    )
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
   }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+
+  cols <- define_columns(qsm_format)
+
+  rlang::inject(
     model_paths(
-      cylinder = cylinder, id = "extension", parent = "parent",
-      radius = "radius", raw_radius = "UnmodRadius",
-      growth_length = "growthLength", branch = "branch",
-      branch_order = "BranchOrder", reverse_order = "reverseBranchOrder",
-      branch_position = "PositionInBranch",
-      total_children = "totalChildren",
-      twig_radius = twig_radius, taper = 1, broken_branch = broken_branch
+      cylinder = cylinder, id = !!cols$id, parent = !!cols$parent,
+      radius = !!cols$radius, raw_radius = !!cols$raw_radius,
+      growth_length = !!cols$growth_length, branch = !!cols$branch,
+      branch_order = !!cols$branch_order, reverse_order = !!cols$reverse_order,
+      branch_position = !!cols$branch_position,
+      total_children = !!cols$total_children,
+      twig_radius = twig_radius,
+      taper = if (qsm_format %in% c("rtwig", "treeqsm")) 1 else 2,
+      broken_branch = broken_branch
     )
-  }
-  # SimpleForest  --------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    model_paths(
-      cylinder = cylinder, id = "ID", parent = "parentID",
-      radius = "radius", raw_radius = "UnmodRadius",
-      growth_length = "growthLength", branch = "branchID",
-      branch_order = "branchOrder", reverse_order = "reverseBranchOrder",
-      branch_position = "positionInBranch",
-      total_children = "totalChildren",
-      twig_radius = twig_radius, taper = 2, broken_branch = broken_branch
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    model_paths(
-      cylinder = cylinder, id = "p1", parent = "p2",
-      radius = "radius", raw_radius = "UnmodRadius",
-      growth_length = "growthLength", branch = "nbranch",
-      branch_order = "branch_order", reverse_order = "reverseBranchOrder",
-      branch_position = "positionInBranch",
-      total_children = "totalChildren",
-      twig_radius = twig_radius, taper = 2, broken_branch = broken_branch
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    model_paths(
-      cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
-      radius = "radius_cyl", raw_radius = "UnmodRadius",
-      growth_length = "growthLength", branch = "branch_ID",
-      branch_order = "branching_order", reverse_order = "reverseBranchOrder",
-      branch_position = "positionInBranch",
-      total_children = "totalChildren",
-      twig_radius = twig_radius, taper = 2, broken_branch = broken_branch
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Model paths

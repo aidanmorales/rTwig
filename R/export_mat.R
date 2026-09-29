@@ -5,9 +5,9 @@
 #' @param cylinder QSM cylinder data frame
 #' @param filename Desired name of file
 #' @param metrics Calculate treedata and branch structs? Defaults to TRUE.
-#' @param rundata Optional rundata list created by `import_treeqsm()`
-#' @param pmdistance Optional pmdistance list created by `import_treeqsm()`
-#' @param triangulation Optional triangulation list created by `import_treeqsm()`
+#' @param rundata Optional rundata list created by `import_qsm()`
+#' @param pmdistance Optional pmdistance list created by `import_qsm()`
+#' @param triangulation Optional triangulation list created by `import_qsm()`
 #'
 #' @return Returns a .mat file
 #' @export
@@ -16,7 +16,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
@@ -124,271 +124,79 @@ export_mat <- function(
 
   inform("Exporting to .mat")
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
-    radius <- as.matrix(cylinder$radius)
-    length <- as.matrix(cylinder$length)
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
 
-    start <- cylinder %>%
-      select(start.x = "start_x", start.y = "start_y", start.z = "start_z") %>%
-      as.matrix()
-
-    axis <- cylinder %>%
-      select(axis.x = "axis_x", axis.y = "axis_y", axis.z = "axis_z") %>%
-      as.matrix()
-
-    parent <- as.matrix(cylinder$parent)
-    extension <- as.matrix(cylinder$id)
-    added <- numeric(0)
-    UnmodRadius <- as.matrix(cylinder$raw_radius)
-    branch <- as.matrix(cylinder$branch)
-    SurfCov <- numeric(0)
-    mad <- numeric(0)
-    BranchOrder <- as.matrix(cylinder$branch_order)
-    PositionInBranch <- as.matrix(cylinder$branch_position)
-
-    cylinder_struct <- list(
-      radius = radius,
-      length = length,
-      start = start,
-      axis = axis,
-      parent = parent,
-      extension = extension,
-      added = added,
-      UnmodRadius = UnmodRadius,
-      branch = branch,
-      SurfCov = SurfCov,
-      mad = mad,
-      BranchOrder = BranchOrder,
-      PositionInBranch = PositionInBranch
-    )
-
-    structs <- build_treeqsm_struct(
-      cylinder = cylinder,
-      metrics = metrics,
-      rundata = rundata,
-      pmdistance = pmdistance,
-      triangulation = triangulation
-    )
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
   }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    radius <- as.matrix(cylinder$radius)
-    length <- as.matrix(cylinder$length)
 
-    start <- cylinder %>%
-      select("start.x", "start.y", "start.z") %>%
-      as.matrix()
+  cols <- define_columns(qsm_format)
 
-    axis <- cylinder %>%
-      select("axis.x", "axis.y", "axis.z") %>%
-      as.matrix()
+  radius <- as.matrix(cylinder[[cols$radius]])
+  length <- as.matrix(cylinder[[cols$length]])
 
-    parent <- as.matrix(cylinder$parent)
-    extension <- as.matrix(cylinder$extension)
+  start <- cylinder %>%
+    select(
+      start.x = all_of(cols$start_x),
+      start.y = all_of(cols$start_y),
+      start.z = all_of(cols$start_z)
+    ) %>%
+    as.matrix()
+
+  axis <- cylinder %>%
+    select(
+      axis.x = all_of(cols$axis_x),
+      axis.y = all_of(cols$axis_y),
+      axis.z = all_of(cols$axis_z)
+    ) %>%
+    as.matrix()
+
+  parent <- as.matrix(cylinder[[cols$parent]])
+  extension <- as.matrix(cylinder[[cols$id]])
+  UnmodRadius <- as.matrix(cylinder[[cols$raw_radius]])
+  branch <- as.matrix(cylinder[[cols$branch]])
+  BranchOrder <- as.matrix(cylinder[[cols$branch_order]])
+  PositionInBranch <- as.matrix(cylinder[[cols$branch_position]])
+
+  added <- numeric(0)
+  SurfCov <- numeric(0)
+  mad <- numeric(0)
+
+  if (qsm_format == "treeqsm") {
     added <- as.matrix(cylinder$added)
-    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
-    branch <- as.matrix(cylinder$branch)
-    BranchOrder <- as.matrix(cylinder$BranchOrder)
-    PositionInBranch <- as.matrix(cylinder$PositionInBranch)
 
-    # Checks for columns only in TreeQSM v2.4.0 and up
     if (all(c("SurfCov", "mad") %in% colnames(cylinder))) {
       SurfCov <- as.matrix(cylinder$SurfCov)
       mad <- as.matrix(cylinder$mad)
-
-      cylinder_struct <- list(
-        radius = radius,
-        length = length,
-        start = start,
-        axis = axis,
-        parent = parent,
-        extension = extension,
-        added = added,
-        UnmodRadius = UnmodRadius,
-        branch = branch,
-        SurfCov = SurfCov,
-        mad = mad,
-        BranchOrder = BranchOrder,
-        PositionInBranch = PositionInBranch
-      )
-    } else {
-      SurfCov <- numeric(0)
-      mad <- numeric(0)
-
-      cylinder_struct <- list(
-        radius = radius,
-        length = length,
-        start = start,
-        axis = axis,
-        parent = parent,
-        extension = extension,
-        added = added,
-        UnmodRadius = UnmodRadius,
-        branch = branch,
-        SurfCov = SurfCov,
-        mad = mad,
-        BranchOrder = BranchOrder,
-        PositionInBranch = PositionInBranch
-      )
     }
-
-    structs <- build_treeqsm_struct(
-      cylinder = cylinder,
-      metrics = metrics,
-      rundata = rundata,
-      pmdistance = pmdistance,
-      triangulation = triangulation
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    radius <- as.matrix(cylinder$radius)
-    length <- as.matrix(cylinder$length)
-
-    start <- cylinder %>%
-      select(start.x = "startX", start.y = "startY", start.z = "startZ") %>%
-      as.matrix()
-
-    axis <- cylinder %>%
-      select(axis.x = "axisX", axis.y = "axisY", axis.z = "axisZ") %>%
-      as.matrix()
-
-    parent <- as.matrix(cylinder$parentID)
-    extension <- as.matrix(cylinder$ID)
-    added <- numeric(0)
-    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
-    branch <- as.matrix(cylinder$branchID)
-    SurfCov <- numeric(0)
+  } else if (qsm_format == "simpleforest") {
     mad <- as.matrix(cylinder$averagePointDistance)
-    BranchOrder <- as.matrix(cylinder$branchOrder)
-    PositionInBranch <- as.matrix(cylinder$positionInBranch)
-
-    cylinder_struct <- list(
-      radius = radius,
-      length = length,
-      start = start,
-      axis = axis,
-      parent = parent,
-      extension = extension,
-      added = added,
-      UnmodRadius = UnmodRadius,
-      branch = branch,
-      SurfCov = SurfCov,
-      mad = mad,
-      BranchOrder = BranchOrder,
-      PositionInBranch = PositionInBranch
-    )
-
-    structs <- build_treeqsm_struct(
-      cylinder = cylinder,
-      metrics = metrics,
-      rundata = rundata,
-      pmdistance = pmdistance,
-      triangulation = triangulation
-    )
   }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    radius <- as.matrix(cylinder$radius)
-    length <- as.matrix(cylinder$length)
 
-    start <- cylinder %>%
-      select(start.x = "sx", start.y = "sy", start.z = "sz") %>%
-      as.matrix()
+  cylinder_struct <- list(
+    radius = radius,
+    length = length,
+    start = start,
+    axis = axis,
+    parent = parent,
+    extension = extension,
+    added = added,
+    UnmodRadius = UnmodRadius,
+    branch = branch,
+    SurfCov = SurfCov,
+    mad = mad,
+    BranchOrder = BranchOrder,
+    PositionInBranch = PositionInBranch
+  )
 
-    axis <- cylinder %>%
-      select(axis.x = "ax", axis.y = "ay", axis.z = "az") %>%
-      as.matrix()
-
-    parent <- as.matrix(cylinder$p2)
-    extension <- as.matrix(cylinder$p1)
-    added <- numeric(0)
-    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
-    branch <- as.matrix(cylinder$nbranch)
-    SurfCov <- numeric(0)
-    mad <- numeric(0)
-    BranchOrder <- as.matrix(cylinder$branch_order)
-    PositionInBranch <- as.matrix(cylinder$positionInBranch)
-
-    cylinder_struct <- list(
-      radius = radius,
-      length = length,
-      start = start,
-      axis = axis,
-      parent = parent,
-      extension = extension,
-      added = added,
-      UnmodRadius = UnmodRadius,
-      branch = branch,
-      SurfCov = SurfCov,
-      mad = mad,
-      BranchOrder = BranchOrder,
-      PositionInBranch = PositionInBranch
-    )
-
-    structs <- build_treeqsm_struct(
-      cylinder = cylinder,
-      metrics = metrics,
-      rundata = rundata,
-      pmdistance = pmdistance,
-      triangulation = triangulation
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    radius <- as.matrix(cylinder$radius_cyl)
-    length <- as.matrix(cylinder$length)
-
-    start <- cylinder %>%
-      select(start.x = "startX", start.y = "startY", start.z = "startZ") %>%
-      as.matrix()
-
-    axis <- cylinder %>%
-      select(axis.x = "axisX", axis.y = "axisY", axis.z = "axisZ") %>%
-      as.matrix()
-
-    parent <- as.matrix(cylinder$parent_ID)
-    extension <- as.matrix(cylinder$cyl_ID)
-    added <- numeric(0)
-    UnmodRadius <- as.matrix(cylinder$UnmodRadius)
-    branch <- as.matrix(cylinder$branch_ID)
-    SurfCov <- numeric(0)
-    mad <- numeric(0)
-    BranchOrder <- as.matrix(cylinder$branching_order)
-    PositionInBranch <- as.matrix(cylinder$positionInBranch)
-
-    cylinder_struct <- list(
-      radius = radius,
-      length = length,
-      start = start,
-      axis = axis,
-      parent = parent,
-      extension = extension,
-      added = added,
-      UnmodRadius = UnmodRadius,
-      branch = branch,
-      SurfCov = SurfCov,
-      mad = mad,
-      BranchOrder = BranchOrder,
-      PositionInBranch = PositionInBranch
-    )
-
-    structs <- build_treeqsm_struct(
-      cylinder = cylinder,
-      metrics = metrics,
-      rundata = rundata,
-      pmdistance = pmdistance,
-      triangulation = triangulation
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  structs <- build_treeqsm_struct(
+    cylinder = cylinder,
+    metrics = metrics,
+    rundata = rundata,
+    pmdistance = pmdistance,
+    triangulation = triangulation
+  )
 
   # Export mat
   write_mat(
@@ -406,9 +214,9 @@ export_mat <- function(
 #'
 #' @param cylinder cylinder data frame
 #' @param metrics boolean, defaults to TRUE
-#' @param rundata rundata list from `import_treeqsm()`
-#' @param pmdistance pmdistance list from `import_treeqsm()`
-#' @param triangulation triangulation list from `import_treeqsm()`
+#' @param rundata rundata list from `import_qsm()`
+#' @param pmdistance pmdistance list from `import_qsm()`
+#' @param triangulation triangulation list from `import_qsm()`
 #'
 #' @returns list
 #' @noRd

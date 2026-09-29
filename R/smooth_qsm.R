@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
@@ -39,7 +39,9 @@ smooth_qsm <- function(cylinder) {
   }
 
   # TreeQSM --------------------------------------------------------------------
-  if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
+  qsm_format <- detect_format(cylinder)
+
+  if (identical(qsm_format, "treeqsm")) {
     # Verify cylinders
     cylinder <- verify_cylinders(cylinder)
 

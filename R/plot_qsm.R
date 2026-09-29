@@ -106,7 +106,7 @@
 #'
 #' ## TreeQSM
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' plot_qsm(cylinder)
@@ -400,109 +400,31 @@ plot_qsm <- function(
     }
   }
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
-    plot_data(
-      cylinder = cylinder, radius = radius, length = "length", id = "id",
-      branch = "branch", branch_order = "branch_order",
-      start_x = "start_x", start_y = "start_y", start_z = "start_z",
-      axis_x = "axis_x", axis_y = "axis_y", axis_z = "axis_z",
-      end_x = "end_x", end_y = "end_y", end_z = "end_z", parent = "parent",
-      facets = facets, caps = caps, close = close,
-      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color,
-      grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
-      pt_size = pt_size, pt_alpha = pt_alpha,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
-      triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette, tri_alpha = tri_alpha,
-      leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
-    )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    plot_data(
-      cylinder = cylinder, radius = radius, length = "length", id = "extension",
-      branch = "branch", branch_order = "BranchOrder",
-      start_x = "start.x", start_y = "start.y", start_z = "start.z",
-      axis_x = "axis.x", axis_y = "axis.y", axis_z = "axis.z",
-      end_x = "end.x", end_y = "end.y", end_z = "end.z", parent = "parent",
-      facets = facets, caps = caps, close = close,
-      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color,
-      grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
-      pt_size = pt_size, pt_alpha = pt_alpha,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
-      triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette, tri_alpha = tri_alpha,
-      leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    plot_data(
-      cylinder = cylinder, radius = radius, length = "length", id = "ID",
-      branch = "branchID", branch_order = "branchOrder",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", parent = "parentID",
-      facets = facets, caps = caps, close = close,
-      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color,
-      grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
-      pt_size = pt_size, pt_alpha = pt_alpha,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
-      triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette, tri_alpha = tri_alpha,
-      leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    plot_data(
-      cylinder = cylinder, radius = radius, length = "length", id = "p1",
-      branch = "nbranch", branch_order = "branch_order",
-      start_x = "sx", start_y = "sy", start_z = "sz",
-      axis_x = "ax", axis_y = "ay", axis_z = "az",
-      end_x = "ex", end_y = "ey", end_z = "ez", parent = "p2",
-      facets = facets, caps = caps, close = close,
-      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color,
-      grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
-      pt_size = pt_size, pt_alpha = pt_alpha,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
-      triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette, tri_alpha = tri_alpha,
-      leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    plot_data(
-      cylinder = cylinder, radius = radius, length = "length", id = "cyl_ID",
-      branch = "branch_ID", branch_order = "branching_order",
-      start_x = "startX", start_y = "startY", start_z = "startZ",
-      axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
-      end_x = "endX", end_y = "endY", end_z = "endZ", parent = "parent_ID",
-      facets = facets, caps = caps, close = close,
-      skeleton = skeleton, skeleton_lwd = skeleton_lwd,
-      color = color, palette = palette, alpha = alpha,
-      axes = axes, axes_color = axes_color,
-      grid = grid, grid_color = grid_color, hover = hover,
-      cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
-      pt_size = pt_size, pt_alpha = pt_alpha,
-      bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
-      triangulation = triangulation, tri_color = tri_color,
-      tri_palette = tri_palette, tri_alpha = tri_alpha,
-      leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (!is.null(qsm_format)) {
+    cols <- define_columns(qsm_format)
+
+    rlang::inject(
+      plot_data(
+        cylinder = cylinder, radius = radius, length = !!cols$length, id = !!cols$id,
+        branch = !!cols$branch, branch_order = !!cols$branch_order,
+        start_x = !!cols$start_x, start_y = !!cols$start_y, start_z = !!cols$start_z,
+        axis_x = !!cols$axis_x, axis_y = !!cols$axis_y, axis_z = !!cols$axis_z,
+        end_x = !!cols$end_x, end_y = !!cols$end_y, end_z = !!cols$end_z, parent = !!cols$parent,
+        facets = facets, caps = caps, close = close,
+        skeleton = skeleton, skeleton_lwd = skeleton_lwd,
+        color = color, palette = palette, alpha = alpha,
+        axes = axes, axes_color = axes_color,
+        grid = grid, grid_color = grid_color, hover = hover,
+        cloud = cloud, pt_color = pt_color, pt_palette = pt_palette,
+        pt_size = pt_size, pt_alpha = pt_alpha,
+        bg_color = bg_color, lit = lit, pan = pan, normalize = normalize,
+        triangulation = triangulation, tri_color = tri_color,
+        tri_palette = tri_palette, tri_alpha = tri_alpha,
+        leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
+      )
     )
   }
   # Point Cloud, Triangulation, Leaves, or Mesh --------------------------------
@@ -521,12 +443,7 @@ plot_qsm <- function(
       leaves = leaves, lf_color = lf_color, lf_alpha = lf_alpha, mesh = mesh
     )
   } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
+    abort(unsupported_format_message(), class = "data_format_error")
   }
 }
 

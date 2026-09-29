@@ -36,7 +36,7 @@
 #'
 #' ## Load QSM
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #'
@@ -149,68 +149,25 @@ prune_qsm <- function(
   # Verify cylinders
   cylinder <- verify_cylinders(cylinder)
 
-  # rTwig ----------------------------------------------------------------------
-  if (all(c("id", "parent", "start_x", "branch_order") %in% colnames(cylinder))) {
+  # Detect format and define columns -------------------------------------------
+  qsm_format <- detect_format(cylinder)
+
+  if (is.null(qsm_format)) {
+    abort(unsupported_format_message(), class = "data_format_error")
+  }
+
+  cols <- define_columns(qsm_format)
+
+  rlang::inject(
     prune_data(
-      cylinder = cylinder, id = "id", parent = "parent",
-      segment = "segment", branch = "branch", branch_position = "branch_position",
-      start_z = "start_z", radius = "radius",
+      cylinder = cylinder, id = !!cols$id, parent = !!cols$parent,
+      segment = !!cols$segment, branch = !!cols$branch, branch_position = !!cols$branch_position,
+      start_z = !!cols$start_z, radius = !!cols$radius,
       cylinder_ids = cylinder_ids, branch_ids = branch_ids,
       segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
       invert = invert, index = index
     )
-  }
-  # TreeQSM --------------------------------------------------------------------
-  else if (all(c("parent", "extension", "branch", "BranchOrder") %in% colnames(cylinder))) {
-    prune_data(
-      cylinder = cylinder, id = "extension", parent = "parent",
-      segment = "segment", branch = "branch", branch_position = "PositionInBranch",
-      start_z = "start.z", radius = "radius",
-      cylinder_ids = cylinder_ids, branch_ids = branch_ids,
-      segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
-      invert = invert, index = index
-    )
-  }
-  # SimpleForest ---------------------------------------------------------------
-  else if (all(c("ID", "parentID", "branchID", "branchOrder") %in% colnames(cylinder))) {
-    prune_data(
-      cylinder = cylinder, id = "ID", parent = "parentID",
-      segment = "segmentID", branch = "branchID", branch_position = "positionInBranch",
-      start_z = "startZ", radius = "radius",
-      cylinder_ids = cylinder_ids, branch_ids = branch_ids,
-      segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
-      invert = invert, index = index
-    )
-  }
-  # Treegraph ------------------------------------------------------------------
-  else if (all(c("p1", "p2", "ninternode") %in% colnames(cylinder))) {
-    prune_data(
-      cylinder = cylinder, id = "p1", parent = "p2",
-      segment = "segment", branch = "nbranch", branch_position = "positionInBranch",
-      start_z = "sz", radius = "radius",
-      cylinder_ids = cylinder_ids, branch_ids = branch_ids,
-      segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
-      invert = invert, index = index
-    )
-  }
-  # aRchi ----------------------------------------------------------------------
-  else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
-    prune_data(
-      cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
-      segment = "segment", branch = "branch_ID", branch_position = "positionInBranch",
-      start_z = "startZ", radius = "radius_cyl",
-      cylinder_ids = cylinder_ids, branch_ids = branch_ids,
-      segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
-      invert = invert, index = index
-    )
-  } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SmartQSM, SimpleForest, Treegraph, aRchi, AdQSM, or AdTree QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
-  }
+  )
 }
 
 #' Prune data

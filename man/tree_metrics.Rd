@@ -17,7 +17,7 @@ This is strongly discouraged, but can enable the calculation of tree metrics
 on topologically disconnected structures.}
 
 \item{triangulation}{Calculate optional QSM triangulation metrics created
-with \code{import_treeqsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
+with \code{import_qsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
 }
 \value{
 Returns a list of tree metric data frames and a synthetic point cloud
@@ -41,7 +41,7 @@ throughout the tree.
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-cylinder <- import_treeqsm(file)$cylinder
+cylinder <- import_qsm(file)$cylinder
 cylinder <- update_cylinders(cylinder)
 metrics <- tree_metrics(cylinder)
 names(metrics)

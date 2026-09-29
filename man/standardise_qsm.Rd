@@ -34,7 +34,7 @@ software. This function can be run either before or after
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
+qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- standardise_qsm(cylinder)
 str(cylinder)

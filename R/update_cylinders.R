@@ -21,7 +21,7 @@
 #'
 #' ## TreeQSM Processing Chain
 #' file <- system.file("extdata/QSM.mat", package = "rTwig")
-#' qsm <- import_treeqsm(file)
+#' qsm <- import_qsm(file)
 #' cylinder <- qsm$cylinder
 #' cylinder <- update_cylinders(cylinder)
 #' str(cylinder)
@@ -378,12 +378,7 @@ update_cylinders <- function(cylinder) {
     # Path Metrics -------------------------------------------------------------
     path_metrics(network, cylinder, "cyl_ID", "length")
   } else {
-    message <- paste(
-      "Unsupported QSM format provided.",
-      "i Only TreeQSM, SimpleForest, Treegraph, or aRchi QSMs are supported.",
-      sep = "\n"
-    )
-    abort(message, class = "data_format_error")
+    abort(unsupported_format_message(), class = "data_format_error")
   }
 }
 

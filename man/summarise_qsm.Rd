@@ -15,7 +15,7 @@ summarize_qsm(cylinder, radius, triangulation = NULL)
 \item{radius}{Radius column name either quoted or unquoted.}
 
 \item{triangulation}{Calculate optional QSM triangulation metrics created
-with \code{import_treeqsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
+with \code{import_qsm()}. Only supports TreeQSM. Defaults to \code{NULL}.}
 }
 \value{
 Returns a list
@@ -38,7 +38,7 @@ summarise_qsm(cylinder, radius)
 
 # TreeQSM Triangulation
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
+qsm <- import_qsm(file)
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 summarise_qsm(cylinder, radius, triangulation = qsm$triangulation)
