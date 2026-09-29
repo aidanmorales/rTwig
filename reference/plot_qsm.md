@@ -65,12 +65,13 @@ plot_qsm(
 
 - palette:
 
-  Optional cylinder color palette for numerical data. Palettes include
+  Optional cylinder color palette. Palettes include
   [`colourvalues::color_palettes()`](https://symbolixau.github.io/colourvalues/reference/colour_palettes.html)
   or a user supplied RGB palette matrix with the length of cylinder. It
-  can also be set to "random" to generate a random palette. If combined
-  with `color = "random"`, each cylinder will have a random, distinct
-  color.
+  can also be set to "random" to select a random palette. Set to
+  "random_distinct" to assign a random color to each unique value of
+  `color`, with matching values sharing a color. When `color` is
+  omitted, categories are defined by branching order.
 
 - alpha:
 
@@ -116,13 +117,12 @@ plot_qsm(
 
 - pt_palette:
 
-  Optional point cloud color palette for numerical data. `pt_palette`
-  includes
+  Optional point cloud color palette. `pt_palette` includes
   [`colourvalues::color_palettes()`](https://symbolixau.github.io/colourvalues/reference/colour_palettes.html)
   or a user supplied RGB palette matrix with the length of the points.
-  It can also be set to "random" to generate a random palette. If
-  combined with `color = "random"`, each point will have a random,
-  distinct color.
+  It can also be set to "random" to select a random palette. Set to
+  "random_distinct" to assign a random color to each unique value of
+  `pt_color`, with matching values sharing a color.
 
 - pt_size:
 

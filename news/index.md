@@ -34,6 +34,13 @@
   [\#27](https://github.com/aidanmorales/rTwig/issues/27)). Closing the
   mesh may reduce performance for large QSMs with many facets.
 
+- Added `palette = "random_distinct"` to
+  [`plot_qsm()`](https://aidanmorales.github.io/rTwig/reference/plot_qsm.md)
+  to assign a random color to each unique value of the selected color
+  column. Matching values share a color, allowing coloring by cylinder,
+  branch, or other categories. Also available through `pt_palette` for
+  point clouds.
+
 - [`run_rtwig()`](https://aidanmorales.github.io/rTwig/reference/run_rtwig.md)
   can now batch process multiple TreeQSM models if the mat file contains
   different runs for the same tree. The `version` parameter was also
