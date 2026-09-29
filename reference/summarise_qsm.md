@@ -25,7 +25,7 @@ summarize_qsm(cylinder, radius, triangulation = NULL)
 - triangulation:
 
   Calculate optional QSM triangulation metrics created with
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md).
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md).
   Only supports TreeQSM. Defaults to `NULL`.
 
 ## Value
@@ -73,9 +73,8 @@ summarise_qsm(cylinder, radius)
 
 # TreeQSM Triangulation
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
-#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
-#> i Please use `import_qsm()` instead.
+qsm <- import_qsm(file)
+#> Importing TreeQSM
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering

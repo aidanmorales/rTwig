@@ -72,6 +72,11 @@
 
 ### Improvements
 
+- Added three internal functions `detect_format()`, `define_columns()`,
+  and `unsupported_format_message()`. These allow all supported QSM
+  types to be defined once, and used consistently throughout the
+  package, simplifying it and improving maintainability and consistency.
+
 - [`export_mat()`](https://aidanmorales.github.io/rTwig/reference/export_mat.md)
   now exports the full TreeQSM structure, improving compatibility with
   both TreeQSM and other R packages depending on the `.mat` format. All

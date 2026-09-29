@@ -32,17 +32,17 @@ export_mat(
 - rundata:
 
   Optional rundata list created by
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 
 - pmdistance:
 
   Optional pmdistance list created by
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 
 - triangulation:
 
   Optional triangulation list created by
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md)
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md)
 
 ## Value
 
@@ -54,9 +54,8 @@ Returns a .mat file
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-qsm <- import_treeqsm(file)
-#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
-#> i Please use `import_qsm()` instead.
+qsm <- import_qsm(file)
+#> Importing TreeQSM
 cylinder <- qsm$cylinder
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering

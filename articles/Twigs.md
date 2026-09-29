@@ -81,7 +81,7 @@ twig_measurements <- rTwig::download_twigs(database = "all")
 #> Downloading Twig Measurements
 twig_measurements
 #> $raw
-#> # A tidytable: 1,626 × 5
+#> # A tidytable: 1,714 × 5
 #>    scientific_name radius_mm country region   institution              
 #>    <chr>               <dbl> <chr>   <chr>    <chr>                    
 #>  1 Abies concolor       1.14 USA     Michigan Michigan State University
@@ -94,30 +94,30 @@ twig_measurements
 #>  8 Abies concolor       1.90 USA     Michigan Michigan State University
 #>  9 Abies concolor       1.52 USA     Michigan Michigan State University
 #> 10 Abies concolor       1.14 USA     Michigan Michigan State University
-#> # ℹ 1,616 more rows
+#> # ℹ 1,704 more rows
 #> 
 #> $twigs
-#> # A tidytable: 112 × 7
-#>    scientific_name  radius_mm   min   max   std     n    cv
-#>    <chr>                <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 Abies concolor        1.43  0.89  1.9   0.28    21  0.19
-#>  2 Abies spp.            1.43  0.89  1.9   0.28    21  0.19
-#>  3 Acer campestre        1     0.72  1.57  0.17    20  0.17
-#>  4 Acer platanoides      1.39  0.89  2.03  0.3     30  0.21
-#>  5 Acer rubrum           1.18  0.89  1.52  0.16    30  0.14
-#>  6 Acer saccharinum      1.41  0.89  1.9   0.27    14  0.2 
-#>  7 Acer saccharum        1.2   0.89  1.65  0.23    30  0.19
-#>  8 Acer spp.             1.24  0.72  2.03  0.22   124  0.18
-#>  9 Aesculus flava        2.96  2.29  4.44  0.58    14  0.19
-#> 10 Aesculus spp.         2.96  2.29  4.44  0.58    14  0.19
-#> # ℹ 102 more rows
+#> # A tidytable: 113 × 7
+#>    scientific_name      radius_mm   min   max   std     n    cv
+#>    <chr>                    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1 Abies concolor            1.43  0.89  1.9   0.28    21  0.19
+#>  2 Abies spp.                1.43  0.89  1.9   0.28    21  0.19
+#>  3 Acer campestre            1     0.51  1.65  0.28    42  0.28
+#>  4 Acer platanoides          1.5   0.64  2.92  0.4     60  0.27
+#>  5 Acer pseudoplantanus      1.5   1.27  2.03  0.28     6  0.19
+#>  6 Acer rubrum               1.18  0.89  1.52  0.16    30  0.14
+#>  7 Acer saccharinum          1.41  0.89  1.9   0.27    14  0.2 
+#>  8 Acer saccharum            1.2   0.89  1.65  0.23    30  0.19
+#>  9 Acer spp.                 1.3   0.51  2.92  0.29   182  0.22
+#> 10 Aesculus flava            2.96  2.29  4.44  0.58    14  0.19
+#> # ℹ 103 more rows
 #> 
 #> $twigs_index
 #> # A tidytable: 4 × 7
 #>   size_index         radius_mm     n   min   max   std    cv
 #>   <chr>                  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1 slender                 0.74    29  0.5   1     0.14  0.19
-#> 2 moderately slender      1.43    61  1.03  1.93  0.23  0.16
+#> 2 moderately slender      1.43    62  1.03  1.93  0.23  0.16
 #> 3 moderately stout        2.31    13  2.05  2.49  0.16  0.07
 #> 4 stout                   3.26     9  2.54  4.23  0.71  0.22
 ```
@@ -136,60 +136,61 @@ Let’s see the breakdown of species.
 unique(twig_measurements$twigs$scientific_name)
 #>   [1] "Abies concolor"               "Abies spp."                  
 #>   [3] "Acer campestre"               "Acer platanoides"            
-#>   [5] "Acer rubrum"                  "Acer saccharinum"            
-#>   [7] "Acer saccharum"               "Acer spp."                   
-#>   [9] "Aesculus flava"               "Aesculus spp."               
-#>  [11] "Betula nigra"                 "Betula spp."                 
-#>  [13] "Carpinus betulus"             "Carpinus orientalis"         
-#>  [15] "Carpinus spp."                "Carya cordiformis"           
-#>  [17] "Carya ovata"                  "Carya spp."                  
-#>  [19] "Castanea dentata"             "Castanea spp."               
-#>  [21] "Cercis canadensis"            "Cercis spp."                 
-#>  [23] "Cladrastis kentukea"          "Cladrastis spp."             
-#>  [25] "Cornus mas"                   "Cornus officinalis"          
-#>  [27] "Cornus spp."                  "Crataegus spp."              
-#>  [29] "Fagus grandifolia"            "Fagus spp."                  
-#>  [31] "Fagus sylvatica"              "Fraxinus americana"          
-#>  [33] "Fraxinus ornus"               "Fraxinus pennsylvanica"      
-#>  [35] "Fraxinus quadrangulata"       "Fraxinus spp."               
-#>  [37] "Ginkgo biloba"                "Ginkgo spp."                 
-#>  [39] "Gleditsia spp."               "Gleditsia triacanthos"       
-#>  [41] "Gymnocladus dioicus"          "Gymnocladus spp."            
-#>  [43] "Gymnopodium floribundum"      "Gymnopodium spp."            
-#>  [45] "Juglans cinerea"              "Juglans nigra"               
-#>  [47] "Juglans spp."                 "Koelreuteria paniculata"     
-#>  [49] "Koelreuteria spp."            "Laguncularia racemosa"       
-#>  [51] "Laguncularia spp."            "Larix laricina"              
-#>  [53] "Larix spp."                   "Liquidambar spp."            
-#>  [55] "Liquidambar styraciflua"      "Liriodendron spp."           
-#>  [57] "Liriodendron tulipifera"      "Magnolia acuminata"          
-#>  [59] "Magnolia spp."                "Malus spp."                  
-#>  [61] "Metasequoia glyptostroboides" "Metasequoia spp."            
-#>  [63] "Nyssa spp."                   "Nyssa sylvatica"             
-#>  [65] "Ostrya spp."                  "Ostrya virginiana"           
-#>  [67] "Phellodendron amurense"       "Phellodendron spp."          
-#>  [69] "Picea abies"                  "Picea omorika"               
-#>  [71] "Picea pungens"                "Picea spp."                  
-#>  [73] "Pinus nigra"                  "Pinus spp."                  
-#>  [75] "Pinus strobus"                "Platanus acerifolia"         
-#>  [77] "Platanus occidentalis"        "Platanus spp."               
-#>  [79] "Populus deltoides"            "Populus spp."                
-#>  [81] "Prunus cerasifera"            "Prunus serotina"             
-#>  [83] "Prunus spp."                  "Prunus virginiana"           
-#>  [85] "Quercus acutissima"           "Quercus alba"                
-#>  [87] "Quercus bicolor"              "Quercus coccinea"            
-#>  [89] "Quercus ellipsoidalis"        "Quercus imbricaria"          
-#>  [91] "Quercus macrocarpa"           "Quercus michauxii"           
-#>  [93] "Quercus muehlenbergii"        "Quercus palustris"           
-#>  [95] "Quercus robur"                "Quercus rubra"               
-#>  [97] "Quercus shumardii"            "Quercus spp."                
-#>  [99] "Quercus velutina"             "Rhizophora mangle"           
-#> [101] "Rhizophora spp."              "Thuja occidentalis"          
-#> [103] "Thuja spp."                   "Tilia americana"             
-#> [105] "Tilia spp."                   "Tilia tomentosa"             
-#> [107] "Tsuga canadensis"             "Tsuga spp."                  
-#> [109] "Ulmus americana"              "Ulmus pumila"                
-#> [111] "Ulmus rubra"                  "Ulmus spp."
+#>   [5] "Acer pseudoplantanus"         "Acer rubrum"                 
+#>   [7] "Acer saccharinum"             "Acer saccharum"              
+#>   [9] "Acer spp."                    "Aesculus flava"              
+#>  [11] "Aesculus spp."                "Betula nigra"                
+#>  [13] "Betula spp."                  "Carpinus betulus"            
+#>  [15] "Carpinus orientalis"          "Carpinus spp."               
+#>  [17] "Carya cordiformis"            "Carya ovata"                 
+#>  [19] "Carya spp."                   "Castanea dentata"            
+#>  [21] "Castanea spp."                "Cercis canadensis"           
+#>  [23] "Cercis spp."                  "Cladrastis kentukea"         
+#>  [25] "Cladrastis spp."              "Cornus mas"                  
+#>  [27] "Cornus officinalis"           "Cornus spp."                 
+#>  [29] "Crataegus spp."               "Fagus grandifolia"           
+#>  [31] "Fagus spp."                   "Fagus sylvatica"             
+#>  [33] "Fraxinus americana"           "Fraxinus ornus"              
+#>  [35] "Fraxinus pennsylvanica"       "Fraxinus quadrangulata"      
+#>  [37] "Fraxinus spp."                "Ginkgo biloba"               
+#>  [39] "Ginkgo spp."                  "Gleditsia spp."              
+#>  [41] "Gleditsia triacanthos"        "Gymnocladus dioicus"         
+#>  [43] "Gymnocladus spp."             "Gymnopodium floribundum"     
+#>  [45] "Gymnopodium spp."             "Juglans cinerea"             
+#>  [47] "Juglans nigra"                "Juglans spp."                
+#>  [49] "Koelreuteria paniculata"      "Koelreuteria spp."           
+#>  [51] "Laguncularia racemosa"        "Laguncularia spp."           
+#>  [53] "Larix laricina"               "Larix spp."                  
+#>  [55] "Liquidambar spp."             "Liquidambar styraciflua"     
+#>  [57] "Liriodendron spp."            "Liriodendron tulipifera"     
+#>  [59] "Magnolia acuminata"           "Magnolia spp."               
+#>  [61] "Malus spp."                   "Metasequoia glyptostroboides"
+#>  [63] "Metasequoia spp."             "Nyssa spp."                  
+#>  [65] "Nyssa sylvatica"              "Ostrya spp."                 
+#>  [67] "Ostrya virginiana"            "Phellodendron amurense"      
+#>  [69] "Phellodendron spp."           "Picea abies"                 
+#>  [71] "Picea omorika"                "Picea pungens"               
+#>  [73] "Picea spp."                   "Pinus nigra"                 
+#>  [75] "Pinus spp."                   "Pinus strobus"               
+#>  [77] "Platanus acerifolia"          "Platanus occidentalis"       
+#>  [79] "Platanus spp."                "Populus deltoides"           
+#>  [81] "Populus spp."                 "Prunus cerasifera"           
+#>  [83] "Prunus serotina"              "Prunus spp."                 
+#>  [85] "Prunus virginiana"            "Quercus acutissima"          
+#>  [87] "Quercus alba"                 "Quercus bicolor"             
+#>  [89] "Quercus coccinea"             "Quercus ellipsoidalis"       
+#>  [91] "Quercus imbricaria"           "Quercus macrocarpa"          
+#>  [93] "Quercus michauxii"            "Quercus muehlenbergii"       
+#>  [95] "Quercus palustris"            "Quercus robur"               
+#>  [97] "Quercus rubra"                "Quercus shumardii"           
+#>  [99] "Quercus spp."                 "Quercus velutina"            
+#> [101] "Rhizophora mangle"            "Rhizophora spp."             
+#> [103] "Thuja occidentalis"           "Thuja spp."                  
+#> [105] "Tilia americana"              "Tilia spp."                  
+#> [107] "Tilia tomentosa"              "Tsuga canadensis"            
+#> [109] "Tsuga spp."                   "Ulmus americana"             
+#> [111] "Ulmus pumila"                 "Ulmus rubra"                 
+#> [113] "Ulmus spp."
 ```
 
 Similarly, we also provide the same data base broken down by twig size
@@ -202,7 +203,7 @@ twig_measurements$twigs_index
 #>   size_index         radius_mm     n   min   max   std    cv
 #>   <chr>                  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1 slender                 0.74    29  0.5   1     0.14  0.19
-#> 2 moderately slender      1.43    61  1.03  1.93  0.23  0.16
+#> 2 moderately slender      1.43    62  1.03  1.93  0.23  0.16
 #> 3 moderately stout        2.31    13  2.05  2.49  0.16  0.07
 #> 4 stout                   3.26     9  2.54  4.23  0.71  0.22
 ```

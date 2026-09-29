@@ -26,7 +26,7 @@ tree_metrics(cylinder, verify = TRUE, triangulation = NULL)
 - triangulation:
 
   Calculate optional QSM triangulation metrics created with
-  [`import_treeqsm()`](https://aidanmorales.github.io/rTwig/reference/import_treeqsm.md).
+  [`import_qsm()`](https://aidanmorales.github.io/rTwig/reference/import_qsm.md).
   Only supports TreeQSM. Defaults to `NULL`.
 
 ## Value
@@ -82,9 +82,8 @@ scaling.” *The New phytologist*, **201**.
 
 ## TreeQSM Processing Chain
 file <- system.file("extdata/QSM.mat", package = "rTwig")
-cylinder <- import_treeqsm(file)$cylinder
-#> Warning: `import_treeqsm()` was deprecated in rTwig 1.5.0.
-#> i Please use `import_qsm()` instead.
+cylinder <- import_qsm(file)$cylinder
+#> Importing TreeQSM
 cylinder <- update_cylinders(cylinder)
 #> Updating Cylinder Ordering
 #> Calculating Total Children

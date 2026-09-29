@@ -61,7 +61,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/export_mat.html">export_mat()</a></code> now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the <code>.mat</code> format. All tree metrics are automatically calculated by setting <code>metrics = TRUE</code>. Additionally, <code>pmdistance</code>, <code>rundata</code>, and <code>triangulation</code> can all be re-exported.</p></li>
+<ul><li><p>Added three internal functions <code>detect_format()</code>, <code>define_columns()</code>, and <code>unsupported_format_message()</code>. These allow all supported QSM types to be defined once, and used consistently throughout the package, simplifying it and improving maintainability and consistency.</p></li>
+<li><p><code><a href="../reference/export_mat.html">export_mat()</a></code> now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the <code>.mat</code> format. All tree metrics are automatically calculated by setting <code>metrics = TRUE</code>. Additionally, <code>pmdistance</code>, <code>rundata</code>, and <code>triangulation</code> can all be re-exported.</p></li>
 <li>
 <p><code><a href="../reference/tree_metrics.html">tree_metrics()</a></code></p>
 <ul><li>
