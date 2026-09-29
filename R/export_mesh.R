@@ -298,7 +298,7 @@ export_mesh <- function(
     format_mesh(
       filename = filename, format = format, cylinder = cylinder,
       id = "cyl_ID", parent = "parent_ID", radius = radius,
-      length = "length", branch = "n_branch", branch_order = "branching_order",
+      length = "length", branch = "branch_ID", branch_order = "branching_order",
       start_x = "startX", start_y = "startY", start_z = "startZ",
       axis_x = "axisX", axis_y = "axisY", axis_z = "axisZ",
       end_x = "endX", end_y = "endY", end_z = "endZ",

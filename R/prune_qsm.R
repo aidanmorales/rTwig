@@ -197,7 +197,7 @@ prune_qsm <- function(
   else if (all(c("cyl_ID", "parent_ID", "branching_order") %in% colnames(cylinder))) {
     prune_data(
       cylinder = cylinder, id = "cyl_ID", parent = "parent_ID",
-      segment = "segment_ID", branch = "branch_ID", branch_position = "positionInBranch",
+      segment = "segment", branch = "branch_ID", branch_position = "positionInBranch",
       start_z = "startZ", radius = "radius_cyl",
       cylinder_ids = cylinder_ids, branch_ids = branch_ids,
       segment_ids = segment_ids, height_m = height_m, diameter_cm = diameter_cm,
