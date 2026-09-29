@@ -52,11 +52,12 @@ Vectors must have the same length as the cylinder data frame.
 \code{color = "random"} will generate a random color applied to all cylinders.
 Defaults to branching order.}
 
-\item{palette}{Optional cylinder color palette for numerical data.
+\item{palette}{Optional cylinder color palette.
 Palettes include \code{colourvalues::color_palettes()} or a user supplied RGB
 palette matrix with the length of cylinder. It can also be set to "random"
-to generate a random palette. If combined with \code{color = "random"}, each
-cylinder will have a random, distinct color.}
+to select a random palette. Set to "random_distinct" to assign a random
+color to each unique value of \code{color}, with matching values sharing a color.
+When \code{color} is omitted, categories are defined by branching order.}
 
 \item{alpha}{Set the transparency of the cylinders.
 Defaults to 1. 1 is opaque and 0 is fully transparent.}
@@ -83,11 +84,11 @@ of hex colors, or a quoted/unquoted column name.
 Vectors must have the same length as the point cloud data frame.
 Defaults to white.}
 
-\item{pt_palette}{Optional point cloud color palette for numerical data.
+\item{pt_palette}{Optional point cloud color palette.
 \code{pt_palette} includes \code{colourvalues::color_palettes()} or a user supplied RGB
 palette matrix with the length of the points. It can also be set to "random"
-to generate a random palette. If combined with \code{color = "random"}, each
-point will have a random, distinct color.}
+to select a random palette. Set to "random_distinct" to assign a random
+color to each unique value of \code{pt_color}, with matching values sharing a color.}
 
 \item{pt_size}{Size of the points. Defaults to 0.1.}
 

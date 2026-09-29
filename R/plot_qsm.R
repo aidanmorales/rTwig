@@ -15,11 +15,12 @@
 #'  `color = "random"` will generate a random color applied to all cylinders.
 #'  Defaults to branching order.
 #'
-#' @param palette Optional cylinder color palette for numerical data.
+#' @param palette Optional cylinder color palette.
 #'  Palettes include `colourvalues::color_palettes()` or a user supplied RGB
 #'  palette matrix with the length of cylinder. It can also be set to "random"
-#'  to generate a random palette. If combined with `color = "random"`, each
-#'  cylinder will have a random, distinct color.
+#'  to select a random palette. Set to "random_distinct" to assign a random
+#'  color to each unique value of `color`, with matching values sharing a color.
+#'  When `color` is omitted, categories are defined by branching order.
 #'
 #' @param alpha Set the transparency of the cylinders.
 #'  Defaults to 1. 1 is opaque and 0 is fully transparent.
@@ -46,11 +47,11 @@
 #'  Vectors must have the same length as the point cloud data frame.
 #'  Defaults to white.
 #'
-#' @param pt_palette Optional point cloud color palette for numerical data.
+#' @param pt_palette Optional point cloud color palette.
 #'  `pt_palette` includes `colourvalues::color_palettes()` or a user supplied RGB
 #'  palette matrix with the length of the points. It can also be set to "random"
-#'  to generate a random palette. If combined with `color = "random"`, each
-#'  point will have a random, distinct color.
+#'  to select a random palette. Set to "random_distinct" to assign a random
+#'  color to each unique value of `pt_color`, with matching values sharing a color.
 #'
 #' @param pt_size Size of the points. Defaults to 0.1.
 #'
@@ -673,10 +674,14 @@ plot_colors <- function(data, color, palette, branch_order) {
 
   if (is.null(color)) {
     if (!is.null(branch_order)) { # cylinder defaults
-      default_color <- colourvalues::color_values(
-        pull(data, {{ branch_order }}),
-        palette = "rainbow"
-      )
+      if (identical(palette, "random_distinct")) {
+        color <- pull(data, {{ branch_order }})
+      } else {
+        default_color <- colourvalues::color_values(
+          pull(data, {{ branch_order }}),
+          palette = "rainbow"
+        )
+      }
     } else if (is.null(branch_order)) { # cloud defaults
       default_color <- "#FFFFFF"
     }
@@ -686,11 +691,6 @@ plot_colors <- function(data, color, palette, branch_order) {
     }
   } else if (color == "random") {
     color <- generate_random_colors(1)
-
-    if (!is.null(palette) && palette == "random") {
-      colors <- generate_random_colors(nrow(data))
-      return(colors)
-    }
   } else if (is.vector(color) & length(color) == 1 & !(color %in% colnames(data))) {
     rgb_check <- try(grDevices::col2rgb(color), silent = TRUE)
 
@@ -703,6 +703,12 @@ plot_colors <- function(data, color, palette, branch_order) {
     color <- pull(data, {{ color }})
   } else {
     abort(message)
+  }
+
+  if (identical(palette, "random_distinct") && !is.null(color)) {
+    categories <- unique(color)
+    colors <- generate_random_colors(length(categories))
+    return(rep_len(colors[match(color, categories)], nrow(data)))
   }
 
   if (length(color) == 1) {
