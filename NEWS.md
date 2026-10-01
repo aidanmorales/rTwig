@@ -22,6 +22,10 @@
 
 ## Improvements
 
+- Fixed incorrect parent assignments for disconnected TreeQSM components (Thanks to both Nils Griese & Sören Hese for making me aware of this!). Previously, rTwig attached cylinders with missing parents to the preceding cylinder, based on the sequential parent–child ordering observed in well-formed QSMs. However, TreeQSM can skip a segment that fails cylinder-fitting requirements while still retaining its child segments. Its parent lookup treats the empty parent segment as successfully handled, bypassing connection repair and leaving the child component with `parent = 0`. In these cases, the preceding row may belong to an unrelated branch, so the previous fallback could create a false connection. rTwig now warns about disconnected components, attaches each component to the nearest cylinder with a path to the trunk, and verifies connectivity before cylinder ordering. Repairs preserve geometry, row order, and existing child connections.
+
+- Fixed `smooth_qsm()` using neighbouring rows from unrelated branches, modifying the original input, and leaving cylinder lengths unchanged after smoothing. Length-based metrics are now recalculated using the cached network, and zero-length cylinders raise an error instead of producing invalid axes.
+
 - Added three internal functions `detect_format()`, `define_columns()`, and `unsupported_format_message()`. These allow all supported QSM types to be defined once, and used consistently throughout the package, simplifying it and improving maintainability and consistency.
 
 - `export_mat()` now exports the full TreeQSM structure, improving compatibility with both TreeQSM and other R packages depending on the `.mat` format. All tree metrics are automatically calculated by setting `metrics = TRUE`. Additionally, `pmdistance`, `rundata`, and `triangulation` can all be re-exported.

@@ -512,26 +512,19 @@ build_adqsm <- function(vertices, facets = 10L, match_tol = 1e-4) {
     .Call(`_rTwig_build_adqsm`, vertices, facets, match_tol)
 }
 
-#' @title Connect Cylinders
-#'
-#' @description Connects cylinder endpoints and smooths axes
-#'
-#' @param branch_position position in the branch
-#' @param branch branch id
-#' @param start x x start
-#' @param start y y start
-#' @param start z z start
-#' @param axis x x axis
-#' @param axis y y axis
-#' @param axis z z axis
-#' @param end x x end
-#' @param end y y end
-#' @param end z z end
-#' @return n x 3 point cloud matrix
-#'
+verify_treeqsm <- function(cylinder) {
+    .Call(`_rTwig_verify_treeqsm`, cylinder)
+}
+
+repair_treeqsm <- function(cylinder) {
+    .Call(`_rTwig_repair_treeqsm`, cylinder)
+}
+
+#' Connect cylinder endpoints within branches.
+#' @param cylinder Updated TreeQSM cylinder data frame.
+#' @return A smoothed cylinder data frame.
 #' @noRd
-#'
 connect_cylinders <- function(cylinder) {
-    invisible(.Call(`_rTwig_connect_cylinders`, cylinder))
+    .Call(`_rTwig_connect_cylinders`, cylinder)
 }
 

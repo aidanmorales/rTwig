@@ -13,8 +13,9 @@ smooth_qsm(cylinder)
 Returns a data frame
 }
 \description{
-Visually smooth a QSM by ensuring the midpoints of all cylinders
-are connected. Only TreeQSM is supported.
+Smooth a QSM by ensuring the midpoints of all cylinders
+are connected and gaps filled. All length based metrics are also updated.
+Only TreeQSM is supported.
 }
 \examples{
 

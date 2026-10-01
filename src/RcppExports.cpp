@@ -540,14 +540,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// verify_treeqsm
+IntegerVector verify_treeqsm(DataFrame cylinder);
+RcppExport SEXP _rTwig_verify_treeqsm(SEXP cylinderSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type cylinder(cylinderSEXP);
+    rcpp_result_gen = Rcpp::wrap(verify_treeqsm(cylinder));
+    return rcpp_result_gen;
+END_RCPP
+}
+// repair_treeqsm
+DataFrame repair_treeqsm(DataFrame cylinder);
+RcppExport SEXP _rTwig_repair_treeqsm(SEXP cylinderSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type cylinder(cylinderSEXP);
+    rcpp_result_gen = Rcpp::wrap(repair_treeqsm(cylinder));
+    return rcpp_result_gen;
+END_RCPP
+}
 // connect_cylinders
-void connect_cylinders(DataFrame& cylinder);
+DataFrame connect_cylinders(DataFrame cylinder);
 RcppExport SEXP _rTwig_connect_cylinders(SEXP cylinderSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame& >::type cylinder(cylinderSEXP);
-    connect_cylinders(cylinder);
-    return R_NilValue;
+    Rcpp::traits::input_parameter< DataFrame >::type cylinder(cylinderSEXP);
+    rcpp_result_gen = Rcpp::wrap(connect_cylinders(cylinder));
+    return rcpp_result_gen;
 END_RCPP
 }
 
@@ -594,6 +617,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_user_matrix", (DL_FUNC) &_rTwig_user_matrix, 4},
     {"_rTwig_build_adtree", (DL_FUNC) &_rTwig_build_adtree, 4},
     {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 3},
+    {"_rTwig_verify_treeqsm", (DL_FUNC) &_rTwig_verify_treeqsm, 1},
+    {"_rTwig_repair_treeqsm", (DL_FUNC) &_rTwig_repair_treeqsm, 1},
     {"_rTwig_connect_cylinders", (DL_FUNC) &_rTwig_connect_cylinders, 1},
     {NULL, NULL, 0}
 };

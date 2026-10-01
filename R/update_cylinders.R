@@ -64,6 +64,20 @@ update_cylinders <- function(cylinder) {
       mutate(extension = row_number()) %>%
       distinct(.keep_all = TRUE)
 
+    # Verify and repair missing TreeQSM connections ----------------------------
+    missing <- verify_treeqsm(cylinder)
+    if (length(missing) > 0L) {
+      warn(
+        paste0(
+          "TreeQSM has ", length(missing), " disconnected component(s) (",
+          attr(missing, "disconnected_cylinders"), " cylinders). ",
+          "Connecting cylinders to their closest branch."
+        ),
+        class = "treeqsm_connectivity_repair"
+      )
+      cylinder <- repair_treeqsm(cylinder)
+    }
+
     # Branch Ordering ----------------------------------------------------------
     # Relabels branches consecutively
     branches <- unique(cylinder$branch)
@@ -660,7 +674,7 @@ path_metrics <- function(network, cylinder, id, length) {
     ) %>%
     drop_na() %>%
     summarise(
-      id = max(.data$id),
+      id = last(.data$id),
       distanceFromBase = sum(.data$length),
       .by = "index"
     ) %>%

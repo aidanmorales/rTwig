@@ -1,88 +1,76 @@
 #include <Rcpp.h>
+#include <algorithm>
+#include <cmath>
+#include <map>
+#include <vector>
 using namespace Rcpp;
 
-// Function to calculate Euclidean distance
-inline double euclidean_distance(double x1, double y1, double z1, double x2, double y2, double z2) {
-  return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) + pow(z2 - z1, 2));
-}
-
-//' @title Connect Cylinders
-//'
-//' @description Connects cylinder endpoints and smooths axes
-//'
-//' @param branch_position position in the branch
-//' @param branch branch id
-//' @param start x x start
-//' @param start y y start
-//' @param start z z start
-//' @param axis x x axis
-//' @param axis y y axis
-//' @param axis z z axis
-//' @param end x x end
-//' @param end y y end
-//' @param end z z end
-//' @return n x 3 point cloud matrix
-//'
+//' Connect cylinder endpoints within branches.
+//' @param cylinder Updated TreeQSM cylinder data frame.
+//' @return A smoothed cylinder data frame.
 //' @noRd
-//'
 // [[Rcpp::export]]
-void connect_cylinders(DataFrame& cylinder) {
-  IntegerVector branch_position = cylinder["PositionInBranch"];
-  IntegerVector branch = cylinder["branch"];
-  NumericVector start_x = cylinder["start.x"];
-  NumericVector start_y = cylinder["start.y"];
-  NumericVector start_z = cylinder["start.z"];
-  NumericVector end_x = cylinder["end.x"];
-  NumericVector end_y = cylinder["end.y"];
-  NumericVector end_z = cylinder["end.z"];
-  NumericVector axis_x = cylinder["axis.x"];
-  NumericVector axis_y = cylinder["axis.y"];
-  NumericVector axis_z = cylinder["axis.z"];
-
-  int n = cylinder.nrows();
-
-  // Pre-compute branch indices and maximum positions
-  std::vector<std::vector<int>> branch_indices(max(branch) + 1);
-  std::vector<int> max_positions(max(branch) + 1, 0);
-
+DataFrame connect_cylinders(DataFrame cylinder) {
+  DataFrame result = clone(cylinder);
+  IntegerVector position = as<IntegerVector>(result["PositionInBranch"]);
+  IntegerVector branch = as<IntegerVector>(result["branch"]);
+  IntegerVector id = as<IntegerVector>(result["extension"]);
+  IntegerVector parent = as<IntegerVector>(result["parent"]);
+  NumericVector sx = result["start.x"], sy = result["start.y"], sz = result["start.z"];
+  NumericVector ex = result["end.x"], ey = result["end.y"], ez = result["end.z"];
+  NumericVector ax = result["axis.x"], ay = result["axis.y"], az = result["axis.z"];
+  NumericVector length = result["length"];
+  const int n = result.nrows();
+  std::map<int, std::vector<int>> branches;
   for (int i = 0; i < n; ++i) {
-    int b = branch[i];
-    branch_indices[b].push_back(i);
-    if (branch_position[i] > max_positions[b]) {
-      max_positions[b] = branch_position[i];
+    if (IntegerVector::is_na(branch[i]) || branch[i] < 1 ||
+        IntegerVector::is_na(position[i]) || position[i] < 1) {
+      stop("Invalid branch or PositionInBranch at cylinder row %d.", i + 1);
+    }
+    if (!std::isfinite(sx[i]) || !std::isfinite(sy[i]) || !std::isfinite(sz[i]) ||
+        !std::isfinite(ex[i]) || !std::isfinite(ey[i]) || !std::isfinite(ez[i])) {
+      stop("Non-finite endpoint geometry at cylinder row %d.", i + 1);
+    }
+    branches[branch[i]].push_back(i);
+  }
+  for (auto& entry : branches) {
+    checkUserInterrupt();
+    auto& rows = entry.second;
+    std::sort(rows.begin(), rows.end(), [&](int a, int b) {
+      return position[a] < position[b];
+    });
+    for (size_t j = 1; j < rows.size(); ++j) {
+      if (position[rows[j]] == position[rows[j - 1]]) {
+        stop("Duplicate PositionInBranch in branch %d.", entry.first);
+      }
+    }
+    for (size_t j = 0; j < rows.size(); ++j) {
+      const int i = rows[j];
+      const bool continuation = j > 0 && parent[i] == id[rows[j - 1]];
+      if (continuation) {
+        const int previous = rows[j - 1];
+        sx[i] = ex[previous];
+        sy[i] = ey[previous];
+        sz[i] = ez[previous];
+      }
+      // Preserve the existing smoothing rule: the branch base endpoint and
+      // branch tip stay fixed; interior joints use the original gap midpoint.
+      if (continuation && j + 1 < rows.size() && parent[rows[j + 1]] == id[i]) {
+        const int next = rows[j + 1];
+        ex[i] = ex[i] / 2 + sx[next] / 2;
+        ey[i] = ey[i] / 2 + sy[next] / 2;
+        ez[i] = ez[i] / 2 + sz[next] / 2;
+      }
+      const double dx = ex[i] - sx[i], dy = ey[i] - sy[i], dz = ez[i] - sz[i];
+      const double distance = std::hypot(std::hypot(dx, dy), dz);
+      if (!std::isfinite(distance) || distance <= 0) {
+        stop("Smoothing produced zero-length or non-finite geometry at cylinder %d. Input unchanged.", id[i]);
+      }
+      length[i] = distance;
+      ax[i] = dx / distance;
+      ay[i] = dy / distance;
+      az[i] = dz / distance;
     }
   }
-
-  // Loop through each unique branch
-  for (int b = 1; b <= max(branch); ++b) {
-    std::vector<int>& indices = branch_indices[b];
-    int m = indices.size();
-
-    // Apply operations within each branch
-    for (int i = 0; i < m; ++i) {
-      int idx = indices[i];
-
-      // Calculate start coordinates if necessary
-      if (branch_position[idx] > 1) {
-        start_x[idx] = end_x[idx - 1];
-        start_y[idx] = end_y[idx - 1];
-        start_z[idx] = end_z[idx - 1];
-      }
-
-      // Calculate end coordinates if necessary
-      if (branch_position[idx] > 1 && branch_position[idx] < max_positions[b]) {
-        end_x[idx] = (start_x[idx + 1] + end_x[idx]) / 2;
-        end_y[idx] = (start_y[idx + 1] + end_y[idx]) / 2;
-        end_z[idx] = (start_z[idx + 1] + end_z[idx]) / 2;
-      }
-
-      // Calculate length using Euclidean distance
-      double length2 = euclidean_distance(start_x[idx], start_y[idx], start_z[idx], end_x[idx], end_y[idx], end_z[idx]);
-
-      // Update axis vectors
-      axis_x[idx] = (end_x[idx] - start_x[idx]) / length2;
-      axis_y[idx] = (end_y[idx] - start_y[idx]) / length2;
-      axis_z[idx] = (end_z[idx] - start_z[idx]) / length2;
-    }
-  }
+  return result;
 }

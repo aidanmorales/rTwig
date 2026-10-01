@@ -228,7 +228,7 @@ build_network <- function(
   child_g <- igraph::ego(child_g, order = igraph::vcount(child_g), mode = "out")
 
   child_id <- as.integer(unlist(child_g, FALSE, FALSE))
-  child_index <- cumsum(duplicated(child_id) & !duplicated(child_id, fromLast = TRUE)) + 1
+  child_index <- rep(seq_along(child_g), lengths(child_g))
   child_df <- tidytable(index = child_index, id = child_id)
 
   if (pruning == TRUE) {

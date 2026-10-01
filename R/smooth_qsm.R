@@ -1,7 +1,8 @@
 #' Smooth QSM
 #'
-#' @description Visually smooth a QSM by ensuring the midpoints of all cylinders
-#'  are connected. Only TreeQSM is supported.
+#' @description Smooth a QSM by ensuring the midpoints of all cylinders
+#'  are connected and gaps filled. All length based metrics are also updated.
+#'  Only TreeQSM is supported.
 #'
 #' @param cylinder QSM cylinder data frame
 #'
@@ -48,7 +49,32 @@ smooth_qsm <- function(cylinder) {
     inform("Smoothing QSM")
 
     # Connect cylinder endpoints
-    connect_cylinders(cylinder)
+    cylinder <- connect_cylinders(cylinder)
+
+    # Update Length Metrics ----------------------------------------------------
+    children <- verify_network(rename(cylinder, id = "extension"), pruning = TRUE)
+
+    network <- readRDS(file.path(tempdir(), "network.rds"))
+
+    if (!all(c("child_df", "base_df", "cylinder_info") %in% names(network))) {
+      network <- build_network(cylinder, "extension", "parent", cache = TRUE)
+    }
+
+    network$child_df <- children
+
+    metrics <- cylinder %>%
+      select("extension", "length")
+
+    metrics <- growth_length(network, metrics, "extension", "length")
+    metrics <- path_metrics(network, metrics, "extension", "length")
+
+    cylinder <- cylinder %>%
+      mutate(
+        growthLength = metrics$growthLength,
+        distanceFromBase = metrics$distanceFromBase,
+        distanceToTwig = metrics$distanceToTwig,
+        vesselVolume = metrics$vesselVolume
+      )
 
     return(cylinder)
   } else {
