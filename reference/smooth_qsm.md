@@ -1,7 +1,8 @@
 # Smooth QSM
 
-Visually smooth a QSM by ensuring the midpoints of all cylinders are
-connected. Only TreeQSM is supported.
+Smooth a QSM by ensuring the midpoints of all cylinders are connected
+and gaps filled. All length based metrics are also updated. Only TreeQSM
+is supported.
 
 ## Usage
 
@@ -47,6 +48,8 @@ plot_qsm(cylinder)
 ## After Smoothing
 cylinder <- smooth_qsm(cylinder)
 #> Smoothing QSM
+#> Calculating Growth Length
+#> Calculating Path Metrics
 plot_qsm(cylinder)
 #> Plotting Cylinders
 #> Panning plot on rgl device: 1

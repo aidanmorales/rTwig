@@ -126,6 +126,8 @@ used as synonyms.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Alternate Branch Numbers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Smoothing QSM</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Growth Length</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Path Metrics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating Paths</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering Paths</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Modeling Paths</span>
@@ -143,7 +145,7 @@ used as synonyms.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating Spreads</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">qsm</span><span class="op">$</span><span class="va">cylinder</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘tidytable’, ‘tbl’, ‘data.table’ and 'data.frame':	1136 obs. of  33 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.09392 0.07216 0.06654 0.00938 0.06795 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ length                      : num  0.09392 0.07217 0.06654 0.00939 0.06795 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.x                     : num  0.768 0.769 0.768 0.769 0.769 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.y                     : num  -16.4 -16.4 -16.4 -16.3 -16.3 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ start.z                     : num  254 254 254 254 254 ...</span>
@@ -163,20 +165,20 @@ used as synonyms.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ SurfCov                     : num  0.875 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ UnmodRadius                 : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ OldRadius                   : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  32.8 32.7 32.6 32.6 32.6 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ growthLength                : num  33 32.9 32.9 32.8 32.8 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch                      : int  1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ branch_alt                  : int  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parent                      : num  0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ extension                   : int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ totalChildren               : int  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0 0.0722 0.1387 0.1481 0.216 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.4 3.31 3.24 3.17 3.16 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceFromBase            : num  0 0.0722 0.1387 0.1481 0.2161 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ distanceToTwig              : num  3.41 3.32 3.24 3.18 3.17 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeAreaBranchorder  : int  82 82 82 82 82 82 82 82 82 82 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversePipeRadiusBranchorder: num  9.06 9.06 9.06 9.06 9.06 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  279 271 266 260 259 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vesselVolume                : num  280 272 266 260 260 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ radius                      : num  0.0465 0.0454 0.0442 0.0437 0.0429 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ modified                    : num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;pointer: 0x55e627e7eee0&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, ".internal.selfref")=&lt;pointer: 0x5652bb6d3ee0&gt; </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

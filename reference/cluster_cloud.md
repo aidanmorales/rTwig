@@ -62,6 +62,8 @@ qsm <- run_rtwig(file, twig_radius = 4.23, metrics = FALSE)
 #> Calculating Alternate Branch Numbers
 #> Calculating Path Metrics
 #> Smoothing QSM
+#> Calculating Growth Length
+#> Calculating Path Metrics
 #> Generating Paths
 #> Filtering Paths
 #> Modeling Paths
