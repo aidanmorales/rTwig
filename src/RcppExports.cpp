@@ -513,6 +513,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// initialize_path_gam
+void initialize_path_gam(List symbols);
+RcppExport SEXP _rTwig_initialize_path_gam(SEXP symbolsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type symbols(symbolsSEXP);
+    initialize_path_gam(symbols);
+    return R_NilValue;
+END_RCPP
+}
+// path_gam_fit
+List path_gam_fit(NumericVector x, NumericVector y, NumericVector z, double twig_radius, double min_gl);
+RcppExport SEXP _rTwig_path_gam_fit(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP twig_radiusSEXP, SEXP min_glSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    Rcpp::traits::input_parameter< double >::type twig_radius(twig_radiusSEXP);
+    Rcpp::traits::input_parameter< double >::type min_gl(min_glSEXP);
+    rcpp_result_gen = Rcpp::wrap(path_gam_fit(x, y, z, twig_radius, min_gl));
+    return rcpp_result_gen;
+END_RCPP
+}
 // build_adtree
 DataFrame build_adtree(DataFrame vertices, int facets, double tol, double match_tol);
 RcppExport SEXP _rTwig_build_adtree(SEXP verticesSEXP, SEXP facetsSEXP, SEXP tolSEXP, SEXP match_tolSEXP) {
@@ -615,6 +640,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rTwig_rtwig_window2user", (DL_FUNC) &_rTwig_rtwig_window2user, 4},
     {"_rTwig_translation_matrix", (DL_FUNC) &_rTwig_translation_matrix, 3},
     {"_rTwig_user_matrix", (DL_FUNC) &_rTwig_user_matrix, 4},
+    {"_rTwig_initialize_path_gam", (DL_FUNC) &_rTwig_initialize_path_gam, 1},
+    {"_rTwig_path_gam_fit", (DL_FUNC) &_rTwig_path_gam_fit, 5},
     {"_rTwig_build_adtree", (DL_FUNC) &_rTwig_build_adtree, 4},
     {"_rTwig_build_adqsm", (DL_FUNC) &_rTwig_build_adqsm, 3},
     {"_rTwig_verify_treeqsm", (DL_FUNC) &_rTwig_verify_treeqsm, 1},

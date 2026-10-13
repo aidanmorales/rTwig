@@ -33,6 +33,45 @@ NULL
 
 .datatable.aware <- TRUE
 
+.rtwig_native_path_available <- FALSE
+
+.onLoad <- function(libname, pkgname) {
+  if (!is.function(SparseM::chol) || !is.function(quantreg::rq)) {
+    return(invisible(NULL))
+  }
+
+  native_symbol <- function(name, package) {
+    dll <- getLoadedDLLs()[[package]]
+    if (is.null(dll)) {
+      loadNamespace(package)
+      dll <- getLoadedDLLs()[[package]]
+    }
+    getNativeSymbolInfo(name, dll, withRegistrationInfo = FALSE)$address
+  }
+
+  symbols <- tryCatch(list(
+    basis = native_symbol("spline_basis", "cobs"),
+    value = native_symbol("spline_value", "cobs"),
+    transpose = native_symbol("csrcsc2", "SparseM"),
+    countmul = native_symbol("amubdg", "SparseM"),
+    multiply = native_symbol("amub", "SparseM"),
+    plus = native_symbol("aplsb", "SparseM"),
+    matvec = native_symbol("amux", "SparseM"),
+    chol = native_symbol("chol", "SparseM"),
+    backsolve = native_symbol("bckslv", "SparseM"),
+    solver = native_symbol("srqfnc", "quantreg")
+  ), error = function(e) NULL)
+
+  if (!is.null(symbols)) {
+    tryCatch({
+      initialize_path_gam(symbols)
+      .rtwig_native_path_available <<- TRUE
+    }, error = function(e) {
+      .rtwig_native_path_available <<- FALSE
+    })
+  }
+}
+
 rTwigStartupMessage <- function() {
   msg <- c(
     paste0(

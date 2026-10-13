@@ -21,7 +21,7 @@ Description: Real Twig is a method to correct branch overestimation in quantitat
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RdMacros: Rdpack
-Imports: tidytable, cobs, igraph, rgl, colourvalues, Rdpack, rlang, Rcpp, RcppSimdJson, geometry
+Imports: tidytable, cobs, SparseM, quantreg, igraph, rgl, colourvalues, Rdpack, rlang, Rcpp, RcppSimdJson, geometry
 License: GPL (>= 3)
 Depends: R (>= 3.5.0)
 LazyData: true

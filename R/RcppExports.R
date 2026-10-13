@@ -504,6 +504,14 @@ user_matrix <- function(x, y, z, start) {
     .Call(`_rTwig_user_matrix`, x, y, z, start)
 }
 
+initialize_path_gam <- function(symbols) {
+    invisible(.Call(`_rTwig_initialize_path_gam`, symbols))
+}
+
+path_gam_fit <- function(x, y, z, twig_radius, min_gl) {
+    .Call(`_rTwig_path_gam_fit`, x, y, z, twig_radius, min_gl)
+}
+
 build_adtree <- function(vertices, facets = 10L, tol = 1e-6, match_tol = 1e-4) {
     .Call(`_rTwig_build_adtree`, vertices, facets, tol, match_tol)
 }

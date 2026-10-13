@@ -22,6 +22,8 @@
 
 ## Improvements
 
+- `correct_radii()` now fits paths with the compiled `cobs`, `SparseM`, and `quantreg` routines when available, while retaining the original `cobs()` implementation as a fallback, yielding a 15-20x performance improvement.
+
 - Fixed incorrect parent assignments for disconnected TreeQSM components (Thanks to both Nils Griese & Sören Hese for making me aware of this!). Previously, rTwig attached cylinders with missing parents to the preceding cylinder, based on the sequential parent–child ordering observed in well-formed QSMs. However, TreeQSM can skip a segment that fails cylinder-fitting requirements while still retaining its child segments. Its parent lookup treats the empty parent segment as successfully handled, bypassing connection repair and leaving the child component with `parent = 0`. In these cases, the preceding row may belong to an unrelated branch, so the previous fallback could create a false connection. rTwig now warns about disconnected components, attaches each component to the nearest cylinder with a path to the trunk, and verifies connectivity before cylinder ordering. Repairs preserve geometry, row order, and existing child connections.
 
 - Fixed `smooth_qsm()` using neighbouring rows from unrelated branches, modifying the original input, and leaving cylinder lengths unchanged after smoothing. Length-based metrics are now recalculated using the cached network, and zero-length cylinders raise an error instead of producing invalid axes.

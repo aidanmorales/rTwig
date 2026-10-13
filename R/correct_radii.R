@@ -21,9 +21,10 @@
 #' str(cylinder)
 #'
 correct_radii <- function(
-    cylinder,
-    twig_radius,
-    broken_branch = TRUE) {
+  cylinder,
+  twig_radius,
+  broken_branch = TRUE
+) {
   # Check inputs ---------------------------------------------------------------
   if (is_missing(cylinder)) {
     message <- "argument `cylinder` is missing, with no default."
@@ -111,20 +112,21 @@ correct_radii <- function(
 #' @returns cylinder data frame with corrected radii
 #' @noRd
 model_paths <- function(
-    cylinder,
-    id,
-    parent,
-    radius,
-    raw_radius,
-    growth_length,
-    branch,
-    branch_order,
-    reverse_order,
-    branch_position,
-    total_children,
-    twig_radius,
-    taper = 1,
-    broken_branch = TRUE) {
+  cylinder,
+  id,
+  parent,
+  radius,
+  raw_radius,
+  growth_length,
+  branch,
+  branch_order,
+  reverse_order,
+  branch_position,
+  total_children,
+  twig_radius,
+  taper = 1,
+  broken_branch = TRUE
+) {
   # Build Paths ----------------------------------------------------------------
   inform("Generating Paths")
 
@@ -288,16 +290,17 @@ model_paths <- function(
 #' @returns cylinder data frame with all paths
 #' @noRd
 combine_paths <- function(
-    cylinder,
-    id,
-    parent,
-    radius,
-    branch,
-    branch_order,
-    reverse_order,
-    branch_position,
-    growth_length,
-    total_children) {
+  cylinder,
+  id,
+  parent,
+  radius,
+  branch,
+  branch_order,
+  reverse_order,
+  branch_position,
+  growth_length,
+  total_children
+) {
   # Extract required variables
   path_vars <- cylinder %>%
     select(
@@ -332,6 +335,17 @@ combine_paths <- function(
 #' @noRd
 path_gam <- function(x, y, growth_length, twig_radius, matrix) {
   if (length(x) > 3) {
+    if (.rtwig_native_path_available) {
+      native_fit <- tryCatch(
+        path_gam_fit(x, y, growth_length, twig_radius, matrix[1L, 2L]),
+        error = function(e) NULL
+      )
+      if (!is.null(native_fit) && native_fit$status %in% c(0L, 17L) &&
+        all(is.finite(native_fit$predictions))) {
+        return(native_fit$predictions)
+      }
+    }
+
     model <- suppressWarnings(
       cobs::cobs(x, y,
         lambda = 0.01,
@@ -344,6 +358,7 @@ path_gam <- function(x, y, growth_length, twig_radius, matrix) {
         nknots = length(x) - 1
       )
     )
+
     stats::predict(model, growth_length)[, 2]
   } else {
     rep(twig_radius, length(growth_length))
