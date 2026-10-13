@@ -79,6 +79,12 @@
 
 ### Improvements
 
+- [`correct_radii()`](https://aidanmorales.github.io/rTwig/reference/correct_radii.md)
+  now fits paths with the compiled `cobs`, `SparseM`, and `quantreg`
+  routines when available, while retaining the original `cobs()`
+  implementation as a fallback, yielding a 15-20x performance
+  improvement.
+
 - Fixed incorrect parent assignments for disconnected TreeQSM components
   (Thanks to both Nils Griese & Sören Hese for making me aware of
   this!). Previously, rTwig attached cylinders with missing parents to
