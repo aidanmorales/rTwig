@@ -6,24 +6,78 @@
 #include <vector>
 #include <cmath>
 using namespace Rcpp;
-using Native = void (*)(...);
-static Native basis_fn, value_fn, transpose_fn, countmul_fn, multiply_fn,
-  plus_fn, matvec_fn, chol_fn, back_fn, solve_fn;
+// Match cobs/src/splines.h, SparseM/src/SparseM.h, and
+// quantreg/src/srqfnc.f. Apple ARM64 passes variadic arguments differently
+// from fixed arguments, so these routines must not be called through (...).
+using BasisFn = void (*)(double*, int*, int*, double*, int*, int*, double*, int*);
+using ValueFn = void (*)(double*, double*, int*, int*, double*, int*, int*, double*);
+using TransposeFn = void (*)(int*, int*, int*, int*, double*, int*, int*,
+                            double*, int*, int*);
+using CountMultiplyFn = void (*)(int*, int*, int*, int*, int*, int*, int*,
+                                int*, int*, int*);
+using MultiplyFn = void (*)(int*, int*, int*, double*, int*, int*, double*,
+                           int*, int*, double*, int*, int*, int*, int*, int*);
+using AddFn = void (*)(int*, int*, int*, double*, int*, int*, double*, double*,
+                      int*, int*, double*, int*, int*, int*, int*, int*);
+using MatvecFn = void (*)(int*, double*, double*, double*, int*, int*);
+using CholFn = void (*)(
+  int* m, int* nnzdmax, double* d, int* jd, int* id,
+  int* nnzdsm, double* dsub, int* jdsub, int* nsub, int* nsubmax,
+  int* lindx, int* xlindx, int* nsuper, int* nnzlmax, double* lnz,
+  int* xlnz, int* invp, int* perm, int* iwmax, int* iwork,
+  int* colcnt, int* snode, int* xsuper, int* split, int* tmpmax,
+  double* tmpvec, int* cachsz, int* level, int* ierr,
+  double* timed, double* tiny, double* large);
+using BacksolveFn = void (*)(int*, int*, int*, int*, int*, int*, int*, double*,
+                            int*, int*, int*, int*, double*, double*, double*, double*);
+using SolveFn = void (*)(
+  int* n1, int* m, int* nnza1, double* a1, int* ja1, int* ia1,
+  double* ao1, int* jao1, int* iao1, int* n2, int* nnza2,
+  double* a2, int* ja2, int* ia2, double* ao2, int* jao2, int* iao2,
+  int* nnzdmax, double* d, int* jd, int* id, double* dsub, int* jdsub,
+  int* nnzemax, double* e, int* je, int* ie, int* nnzgmax,
+  double* g, int* jg, int* ig, int* nnzhmax, double* h, int* jh, int* ih,
+  int* nsubmax, int* lindx, int* xlindx, int* nnzlmax, double* lnz,
+  int* xlnz, int* iw, int* iwmax, int* iwork, int* xsuper,
+  int* tmpmax, double* tmpvec, int* maxn1n2,
+  double* ww1, double* wwm, double* wwn1, double* wwn2,
+  int* cachsz, int* level, double* x1, double* x2, double* s, double* u,
+  double* c1, double* c2, double* sm_tn_lrg, double* y,
+  int* ierr, int* maxit, double* timewd);
+
+static BasisFn basis_fn = nullptr;
+static ValueFn value_fn = nullptr;
+static TransposeFn transpose_fn = nullptr;
+static CountMultiplyFn countmul_fn = nullptr;
+static MultiplyFn multiply_fn = nullptr;
+static AddFn plus_fn = nullptr;
+static MatvecFn matvec_fn = nullptr;
+static CholFn chol_fn = nullptr;
+static BacksolveFn back_fn = nullptr;
+static SolveFn solve_fn = nullptr;
+
+template <typename Function>
+static Function path_gam_symbol(const List& symbols, const char* name) {
+  SEXP pointer = symbols[name];
+  if (TYPEOF(pointer) != EXTPTRSXP) stop("Expected NativeSymbol pointer");
+  Function fn = reinterpret_cast<Function>(R_ExternalPtrAddr(pointer));
+  if (!fn) stop("Missing native kernel: %s", name);
+  return fn;
+}
 
 // Caller supplies NativeSymbol addresses with withRegistrationInfo=FALSE.
 // [[Rcpp::export]]
 void initialize_path_gam(List symbols) {
-  auto get = [&](const char* name) {
-    SEXP pointer = symbols[name];
-    if (TYPEOF(pointer) != EXTPTRSXP) stop("Expected NativeSymbol pointer");
-    auto fn = reinterpret_cast<Native>(R_ExternalPtrAddr(pointer));
-    if (!fn) stop("Missing native kernel");
-    return fn;
-  };
-  basis_fn=get("basis"); value_fn=get("value"); transpose_fn=get("transpose");
-  countmul_fn=get("countmul"); multiply_fn=get("multiply"); plus_fn=get("plus");
-  matvec_fn=get("matvec"); chol_fn=get("chol"); back_fn=get("backsolve");
-  solve_fn=get("solver");
+  basis_fn = path_gam_symbol<BasisFn>(symbols, "basis");
+  value_fn = path_gam_symbol<ValueFn>(symbols, "value");
+  transpose_fn = path_gam_symbol<TransposeFn>(symbols, "transpose");
+  countmul_fn = path_gam_symbol<CountMultiplyFn>(symbols, "countmul");
+  multiply_fn = path_gam_symbol<MultiplyFn>(symbols, "multiply");
+  plus_fn = path_gam_symbol<AddFn>(symbols, "plus");
+  matvec_fn = path_gam_symbol<MatvecFn>(symbols, "matvec");
+  chol_fn = path_gam_symbol<CholFn>(symbols, "chol");
+  back_fn = path_gam_symbol<BacksolveFn>(symbols, "backsolve");
+  solve_fn = path_gam_symbol<SolveFn>(symbols, "solver");
 }
 
 struct CSR {
